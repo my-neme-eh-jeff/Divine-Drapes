@@ -55,6 +55,14 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    addressList : [{
+        addressOf : {                       //home, office, relatives, etc 
+            type : String                     
+        },
+        address : {
+            type : String
+        }
+    }],
     OTP: {
         type: Number,
     },

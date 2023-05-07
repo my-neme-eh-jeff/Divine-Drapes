@@ -17,12 +17,12 @@ const orderSchema = new Schema({
     },
     paymentType: {
         type: String,
-        enum: ["cod", "card"],
+        enum: ["cod", "card", "net banking", "UPI"],
         required: true,
     },
     orderStatus : {
         type : String,
-        enum: ["ordered", "packed", "shipped", "delivered"],
+        enum: ["received", "shipping", "shipped", "delivered"],
     }
 })
 

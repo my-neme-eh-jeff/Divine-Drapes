@@ -11,7 +11,7 @@ const userSchema = new Schema({
         enum: ["user","admin"],
         default : "user"
     },
-    fname: {
+    fName: {
         type: String,
         required: true,
         validate(value){
@@ -20,7 +20,7 @@ const userSchema = new Schema({
             }
         }
     },
-    lname: {
+    lName: {
         type: String,
         required: true,
         validate(value){

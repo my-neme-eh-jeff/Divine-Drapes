@@ -29,7 +29,7 @@ const authToken = async (req, res, next)=> {
 
 const authRole = async (role) => {
     return (req, res, next) => {
-      if (req.user.role !== role) {
+      if (req.user.role != role) {
         res.status(401).json({
           message: "Not allowed",
         });

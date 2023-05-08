@@ -29,11 +29,15 @@ router.get("/allProducts", auth.authToken, userC.allProducts)
 //view products category wise
 router.get("/categoryWise", auth.authToken, userC.categoryWise)
 
+//view my cart
+router.get("/viewMyCart", auth.authToken, userC.viewCart)
+
 // add to cart
-router.get("/addCart",auth.authToken,userC.addCart)
+router.post("/addCart/:pID", auth.authToken, userC.addCart)
 
 // remove from cart
-router.post("/removeCart",auth.authToken,userC.removeCart)
+router.post("/removeCart/:pID",auth.authToken,userC.removeCart)
+
 
 module.exports = router;
 

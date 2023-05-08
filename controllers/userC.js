@@ -1,12 +1,12 @@
-const UserSchema = require("../models/userSchema");
-const ProductSchema = require("../models/productSchema");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const otpGenerator = require("otp-generator");
-const CartSchema = require("../models/cartSchema");
-const OrderSchema = require("../models/orderSchema");
 const auth = require("../middleware/auth");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+
+const UserSchema = require("../models/userSchema");
+const ProductSchema = require("../models/productSchema");
+const OrderSchema = require("../models/orderSchema");
 
 let mailTransporter = nodemailer.createTransport({
   service: "gmail",
@@ -34,11 +34,13 @@ const createUser = async (req, res) => {
 
     let pass = await UserSchema.findById({ _id: id }, { password: 0 }); //to hide hashed pswd
 
-    const accessToken = await genAuthToken();
+    const token = jwt.sign({ email: req.body.email }, process.env.SECRETKEY, {
+      expiresIn: "1d",
+    })
     res.status(201).json({
       success: true,
       data: pass,
-      token: accessToken,
+      token: token,
     });
   } catch (error) {
     res.status(500).json({
@@ -67,8 +69,9 @@ const loginUser = async (req, res) => {
 
     const isPassValid = await bcrypt.compare(password, user.password);
     if (isPassValid) {
-      const token = jwt.sign({email:req.body.email},process.env.SECRETKEY,{expiresIn:'1d'});
-      console.log(token)
+      const token = jwt.sign({ email: req.body.email }, process.env.SECRETKEY, {
+        expiresIn: "1d",
+      });
       res.status(200).json({
         success: true,
         data: withoutPswd,
@@ -253,7 +256,7 @@ const verifyOTP = async (req, res) => {
 
 const allProducts = async (req, res) => {
   try {
-    const list = await ProductSchema.find()
+    const list = await ProductSchema.find();
 
     res.status(200).json({
       success: true,
@@ -263,60 +266,99 @@ const allProducts = async (req, res) => {
     res.status(500).json({
       success: false,
       message: err.message,
-    })
+    });
   }
-}
+};
 
 //view products category wise
 
-const categoryWise = async (req,res) => {
-    try {
-        const category = req.params.category
+const categoryWise = async (req, res) => {
+  try {
+    const category = req.params.category;
 
-        const list = await ProductSchema.find({ category : category})
+    const list = await ProductSchema.find({ category: category });
 
-        res.status(200).json({
-            success: true,
-            data: list,
-        })
-        
-    }catch(err){
-        res.status(500).json({
-            success: false,
-            message: err.message,
-        })
-    }
-}
-//add to cart
-const addCart = async(req,res)=>{
-  try{
-    const User=req.user
-    const {productName,quantity}=req.body
-    const product = await  ProductSchema.findOne({name:productName})
-    const cart = await UserSchema.findById({_id:User._id}).populate('cart')
-
-  res.status(200).json({
-    success: true,
-  })
-  }catch(err){
+    res.status(200).json({
+      success: true,
+      data: list,
+    });
+  } catch (err) {
     res.status(500).json({
       success: false,
-      message:err.message
-    })
+      message: err.message,
+    });
   }
-}
+};
+
+//add to cart
+
+const addCart = async (req, res) => {
+  try {
+    const User = req.user;
+    // const {productName,quantity}=req.body
+    // const product = await  ProductSchema.findOne({name:productName})
+    // const cart = await UserSchema.findById({_id:User._id}).populate('cart')
+    const productID = req.params.pID;
+    const product = await ProductSchema.findById({ _id: productID });
+    await UserSchema.findByIdAndUpdate(
+      { _id: User._id },
+      { $push: { cart: productID } }
+    );
+
+    res.status(200).json({
+      success: true,
+      data: product,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
 
 //remove from cart
-const removeCart = async(req,res)=>{
-  try{
+const removeCart = async (req, res) => {
+  try {
+    const User = req.user;
+    const productID = req.params.pID;
 
-  }catch(err){
+    const product = await ProductSchema.findById({ productID });
+    await UserSchema.findByIdAndUpdate(
+      { _id: User._id },
+      { $pop: { cart: productID } }
+    );
+
+    res.status(200).json({
+      success: true,
+      data: product,
+    });
+  } catch (err) {
     res.status(500).json({
       success: false,
-      message: err.message
-    })
+      message: err.message,
+    });
   }
-}
+};
+
+//view my cart
+
+const viewCart = async (req, res) => {
+  try {
+    const user = req.user;
+    const User = await UserSchema.findById({ _id: user._id }).populate("cart order");
+
+    res.status(200).json({
+      success: true,
+      data: User.cart,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
 
 module.exports = {
   createUser,
@@ -328,5 +370,6 @@ module.exports = {
   allProducts,
   categoryWise,
   addCart,
-  removeCart
+  removeCart,
+  viewCart
 };

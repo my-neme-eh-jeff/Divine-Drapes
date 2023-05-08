@@ -23,16 +23,18 @@ const addProduct = async (req, res) => {
     const product = new ProductSchema(req.body);
     const savedProduct = await product.save();
     const email = req.user.email;
+    console.log(product)
+    console.log(email)
 
-    mailTransporter.sendMail({
-      from: process.env.EMAIL,
-      to: email,
-      subject: "New product added",
-      text:
-        "A new product : (" +
-        savedProduct.name +
-        ") has been added on the website.",
-    });
+    // mailTransporter.sendMail({
+    //   from: process.env.EMAIL,
+    //   to: email,
+    //   subject: "New product added",
+    //   text:
+    //     "A new product : (" +
+    //     savedProduct.name +
+    //     ") has been added on the website.",
+    // });
 
     res.status(201).json({
       success: true,

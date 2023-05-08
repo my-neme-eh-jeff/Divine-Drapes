@@ -6,5 +6,7 @@ const fileVerify = require("../middleware/fileVerify")
 
 const router = express.Router()
 
-//add products
-router.post("/addProduct", auth.authToken, auth.authRole("admin"), adminC.addProduct)
+// //add products
+router.post("/addProduct", [auth.authToken,auth.authRole], adminC.addProduct)
+router.post("/allOrders",[auth.authToken ],adminC.allOrders)
+module.exports= router;

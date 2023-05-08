@@ -3,6 +3,10 @@ const ProductSchema = require("../models/productSchema");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const otpGenerator = require("otp-generator");
+const CartSchema = require("../models/cartSchema");
+const OrderSchema = require("../models/orderSchema");
+const auth = require("../middleware/auth");
+const jwt = require("jsonwebtoken")
 
 let mailTransporter = nodemailer.createTransport({
   service: "gmail",
@@ -30,7 +34,7 @@ const createUser = async (req, res) => {
 
     let pass = await UserSchema.findById({ _id: id }, { password: 0 }); //to hide hashed pswd
 
-    const accessToken = await savedUserData.genAuthToken();
+    const accessToken = await genAuthToken();
     res.status(201).json({
       success: true,
       data: pass,
@@ -50,7 +54,6 @@ const loginUser = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const user = await UserSchema.findOne({ email: email });
-
     if (!user) {
       return res.status(400).json({
         error: "User does not exist",
@@ -63,9 +66,9 @@ const loginUser = async (req, res) => {
     );
 
     const isPassValid = await bcrypt.compare(password, user.password);
-
     if (isPassValid) {
-      const token = await user.genAuthToken();
+      const token = jwt.sign({email:req.body.email},process.env.SECRETKEY,{expiresIn:'1d'});
+      console.log(token)
       res.status(200).json({
         success: true,
         data: withoutPswd,
@@ -284,6 +287,36 @@ const categoryWise = async (req,res) => {
         })
     }
 }
+//add to cart
+const addCart = async(req,res)=>{
+  try{
+    const User=req.user
+    const {productName,quantity}=req.body
+    const product = await  ProductSchema.findOne({name:productName})
+    const cart = await UserSchema.findById({_id:User._id}).populate('cart')
+
+  res.status(200).json({
+    success: true,
+  })
+  }catch(err){
+    res.status(500).json({
+      success: false,
+      message:err.message
+    })
+  }
+}
+
+//remove from cart
+const removeCart = async(req,res)=>{
+  try{
+
+  }catch(err){
+    res.status(500).json({
+      success: false,
+      message: err.message
+    })
+  }
+}
 
 module.exports = {
   createUser,
@@ -293,5 +326,7 @@ module.exports = {
   forgotPSWD,
   verifyOTP,
   allProducts,
-  categoryWise
+  categoryWise,
+  addCart,
+  removeCart
 };

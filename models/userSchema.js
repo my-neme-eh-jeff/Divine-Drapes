@@ -95,7 +95,7 @@ userSchema.pre("save", async function(next){
 userSchema.methods.genAuthToken = async function(){
     const user = this
 
-    const accessToken = jwt.sign({ _id: user._id.toString() } , process.env.SECRET_KEY, {
+    const accessToken = jwt.sign({ _id: user._id.toString() } , process.env.SECRETKEY, {
         expiresIn: "1y"
     })
 

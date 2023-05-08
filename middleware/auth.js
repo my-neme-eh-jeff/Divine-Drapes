@@ -8,8 +8,8 @@ const authToken = async (req, res, next)=> {
     const token = authHeader && authHeader.split(" ")[1]
     if(token == null) return res.sendStatus(401)
 
-    const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
-    const user = await UserSchema.findById({_id : decode._id})
+    const decode = jwt.verify(token, process.env.SECRETKEY )
+    const user = await UserSchema.findOne({email : decode.email})
 
     if(!user){
         res.status(404).json({
@@ -27,15 +27,19 @@ const authToken = async (req, res, next)=> {
 }
 }
 
-const authRole = async (role) => {
-    return (req, res, next) => {
-      if (req.user.role != role) {
+const authRole = async (req,res,next) => {
+    try {
+      if (req.user.role != 'admin') {
         res.status(401).json({
           message: "Not allowed",
         });
       }else{
         next()
       }
+    }catch(err){
+      res.status(401).json({
+        message: err.message
+      })
     };
 }
 

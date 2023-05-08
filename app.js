@@ -4,7 +4,7 @@ require('dotenv').config()
 const cookieParser = require("cookie-parser")
 
 const userRoutes = require("./routes/userRoutes")
-const adminRoutes = require("./routes/adminRoutes")
+const adminRoutes = require("./routes/adminRoutes.js")
 
 const cors = require("cors")
 const bodyParser = require("body-parser")
@@ -20,7 +20,7 @@ app.use(cookieParser())
 app.use('/user', userRoutes)
 
 //admin routes
-app.use("/admin", adminRoutes)
+app.use('/admin', adminRoutes)
 
 
 app.listen(process.env.PORT || 3001, ()=>{

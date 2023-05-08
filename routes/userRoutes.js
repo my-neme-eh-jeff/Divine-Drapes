@@ -29,5 +29,11 @@ router.get("/allProducts", auth.authToken, userC.allProducts)
 //view products category wise
 router.get("/categoryWise", auth.authToken, userC.categoryWise)
 
+// add to cart
+router.get("/addCart",auth.authToken,userC.addCart)
+
+// remove from cart
+router.post("/removeCart",auth.authToken,userC.removeCart)
+
 module.exports = router;
 

@@ -1,0 +1,11 @@
+.testimonial-card {
+    border: 2px solid;
+    border-radius: 20px;
+}
+
+#testimonial-profile {
+    display: flex;
+    flex-direction: column;
+    margin: 3% 3% 5%;
+    justify-content: space-around;
+}

@@ -38,6 +38,14 @@ router.post("/addCart/:pID", auth.authToken, userC.addCart)
 // remove from cart
 router.post("/removeCart/:pID",auth.authToken,userC.removeCart)
 
+//order
+router.post("/order/:pID",auth.authToken,userC.directOrder)
+
+//cartOrder
+router.post("/cartOrder",auth.authToken,userC.cartOrder)
+
+//view Order
+router.get("/viewOrder",auth.authToken,userC.viewOrder)
 
 module.exports = router;
 

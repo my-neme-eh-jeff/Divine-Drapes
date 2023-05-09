@@ -346,7 +346,7 @@ const removeCart = async (req, res) => {
 const viewCart = async (req, res) => {
   try {
     const user = req.user;
-    const User = await UserSchema.findById({ _id: user._id }).populate("cart order");
+    const User = await UserSchema.findById({ _id: user._id }).populate(" order");
 
     res.status(200).json({
       success: true,
@@ -359,6 +359,65 @@ const viewCart = async (req, res) => {
     });
   }
 };
+//place order
+const directOrder = async(req,res) => {
+  try{
+    const user = req.user;
+    const productID = req.params.pID;
+    const Product = await ProductSchema.findById({_id:productID});
+    const User = await UserSchema.findByIdAndUpdate(
+      {_id:user._id},
+      {$push :{ order : productID } } );
+    res.status(200).json({
+      success: true,
+      data: Product
+    })
+
+  }catch(err){
+    res.status(500).json({
+      success: false,
+      message: err.message
+    })
+  }
+}
+//order from cart
+const cartOrder = async(req,res) => {
+  try{
+    const user = req.user;
+    const productID = user.cart;
+    const product = await ProductSchema.findById({_id: productID});
+    const User = await UserSchema.findByIdAndUpdate(
+      {_id:user._id},
+      {$push:{order:productID}});
+    res.status(200).json({
+      success: true,
+      message: User
+    })
+  }catch(err){
+    res.status(500).json({
+      success: false,
+      message: err.message
+    })
+  }
+}
+//view Order
+const viewOrder = async(req,res) => {
+  try{
+    const user = req.user;
+    console.log(user)
+    const User = await UserSchema.findById({_id:user._id});
+    console.log(User)
+    res.status(200).json({
+      success: true,
+      data: User.order
+    })
+  }catch(err){
+    res.status(500).json({
+      success: false,
+      message:err.message
+    })
+  }
+}
 
 module.exports = {
   createUser,
@@ -371,5 +430,8 @@ module.exports = {
   categoryWise,
   addCart,
   removeCart,
-  viewCart
+  viewCart,
+  directOrder,
+  cartOrder,
+  viewOrder
 };

@@ -7,11 +7,12 @@ import {
   OutlinedInput,
   InputAdornment,
   IconButton,
-  FormHelperText,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useEffect } from "react";
-import { Email, Visibility, VisibilityOff } from "@mui/icons-material";
+import {  Visibility, VisibilityOff } from "@mui/icons-material";
 // import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -22,9 +23,10 @@ import loginSide from "../images/loginSide.png";
 import logo from "../images/logo.png";
 import * as yup from "yup";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import googleIcon from "../images/googleIcon.png";
 // import { makeStyles } from '@mui/material/styles';
 
-const validationSchema = yup.object({
+const validationschema = yup.object({
   email: yup
     .string("Enter your email")
     .email("Enter a valid email")
@@ -43,8 +45,9 @@ const Login = () => {
       email: "",
       password: "",
     },
-    validationSchema: validationSchema,
+    validationSchema: validationschema,
     onSubmit: (values) => {
+      console.log(values);
       alert(JSON.stringify(values, null, 2));
     },
   });
@@ -66,7 +69,7 @@ const Login = () => {
   const responsiveness = { responsive: width < 1043 };
   const resp = responsiveness.responsive;
 
-  const responsiveness2 = { responsive: width < 850 };
+  const responsiveness2 = { responsive: width < 1000 };
   const resp2 = responsiveness2.responsive;
 
   //   const responsiveness3 = { responsive: width >= 850 && width < 900 };
@@ -79,7 +82,7 @@ const Login = () => {
   const LoginButton = styled(Button)({
     backgroundColor: "#A01E86",
     margin: "1rem",
-    borderRadius: "0.3rem",
+    borderRadius: "0.7rem",
     marginLeft: "1.2rem",
     textDecoration: "none",
     padding: "12px 15px ",
@@ -89,214 +92,164 @@ const Login = () => {
     fontSize: "1rem",
     position: "relative",
     right: resp ? "" : "1.4rem",
-    "&:hover": { backgroundColor: "#5E9387", color: "white" },
-  });
-
-  //   customising FormControl
-
-  const CustomFormControl = styled(FormControl)({
-    "& .MuiInput-root": {
-      color: "black", // color of the input text
-      "& fieldset": {
-        borderColor: "black", // color of the border
-        borderRadius: "10px",
-      },
-      "&::placeholder": {
-        color: "black", // color of the placeholder text
-      },
-    },
-  });
-
-  const CssFormControl = styled(FormControl)({
-    "& .MuiOutlinedInput-root": {
-      "& input": {
-        color: "black", // color of the text entered by the user
-      },
-    },
+    border: "2px solid black",
+    "&:hover": { backgroundColor: "#b945a2", color: "white" },
   });
 
   const EmailField = () => {
-    return ( 
-        <>
-                      <FormControl
-                style={{
-                  margin:
-                    formik.touched.email && formik.errors.email
-                      ? "0"
-                      : "0 0 1rem 0",
-                  width: resp ? "40ch" : "50ch",
-                  borderRadius: "10px",
-                }}
-                variant="outlined"
-                id="email"
-                name="email"
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                error={formik.touched.email && Boolean(formik.errors.email)}
-                helperText={formik.touched.email && formik.errors.email}
-              >
-                <InputLabel htmlFor="email-input">Email</InputLabel>
-                <OutlinedInput
-                  id="outlined-adornment-email"
-                  startAdornment={
-                    <InputAdornment position="start">
-                      <EmailOutlinedIcon />
-                    </InputAdornment>
-                  }
-                  type="email"
-                  label="Email"
-                  placeholder="Email"
-                  name="email"
-                  required
-                />
-              </FormControl>
-              {formik.touched.email && formik.errors.email ? (
-                <div
-                  style={{
-                    color: "red",
-                    fontSize: "0.8rem",
-                    margin: "0.5rem 0 1rem 0",
-                  }}
-                >
-                  {formik.errors.email}
-                </div>
-              ) : null}
-        </>
-     );
-  }
+    return (
+      <>
+        <FormControl
+          style={{
+            margin:
+              formik.touched.email && formik.errors.email ? "0" : "0 0 1rem 0",
+            width: resp ? "40ch" : "50ch",
+            borderRadius: "10px",
+          }}
+          variant="outlined"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
+        >
+          <InputLabel htmlFor="email-input">Email</InputLabel>
+          <OutlinedInput
+            id="email"
+            startAdornment={
+              <InputAdornment position="start">
+                <EmailOutlinedIcon />
+              </InputAdornment>
+            }
+            type="email"
+            name="email"
+            label="Email"
+            placeholder="Email"
+            required
+          />
+        </FormControl>
+        {formik.touched.email && formik.errors.email ? (
+          <div
+            style={{
+              color: "red",
+              fontSize: "0.8rem",
+              margin: "0.5rem 0 1rem 0",
+            }}
+          >
+            {formik.errors.email}
+          </div>
+        ) : null}
+      </>
+    );
+  };
 
   const PasswordField = () => {
-    return ( 
-        <>              <FormControl
-        sx={{
-          width: resp ? "40ch" : "50ch",
-          margin: "1rem 0 0.5 0",
-          borderRadius: "10px",
-        }}
-        variant="outlined"
-        value={formik.values.password}
-        onChange={formik.handleChange}
-        error={
-          formik.touched.password && Boolean(formik.errors.password)
-        }
-        helperText={formik.touched.password && formik.errors.password}
-        required
-      >
-        <InputLabel htmlFor="outlined-adornment-password">
-          Password
-        </InputLabel>
-        <OutlinedInput
-          id="outlined-adornment-password"
-          type={showPassword ? "text" : "password"}
-          label="Password"
-          name="password"
-          startAdornment={
-            <InputAdornment position="start">
-              <LockOutlinedIcon />
-            </InputAdornment>
-          }
-          endAdornment={
-            <InputAdornment position="start">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                edge="end"
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          }
-        />
-      </FormControl>
-      {formik.touched.password && formik.errors.password ? (
-        <div
-          style={{
-            color: "red",
-            fontSize: "0.8rem",
-            margin: "0.5rem 0 1rem 0",
-          }}
-        >
-          {formik.errors.password}
-        </div>
-      ) : null}
-        
-        </>
-     );
-  }
-
-
-
-  const LoginComponet = () => {
     return (
-      <Grid
-        container
-        spacing={0}
-        className="login_main_container"
-        style={{
-          display: resp2 ? "flex" : "",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Grid
-          item
-          xs={6}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            // border : '2px solid red',
-            position: "relative",
-            top: resp2 ? "6rem" : "",
+      <>
+        <FormControl
+          sx={{
+            width: resp ? "40ch" : "50ch",
+            margin: "1rem 0 0.5 0",
+            borderRadius: "10px",
+          }}
+          variant="outlined"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
+          required
+        >
+          <InputLabel htmlFor="outlined-adornment-password">
+            Password
+          </InputLabel>
+          <OutlinedInput
+            id="password"
+            name="password"
+            type={showPassword ? "text" : "password"}
+            label="Password"
+            startAdornment={
+              <InputAdornment position="start">
+                <LockOutlinedIcon />
+              </InputAdornment>
+            }
+            endAdornment={
+              <InputAdornment position="start">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            required
+          />
+        </FormControl>
+        {formik.touched.password && formik.errors.password ? (
+          <div
+            style={{
+              color: "red",
+              fontSize: "0.8rem",
+              margin: "0.5rem 0 1rem 0",
+            }}
+          >
+            {formik.errors.password}
+          </div>
+        ) : null}
+      </>
+    );
+  };
+
+  const ForgotPBlock = () => {
+    return (
+      <>
+        <div style={{ width: resp ? "40ch" : "50ch" }}>
+          <FormControlLabel control={<Checkbox />} label="Remember me" />
+          <Link
+            to="/forgotpassword"
+            style={{
+              marginLeft: resp ? "5 rem" : "10rem",
+              color: "#AF0D0D",
+            }}
+          >
+            Forgot password
+          </Link>
+        </div>
+      </>
+    );
+  };
+
+  const GLoginBlock = () => {
+    return (
+      <>
+        <Button
+          variant="outlined"
+          href="#"
+          sx={{
+            border: "2px solid black",
+            width: resp ? "22rem" : "28rem",
+            padding: "0.5rem",
+            borderRadius: "0.7rem",
+            margin: "1rem 0 2rem 0",
+            color: "black",
+            fontWeight: 400,
           }}
         >
-          <img src={logo} alt="Logo" />
-          <form onSubmit={formik.handleSubmit}>
-            <Box
-              sx={{
-                maxWidth: "31.25rem",
-                width: "31.25rem",
-                height: "31.25rem",
-                border: "2px solid black",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: resp ? "center" : "flex-start",
-                padding: "1rem",
-              }}
-            >
-                <EmailField/>
-                <PasswordField/>
+          Login with Google{" "}
+          <img
+            src={googleIcon}
+            alt="googleIcon"
+            style={{ marginLeft: "1rem" }}
+          />
+        </Button>
+      </>
+    );
+  };
 
-
-              <div style={{ display: "flex" }}>
-                <LoginButton type="submit">Log in</LoginButton>
-              </div>
-
-              <div style={{}}>
-                <span style={{ color: "gray", margin: "0.6rem 0" }}>
-                  Don't have an account?
-                  <Link to="/Signup" style={{ textDecoration: "none" }}>
-                    <a
-                      href="/"
-                      style={{
-                        textDecoration: "none",
-                        color: "#4A2145",
-                        margin: "0 0.7rem",
-                        fontWeight: "32.25rem",
-                      }}
-                      // onClick={changeFRegStat}
-                    >
-                      Sign Up
-                    </a>
-                  </Link>
-                </span>
-              </div>
-            </Box>
-          </form>
-        </Grid>
-        <Grid item xs={6} className="img1 c">
-          <div
+  const GiftGridI = () => {
+    return (
+      <>
+                <div
             style={{
               display: "flex",
               flexDirection: "column",
@@ -316,6 +269,91 @@ const Login = () => {
               Welcome Back!!
             </span>
           </div>
+      </>
+    )
+  } 
+
+  const LoginComponet = () => {
+    return (
+      <Grid
+        container
+        spacing={0}
+        className="login_main_container"
+        style={{
+          display: resp2 ? "flex" : "",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+        }}
+      >
+        <Grid
+          item
+          xs={6}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "relative",
+            top: resp2 ? "6rem" : "",
+          }}
+        >
+          <img src={logo} alt="Logo" />
+          <form onSubmit={formik.handleSubmit}>
+            <Box
+              sx={{
+                maxWidth: "31.25rem",
+                width: "31.25rem",
+                height: "31.25rem",
+                // border: "2px solid black",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: resp ? "center" : "flex-start",
+                padding: "1rem",
+                position: "relative",
+                left: "1.3rem",
+              }}
+            >
+              <EmailField />
+              <PasswordField />
+              <ForgotPBlock />
+
+              <div style={{ display: "flex", marginTop: "2rem" }}>
+                <LoginButton type="submit">Log in</LoginButton>
+              </div>
+
+              <div style={{ display: "flex", padding: "0 1.8rem" }}>
+                <hr width={150} /> <span style={{ margin: "0 2rem" }}> OR</span>{" "}
+                <hr width={150} />
+              </div>
+
+              <GLoginBlock />
+
+              <div
+                style={{
+                  marginLeft: "5.5rem",
+                }}
+              >
+                <span style={{ fontWeight: 600, margin: "0.6rem 0" }}>
+                  Don&apos;t have an account?
+                </span>
+                <Link
+                  to="/signup"
+                  style={{
+                    textDecoration: "none",
+                    color: "#A01E86",
+                    margin: "0 0.7rem ",
+                  }}
+                >
+                  Sign Up
+                </Link>
+              </div>
+
+            </Box>
+          </form>
+        </Grid>
+        <Grid item xs={6} className="img1 c">
+          <GiftGridI/>
         </Grid>
       </Grid>
     );

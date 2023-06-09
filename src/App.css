@@ -33,6 +33,9 @@ html, body{
     text-align: center;
     height: 280px;
   }
+  .Box:nth-child(3){
+    height: 50px;
+  }
   #rating{
     margin-top: -40px;
     text-align: center;

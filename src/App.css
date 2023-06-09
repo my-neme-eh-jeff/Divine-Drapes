@@ -13,8 +13,8 @@ html, body{
   width: 1200px;
 }
 .Box{
-  width: 20vw;
-  height: 40vh;
+  width: auto;
+  height: auto;
 }
 /* Responsive */
 @media (max-width:800px){

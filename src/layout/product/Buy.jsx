@@ -1,16 +1,9 @@
 import React from 'react'
 import Content from './Content'
 import { Box, ChakraProvider, Grid, Heading, SimpleGrid, Image, Text, Stack, Button } from '@chakra-ui/react'
-import { Navigate } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
 
 
-function Product() {
-    const nav = useNavigate();
-    const buy=()=>{
-        console.log("buy now")
-        nav('/buy')
-    }
+function Buy() {
     return (
         <div>
             <ChakraProvider>
@@ -57,7 +50,6 @@ function Product() {
                                             backgroundColor: '#A01E86',
                                             color: 'black'
                                         }}
-                                        onClick={buy}
                                     >Buy Now</Button>
                                     <Button marginLeft={'25px'}
                                         border={' 3px solid #A01E86'}
@@ -77,26 +69,10 @@ function Product() {
 
                         </SimpleGrid>
                     </Box>
-
-
-                    <br />
-                    <Heading fontSize={'28px'} fontWeight={700} lineHeight={'38px'}>More Like This..</Heading>
-                    <Box display={'flex'} flexWrap={'nowrap'} padding={'20px'} overflowX={'auto'}
-                        className='recom'
-                    >
-                        <Content />
-                        <Content />
-                        <Content />
-                        <Content />
-                        <Content />
-                        <Content />
-                        <Content />
-                        <Content />
-                    </Box>
                 </Box>
             </ChakraProvider>
         </div >
     )
 }
 
-export default Product
+export default Buy

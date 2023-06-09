@@ -5,6 +5,7 @@ import Signup from './layout/Signup'
 import Footer from './layout/Footer/Footer'
 import Profile from './layout/Profile'
 import Product from './layout/product/Product'
+import Buy from './layout/product/Buy'
 
 function App() {
 
@@ -24,6 +25,9 @@ function App() {
         </Routes>
         <Routes>
           <Route path='/product' element={<><Product/></>}></Route>
+        </Routes>
+        <Routes>
+          <Route path='/buy' element={<><Buy/></>}></Route>
         </Routes>
       </Router>
     </div>

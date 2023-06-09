@@ -5,3 +5,43 @@ html, body{
 .recom::-webkit-scrollbar{
   display: none;
 }
+.productbody{
+  margin-left: 11vw;
+}
+.mainpro{
+  height: 300px;
+  width: 1200px;
+}
+.Box{
+  width: auto;
+  height: auto;
+}
+/* Responsive */
+@media (max-width:800px){
+  .productbody{
+    margin-left: 2vw;
+  }
+  .cardd{
+    margin-left: 2px;
+  }
+  .mainpro{
+    width: 100vw;
+    height: 40vh;
+  }
+  .Box{
+    width: 100%;
+    text-align: center;
+    height: 280px;
+  }
+  .Box:nth-child(3){
+    height: 50px;
+  }
+  #rating{
+    margin-top: -40px;
+    text-align: center;
+  }
+  .content1{
+    margin-left: 178px;
+  }
+  
+}

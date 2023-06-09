@@ -1,13 +1,14 @@
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-// import Login from './layout/Login'
-// import Signup from './layout/Signup'
+import Login from './layout/Login'
+import Signup from './layout/Signup'
 import Footer from './layout/Footer/Footer'
 import Profile from './layout/Profile'
 import Product from './layout/product/Product'
 import Navbar from './layout/Navbar/Navbar'
 import Home from './layout/Home/Home'
 import BulkOrder from './layout/BulkOrder/BulkOrder'
+import Buy from './layout/product/Buy'
 
 function App() {
 
@@ -19,10 +20,10 @@ function App() {
         <Routes>
           <Route path='/' element={<> <Home/> </>}></Route>
         </Routes>
-        {/* <Routes>
+        <Routes>
           <Route path='/' element={<> <Login/> </>}></Route>
           <Route path='/signup' element={<> <Signup/> </>}></Route>
-        </Routes> */}
+        </Routes>
         <Routes>
           <Route path='/footer' element={<> <Footer/> </>}></Route>
         </Routes>
@@ -34,6 +35,7 @@ function App() {
         </Routes>
         <Routes>
           <Route path='/bulkorder' element={<><BulkOrder/></>}></Route>
+          <Route path='/buy' element={<><Buy/></>}></Route>
         </Routes>
       </Router>
     </div>

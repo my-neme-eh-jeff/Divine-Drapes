@@ -1,0 +1,9 @@
+.search-bar {
+    position: absolute;
+    width: 100%;
+    height: 400px;
+    left: 0px;
+    top: 110px;
+
+    background: linear-gradient(180deg, #A01E86 0%, #F7BC62 100%);
+}

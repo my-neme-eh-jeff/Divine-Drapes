@@ -4,6 +4,7 @@ import Login from './layout/Login'
 import Signup from './layout/Signup'
 import Footer from './layout/Footer/Footer'
 import Profile from './layout/Profile'
+import Product from './layout/product/Product'
 
 function App() {
 
@@ -20,6 +21,9 @@ function App() {
         </Routes>
         <Routes>
           <Route path='/profile' element={<><Profile/></>}></Route>
+        </Routes>
+        <Routes>
+          <Route path='/product' element={<><Product/></>}></Route>
         </Routes>
       </Router>
     </div>

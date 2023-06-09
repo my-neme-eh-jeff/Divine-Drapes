@@ -15,9 +15,9 @@ body {
 .box {
   align-items: center;
   height: 400px;
-  box-shadow: -2px 0px 72px 35px rgba(0, 0, 0, 0.09);
   -webkit-box-shadow: -2px 0px 72px 35px rgba(0, 0, 0, 0.09);
   -moz-box-shadow: -2px 0px 72px 35px rgba(0, 0, 0, 0.09);
+  box-shadow: -2px 0px 72px 35px rgba(0, 0, 0, 0.09);
 }
 
 .inputBox {
@@ -45,10 +45,10 @@ body {
     #d3766a 60.13%,
     #a01e86 98.21%
   );
-  /* height: 100vh; */
+  height: 100vh;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1000px) {
   .img1,
   .img2 {
     display: none;

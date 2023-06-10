@@ -6,6 +6,8 @@ import Footer from './layout/Footer/Footer'
 import Profile from './layout/Profile'
 import Forgotpass from './layout/Forgotpass'
 import OTPverify from './layout/OTPverify'
+import Product from './layout/product/Product'
+import Buy from './layout/product/Buy'
 
 function App() {
 
@@ -24,6 +26,12 @@ function App() {
         </Routes>
         <Routes>
           <Route path='/profile' element={<><Profile/></>}></Route>
+        </Routes>
+        <Routes>
+          <Route path='/product' element={<><Product/></>}></Route>
+        </Routes>
+        <Routes>
+          <Route path='/buy' element={<><Buy/></>}></Route>
         </Routes>
       </Router>
     </div>

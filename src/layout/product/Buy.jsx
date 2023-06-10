@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 import { Box, ChakraProvider, Heading, SimpleGrid, Image, Button, Select } from '@chakra-ui/react'
 import './Upload.css'
+import Footer from '../Footer/Footer';
 
 
 function Buy() {
@@ -142,6 +143,8 @@ function Buy() {
                         </SimpleGrid>
                     </Box>
                 </Box>
+                <br />
+                <Footer/>
             </ChakraProvider>
         </div >
     )

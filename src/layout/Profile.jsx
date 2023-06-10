@@ -54,6 +54,7 @@ export default function Profile() {
               </Link>
             </Grid>
             <Grid item md={12} xs={12}>
+              <Link to='/fav'>
               <Paper
                 elevation={1}
                 sx={{
@@ -69,6 +70,7 @@ export default function Profile() {
                   </IconButton>
                 </div>
               </Paper>
+              </Link>
             </Grid>
           </Grid>
         </Grid>

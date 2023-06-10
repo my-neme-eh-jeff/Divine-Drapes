@@ -9,6 +9,7 @@ import OTPverify from './layout/OTPverify'
 import Product from './layout/product/Product'
 import Buy from './layout/product/Buy'
 import Myorders from './layout/Myorders'
+import Myfav from './layout/Myfav'
 
 function App() {
 
@@ -37,7 +38,11 @@ function App() {
         <Routes>
           <Route path='/order' element={<><Myorders/></>}></Route>
         </Routes>
+        <Routes>
+          <Route path='/fav' element={<><Myfav/></>}></Route>
+        </Routes>
       </Router>
+
     </div>
     </>
     )

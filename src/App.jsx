@@ -9,6 +9,7 @@ import Navbar from './layout/Navbar/Navbar'
 import Home from './layout/Home/Home'
 import BulkOrder from './layout/BulkOrder/BulkOrder'
 import Buy from './layout/product/Buy'
+// import HomePage from './layout/Home/HomePage'
 
 function App() {
 
@@ -16,9 +17,9 @@ function App() {
     <>
     <div className='App'>
       <Router>
-        <Navbar/>
+          <Navbar/>
         <Routes>
-          <Route path='/' element={<> <Home/> </>}></Route>
+          <Route path='/home' element={<> <Home/> </>}></Route>
         </Routes>
         <Routes>
           <Route path='/' element={<> <Login/> </>}></Route>

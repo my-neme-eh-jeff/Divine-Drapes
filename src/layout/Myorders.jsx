@@ -14,24 +14,116 @@ export default function Myorders() {
   return (
     <>
       <Grid container>
-        <Grid item md={0.5}>
+        <Grid item md={0.5} xs={1}>
           <Link to="/profile">
             <ArrowBackIcon></ArrowBackIcon>
           </Link>
         </Grid>
-        <Grid item md={11.5}>
-          <Grid container rowSpacing={5}>
-            <Grid item md={12} sx={{ padding: "3px" }}>
+        <Grid item md={11.5} xs={11}>
+          <Grid container spacing={3}>
+            <Grid item md={12} xs={12} sx={{ marginTop: "3px" }}>
               My Orders
             </Grid>
-            <Grid item md={3}>
+            <Grid item md={2.4} xs={12}>
               <Card sx={{ maxWidth: 200 }}>
                 <CardMedia
                   component="img"
                   alt="green iguana"
-                  height="140"
+                  height="200"
                   image={mug}
-                  sx={{borderTopLeftRadius:"5px",borderTopRightRadius:"5px"}}
+                  sx={{borderTopLeftRadius:"10px",borderTopRightRadius:"10px",borderBottomRightRadius:"10px",borderBottomLeftRadius:"10px"}}
+                />
+                <CardContent sx={{}}>
+                  <Typography gutterBottom variant="h7" component="div" sx={{}}>
+                    Mug
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    some decription...
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" variant="contained" sx={{color:"white",backgroundColor:"#A01E86","&:hover": {backgroundColor: "#A01E86",border:2 }}}>View</Button>
+                  <Button size="small" variant="outlined" sx={{borderColor:"#A01E86",color:"#A01E86",border:2,"&:hover": {backgroundColor: "white",borderColor:"#A01E86",border:2 }}}>Comment</Button>
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid item md={2.4} xs={12}>
+              <Card sx={{ maxWidth: 200 }}>
+                <CardMedia
+                  component="img"
+                  alt="green iguana"
+                  height="200"
+                  image={mug}
+                  sx={{borderTopLeftRadius:"10px",borderTopRightRadius:"10px",borderBottomRightRadius:"10px",borderBottomLeftRadius:"10px"}}
+                />
+                <CardContent sx={{}}>
+                  <Typography gutterBottom variant="h7" component="div" sx={{}}>
+                    Mug
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    some decription...
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" variant="contained" sx={{color:"white",backgroundColor:"#A01E86","&:hover": {backgroundColor: "#A01E86",border:2 }}}>View</Button>
+                  <Button size="small" variant="outlined" sx={{borderColor:"#A01E86",color:"#A01E86",border:2,"&:hover": {backgroundColor: "white",borderColor:"#A01E86",border:2 }}}>Comment</Button>
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid item md={2.4} xs={12}>
+              <Card sx={{ maxWidth: 200 }}>
+                <CardMedia
+                  component="img"
+                  alt="green iguana"
+                  height="200"
+                  image={mug}
+                  sx={{borderTopLeftRadius:"10px",borderTopRightRadius:"10px",borderBottomRightRadius:"10px",borderBottomLeftRadius:"10px"}}
+                />
+                <CardContent sx={{}}>
+                  <Typography gutterBottom variant="h7" component="div" sx={{}}>
+                    Mug
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    some decription...
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" variant="contained" sx={{color:"white",backgroundColor:"#A01E86","&:hover": {backgroundColor: "#A01E86",border:2 }}}>View</Button>
+                  <Button size="small" variant="outlined" sx={{borderColor:"#A01E86",color:"#A01E86",border:2,"&:hover": {backgroundColor: "white",borderColor:"#A01E86",border:2 }}}>Comment</Button>
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid item md={2.4} xs={12}>
+              <Card sx={{ maxWidth: 200 }}>
+                <CardMedia
+                  component="img"
+                  alt="green iguana"
+                  height="200"
+                  image={mug}
+                  sx={{borderTopLeftRadius:"10px",borderTopRightRadius:"10px",borderBottomRightRadius:"10px",borderBottomLeftRadius:"10px"}}
+                />
+                <CardContent sx={{}}>
+                  <Typography gutterBottom variant="h7" component="div" sx={{}}>
+                    Mug
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    some decription...
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" variant="contained" sx={{color:"white",backgroundColor:"#A01E86","&:hover": {backgroundColor: "#A01E86",border:2 }}}>View</Button>
+                  <Button size="small" variant="outlined" sx={{borderColor:"#A01E86",color:"#A01E86",border:2,"&:hover": {backgroundColor: "white",borderColor:"#A01E86",border:2 }}}>Comment</Button>
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid item md={2.4} xs={12}>
+              <Card sx={{ maxWidth: 200 }}>
+                <CardMedia
+                  component="img"
+                  alt="green iguana"
+                  height="200"
+                  image={mug}
+                  sx={{borderTopLeftRadius:"10px",borderTopRightRadius:"10px",borderBottomRightRadius:"10px",borderBottomLeftRadius:"10px"}}
                 />
                 <CardContent sx={{}}>
                   <Typography gutterBottom variant="h7" component="div" sx={{}}>

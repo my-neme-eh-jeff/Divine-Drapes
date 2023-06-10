@@ -4,6 +4,8 @@ import Login from './layout/Login'
 import Signup from './layout/Signup'
 import Footer from './layout/Footer/Footer'
 import Profile from './layout/Profile'
+import Forgotpass from './layout/Forgotpass'
+import OTPverify from './layout/OTPverify'
 
 function App() {
 
@@ -14,6 +16,8 @@ function App() {
         <Routes>
           <Route path='/' element={<> <Login/> </>}></Route>
           <Route path='/signup' element={<> <Signup/> </>}></Route>
+          <Route path='/forgotpass' element={<> <Forgotpass/> </>}></Route>
+          <Route path='/otpverify' element={<> <OTPverify/> </>}></Route>
         </Routes>
         <Routes>
           <Route path='/footer' element={<> <Footer/> </>}></Route>

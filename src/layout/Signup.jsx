@@ -5,7 +5,6 @@ import {
   Button,
   TextField,
   FormControl,
-  InputLabel,
   OutlinedInput,
   InputAdornment,
   IconButton,
@@ -13,7 +12,7 @@ import {
 import { styled } from "@mui/material/styles";
 import { useEffect } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import giftbox from "../images/giftbox.png";
@@ -21,6 +20,7 @@ import giftbox from "../images/giftbox.png";
 import "./Login.css";
 import { useFormik } from "formik";
 import logo from "../images/logo.png";
+import React from "react";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -35,7 +35,7 @@ const validationSchema = yup.object({
     .max(20, "Must be 20 characters or less")
     .required("Required"),
   contact: yup
-    .string("Enter your last Name")
+    .string("Enter your Contact")
     .matches(phoneRegExp, "Contact in not valid")
     .required("Required"),
   email: yup
@@ -43,12 +43,11 @@ const validationSchema = yup.object({
     .email("Enter a valid email")
     .required("Email is required"),
   dob: yup
-    .string("Enter your password")
-    .min(8, "Password should be of minimum 8 characters length")
-    .required("Password is required"),
+    .string("Enter your Date of Birth")
+    .required("Date of Birth is required"),
   password: yup
     .string("Confirm Password")
-    .oneOf([yup.ref("password"), null], "Passwords must match")
+    // .oneOf([yup.ref("password"), null], "Passwords must match")
     .required("Password is required"),
 });
 
@@ -78,15 +77,15 @@ const Signup = () => {
     initialValues: {
       firstName: "",
       lastName: "",
-      email: "",
-      password: "Password",
-      dob: "",
       contact: "",
+      email: "",
+      dob: "",
+      password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
+    // onSubmit: (values) => {
+    //   alert(JSON.stringify(values, null, 2));
+    // },
   });
 
   const CreateButton = styled(Button)({
@@ -109,7 +108,7 @@ const Signup = () => {
 
   const GiftGridI = () => {
     return (
-      <>
+      <React.Fragment>
         <div
           style={{
             display: "flex",
@@ -122,13 +121,13 @@ const Signup = () => {
         >
           <img src={giftbox} alt="Gift Box" />
         </div>
-      </>
+      </React.Fragment>
     );
   };
 
   const FnameField = () => {
     return (
-      <>
+      <React.Fragment>
         <div>
           <TextField
             id="firstName"
@@ -148,13 +147,13 @@ const Signup = () => {
             }}
           />
         </div>
-      </>
+      </React.Fragment>
     );
   };
 
   const LnameField = () => {
     return (
-      <>
+      <React.Fragment>
         <div>
           <TextField
             id="lname"
@@ -176,25 +175,21 @@ const Signup = () => {
             }}
           />
         </div>
-      </>
-    );
-  };
-
-  const NameField = () => {
-    return (
-      <>
-        <div style={{ display: "flex" }}>
-          <FnameField />
-          <LnameField />
-        </div>
-      </>
+      </React.Fragment>
     );
   };
 
   const EmailField = () => {
     return (
-      <>
-        <span style={{margin:resp2 ? "0 0 0 -20rem" : '0 0 0 1rem', fontWeight:500}}>Email</span>
+      <React.Fragment>
+        <span
+          style={{
+            margin: resp2 ? "0 0 0 -20rem" : "0 0 0 1rem",
+            fontWeight: 500,
+          }}
+        >
+          Email
+        </span>
         <FormControl
           style={{
             margin: "0.5rem 0 1rem 0",
@@ -217,7 +212,7 @@ const Signup = () => {
             }
             type="email"
             label="Email"
-            placeholder="Email"
+            placeholder="  Email"
             name="email"
             required
           />
@@ -227,19 +222,26 @@ const Signup = () => {
             {formik.errors.email}
           </div>
         ) : null}
-      </>
+      </React.Fragment>
     );
   };
 
   const ContactField = () => {
     return (
-      <>
-      <span style={{margin:resp2 ? "0 0 0 -16rem" : '0 0 0 1rem',fontWeight:500}}>Phone number</span>
+      <React.Fragment>
+        <span
+          style={{
+            margin: resp2 ? "0 0 0 -16rem" : "0 0 0 1rem",
+            fontWeight: 500,
+          }}
+        >
+          Phone number
+        </span>
         <TextField
           id="lname"
           type="text"
           // label="Contact"
-          placeholder="contact"
+          placeholder="Contact"
           name="contact"
           onChange={formik.handleChange}
           error={formik.touched.contact && Boolean(formik.errors.contact)}
@@ -252,13 +254,13 @@ const Signup = () => {
             borderRadius: "0.7rem",
           }}
         />
-      </>
+      </React.Fragment>
     );
   };
 
   const PasswordField = () => {
     return (
-      <>
+      <React.Fragment>
         <div
           style={{
             position:
@@ -280,10 +282,8 @@ const Signup = () => {
             helperText={formik.touched.password && formik.errors.password}
             required
           >
-            <InputLabel htmlFor="outlined-adornment-password">
-              Password
-            </InputLabel>
             <OutlinedInput
+              placeholder="Password"
               id="outlined-adornment-password"
               label="Password"
               name="password"
@@ -301,6 +301,7 @@ const Signup = () => {
               }
             />
           </FormControl>
+
           {formik.touched.password && formik.errors.password ? (
             <div
               style={{
@@ -314,7 +315,7 @@ const Signup = () => {
             </div>
           ) : null}
         </div>
-      </>
+      </React.Fragment>
     );
   };
 
@@ -322,7 +323,7 @@ const Signup = () => {
 
   const DOBField = () => {
     return (
-      <>
+      <React.Fragment>
         <div>
           <TextField
             id="dob"
@@ -343,12 +344,12 @@ const Signup = () => {
             }}
           />
         </div>
-      </>
+      </React.Fragment>
     );
   };
 
   return (
-    <>
+    <React.Fragment>
       <Grid
         container
         spacing={0}
@@ -368,12 +369,20 @@ const Signup = () => {
           xs={6}
           style={{
             display: "flex",
-            flexDirection:'column',
+            flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <img src={logo} alt="Logo" />
+          <img
+            src={logo}
+            alt="Logo"
+            style={{
+              marginBottom: "1.3rem",
+              position: "relative",
+              right: resp ? "" : "2rem",
+            }}
+          />
           <form onSubmit={formik.handleSubmit}>
             <Box
               sx={{
@@ -389,26 +398,56 @@ const Signup = () => {
                 // left: resp2 ? "26%" : "2rem",
               }}
             >
-
               <div>
-                    <span style={{margin:resp2 ? "0 8rem 0 -5rem" : '0 0 0 1rem', fontWeight:500}}>First Name</span>
-                    <span style={{margin:resp2 ? "" : '0 0 0 9.5rem', fontWeight:500}}>Last Name</span>
-              </div>
-
-              <NameField />
-
-              <EmailField />
-
-              <ContactField />
-
-              <div>
-                    <span style={{margin:resp2 ? "0 8rem 0 -5rem" : '0 0 0 1rem',fontWeight:500}}>Date of Birth</span>
-                    <span style={{margin:resp2 ? "" : '0 0 0 9.5rem', fontWeight:500}}>Password</span>
+                <span
+                  style={{
+                    margin: resp2 ? "0 8rem 0 -5rem" : "0 0 0 1rem",
+                    fontWeight: 500,
+                  }}
+                >
+                  First Name
+                </span>
+                <span
+                  style={{
+                    margin: resp2 ? "" : "0 0 0 9.5rem",
+                    fontWeight: 500,
+                  }}
+                >
+                  Last Name
+                </span>
               </div>
 
               <div style={{ display: "flex" }}>
-                <DOBField />
-                <PasswordField />
+                {FnameField()}
+                {LnameField()}
+              </div>
+
+              {EmailField()}
+
+              {ContactField()}
+
+              <div>
+                <span
+                  style={{
+                    margin: resp2 ? "0 8rem 0 -5rem" : "0 0 0 1rem",
+                    fontWeight: 500,
+                  }}
+                >
+                  Date of Birth
+                </span>
+                <span
+                  style={{
+                    margin: resp2 ? "" : "0 0rem 0 9rem",
+                    fontWeight: 500,
+                  }}
+                >
+                  Password
+                </span>
+              </div>
+
+              <div style={{ display: "flex" }}>
+                {DOBField()}
+                {PasswordField()}
               </div>
 
               <div
@@ -421,26 +460,27 @@ const Signup = () => {
                 <CreateButton type="submit">Create account</CreateButton>
               </div>
 
-              <span style={{ color: "gray", margin: "0.4rem 0" }}>
+              <span
+                style={{
+                  margin: "2rem 0",
+                  fontWeight: 500,
+                  position: "relative",
+                  left: resp ? "" : "8rem",
+                }}
+              >
                 Already A Member?{" "}
-                <Link to="/Login" style={{ textDecoration: "none" }}>
-                  <a
-                    href="/Login"
-                    style={{
-                      textDecoration: "none",
-                      color: "#4A2145",
-                      fontWeight: 500,
-                    }}
-                  >
-                    Log in
-                  </a>{" "}
+                <Link
+                  to="/"
+                  style={{ textDecoration: "none", color: "#A01E86" }}
+                >
+                  Log in
                 </Link>
               </span>
             </Box>
           </form>
         </Grid>
       </Grid>
-    </>
+    </React.Fragment>
   );
 };
 

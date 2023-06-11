@@ -3,6 +3,7 @@ import Content from './Content'
 import { Box, ChakraProvider, Grid, Heading, SimpleGrid, Image, Text, Stack, Button } from '@chakra-ui/react'
 import { Navigate } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import Footer from '../Footer/Footer'
 
 
 function Product() {
@@ -94,6 +95,7 @@ function Product() {
                         <Content />
                     </Box>
                 </Box>
+                <Footer/>
             </ChakraProvider>
         </div >
     )

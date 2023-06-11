@@ -31,7 +31,7 @@ html, body{
   .Box{
     width: 100%;
     text-align: center;
-    height: 280px;
+    height: auto;
   }
   .Box:nth-child(3){
     height: 50px;

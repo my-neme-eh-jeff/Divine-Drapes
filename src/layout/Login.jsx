@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   FormControl,
-  InputLabel,
   OutlinedInput,
   InputAdornment,
   IconButton,
@@ -12,8 +11,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useEffect } from "react";
-import {  Visibility, VisibilityOff } from "@mui/icons-material";
-// import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
@@ -24,7 +22,7 @@ import logo from "../images/logo.png";
 import * as yup from "yup";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import googleIcon from "../images/googleIcon.png";
-// import { makeStyles } from '@mui/material/styles';
+import React from "react";
 
 const validationschema = yup.object({
   email: yup
@@ -46,10 +44,10 @@ const Login = () => {
       password: "",
     },
     validationSchema: validationschema,
-    onSubmit: (values) => {
-      console.log(values);
-      alert(JSON.stringify(values, null, 2));
-    },
+    // onSubmit: (values) => {
+    //   console.log(values);
+    //   alert(JSON.stringify(values, null, 2));
+    // },
   });
 
   // adding event listener for responsiveness
@@ -71,10 +69,6 @@ const Login = () => {
 
   const responsiveness2 = { responsive: width < 1000 };
   const resp2 = responsiveness2.responsive;
-
-  //   const responsiveness3 = { responsive: width >= 850 && width < 900 };
-  //   const resp3 = responsiveness3.responsive;
-  //
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -98,13 +92,22 @@ const Login = () => {
 
   const EmailField = () => {
     return (
-      <>
+      <React.Fragment>
+        <span
+          style={{
+            margin: resp2 ? "0 0 0.5rem -18rem" : "0 0 0.5rem 1rem",
+            fontWeight: 600,
+          }}
+        >
+          Email
+        </span>
         <FormControl
           style={{
             margin:
               formik.touched.email && formik.errors.email ? "0" : "0 0 1rem 0",
             width: resp ? "40ch" : "50ch",
             borderRadius: "10px",
+            border: "2.3px solid #4a3c3c",
           }}
           variant="outlined"
           value={formik.values.email}
@@ -112,7 +115,6 @@ const Login = () => {
           error={formik.touched.email && Boolean(formik.errors.email)}
           helperText={formik.touched.email && formik.errors.email}
         >
-          <InputLabel htmlFor="email-input">Email</InputLabel>
           <OutlinedInput
             id="email"
             startAdornment={
@@ -122,7 +124,7 @@ const Login = () => {
             }
             type="email"
             name="email"
-            label="Email"
+            label="email"
             placeholder="Email"
             required
           />
@@ -138,18 +140,27 @@ const Login = () => {
             {formik.errors.email}
           </div>
         ) : null}
-      </>
+      </React.Fragment>
     );
   };
 
   const PasswordField = () => {
     return (
-      <>
+      <React.Fragment>
+        <span
+          style={{
+            margin: resp2 ? "0 0 0.5rem -18rem" : "0 0 0.5rem 1rem",
+            fontWeight: 600,
+          }}
+        >
+          Password
+        </span>
         <FormControl
           sx={{
             width: resp ? "40ch" : "50ch",
             margin: "1rem 0 0.5 0",
             borderRadius: "10px",
+            border: "2.3px solid #4a3c3c",
           }}
           variant="outlined"
           value={formik.values.password}
@@ -158,11 +169,9 @@ const Login = () => {
           helperText={formik.touched.password && formik.errors.password}
           required
         >
-          <InputLabel htmlFor="outlined-adornment-password">
-            Password
-          </InputLabel>
           <OutlinedInput
             id="password"
+            placeholder="Password"
             name="password"
             type={showPassword ? "text" : "password"}
             label="Password"
@@ -196,17 +205,17 @@ const Login = () => {
             {formik.errors.password}
           </div>
         ) : null}
-      </>
+      </React.Fragment>
     );
   };
 
   const ForgotPBlock = () => {
     return (
-      <>
+      <React.Fragment>
         <div style={{ width: resp ? "40ch" : "50ch" }}>
           <FormControlLabel control={<Checkbox />} label="Remember me" />
           <Link
-            to="/forgotpassword"
+            to="/forgotpass"
             style={{
               marginLeft: resp ? "5 rem" : "10rem",
               color: "#AF0D0D",
@@ -215,13 +224,13 @@ const Login = () => {
             Forgot password
           </Link>
         </div>
-      </>
+      </React.Fragment>
     );
   };
 
   const GLoginBlock = () => {
     return (
-      <>
+      <React.Fragment>
         <Button
           variant="outlined"
           href="#"
@@ -242,36 +251,36 @@ const Login = () => {
             style={{ marginLeft: "1rem" }}
           />
         </Button>
-      </>
+      </React.Fragment>
     );
   };
 
   const GiftGridI = () => {
     return (
-      <>
-                <div
+      <React.Fragment>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <img src={loginSide} alt="Gift Box" />
+          <span
+            className="welcome"
             style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
+              color: "white",
+              position: "relative",
+              bottom: "23rem",
             }}
           >
-            <img src={loginSide} alt="Gift Box" />
-            <span
-              className="welcome"
-              style={{
-                color: "white",
-                position: "relative",
-                bottom: "23rem",
-              }}
-            >
-              Welcome Back!!
-            </span>
-          </div>
-      </>
-    )
-  } 
+            Welcome Back!!
+          </span>
+        </div>
+      </React.Fragment>
+    );
+  };
 
   const LoginComponet = () => {
     return (
@@ -314,9 +323,9 @@ const Login = () => {
                 left: "1.3rem",
               }}
             >
-              <EmailField />
-              <PasswordField />
-              <ForgotPBlock />
+              {EmailField()}
+              {PasswordField()}
+              {ForgotPBlock()}
 
               <div style={{ display: "flex", marginTop: "2rem" }}>
                 <LoginButton type="submit">Log in</LoginButton>
@@ -348,18 +357,17 @@ const Login = () => {
                   Sign Up
                 </Link>
               </div>
-
             </Box>
           </form>
         </Grid>
         <Grid item xs={6} className="img1 c">
-          <GiftGridI/>
+          <GiftGridI />
         </Grid>
       </Grid>
     );
   };
 
-  return <>{LoginComponet()}</>;
+  return <React.Fragment>{LoginComponet()}</React.Fragment>;
 };
 
 export default Login;

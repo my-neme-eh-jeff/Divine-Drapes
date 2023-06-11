@@ -16,17 +16,21 @@ const BulkOrder = () => {
 
   return (
     <ChakraProvider>
-        <Flex alignContent='space-between'>
-            <Button bgColor='#ffffff'>{<ArrowBackIcon fontSize='20px'/>}</Button>
-            <Text fontWeight='500' fontSize='18px'>Bulk Orders</Text>
-        </Flex>
+        <SimpleGrid columns={12} columnGap={3} m='1% 0 2% 10%' alignItems={'center'}>
+            <GridItem colSpan={[2, null, 1]}>
+                <Button bgColor='#ffffff'>{<ArrowBackIcon fontSize='20px'/>}</Button>
+            </GridItem>
+            <GridItem colSpan={[4, null, 1]}>
+                <Text fontWeight='500' fontSize='18px'>Bulk Orders</Text>
+            </GridItem>
+        </SimpleGrid>
         <VStack>
         <Box 
             boxShadow='-5px -2px 6px 2px rgba(0, 0, 0, 0.25), 2px 5px 6px 2px rgba(0, 0, 0, 0.25)' 
             p='1% 15%'
             borderRadius={'20px'} 
             border='1px'
-            m='5% 1% 0 0'>
+            m='0 1% 0 0'>
                 <VStack>
                     <Text color='#A01E86' fontWeight='700' fontSize='18px'>Have a bulk order ?</Text>
                     <Text color='#A01E86' fontWeight='500' fontSize='17px'>Fill the following details and we will get back to you</Text>

@@ -1,25 +1,8 @@
 import { Flex, Text, ChakraProvider, SimpleGrid, VStack, Link, Input } from '@chakra-ui/react';
-import './Home.css';
-import { useEffect, useState } from 'react';
 import { SearchIcon } from '@chakra-ui/icons';
 
 const Home = () => {
-  const [showSearchBar, setShowSearchBar] = useState(true);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-      const shouldShowSearchBar = scrollPosition === 0;
-
-      setShowSearchBar(shouldShowSearchBar);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
   return (
     <ChakraProvider>
     <Flex justifyContent='space-around' 

@@ -11,7 +11,6 @@ import Navbar from './layout/Navbar/Navbar'
 import Home from './layout/Home/Home'
 import BulkOrder from './layout/BulkOrder/BulkOrder'
 import Buy from './layout/product/Buy'
-// import HomePage from './layout/Home/HomePage'
 import Myorders from './layout/Myorders'
 import Myfav from './layout/Myfav'
 
@@ -21,8 +20,8 @@ function App() {
     <>
     <div className='App'>
       <Router>
-          <Navbar/>
         <Routes>
+          <Route path='/navbar' element={<> <Navbar/> </>}></Route>
           <Route path='/home' element={<> <Home/> </>}></Route>
         </Routes>
         <Routes>
@@ -42,6 +41,8 @@ function App() {
         </Routes>
         <Routes>
           <Route path='/bulkorder' element={<><BulkOrder/></>}></Route>
+        </Routes>
+        <Routes>
           <Route path='/buy' element={<><Buy/></>}></Route>
         </Routes>
         <Routes>

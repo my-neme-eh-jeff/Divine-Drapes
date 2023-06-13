@@ -6,6 +6,7 @@ import { Flex,
     Card, CardHeader, Box, Avatar, Heading, GridItem
      } from '@chakra-ui/react';
 import axios from 'axios';
+import { StarIcon } from '@chakra-ui/icons';
 
 const Testimonials = () => {
     const [testimonials, setTestimonials] = useState([]);
@@ -29,7 +30,7 @@ const Testimonials = () => {
 
                         <Box>
                           <Heading size='sm'>Jenny</Heading>
-                          <Text>4.5</Text>
+                          <Text><StarIcon color='#f7bc62'/> 4.5</Text>
                         </Box>
                       </Flex>
                     </Flex>

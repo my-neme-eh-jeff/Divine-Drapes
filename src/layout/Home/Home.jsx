@@ -1,5 +1,15 @@
-import { Flex, Text, ChakraProvider, SimpleGrid, VStack, Link, Input } from '@chakra-ui/react';
-import { SearchIcon } from '@chakra-ui/icons';
+import { Flex, 
+        Text, 
+        ChakraProvider, 
+        SimpleGrid, 
+        Link, 
+        Box
+         } from '@chakra-ui/react';
+import './Home.css'
+import TopSellingCarousel from './TopSelling';
+import Testimonials from './Testimonials';
+import Personalised from './Personalised';
+import SearchBar from './SearchBar';
 
 const Home = () => {
 
@@ -7,24 +17,33 @@ const Home = () => {
     <ChakraProvider>
     <Flex justifyContent='space-around' 
     align='center'
-    position='absolute'
+    // position='absolute'
     width='100%'
     height='400px'
     left='0px'
     top='110px'
     background='linear-gradient(180deg, #A01E86 0%, #F7BC62 100%)'
+    mb='1%'
     >
-      <VStack>
-        <Text fontSize={38} fontWeight='700' color='#ffffff'>A wide variety of customizable gifts for your loved ones.</Text>
-        <SimpleGrid columns={5} columnGap={3} rowGap={2}>
-            <Link fontSize={28} fontWeight='500' color='#ffffff'>Mugs</Link>
-            <Link fontSize={28} fontWeight='500' color='#ffffff'>Lockets</Link>
-            <Link fontSize={28} fontWeight='500' color='#ffffff'>Frames</Link>
-            <Link fontSize={28} fontWeight='500' color='#ffffff'>T-Shirts</Link>
+      <Flex flexDirection={'column'}>
+        <h1 id='home-h1'>A wide variety of customizable gifts for your loved ones.</h1>
+        <SimpleGrid columns={4} columnGap={1} rowGap={2} m='2% 3% 3% 7%'>
+            <Link className='home-tags' color='#fff'>Lockets</Link>
+            <Link className='home-tags' color='#fff'>Frames</Link>
+            <Link className='home-tags' color='#fff'>Keychains</Link>
+            <Link className='home-tags' color='#fff'>T-shirts</Link>
         </SimpleGrid>
-        <Input type='search' placeholder='Search' bgColor={'#fff'} border='2px solid' />
-        </VStack>
+            <SearchBar />
+      </Flex>
     </Flex>
+    <Box m='0 8%'>
+      <Text class='home-headings'>Personalised Gifts for all occasions</Text>
+          <Personalised/>
+      <Text class='home-headings'>Top Selling</Text>
+          <TopSellingCarousel/>
+      <Text class='home-headings'>Testimonials</Text>
+          <Testimonials />
+    </Box>
     </ChakraProvider>
   )
 }

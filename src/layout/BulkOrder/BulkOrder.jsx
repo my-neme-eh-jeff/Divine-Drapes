@@ -1,4 +1,4 @@
-import { Box, ChakraProvider, Text, VStack, SimpleGrid, GridItem, FormControl, FormLabel, Input, Select, Button, Flex } from "@chakra-ui/react"
+import { Box, ChakraProvider, Text, VStack, SimpleGrid, GridItem, FormControl, FormLabel, Input, Select, Button } from "@chakra-ui/react"
 import { ArrowBackIcon, ExternalLinkIcon } from "@chakra-ui/icons"
 import { useState } from 'react';
 

@@ -1,19 +1,21 @@
 import 'package:divine_drapes/consts/constants.dart';
-import 'package:divine_drapes/screens/forgotpassword.dart';
-import 'package:divine_drapes/screens/signup.dart';
 import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+import '../widgets/dashed_textfield.dart';
+
+class new_pass extends StatefulWidget {
+  const new_pass({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<new_pass> createState() => _new_passState();
 }
 
-class _LoginState extends State<Login> {
+final TextEditingController emailController = TextEditingController();
+
+class _new_passState extends State<new_pass> {
   bool isHidden = true;
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -44,8 +46,8 @@ class _LoginState extends State<Login> {
                 child: const Image(image: AssetImage('assets/Vector.png'))),
             const Spacer(),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: size.width * 0.135),
-              // padding: EdgeInsets.symmetric(horizontal: size.width * 0.147),
+              padding: EdgeInsets.symmetric(
+                  horizontal: size.width * 0.147, vertical: size.height * 0.1),
               height: size.height * 0.7,
               width: double.infinity,
               decoration: BoxDecoration(
@@ -69,80 +71,24 @@ class _LoginState extends State<Login> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: size.height * 0.08),
-                  Text(
-                    'Email',
-                    style: GoogleFonts.notoSans(
-                      fontSize: sizefont,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(height: size.height * 0.01),
-                  SizedBox(
-                    height: size.height * 0.052,
-                    child: Padding(
-                      padding: const EdgeInsets.all(0),
-                      child: TextFormField(
-                        style: TextStyle(fontSize: sizefont),
-                        autofocus: false,
-                        controller: emailController,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return ("Please enter your Email ID");
-                          }
-                          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9,-]+.[a-z]")
-                              .hasMatch(value)) {
-                            return ("Please Enter a valid Email");
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          emailController.text = value!;
-                        },
-                        textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
-                          suffixIcon: emailController.text.isEmpty
-                              ? Container(
-                                  width: 0,
-                                )
-                              : IconButton(
-                                  icon: Icon(
-                                    Icons.close,
-                                    size: sizefont,
-                                  ),
-                                  onPressed: () => emailController.clear(),
-                                ),
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: size.width * 0.005,
-                              horizontal: size.width * 0.03),
-                          isDense: true,
-                          hintText: 'Enter your Email address',
-                          hintStyle: TextStyle(fontSize: sizefont * 0.8),
-                          enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.black,
-                                width: 2,
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.black,
-                                width: 2,
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          prefixIcon: const Icon(Icons.email),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Reset password',
+                        style: GoogleFonts.notoSans(
+                          fontSize: sizefont,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                  SizedBox(height: size.height * 0.03),
+                  SizedBox(height: size.height * 0.01),
                   Text(
-                    'Password',
+                    'Create new password',
                     style: GoogleFonts.notoSans(
-                      fontSize: sizefont,
+                      fontSize: sizefont * 0.8,
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
                     ),
@@ -213,47 +159,92 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                  SizedBox(height: size.height * 0.0015),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Checkbox(
-                        value: isChecked,
-                        onChanged: (value) {
-                          setState(() {
-                            isChecked = value!;
-                          });
+                  Text(
+                    '*The password must be minimum 8 characters',
+                    style: GoogleFonts.notoSans(
+                      fontSize: sizefont * 0.6,
+                      // color: Colors.rgba(0, 0, 0, 0.65),
+                      // color: Color.fromARGB(0, 0, 0, 1),
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: size.height * 0.02),
+                  Text(
+                    'Confirm new password',
+                    style: GoogleFonts.notoSans(
+                      fontSize: sizefont * 0.8,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: size.height * 0.01),
+                  SizedBox(
+                    height: size.height * 0.052,
+                    child: Padding(
+                      padding: const EdgeInsets.all(0),
+                      child: TextFormField(
+                        style: TextStyle(fontSize: sizefont),
+                        obscureText: isHidden,
+                        autofocus: false,
+                        controller: passwordController,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return ("Please Enter your Password");
+                          }
+                          if (!RegExp(r'^.{8,}$').hasMatch(value)) {
+                            return ("Please Enter a valid Password");
+                          }
+                          return null;
                         },
-                        activeColor: Colors.green,
-                        checkColor: Colors.white,
-                        tristate: true,
-                      ),
-                      Text(
-                        'Remember me',
-                        style: GoogleFonts.notoSans(
-                          fontSize: sizefont * 0.75,
-                          color: const Color.fromRGBO(0, 0, 0, 0.55),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const Forgotpass()));
+                        onSaved: (value) {
+                          passwordController.text = value!;
                         },
-                        child: Text(
-                          'Forgot password?',
-                          style: GoogleFonts.notoSans(
-                            fontSize: sizefont * 0.7,
-                            color: const Color.fromRGBO(175, 13, 13, 0.85),
-                            fontWeight: FontWeight.w500,
+                        textInputAction: TextInputAction.done,
+                        decoration: InputDecoration(
+                          hintText: 'Enter your password',
+                          hintStyle: TextStyle(fontSize: sizefont * 0.8),
+                          contentPadding: const EdgeInsets.all(10),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide:
+                                  const BorderSide(color: Colors.black)),
+                          enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.black,
+                                width: 2,
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.black,
+                                width: 2,
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          prefixIcon: const Icon(Icons.lock),
+                          isDense: true,
+                          suffixIcon: InkWell(
+                            onTap: togglePasswordView,
+                            child: FittedBox(
+                              alignment: Alignment.center,
+                              fit: BoxFit.fitHeight,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(
+                                  isHidden
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                  SizedBox(height: size.height * 0.01),
+                  SizedBox(height: size.height * 0.05),
                   Container(
                     width: double.infinity,
                     height: size.height * 0.052,
@@ -270,7 +261,7 @@ class _LoginState extends State<Login> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          'Login',
+                          'Reset Password',
                           style: GoogleFonts.notoSans(
                             fontSize: sizefont * 0.7,
                             color: Colors.white,
@@ -280,100 +271,9 @@ class _LoginState extends State<Login> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
-                  const Row(
-                    children: [
-                      Expanded(
-                          child: Divider(
-                        color: Colors.black,
-                        thickness: 1,
-                      )),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(
-                          'OR',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Expanded(
-                          child: Divider(
-                        color: Colors.black,
-                        thickness: 1,
-                      )),
-                    ],
-                  ),
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    height: size.height * 0.052,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 2,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Login with Google',
-                          style: GoogleFonts.notoSans(
-                            fontSize: sizefont * 0.7,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: Image.asset(
-                            'assets/google.png',
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: size.height * 0.03),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Don\'t have an account? ',
-                        style: GoogleFonts.poppins(
-                          fontSize: sizefont * 0.7,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const Signup()));
-                        },
-                        child: Text(
-                          'Signup',
-                          style: GoogleFonts.poppins(
-                            fontSize: sizefont * 0.7,
-                            color: const Color.fromRGBO(175, 13, 13, 0.85),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
-            ),
+            )
           ],
         ),
         Row(

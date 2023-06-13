@@ -1,20 +1,27 @@
 import 'package:divine_drapes/consts/constants.dart';
-import 'package:divine_drapes/screens/otp.dart';
+import 'package:divine_drapes/screens/new_pass.dart';
 import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Forgotpass extends StatefulWidget {
-  const Forgotpass({super.key});
+import '../widgets/dashed_textfield.dart';
+
+class OTP extends StatefulWidget {
+  const OTP({super.key});
 
   @override
-  State<Forgotpass> createState() => _ForgotpassState();
+  State<OTP> createState() => _OTPState();
 }
 
 final TextEditingController emailController = TextEditingController();
 
-class _ForgotpassState extends State<Forgotpass> {
+class _OTPState extends State<OTP> {
+  void _onOtpChanged(String otp) {
+    // Handle the OTP value here
+    print('OTP entered: $otp');
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -76,7 +83,7 @@ class _ForgotpassState extends State<Forgotpass> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Confirm your Email address',
+                        'Enter the OTP received on your',
                         style: GoogleFonts.notoSans(
                           fontSize: sizefont * 0.8,
                           color: Colors.black,
@@ -89,7 +96,7 @@ class _ForgotpassState extends State<Forgotpass> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'to receive an OTP',
+                        'email address',
                         style: GoogleFonts.notoSans(
                           fontSize: sizefont * 0.8,
                           color: Colors.black,
@@ -103,7 +110,7 @@ class _ForgotpassState extends State<Forgotpass> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        'Email',
+                        'Enter OTP',
                         style: GoogleFonts.notoSans(
                           fontSize: sizefont,
                           color: Colors.black,
@@ -113,70 +120,20 @@ class _ForgotpassState extends State<Forgotpass> {
                     ],
                   ),
                   SizedBox(height: size.height * 0.01),
-                  SizedBox(
-                    height: size.height * 0.052,
-                    child: Padding(
-                      padding: const EdgeInsets.all(0),
-                      child: TextFormField(
-                        style: TextStyle(fontSize: sizefont),
-                        autofocus: false,
-                        controller: emailController,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return ("Please enter your Email ID");
-                          }
-                          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9,-]+.[a-z]")
-                              .hasMatch(value)) {
-                            return ("Please Enter a valid Email");
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          emailController.text = value!;
-                        },
-                        textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
-                          suffixIcon: emailController.text.isEmpty
-                              ? Container(
-                                  width: 0,
-                                )
-                              : IconButton(
-                                  icon: Icon(
-                                    Icons.close,
-                                    size: sizefont,
-                                  ),
-                                  onPressed: () => emailController.clear(),
-                                ),
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: size.width * 0.005,
-                              horizontal: size.width * 0.03),
-                          isDense: true,
-                          hintText: 'Enter your Email address',
-                          hintStyle: TextStyle(fontSize: sizefont * 0.8),
-                          enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.black,
-                                width: 2,
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.black,
-                                width: 2,
-                              ),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          prefixIcon: const Icon(Icons.email),
-                        ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      DashedTextField(
+                        length: 6, // Number of digits in OTP
+                        onChanged: _onOtpChanged,
                       ),
-                    ),
+                    ],
                   ),
                   SizedBox(height: size.height * 0.07),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => const OTP()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const new_pass()));
                     },
                     child: Container(
                       width: double.infinity,
@@ -194,7 +151,7 @@ class _ForgotpassState extends State<Forgotpass> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'Send OTP',
+                            'Continue',
                             style: GoogleFonts.notoSans(
                               fontSize: sizefont * 0.7,
                               color: Colors.white,

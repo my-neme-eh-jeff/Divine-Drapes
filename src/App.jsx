@@ -7,6 +7,9 @@ import Profile from './layout/Profile'
 import Forgotpass from './layout/Forgotpass'
 import OTPverify from './layout/OTPverify'
 import Product from './layout/product/Product'
+import Navbar from './layout/Navbar/Navbar'
+import Home from './layout/Home/Home'
+import BulkOrder from './layout/BulkOrder/BulkOrder'
 import Buy from './layout/product/Buy'
 import Myorders from './layout/Myorders'
 import Myfav from './layout/Myfav'
@@ -17,6 +20,10 @@ function App() {
     <>
     <div className='App'>
       <Router>
+        <Routes>
+          <Route path='/navbar' element={<> <Navbar/> </>}></Route>
+          <Route path='/home' element={<> <Home/> </>}></Route>
+        </Routes>
         <Routes>
           <Route path='/' element={<> <Login/> </>}></Route>
           <Route path='/signup' element={<> <Signup/> </>}></Route>
@@ -31,6 +38,9 @@ function App() {
         </Routes>
         <Routes>
           <Route path='/product' element={<><Product/></>}></Route>
+        </Routes>
+        <Routes>
+          <Route path='/bulkorder' element={<><BulkOrder/></>}></Route>
         </Routes>
         <Routes>
           <Route path='/buy' element={<><Buy/></>}></Route>

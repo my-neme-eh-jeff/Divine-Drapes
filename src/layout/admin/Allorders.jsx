@@ -19,7 +19,7 @@ export default function Allorders() {
   return (
     <>
       <Grid container >
-        <Grid item md={2} sx={{ backgroundColor: "red",padding:3 }} columnSpacing={4}>
+        <Grid item md={2} sx={{ padding:3 }} columnSpacing={4}>
           <Grid container rowSpacing={4}>
             <Grid item md={12}>
               Catagories
@@ -43,7 +43,7 @@ export default function Allorders() {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item md={10} sx={{ backgroundColor: "green",padding:3 }}>
+        <Grid item md={10} sx={{padding:3 }}>
         <Box sx={{ width: '100%', typography: 'body1' }}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

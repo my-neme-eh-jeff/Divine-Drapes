@@ -1,5 +1,3 @@
-import 'package:divine_drapes/screens/Account.dart';
-import 'package:divine_drapes/screens/Cart.dart';
 import 'package:divine_drapes/screens/HomePage.dart';
 import 'package:divine_drapes/consts/constants.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +13,10 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     HomePage(),
-    Cart(),
-    // Text('Profile Page',
-    //     style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-    MyAccount(),
+    Text('Cart Page',
+        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+    Text('Profile Page',
+        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
   ];
 
   void _onItemTapped(int index) {
@@ -43,13 +41,13 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined), label: "Home", backgroundColor: cream),
+                icon: Icon(Icons.home), label: "Home", backgroundColor: cream),
             BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart_outlined),
+                icon: Icon(Icons.shopping_cart),
                 label: "Cart",
                 backgroundColor: cream),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline_outlined),
+              icon: Icon(Icons.person),
               label: "User",
               backgroundColor: cream,
             ),

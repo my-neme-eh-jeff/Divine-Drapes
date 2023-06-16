@@ -1,4 +1,5 @@
 import 'package:divine_drapes/consts/constants.dart';
+import 'package:divine_drapes/payment/cod.dart';
 import 'package:divine_drapes/screens/forgotpassword.dart';
 import 'package:divine_drapes/screens/signup.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -254,30 +255,36 @@ class _LoginState extends State<Login> {
                     ],
                   ),
                   SizedBox(height: size.height * 0.01),
-                  Container(
-                    width: double.infinity,
-                    height: size.height * 0.052,
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(160, 30, 134, 1),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 2,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Login',
-                          style: GoogleFonts.notoSans(
-                            fontSize: sizefont * 0.7,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => const COD()));
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: size.height * 0.052,
+                      decoration: BoxDecoration(
+                        color: Color.fromRGBO(160, 30, 134, 1),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 2,
                         ),
-                      ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Login',
+                            style: GoogleFonts.notoSans(
+                              fontSize: sizefont * 0.7,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(

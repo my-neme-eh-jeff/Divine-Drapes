@@ -1,3 +1,4 @@
+import 'package:divine_drapes/screens/Cart.dart';
 import 'package:divine_drapes/screens/HomePage.dart';
 import 'package:divine_drapes/consts/constants.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +14,7 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     HomePage(),
-    Text('Cart Page',
-        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+    Cart(),
     Text('Profile Page',
         style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
   ];

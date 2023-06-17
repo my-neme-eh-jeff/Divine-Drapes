@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:divine_drapes/consts/constants.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -25,11 +26,9 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: 20,
           ),
-          Text(
-            'Divine Drapes',
-            style: TextStyle(
-                color: darkPurple, fontSize: 30, fontWeight: FontWeight.bold, fontFamily: 'NotoSans'),
-          ),
+          Text("Divine Drapes",
+              style: GoogleFonts.notoSans(
+                  color: darkPurple, fontSize: 28, fontWeight: FontWeight.w700)),
           SizedBox(
             height: 10,
           ),
@@ -39,21 +38,30 @@ class _HomePageState extends State<HomePage> {
             children: [
               Container(
                 margin: EdgeInsets.all(5),
-                width: width*0.75,
-                height: height*0.05,
+                width: width*0.79,
+                height: height*0.06,
+                decoration: BoxDecoration(
+                  border:Border.all(width: 2,color: Colors.black),
+                  borderRadius: BorderRadius.circular(5),
+                ),
                 child: TextField(
-                  controller: search,
-                  onChanged: (value) {
-                    searchData = search.text;
-                  },
+                  cursorColor: Colors.black,
+                  cursorHeight: height*0.03,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search),
+                    fillColor: Colors.white,
+                    filled: true,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      borderSide: BorderSide(color: Colors.black, width: 3),
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none
                     ),
                     hintText: 'Search',
-                    hintStyle: TextStyle(fontSize: 20)
+                    hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 18
+                    ),
+                    prefixIcon:Icon(
+                      Icons.search,color: darkPurple,
+                    ),
                   ),
                 ),
               ),
@@ -62,11 +70,11 @@ class _HomePageState extends State<HomePage> {
                 onPressed: _showCategories,
                 icon: Icon(
                   Icons.list,
-                  size: height*0.075,
+                  size: height*0.079,
                 ),
               ),
               SizedBox(
-                width: 5,
+                width: width*0.03,
               ),
             ],
           ),
@@ -75,10 +83,9 @@ class _HomePageState extends State<HomePage> {
           ),
           Padding(
             padding: const EdgeInsets.all(12.0),
-            child: Text(
-              "Personalised gift for all occasions",
-              style: TextStyle(fontSize: width*0.06),
-            ),
+            child: Text("Personalised gift for all occasions",
+                style: GoogleFonts.notoSans(
+                    color: Colors.black, fontSize: height*0.02, fontWeight: FontWeight.w700)),
           ),
           Expanded(
             child: GridView.count(
@@ -116,8 +123,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Text("Mugs",
-                        style: TextStyle(fontSize: 15),
-                        ),
+                            style: GoogleFonts.notoSans(
+                                color: Colors.black, fontSize: height*0.013, fontWeight: FontWeight.w600)),
                       ],
                     ),
                   );
@@ -129,11 +136,10 @@ class _HomePageState extends State<HomePage> {
             height: 3,
           ),
           Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Text(
-              "Top Selling",
-              style: TextStyle(fontSize: width*0.06),
-            ),
+            padding: const EdgeInsets.only(bottom: 10,left: 12,top: 5),
+            child: Text("Top selling",
+                style: GoogleFonts.notoSans(
+                    color: Colors.black, fontSize: height*0.02, fontWeight: FontWeight.w700)),
           ),
           Expanded(
             child: GridView.count(
@@ -171,8 +177,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         Text("Mugs",
-                          style: TextStyle(fontSize: 15),
-                        ),                      ],
+                            style: GoogleFonts.notoSans(
+                                color: Colors.black, fontSize: height*0.013, fontWeight: FontWeight.w600)),                      ],
                     ),
                   );
                 },
@@ -191,23 +197,23 @@ class _HomePageState extends State<HomePage> {
           var height = size.height;
           var width = size.width;
           return AlertDialog(
-            insetPadding: EdgeInsets.fromLTRB(8, height*0.07, 8, 0),
+            insetPadding: EdgeInsets.fromLTRB(8, height*0.09, 8, 5),
             scrollable: true,
             elevation: 2,
             // shadowColor: Colors.black,
             shape: RoundedRectangleBorder(
-                side: BorderSide(color: Colors.black, width: 3),
+                side: BorderSide(color: Colors.black, width: 2),
                 borderRadius: BorderRadius.circular(15.0,)),
             title: Row(
               children: [
                 IconButton(onPressed: () {
                   Navigator.of(context).pop();
-                }, icon: Icon(Icons.remove,size: 25,)
+                }, icon: Icon(Icons.arrow_back_outlined,size: height*0.05,)
                 ),
                 SizedBox(width: 15,),
-                Text('Categories',
-                  style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),
-                ),
+                Text("Categories",
+                    style: GoogleFonts.notoSans(
+                        color: Colors.black, fontSize: height*0.03, fontWeight: FontWeight.w700)),
               ],
             ),
             content: Container(
@@ -217,10 +223,10 @@ class _HomePageState extends State<HomePage> {
                 physics: ScrollPhysics(),
                 itemCount: 20,
                 itemBuilder: (context, index) => Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.only(left: width*0.1,top: 10),
                   child: Text("Item $index",
-                    style: TextStyle(fontSize: 20,letterSpacing: 1.2),
-                  ),
+                      style: GoogleFonts.notoSans(
+                          color: Colors.black, fontSize: height*0.025, fontWeight: FontWeight.w500)),
                 ),
               ),
             ),

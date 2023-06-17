@@ -1,10 +1,12 @@
 // ignore_for_file: unused_local_variable, unused_import
 
 import 'package:divine_drapes/consts/constants.dart';
+import 'package:divine_drapes/consts/layout.dart';
 import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -22,6 +24,7 @@ class _SignupState extends State<Signup> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController dobController = TextEditingController();
   bool isChecked = false;
+  String? dobstring;
 
   @override
   Widget build(BuildContext context) {
@@ -388,16 +391,6 @@ class _SignupState extends State<Signup> {
                         style: TextStyle(fontSize: sizefont),
                         autofocus: false,
                         controller: dobController,
-                        // validator: (value) {
-                        //   if (value!.isEmpty) {
-                        //     return ("Please enter your Email ID");
-                        //   }
-                        //   if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9,-]+.[a-z]")
-                        //       .hasMatch(value)) {
-                        //     return ("Please Enter a valid Email");
-                        //   }
-                        //   return null;
-                        // },
                         onSaved: (value) {
                           phoneController.text = value!;
                         },
@@ -436,6 +429,24 @@ class _SignupState extends State<Signup> {
                                   BorderRadius.all(Radius.circular(10))),
                           prefixIcon: const Icon(Icons.calendar_month),
                         ),
+                        onTap: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(1950),
+                              //DateTime.now() - not to allow to choose before today.
+                              lastDate: DateTime(2100));
+
+                          if (pickedDate != null) {
+                            String formattedDate =
+                                DateFormat.yMMMMd().format(pickedDate);
+
+                            setState(() {
+                              dobstring = pickedDate.toIso8601String();
+                              dobController.text = formattedDate;
+                            });
+                          } else {}
+                        },
                       ),
                     ),
                   ),
@@ -526,30 +537,36 @@ class _SignupState extends State<Signup> {
                     ),
                   ),
                   SizedBox(height: size.height * 0.01),
-                  Container(
-                    width: double.infinity,
-                    height: size.height * 0.052,
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(160, 30, 134, 1),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 2,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Sign up',
-                          style: GoogleFonts.notoSans(
-                            fontSize: sizefont * 0.7,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const Login()));
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: size.height * 0.052,
+                      decoration: BoxDecoration(
+                        color: Color.fromRGBO(160, 30, 134, 1),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 2,
                         ),
-                      ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Sign up',
+                            style: GoogleFonts.notoSans(
+                              fontSize: sizefont * 0.7,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

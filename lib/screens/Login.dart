@@ -1,4 +1,5 @@
 import 'package:divine_drapes/consts/constants.dart';
+import 'package:divine_drapes/payment/cod.dart';
 import 'package:divine_drapes/screens/forgotpassword.dart';
 import 'package:divine_drapes/screens/home.dart';
 import 'package:divine_drapes/screens/signup.dart';
@@ -218,16 +219,16 @@ class _LoginState extends State<Login> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                    Checkbox(
-                    checkColor: Colors.white,
-                    fillColor: MaterialStateProperty.all(Colors.green),
-                    value: isChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isChecked = value!;
-                      });
-                    },
-                  ),
+                      Checkbox(
+                        checkColor: Colors.white,
+                        fillColor: MaterialStateProperty.all(Colors.green),
+                        value: isChecked,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isChecked = value!;
+                          });
+                        },
+                      ),
                       Text(
                         'Remember me',
                         style: GoogleFonts.notoSans(
@@ -255,9 +256,9 @@ class _LoginState extends State<Login> {
                   ),
                   SizedBox(height: size.height * 0.01),
                   GestureDetector(
-                    onTap: (){
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const Home()));
+                    onTap: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => const COD()));
                     },
                     child: Container(
                       width: double.infinity,
@@ -286,6 +287,38 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     Navigator.of(context).push(MaterialPageRoute(
+                  //         builder: (context) => const Home()));
+                  //   },
+                  //   child: Container(
+                  //     width: double.infinity,
+                  //     height: size.height * 0.052,
+                  //     decoration: BoxDecoration(
+                  //       color: Color.fromRGBO(160, 30, 134, 1),
+                  //       borderRadius: BorderRadius.circular(10),
+                  //       border: Border.all(
+                  //         color: Colors.black,
+                  //         width: 2,
+                  //       ),
+                  //     ),
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       crossAxisAlignment: CrossAxisAlignment.center,
+                  //       children: [
+                  //         Text(
+                  //           'Login',
+                  //           style: GoogleFonts.notoSans(
+                  //             fontSize: sizefont * 0.7,
+                  //             color: Colors.white,
+                  //             fontWeight: FontWeight.w600,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(
                     height: size.height * 0.02,
                   ),

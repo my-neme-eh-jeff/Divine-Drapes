@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> 992693703248df5da6707209ed3690634a84b28c
 // This is a basic Flutter widget test.
 //
 // To perform an interaction with a widget in your test, use the WidgetTester

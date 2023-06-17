@@ -71,7 +71,6 @@ flutter:
     - assets/Ellipse 4.png
     - assets/Vector.png
     - assets/google.png
-    - assets/Rectangle 24.png
     - assets/mug.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
@@ -87,6 +86,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+#  fonts:
+#    - family: NotoSans
+#      fonts:
+#         - asset: fonts/NotoSans-Regular.ttf
+
   # fonts:
   #   - family: Schyler
   #     fonts:

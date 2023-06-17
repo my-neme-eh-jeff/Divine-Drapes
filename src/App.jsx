@@ -13,6 +13,7 @@ import BulkOrder from './layout/BulkOrder/BulkOrder'
 import Buy from './layout/product/Buy'
 import Myorders from './layout/Myorders'
 import Myfav from './layout/Myfav'
+import Allorders from './layout/admin/Allorders'
 
 function App() {
 
@@ -50,6 +51,9 @@ function App() {
         </Routes>
         <Routes>
           <Route path='/fav' element={<><Myfav/></>}></Route>
+        </Routes>
+        <Routes>
+          <Route path='/admin/orders' element={<><Allorders/></>}></Route>
         </Routes>
       </Router>
 

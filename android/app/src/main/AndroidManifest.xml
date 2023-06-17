@@ -1,6 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.divine_drapes">
-   <application
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
         android:label="divine_drapes"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

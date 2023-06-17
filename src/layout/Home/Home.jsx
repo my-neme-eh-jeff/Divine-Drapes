@@ -30,7 +30,7 @@ const Home = () => {
         <SimpleGrid columns={4} columnGap={1} rowGap={2} m='2% 3% 3% 7%'>
             <Link className='home-tags' color='#fff'>Lockets</Link>
             <Link className='home-tags' color='#fff'>Frames</Link>
-            <Link className='home-tags' color='#fff'>Keychains</Link>
+            <Link className='home-tags' color='#fff'>Mugs</Link>
             <Link className='home-tags' color='#fff'>T-shirts</Link>
         </SimpleGrid>
             <SearchBar />

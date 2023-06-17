@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 992693703248df5da6707209ed3690634a84b28c
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Modify this file to customize your launch splash screen -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
@@ -11,6 +14,7 @@
             android:src="@mipmap/launch_image" />
     </item> -->
 </layer-list>
+<<<<<<< HEAD
 =======
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Modify this file to customize your launch splash screen -->
@@ -25,3 +29,5 @@
     </item> -->
 </layer-list>
 >>>>>>> 589e1268d1e8a7a71384428015ba676017a6edac
+=======
+>>>>>>> 992693703248df5da6707209ed3690634a84b28c

@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 992693703248df5da6707209ed3690634a84b28c
 # Miscellaneous
 *.class
 *.log
@@ -43,6 +46,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+<<<<<<< HEAD
 =======
 # Miscellaneous
 *.class
@@ -89,3 +93,5 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 >>>>>>> 589e1268d1e8a7a71384428015ba676017a6edac
+=======
+>>>>>>> 992693703248df5da6707209ed3690634a84b28c

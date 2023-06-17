@@ -14,9 +14,9 @@ class _HomeState extends State<Home> {
   static const List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     Text('Cart Page',
-        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold, fontFamily: 'NotoSans')),
+        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
     Text('Profile Page',
-        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold, fontFamily: 'NotoSans')),
+        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
   ];
 
   void _onItemTapped(int index) {

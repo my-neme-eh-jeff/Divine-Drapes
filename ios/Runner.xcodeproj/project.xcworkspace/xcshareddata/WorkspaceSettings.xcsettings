@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 992693703248df5da6707209ed3690634a84b28c
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -7,6 +10,7 @@
 	<false/>
 </dict>
 </plist>
+<<<<<<< HEAD
 =======
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -17,3 +21,5 @@
 </dict>
 </plist>
 >>>>>>> 589e1268d1e8a7a71384428015ba676017a6edac
+=======
+>>>>>>> 992693703248df5da6707209ed3690634a84b28c

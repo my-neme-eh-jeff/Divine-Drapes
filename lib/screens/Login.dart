@@ -1,5 +1,6 @@
 import 'package:divine_drapes/consts/constants.dart';
 import 'package:divine_drapes/screens/forgotpassword.dart';
+import 'package:divine_drapes/screens/home.dart';
 import 'package:divine_drapes/screens/signup.dart';
 import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
@@ -217,21 +218,20 @@ class _LoginState extends State<Login> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Checkbox(
-                        value: isChecked,
-                        onChanged: (value) {
-                          setState(() {
-                            isChecked = value!;
-                          });
-                        },
-                        activeColor: Colors.green,
-                        checkColor: Colors.white,
-                        tristate: true,
-                      ),
+                    Checkbox(
+                    checkColor: Colors.white,
+                    fillColor: MaterialStateProperty.all(Colors.green),
+                    value: isChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isChecked = value!;
+                      });
+                    },
+                  ),
                       Text(
                         'Remember me',
                         style: GoogleFonts.notoSans(
-                          fontSize: sizefont * 0.75,
+                          fontSize: sizefont * 0.65,
                           color: const Color.fromRGBO(0, 0, 0, 0.55),
                           fontWeight: FontWeight.w500,
                         ),
@@ -245,7 +245,7 @@ class _LoginState extends State<Login> {
                         child: Text(
                           'Forgot password?',
                           style: GoogleFonts.notoSans(
-                            fontSize: sizefont * 0.7,
+                            fontSize: sizefont * 0.6,
                             color: const Color.fromRGBO(175, 13, 13, 0.85),
                             fontWeight: FontWeight.w500,
                           ),
@@ -254,30 +254,36 @@ class _LoginState extends State<Login> {
                     ],
                   ),
                   SizedBox(height: size.height * 0.01),
-                  Container(
-                    width: double.infinity,
-                    height: size.height * 0.052,
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(160, 30, 134, 1),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 2,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Login',
-                          style: GoogleFonts.notoSans(
-                            fontSize: sizefont * 0.7,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const Home()));
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: size.height * 0.052,
+                      decoration: BoxDecoration(
+                        color: Color.fromRGBO(160, 30, 134, 1),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 2,
                         ),
-                      ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Login',
+                            style: GoogleFonts.notoSans(
+                              fontSize: sizefont * 0.7,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(

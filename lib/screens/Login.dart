@@ -287,38 +287,38 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const Home()));
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      height: size.height * 0.052,
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(160, 30, 134, 1),
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 2,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Login',
-                            style: GoogleFonts.notoSans(
-                              fontSize: sizefont * 0.7,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     Navigator.of(context).push(MaterialPageRoute(
+                  //         builder: (context) => const Home()));
+                  //   },
+                  //   child: Container(
+                  //     width: double.infinity,
+                  //     height: size.height * 0.052,
+                  //     decoration: BoxDecoration(
+                  //       color: Color.fromRGBO(160, 30, 134, 1),
+                  //       borderRadius: BorderRadius.circular(10),
+                  //       border: Border.all(
+                  //         color: Colors.black,
+                  //         width: 2,
+                  //       ),
+                  //     ),
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       crossAxisAlignment: CrossAxisAlignment.center,
+                  //       children: [
+                  //         Text(
+                  //           'Login',
+                  //           style: GoogleFonts.notoSans(
+                  //             fontSize: sizefont * 0.7,
+                  //             color: Colors.white,
+                  //             fontWeight: FontWeight.w600,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(
                     height: size.height * 0.02,
                   ),

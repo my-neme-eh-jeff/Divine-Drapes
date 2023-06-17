@@ -1,9 +1,26 @@
-import { useState } from 'react';
-import { Flex, Box, Text, Link, ChakraProvider, Avatar, WrapItem } from '@chakra-ui/react';
-import { ChevronDownIcon, CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
-// import Link from 'next/Link';
+import React, { useState, useEffect } from "react";
+import {
+  Flex,
+  Box,
+  Text,
+  Link,
+  ChakraProvider,
+  Avatar,
+  WrapItem,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  Button,
+  PopoverBody,
+  Popover,
+  SimpleGrid,
+  GridItem,
+  VStack,
+} from "@chakra-ui/react";
+import { ChevronDownIcon, ChevronUpIcon, CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
+import axios from "axios";
 
-const MenuItem = ({ children, isLast, to = '/' }) => {
+const MenuItem = ({ children, isLast, to = "/" }) => {
   return (
     <Text
       mb={{ base: isLast ? 0 : 8, sm: 0 }}
@@ -18,50 +35,113 @@ const MenuItem = ({ children, isLast, to = '/' }) => {
 const Navbar = () => {
   const [show, setShow] = useState(false);
   const toggleMenu = () => setShow(!show);
+  const initialFocusRef = React.useRef();
+  const [downIcon, setDownIcon] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [selected, setSelected] = useState([]);
+
+    useEffect(() => {
+        axios.get('https://dummyjson.com/posts')
+        .then(res => setCategories(res.data.posts))
+      },[])
+
+      const handleItem = (e) => {
+        console.log(e.id)
+      }
   return (
     <ChakraProvider>
-    <Flex
-      p='1% 3%'
-      as="nav"
-      align="center"
-      justify="space-between"
-      wrap="wrap"
-      w="100%"
-      position={'fixed'}
-      bgColor={'#fff'}
-      zIndex={2}
-      // h='80px'
-      boxShadow={'0px 5px 3px rgba(0, 0, 0, 0.25)'}
-    >
-      <Box w="200px">
-        <Text fontWeight="bold" color='#A01E86' fontSize={27} cursor={'pointer'} as='a' href='/home'>
-          Divine Drapes
-        </Text>
-      </Box>
-
-      <Box display={{ base: 'block', md: 'none' }} onClick={toggleMenu}>
-        {show ? <CloseIcon /> : <HamburgerIcon />}
-      </Box>
-
-      <Box
-        display={{ base: show ? 'block' : 'none', md: 'block' }}
-        flexBasis={{ base: '100%', md: 'auto' }}
+      <Flex
+        p="1% 3%"
+        as="nav"
+        align="center"
+        justify="space-between"
+        wrap="wrap"
+        w="100%"
+        position={"fixed"}
+        bgColor={"#fff"}
+        zIndex={2}
+        // h='80px'
+        boxShadow={"0px 5px 3px rgba(0, 0, 0, 0.25)"}
       >
-        <Flex
-          align="center"
-          justify={['center', 'space-between', 'flex-end', 'flex-end']}
-          direction={['column', 'row', 'row', 'row']}
-          pt={[4, 4, 0, 0]}
+        <Box w="200px">
+          <Text
+            fontWeight="bold"
+            color="#A01E86"
+            fontSize={27}
+            cursor={"pointer"}
+            as="a"
+            href="/home"
+          >
+            Divine Drapes
+          </Text>
+        </Box>
+
+        <Box display={{ base: "block", md: "none" }} onClick={toggleMenu}>
+          {show ? <CloseIcon /> : <HamburgerIcon />}
+        </Box>
+
+        <Box
+          display={{ base: show ? "block" : "none", md: "block" }}
+          flexBasis={{ base: "100%", md: "auto" }}
         >
-          <MenuItem to="/categories">Categories <ChevronDownIcon/></MenuItem>
-          <MenuItem to="/bulkorder">Bulk orders</MenuItem>
-          <MenuItem to="/cart">Cart</MenuItem>
-          <WrapItem>
-            <Avatar name='Dan Abrahmov' src='https://bit.ly/dan-abramov' />
-          </WrapItem>
-        </Flex>
-      </Box>
-    </Flex>
+          <Flex
+            align="center"
+            justify={["center", "space-between", "flex-end", "flex-end"]}
+            direction={["column", "row", "row", "row"]}
+            pt={[4, 4, 0, 0]}
+          >
+            {/* <MenuItem> */}
+            <VStack>
+            <Popover
+              initialFocusRef={initialFocusRef}
+              placement="bottom"
+              closeOnBlur={false}
+            >
+              <PopoverTrigger>
+                <Button bgColor={'#fff'} onClick={() => setDownIcon(!downIcon)}>
+                  Categories {downIcon ? <ChevronUpIcon /> : <ChevronDownIcon /> }
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent
+                boxShadow={'-4px -4px 6px rgba(0, 0, 0, 0.25), 4px 4px 10px rgba(0, 0, 0, 0.25)'}
+                width={'700px'}
+                p='2%'
+              >
+                <PopoverHeader pt={4} fontWeight="bold" border="0">
+                  Selected
+                </PopoverHeader>
+                <PopoverBody>
+                    <Button border='1px' bgColor={'#f7bc62'}>Mugs  <CloseIcon w='3' h='3'/> </Button>
+                </PopoverBody>
+                <PopoverHeader pt={4} fontWeight="bold" border="0">
+                  All categories
+                </PopoverHeader>
+                <PopoverBody>
+                    <SimpleGrid columns={[4, null, 8]} columnGap={[1, null, 3]} rowGap={2}>
+                      {categories?.map(items => (
+                        // return(
+                        <GridItem key={items.id} onClick={handleItem}><Button border={'1px'} bgColor={'#fff'}>Mugs</Button></GridItem>
+                      ))}
+                    </SimpleGrid>
+                </PopoverBody>
+              </PopoverContent>
+            </Popover>
+            </VStack>
+            {/* </MenuItem> */}
+            <MenuItem to="/bulkorder"><Button bgColor={'#fff'}>
+                  Bulk orders
+                </Button></MenuItem>
+            <MenuItem to="/cart">
+            <Button bgColor={'#fff'}>
+                  Cart
+                </Button>
+            </MenuItem>
+            <WrapItem>
+              <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+            </WrapItem>
+          </Flex>
+        </Box>
+      </Flex>
     </ChakraProvider>
   );
 };

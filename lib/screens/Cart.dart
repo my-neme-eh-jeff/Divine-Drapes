@@ -19,6 +19,7 @@ class _CartState extends State<Cart> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return  Scaffold(
+      backgroundColor: whiteColor,
       appBar: AppBar(
         backgroundColor: whiteColor,
         automaticallyImplyLeading: false,
@@ -38,7 +39,7 @@ class _CartState extends State<Cart> {
               Container(
                 margin: EdgeInsets.all(5),
                 width: screenWidth*0.9,
-                height: screenHeight*0.065,
+                height: screenHeight*0.06,
                 decoration: BoxDecoration(
                   border:Border.all(width: 2,color: Colors.black),
                   borderRadius: BorderRadius.circular(5),
@@ -73,7 +74,8 @@ class _CartState extends State<Cart> {
                       },
                       child: Icon(Icons.arrow_back)),
                   SizedBox(width: 10,),
-                  Text("My Cart",style: GoogleFonts.notoSans(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w700),),
+                  Text("My Cart",style: GoogleFonts.notoSans(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w700),
+                  ),
                 ],
               ),
               Container(
@@ -192,8 +194,6 @@ class _CartState extends State<Cart> {
                     //
                     // );
                   },
-
-
 
                 ),
               )

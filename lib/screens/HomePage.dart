@@ -1,3 +1,4 @@
+import 'package:divine_drapes/screens/Items.dart';
 import 'package:flutter/material.dart';
 import 'package:divine_drapes/consts/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,12 +24,12 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 20,
+          Padding(
+            padding: const EdgeInsets.only(left: 16, top: 6),
+            child: Text("Divine Drapes",
+                style: GoogleFonts.notoSans(
+                    color: darkPurple, fontSize: 28, fontWeight: FontWeight.w700)),
           ),
-          Text("Divine Drapes",
-              style: GoogleFonts.notoSans(
-                  color: darkPurple, fontSize: 28, fontWeight: FontWeight.w700)),
           SizedBox(
             height: 10,
           ),
@@ -89,7 +90,7 @@ class _HomePageState extends State<HomePage> {
           ),
           Expanded(
             child: GridView.count(
-              physics: ScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               crossAxisCount: 3,
               crossAxisSpacing: 5,
               mainAxisSpacing: 5.0,
@@ -101,24 +102,31 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
                       children: [
-                        Container(
-                          height: height*0.1,
-                          width: width*0.23,
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.shade600,
-                                spreadRadius: 1,
-                              )
-                            ],
-                            border: Border.all(width: 1),
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHPMbZJr7SNw2hzsRGZ_0ro0tkIPezbONipQjzGKs2T07yCgJ5HM9_MbpBWs0NMx9v3j6NvRsnkbI&usqp=CAU&ec=48600113"),
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const Items()));
+                          },
+                          child: Container(
+                            height: height*0.1,
+                            width: width*0.23,
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade600,
+                                  spreadRadius: 1,
+                                )
+                              ],
+                              border: Border.all(width: 0),
+                              image: DecorationImage(
+                                image: AssetImage(
+                                  'assets/mug.png',
+                              ),
                               fit: BoxFit.cover,
-                            ),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(5),
+                              ),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8),
+                              )
                             ),
                           ),
                         ),
@@ -143,7 +151,7 @@ class _HomePageState extends State<HomePage> {
           ),
           Expanded(
             child: GridView.count(
-              physics: ScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               crossAxisCount: 3,
               crossAxisSpacing: 5,
               mainAxisSpacing: 5.0,
@@ -165,14 +173,15 @@ class _HomePageState extends State<HomePage> {
                                 spreadRadius: 1,
                               )
                             ],
-                            border: Border.all(width: 1),
+                            border: Border.all(width: 0),
                             image: DecorationImage(
-                              image: NetworkImage(
-                                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHPMbZJr7SNw2hzsRGZ_0ro0tkIPezbONipQjzGKs2T07yCgJ5HM9_MbpBWs0NMx9v3j6NvRsnkbI&usqp=CAU&ec=48600113"),
-                              fit: BoxFit.cover,
+                                image: AssetImage(
+                                  'assets/mug.png',
+                                ),
+                                fit: BoxFit.cover
                             ),
                             borderRadius: BorderRadius.all(
-                              Radius.circular(5),
+                              Radius.circular(8),
                             ),
                           ),
                         ),

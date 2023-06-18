@@ -18,6 +18,7 @@ class _MyAccountState extends State<MyAccount> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: whiteColor,
       appBar: AppBar(
         backgroundColor: whiteColor,
         automaticallyImplyLeading: false,

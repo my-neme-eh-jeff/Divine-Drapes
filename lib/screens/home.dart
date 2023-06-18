@@ -3,6 +3,9 @@ import 'package:divine_drapes/screens/HomePage.dart';
 import 'package:divine_drapes/consts/constants.dart';
 import 'package:flutter/material.dart';
 
+import 'Account.dart';
+import 'Items.dart';
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -15,8 +18,7 @@ class _HomeState extends State<Home> {
   static const List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     Cart(),
-    Text('Profile Page',
-        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+    MyAccount()
   ];
 
   void _onItemTapped(int index) {
@@ -27,35 +29,31 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    var height = size.height;
+    var width = size.width;
     return Scaffold(
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   title: Text('Divine Drapes',
-      //   style: TextStyle(color: darkPurple),
-      //   ),
-      //     backgroundColor: whiteColor
-      // ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-                icon: Icon(Icons.home), label: "Home", backgroundColor: cream),
+                icon: Icon(Icons.home,size: height*0.05,), label: "", backgroundColor: cream),
             BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart),
-                label: "Cart",
+                icon: Icon(Icons.shopping_cart,size: height*0.05,),
+                label: "",
                 backgroundColor: cream),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: "User",
+              icon: Icon(Icons.person,size: height*0.05,),
+              label: "",
               backgroundColor: cream,
             ),
           ],
           type: BottomNavigationBarType.shifting,
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.black,
-          iconSize: 30,
+          // iconSize: 30,
           onTap: _onItemTapped,
           elevation: 5),
     );

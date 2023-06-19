@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: _showCategories,
                 icon: Icon(
                   Icons.list,
-                  size: height*0.079,
+                  size: height*0.072,
                 ),
               ),
               SizedBox(

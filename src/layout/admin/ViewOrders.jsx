@@ -1,24 +1,13 @@
 import { Grid, Typography } from "@mui/material";
-import React from "react";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Box from '@mui/material/Box';
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
-import New from "./New";
-import Old from "./Old"
 import Button from "@mui/material/Button"
 import mug from "./coffee.png";
 
 
 export default function ViewOrders() {
-  const [value, setValue] = React.useState('1');
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
   return (
     <>
       <Grid container >

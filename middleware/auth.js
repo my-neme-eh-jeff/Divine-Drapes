@@ -8,7 +8,7 @@ const authToken = async (req, res, next)=> {
     const token = authHeader && authHeader.split(" ")[1]
     if(token == null) return res.sendStatus(401)
 
-    const decode = jwt.verify(token, process.env.SECRETKEY )
+    const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET )
     const user = await UserSchema.findOne({email : decode.email})
 
     if(!user){

@@ -6,10 +6,12 @@ const jwt = require("jsonwebtoken")
 require('dotenv').config()
 
 const userSchema = new Schema({
-    role: {
+    roles: {
         type: String,
-        enum: ["user","admin"],
-        default : "user"
+        User:{
+            type:Number,
+            default:2001
+        },
     },
     fName: {
         type: String,
@@ -77,7 +79,8 @@ const userSchema = new Schema({
     order : [{
         type : mongoose.Types.ObjectId,
         ref : "order"
-    }]
+    }],
+    refreshToken:[String]
 }, {timestamps: true});
 
 //hash the password
@@ -92,25 +95,21 @@ userSchema.pre("save", async function(next){
     }
 })
 
-userSchema.methods.genAuthToken = async function(){
-    const user = this
+// userSchema.methods.genAuthToken = async function(){
+//     const user = this
+//     const accessToken = jwt.sign({ _id: user._id.toString() } , process.env.SECRETKEY, {
+//         expiresIn: "1y"
+//     })
+//     return accessToken
+// }
 
-    const accessToken = jwt.sign({ _id: user._id.toString() } , process.env.SECRETKEY, {
-        expiresIn: "1y"
-    })
-
-    return accessToken
-}
-
-userSchema.methods.genRefToken = async function(){
-    const user = this
-
-    const refreshToken = jwt.sign({ _id: user._id.toString() } , process.env.REFRESH_TOKEN_SECRET, {
-        expiresIn: "1y"
-    })
-
-    return refreshToken
-}
+// userSchema.methods.genRefToken = async function(){
+//     const user = this
+//     const refreshToken = jwt.sign({ _id: user._id.toString() } , process.env.REFRESH_TOKEN_SECRET, {
+//         expiresIn: "1y"
+//     })
+//     return refreshToken
+// }
 
 
 

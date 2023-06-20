@@ -1,13 +1,16 @@
-const mongoose=require('mongoose')
-const dotenv=require('dotenv')
-dotenv.config({path:"./config.env"})
-dotenv.config()
-const db=process.env.Url;
-mongoose.connect(db,{
-    useNewUrlParser:true,
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config({ path: "./config.env" });
+dotenv.config();
+const db = process.env.Url;
+mongoose
+  .connect(db, {
+    useNewUrlParser: true,
     //useCreateIndex:true,
-    useUnifiedTopology:true,
+    useUnifiedTopology: true,
     //useFindAndModify:false
-}).then(()=>{
-    console.log('Connection Succesful');
-}).catch((err)=>console.log('no connection'));
+  })
+  .then(() => {
+    console.log("\nConnection Succesful\n");
+  })
+  .catch((err) => console.log("no connection"));

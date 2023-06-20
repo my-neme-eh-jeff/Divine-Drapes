@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Box, ChakraProvider, Heading, SimpleGrid, Image, Button, Select } from '@chakra-ui/react'
 import './Upload.css'
 import Footer from '../Footer/Footer';
+import Navbar from '../Navbar/Navbar';
 
 
 function Buy() {
@@ -23,11 +24,12 @@ function Buy() {
     };
     return (
         <div>
+            <Navbar/>
             <ChakraProvider>
                 <Box className='productbody' >
                     <br />
                     {/* product name here  */}
-                    <Heading>M1 White Mugs</Heading>
+                    <Heading className='namehere'>M1 White Mugs</Heading>
                     <br />
                     <Box height={'auto'} className='mainpro'>
                         <SimpleGrid

@@ -15,7 +15,7 @@ const Testimonials = () => {
         axios.get('https://dummyjson.com/posts?limit=6')
         .then(res => setTestimonials(res.data.posts))
       },[])
-    console.log(testimonials)
+      
   return (
     <ChakraProvider>
       <SimpleGrid columns={{sm: 1, md: 3}} justifyContent='space-between' rowGap={3} columnGap={3} m='1.5% 0%'>

@@ -40,6 +40,7 @@ const TopSellingCarousel = () => {
     <Carousel responsive={responsive}
       removeArrowOnDeviceType={["tablet", "mobile"]}
       autoPlay={true}
+      infinite={true}
       autoPlaySpeed={2000}>
             {topSelling?.map((item) => (
                     <Card maxW='sm' key={item}>

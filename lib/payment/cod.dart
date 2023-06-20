@@ -1,6 +1,10 @@
+// ignore: duplicate_ignore
+// ignore_for_file: unused_local_variable, avoid_print, implementation_imports, unused_import
+
 import 'package:divine_drapes/consts/constants.dart';
-import 'package:divine_drapes/screens/forgotpassword.dart';
+import '../screens/forgotpassword.dart';
 import 'package:divine_drapes/screens/signup.dart';
+// ignore: unnecessary_import
 import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
@@ -234,7 +238,7 @@ class _CODState extends State<COD> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       'Address',
                       style: GoogleFonts.notoSans(
@@ -341,7 +345,7 @@ class _CODState extends State<COD> {
                                         BorderRadius.all(Radius.circular(5))),
                               ),
                             )),
-                        SizedBox(width: 30),
+                        const SizedBox(width: 30),
                         Container(
                           width: size.width * 0.352,
                           height: size.height * 0.05,
@@ -466,7 +470,7 @@ class _CODState extends State<COD> {
                                     BorderRadius.all(Radius.circular(5))),
                           ),
                         )),
-                    SizedBox(height: 18),
+                    const SizedBox(height: 18),
                     GestureDetector(
                       onTap: () {
                         saveData();
@@ -487,7 +491,7 @@ class _CODState extends State<COD> {
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   IconButton(
                                       iconSize: size.width * 0.05,
                                       onPressed: () {
@@ -508,7 +512,7 @@ class _CODState extends State<COD> {
                                     Padding(
                                       padding: EdgeInsets.zero,
                                       child: Text(
-                                        address! + ',',
+                                        '${address!},',
                                         style: GoogleFonts.notoSans(
                                           fontSize: sizefont * 0.033,
                                           color: Colors.black,
@@ -521,7 +525,7 @@ class _CODState extends State<COD> {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          pincode! + ',',
+                                          '${pincode!},',
                                           style: GoogleFonts.notoSans(
                                             fontSize: sizefont * 0.033,
                                             color: Colors.black,
@@ -529,7 +533,7 @@ class _CODState extends State<COD> {
                                           ),
                                         ),
                                         Text(
-                                          city! + ',',
+                                          '${city!},',
                                           style: GoogleFonts.notoSans(
                                             fontSize: sizefont * 0.033,
                                             color: Colors.black,
@@ -546,7 +550,7 @@ class _CODState extends State<COD> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 15),
+                                    const SizedBox(height: 15),
                                     Text(
                                       'Do you want to use the saved address?',
                                       style: GoogleFonts.notoSans(
@@ -556,7 +560,7 @@ class _CODState extends State<COD> {
                                       ),
                                     ),
                                     // SizedBox(height: 11),
-                                    Spacer(),
+                                    const Spacer(),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
@@ -573,7 +577,7 @@ class _CODState extends State<COD> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(width: 80),
+                                        const SizedBox(width: 80),
                                         GestureDetector(
                                           onTap: () {
                                             // Navigator.of(context).push(
@@ -583,7 +587,7 @@ class _CODState extends State<COD> {
                                             width: size.width * 0.261,
                                             height: size.height * 0.0425,
                                             decoration: BoxDecoration(
-                                              color: Color.fromRGBO(
+                                              color: const Color.fromRGBO(
                                                   160, 30, 134, 1),
                                               borderRadius:
                                                   BorderRadius.circular(5),
@@ -726,7 +730,7 @@ class _CODState extends State<COD> {
               borderRadius: BorderRadius.circular(5),
             ),
             child: isImageSelected
-                ? Row(
+                ? const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [Text('Added Successfully..')],
                   )

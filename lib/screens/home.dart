@@ -3,6 +3,8 @@ import 'package:divine_drapes/screens/HomePage.dart';
 import 'package:divine_drapes/consts/constants.dart';
 import 'package:flutter/material.dart';
 
+import 'Account.dart';
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -15,8 +17,9 @@ class _HomeState extends State<Home> {
   static const List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     Cart(),
-    Text('Profile Page',
-        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+    MyAccount(),
+    // Text('Profile Page',
+    //     style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
   ];
 
   void _onItemTapped(int index) {

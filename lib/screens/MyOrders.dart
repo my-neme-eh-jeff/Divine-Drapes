@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:divine_drapes/screens/Account.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,15 +23,16 @@ class _MyOrdersState extends State<MyOrders> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-
       appBar: AppBar(
         backgroundColor: whiteColor,
         automaticallyImplyLeading: false,
-        title: Text("Divine Drapes",style: GoogleFonts.notoSans(color: darkPurple,fontSize: 28,fontWeight: FontWeight.w700)),
+        title: Text("Divine Drapes",
+            style: GoogleFonts.notoSans(
+                color: darkPurple, fontSize: 28, fontWeight: FontWeight.w700)),
         elevation: 0.0,
       ),
       body: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
@@ -37,53 +40,59 @@ class _MyOrdersState extends State<MyOrders> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                   margin: EdgeInsets.all(5),
-                   width: screenWidth*0.9,
-                   height: screenHeight*0.065,
+                margin: const EdgeInsets.all(5),
+                width: screenWidth * 0.9,
+                height: screenHeight * 0.065,
                 decoration: BoxDecoration(
-                  border:Border.all(width: 2,color: Colors.black),
+                  border: Border.all(width: 2, color: Colors.black),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: TextField(
                   cursorColor: Colors.grey,
                   decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none
-                      ),
-                      hintText: 'Search',
-                      hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 18
-                      ),
-                      prefixIcon:Icon(
-                        Icons.search,color: darkPurple,
-                      ),
+                    fillColor: Colors.white,
+                    filled: true,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none),
+                    hintText: 'Search',
+                    hintStyle:
+                        const TextStyle(color: Colors.grey, fontSize: 18),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: darkPurple,
+                    ),
                   ),
                 ),
               ),
               Row(
                 children: [
                   InkWell(
-                    onTap: (){
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //     builder: (context) => const Home()));
-                      Navigator.of(context).pop();
-                    },
-                      child: Icon(Icons.arrow_back)),
-                  SizedBox(width: 10,),
-                  Text("My Orders",style: GoogleFonts.notoSans(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w700),),
+                      onTap: () {
+                        // Navigator.of(context).push(MaterialPageRoute(
+                        //     builder: (context) => const Home()));
+                        Navigator.of(context).pop();
+                      },
+                      child: const Icon(Icons.arrow_back)),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "My Orders",
+                    style: GoogleFonts.notoSans(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700),
+                  ),
                 ],
               ),
               Container(
                 height: screenHeight,
                 child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: BouncingScrollPhysics(),
-                      itemCount: 20,
-                      itemBuilder: (context, position) {
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: 20,
+                  itemBuilder: (context, position) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
@@ -95,10 +104,13 @@ class _MyOrdersState extends State<MyOrders> {
                         leading: FractionallySizedBox(
                           //widthFactor: 0.25,
                           //heightFactor: 1.6,// Adjust the width factor as needed
-                          heightFactor: screenHeight*0.0019,
+                          heightFactor: screenHeight * 0.0019,
                           child: AspectRatio(
                             aspectRatio: 1,
-                            child: Image.asset('assets/mug.png',fit: BoxFit.cover,),
+                            child: Image.asset(
+                              'assets/mug.png',
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                         title: Column(
@@ -107,27 +119,47 @@ class _MyOrdersState extends State<MyOrders> {
                           children: [
                             Row(
                               children: [
-                                Text("M1 White Mug",style:  GoogleFonts.notoSans(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w700),),
-                                Spacer(),
-                                Text("₹150",style:  GoogleFonts.notoSans(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w700),),
+                                Text(
+                                  "M1 White Mug",
+                                  style: GoogleFonts.notoSans(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  "₹150",
+                                  style: GoogleFonts.notoSans(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
+                                ),
                               ],
                             ),
-                            Text("Customizable with photo",style:  GoogleFonts.notoSans(color: Colors.black,fontSize: 14,fontWeight: FontWeight.w500)),
-                            SizedBox(height: 7,),
+                            Text("Customizable with photo",
+                                style: GoogleFonts.notoSans(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500)),
+                            const SizedBox(
+                              height: 7,
+                            ),
                             Container(
-                              decoration: BoxDecoration(
-                                  color: cream,
-                                borderRadius: BorderRadius.circular(5)
-                              ),
-
+                                decoration: BoxDecoration(
+                                    color: cream,
+                                    borderRadius: BorderRadius.circular(5)),
                                 child: Padding(
                                   padding: const EdgeInsets.all(6.0),
-                                  child: Text("Add Comment",style:  GoogleFonts.notoSans(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w600),),
+                                  child: Text(
+                                    "Add Comment",
+                                    style: GoogleFonts.notoSans(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600),
+                                  ),
                                 ))
                           ],
                         ),
-
-
                       ),
                     );
                     //   Padding(
@@ -173,10 +205,7 @@ class _MyOrdersState extends State<MyOrders> {
                     //     )
                     //
                     // );
-                    },
-
-
-
+                  },
                 ),
               )
             ],

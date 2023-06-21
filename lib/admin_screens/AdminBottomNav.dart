@@ -1,24 +1,22 @@
-import 'package:divine_drapes/screens/Cart.dart';
-import 'package:divine_drapes/screens/HomePage.dart';
+import 'package:divine_drapes/admin_screens/AdminBulkOrders.dart';
+import 'package:divine_drapes/admin_screens/AdminHome.dart';
 import 'package:divine_drapes/consts/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-import 'Account.dart';
-import 'Items.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class AdminBottomNav extends StatefulWidget {
+  const AdminBottomNav({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<AdminBottomNav> createState() => _AdminBottomNavState();
 }
 
-class _HomeState extends State<Home> {
+class _AdminBottomNavState extends State<AdminBottomNav> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
-    HomePage(),
-    Cart(),
-    MyAccount()
+    AdminBulkOrders(),
+    AdminHome(),
   ];
 
   void _onItemTapped(int index) {
@@ -33,22 +31,16 @@ class _HomeState extends State<Home> {
     var height = size.height;
     var width = size.width;
     return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
+      body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined,size: height*0.037,), label: "", backgroundColor: cream),
+                icon: Text("Bulk Orders",style: GoogleFonts.notoSans(fontSize: 14,fontWeight: FontWeight.w700),),
+                label: "", backgroundColor: cream),
             BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart_outlined,size: height*0.037,),
+                icon: Text("Orders",style: GoogleFonts.notoSans(fontSize: 14,fontWeight: FontWeight.w700),),
                 label: "",
                 backgroundColor: cream),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline,size: height*0.037,),
-              label: "",
-              backgroundColor: cream,
-            ),
           ],
           type: BottomNavigationBarType.shifting,
           currentIndex: _selectedIndex,

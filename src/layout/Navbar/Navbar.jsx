@@ -15,23 +15,12 @@ import {
   Popover,
   SimpleGrid,
   GridItem,
-  VStack,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronUpIcon, CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import '../Home/Home.css';
+import { useNavigate } from "react-router-dom";
 
-const MenuItem = ({ children, isLast, to = "/" }) => {
-  return (
-    <Text
-      mb={{ base: isLast ? 0 : 8, sm: 0 }}
-      mr={{ base: 0, sm: isLast ? 0 : 8 }}
-      display="block"
-    >
-      <Link href={to}>{children}</Link>
-    </Text>
-  );
-};
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
@@ -39,16 +28,14 @@ const Navbar = () => {
   const initialFocusRef = React.useRef();
   const [downIcon, setDownIcon] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [selected, setSelected] = useState([]);
 
     useEffect(() => {
         axios.get('https://dummyjson.com/posts')
         .then(res => setCategories(res.data.posts))
       },[])
 
-      const handleItem = (e) => {
-        console.log(e.id)
-      }
+      const navigate = useNavigate();
+
   return (
     <ChakraProvider>
       <Flex
@@ -71,7 +58,7 @@ const Navbar = () => {
             fontSize={27}
             cursor={"pointer"}
             as="a"
-            href="/home"
+            href="/"
           >
             Divine Drapes
           </Text>
@@ -91,7 +78,6 @@ const Navbar = () => {
             direction={["column", "row", "row", "row"]}
             pt={[4, 4, 0, 0]}
           >
-            {/* <MenuItem> */}
             <Popover
               initialFocusRef={initialFocusRef}
               placement="bottom"
@@ -125,22 +111,23 @@ const Navbar = () => {
                     <SimpleGrid columns={[4, null, 8]} columnGap={[2, null, 6]} rowGap={[2, null, 6]}>
                       {categories?.map(items => (
                         // return(
-                        <GridItem key={items.id} onClick={handleItem}><Button border={'1px'} bgColor={'#fff'}>Mugs</Button></GridItem>
+                        <GridItem key={items.id}><Button border={'1px'} bgColor={'#fff'}>Mugs</Button></GridItem>
                       ))}
                     </SimpleGrid>
                 </PopoverBody>
               </PopoverContent>
             </Popover>
-            {/* </MenuItem> */}
-            <MenuItem to="/bulkorder"><Button bgColor={'#fff'}>
+            <Link href="/bulkorder">
+              <Button bgColor={'#fff'}>
                   Bulk orders
-                </Button></MenuItem>
-            <MenuItem to="/cart">
+              </Button>
+            </Link>
+            <Link href="/cart">
             <Button bgColor={'#fff'}>
                   Cart
                 </Button>
-            </MenuItem>
-            <WrapItem>
+            </Link>
+            <WrapItem onClick={() => navigate('/profile')} cursor='pointer'>
               <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
             </WrapItem>
           </Flex>

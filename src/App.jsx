@@ -23,11 +23,10 @@ function App() {
     <div className='App'>
       <Router>
         <Routes>
-          <Route path='/navbar' element={<> <Navbar/> </>}></Route>
-          <Route path='/home' element={<> <Home/> </>}></Route>
+          <Route path='/' element={<> <Home/> </>}></Route>
         </Routes>
         <Routes>
-          <Route path='/' element={<> <Login/> </>}></Route>
+          <Route path='/login' element={<> <Login/> </>}></Route>
           <Route path='/signup' element={<> <Signup/> </>}></Route>
           <Route path='/forgotpass' element={<> <Forgotpass/> </>}></Route>
           <Route path='/otpverify' element={<> <OTPverify/> </>}></Route>

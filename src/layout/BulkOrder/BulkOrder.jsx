@@ -23,9 +23,9 @@ const BulkOrder = () => {
     <ChakraProvider>
         <Navbar />
         <Box pt='5%' pb='4%'>
-        <SimpleGrid columns={12} columnGap={3} m='1% 0 2% 10%' alignItems={'center'}>
+        <SimpleGrid columns={12} columnGap={3} m='1% 0 2% 10%' alignItems={'center'} visibility={['hidden', null, 'visible']}>
             <GridItem colSpan={[2, null, 1]}>
-                <Button bgColor='#ffffff' onClick={() => navigate('/home')}>{<ArrowBackIcon fontSize='20px'/>}</Button>
+                <Button bgColor='#ffffff' onClick={() => navigate('/')}>{<ArrowBackIcon fontSize='20px'/>}</Button>
             </GridItem>
             <GridItem colSpan={[4, null, 1]}>
                 <Text fontWeight='500' fontSize='18px'>Bulk Orders</Text>

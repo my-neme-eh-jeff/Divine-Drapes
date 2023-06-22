@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Paper, Button, IconButton } from "@mui/material";
+import { Grid, Paper, Button, IconButton, Box } from "@mui/material";
 import pfp from "../images/pfp.jpg";
 import EditIcon from "@mui/icons-material/Edit";
 import { createTheme } from "@mui/material/styles";
@@ -7,12 +7,15 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import "../styles/profile.css";
 import { Link } from "react-router-dom";
 import Footer from "./Footer/Footer";
+import Navbar from "./Navbar/Navbar";
 
 export default function Profile() {
   const theme = createTheme();
   console.log(theme.breakpoints.up("md"));
   return (
-    <div>
+    <>
+    <Navbar />
+    <Box paddingTop={'10%'} marginBottom={'5%'}>
       <Grid container>
         <Grid item md={3} xs={12} sx={{ backgroundColor: "white" }}>
           <Grid container>
@@ -75,11 +78,11 @@ export default function Profile() {
           </Grid>
         </Grid>
         <Grid item md={3} sx={{ backgroundColor: "white" }}></Grid>
-      </Grid>
+      </Grid> 
+    </Box>
       <div className="footer">
       <Footer></Footer>
       </div>
-      
-    </div>
+    </>
   );
 }

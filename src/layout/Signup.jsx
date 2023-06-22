@@ -470,7 +470,7 @@ const Signup = () => {
               >
                 Already A Member?{" "}
                 <Link
-                  to="/"
+                  to="/login"
                   style={{ textDecoration: "none", color: "#A01E86" }}
                 >
                   Log in

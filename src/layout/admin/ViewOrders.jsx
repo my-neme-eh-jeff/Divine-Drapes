@@ -44,7 +44,7 @@ export default function ViewOrders() {
             <Grid item xs={12} md={2}>
                 <img src={mug} style={{width:"150px",borderRadius:10}}/>
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={4}>
                 <Grid container display='flex' flexDirection={'column'} rowSpacing={2}>
                     <Grid item>
                         <Typography variant="h6" sx={{fontWeight: 'bold'}}>M1 White Mug</Typography>
@@ -65,7 +65,7 @@ export default function ViewOrders() {
                         <Typography sx={{ fontSize: '18px' }}>Address: Jenny</Typography>
                     </Grid>
                     <Grid item>
-                      <div style={{border:"black solid 2px",borderRadius:5, marginBottom: 20, textAlign:"center", padding: '2%'}}>Photo Attached</div>
+                      <div style={{border:"black solid 2px",borderRadius:5, marginBottom: 20, textAlign:"center", padding: '2%', width: '300px'}}>Photo Attached</div>
                     </Grid>
                 </Grid>
             </Grid>

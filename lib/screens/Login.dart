@@ -8,6 +8,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../admin_screens/AdminBottomNav.dart';
+import '../admin_screens/AdminHome.dart';
+
 class Login extends StatefulWidget {
   const Login({super.key});
 
@@ -401,6 +404,34 @@ class _LoginState extends State<Login> {
                         },
                         child: Text(
                           'Signup',
+                          style: GoogleFonts.poppins(
+                            fontSize: sizefont * 0.7,
+                            color: const Color.fromRGBO(175, 13, 13, 0.85),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: size.height * 0.03),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Are you an Admin? ',
+                        style: GoogleFonts.poppins(
+                          fontSize: sizefont * 0.7,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const AdminBottomNav()));
+                        },
+                        child: Text(
+                          'Login',
                           style: GoogleFonts.poppins(
                             fontSize: sizefont * 0.7,
                             color: const Color.fromRGBO(175, 13, 13, 0.85),

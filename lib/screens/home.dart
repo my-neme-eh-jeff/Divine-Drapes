@@ -40,22 +40,22 @@ class _HomeState extends State<Home> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.home,
-                  size: height * 0.05,
+                  Icons.home_outlined,
+                  size: height * 0.037,
                 ),
                 label: "",
                 backgroundColor: cream),
             BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.shopping_cart,
-                  size: height * 0.05,
+                  Icons.shopping_cart_outlined,
+                  size: height * 0.037,
                 ),
                 label: "",
                 backgroundColor: cream),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.person,
-                size: height * 0.05,
+                Icons.person_outline,
+                size: height * 0.037,
               ),
               label: "",
               backgroundColor: cream,

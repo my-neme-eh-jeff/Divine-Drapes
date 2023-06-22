@@ -690,7 +690,7 @@ class _BulkOrderState extends State<BulkOrder> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          'Sign up',
+                          'Submit',
                           style: GoogleFonts.notoSans(
                             fontSize: sizefont * 0.7,
                             color: Colors.white,

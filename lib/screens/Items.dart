@@ -17,7 +17,6 @@ class _ItemsState extends State<Items> {
   bool liked = false;
   bool isAdded = false;
 
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -25,72 +24,109 @@ class _ItemsState extends State<Items> {
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
-        backgroundColor: whiteColor,
         automaticallyImplyLeading: false,
-        title: Text("Divine Drapes",
-            style: GoogleFonts.notoSans(
-                color: darkPurple, fontSize: 28, fontWeight: FontWeight.w700)),
-        elevation: 0.0,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        flexibleSpace: Container(
+          child: Padding(
+            padding: EdgeInsets.only(top: screenHeight * 0.03625),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(width: screenWidth * 0.075),
+                Text(
+                  'Divine Drapes',
+                  style: GoogleFonts.notoSans(
+                    // fontSize: height * 0.035,
+                    fontSize: screenWidth * 0.075,
+                    color: darkPurple,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.only(left: 10.0, right: 10, bottom: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                margin: EdgeInsets.all(5),
-                width: screenWidth*0.9,
-                height: screenHeight*0.06,
-                decoration: BoxDecoration(
-                  border:Border.all(width: 2,color: Colors.black),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: TextField(
-                  cursorColor: Colors.grey,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    filled: true,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    // margin: EdgeInsets.all(5),
+                    width: screenWidth * 0.9,
+                    height: screenHeight * 0.06,
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 2, color: Colors.black),
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                    hintText: 'Search',
-                    hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 18
-                    ),
-                    prefixIcon:Icon(
-                      Icons.search,color: darkPurple,
+                    child: TextField(
+                      cursorColor: Colors.grey,
+                      decoration: InputDecoration(
+                        fillColor: Colors.white,
+                        filled: true,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none),
+                        hintText: 'Search',
+                        contentPadding: EdgeInsets.zero,
+                        hintStyle: TextStyle(
+                            color: Colors.grey, fontSize: screenWidth * 0.05),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: darkPurple,
+                        ),
+                      ),
+                      textAlignVertical: TextAlignVertical.center,
                     ),
                   ),
-                ),
+                ],
+              ),
+              SizedBox(
+                height: 15,
               ),
               Row(
                 children: [
                   InkWell(
-                      onTap: (){
+                      onTap: () {
                         // Navigator.of(context).push(MaterialPageRoute(
                         //     builder: (context) => const Home()));
                         Navigator.of(context).pop();
                       },
                       child: Icon(Icons.arrow_back)),
-                  SizedBox(width: 10,),
-                  Text("Mugs",style: GoogleFonts.notoSans(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w700),),
-                  SizedBox(width: 10,),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Mugs",
+                    style: GoogleFonts.notoSans(
+                        color: Colors.black,
+                        fontSize: screenWidth * 0.044,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
                 ],
               ),
               Container(
                 height: screenHeight,
                 child: GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const ItemDetails()));
                   },
                   child: ListView.builder(
-                    padding: EdgeInsets.only(top: 5,),
+                    padding: EdgeInsets.only(
+                      top: 5,
+                    ),
                     shrinkWrap: true,
                     physics: BouncingScrollPhysics(),
                     itemCount: 20,
@@ -98,16 +134,19 @@ class _ItemsState extends State<Items> {
                       return Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Container(
-                          height: screenHeight*0.14,
+                          height: screenHeight * 0.14,
                           width: screenWidth,
                           child: ListTile(
                             leading: FractionallySizedBox(
                               //widthFactor: 0.25,
                               //heightFactor: 1.6,// Adjust the width factor as needed
-                              heightFactor: screenHeight*0.0021,
+                              heightFactor: screenHeight * 0.0021,
                               child: AspectRatio(
                                 aspectRatio: 1,
-                                child: Image.asset('assets/mug.png',fit: BoxFit.fill,),
+                                child: Image.asset(
+                                  'assets/mug.png',
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                             ),
                             title: Column(
@@ -116,46 +155,85 @@ class _ItemsState extends State<Items> {
                               children: [
                                 Row(
                                   children: [
-                                    Text("M1 White Mug",style:  GoogleFonts.notoSans(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w700),),
+                                    Text(
+                                      "M1 White Mug",
+                                      style: GoogleFonts.notoSans(
+                                          color: Colors.black,
+                                          fontSize: screenWidth * 0.04,
+                                          fontWeight: FontWeight.w700),
+                                    ),
                                     Spacer(),
-                                    Text("₹150",style:  GoogleFonts.notoSans(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w700),),
+                                    Text(
+                                      "₹150",
+                                      style: GoogleFonts.notoSans(
+                                          color: Colors.black,
+                                          fontSize: screenWidth * 0.04,
+                                          fontWeight: FontWeight.w700),
+                                    ),
                                   ],
                                 ),
-                                Text("Customizable with photo",style:  GoogleFonts.notoSans(color: Colors.black,fontSize: 14,fontWeight: FontWeight.w500)),
-                                SizedBox(height: screenHeight*0.0078,),
+                                Text("Customizable with photo",
+                                    style: GoogleFonts.notoSans(
+                                        color: Colors.black,
+                                        fontSize: screenWidth * 0.035,
+                                        fontWeight: FontWeight.w500)),
+                                SizedBox(
+                                  height: screenHeight * 0.0078,
+                                ),
                                 Row(
                                   children: [
                                     Container(
                                         decoration: BoxDecoration(
                                             color: cream,
-                                            borderRadius: BorderRadius.circular(5)
-                                        ),
-
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
                                         child: GestureDetector(
-                                          onTap: (){
+                                          onTap: () {
                                             setState(() {
-                                              isAdded=!isAdded;
+                                              isAdded = !isAdded;
                                             });
                                           },
                                           child: Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: screenWidth*0.028,vertical: 5),
-                                            child: isAdded ?
-                                            Row(
-                                              children: [
-                                                Text("Added",style:  GoogleFonts.notoSans(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w600),
-                                                ),
-                                                SizedBox(width: 8,),
-                                                Container(
-                                                  width: 30,
-                                                    height: 20,
-                                                    color: Colors.transparent,
-                                                    child: Image.asset('assets/tick.png',
-                                                    ))
-                                              ],
-                                            )
-                                                :
-                                            Text("Add to cart",style:  GoogleFonts.notoSans(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w600),
-                                            ),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: screenWidth * 0.028,
+                                                vertical: 5),
+                                            child: isAdded
+                                                ? Row(
+                                                    children: [
+                                                      Text(
+                                                        "Added",
+                                                        style: GoogleFonts
+                                                            .notoSans(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize:
+                                                                    screenWidth *
+                                                                        0.04,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 2,
+                                                      ),
+                                                      Container(
+                                                          width: 25,
+                                                          height: 20,
+                                                          color: Colors
+                                                              .transparent,
+                                                          child: Image.asset(
+                                                            'assets/tickmark.png',
+                                                          ))
+                                                    ],
+                                                  )
+                                                : Text(
+                                                    "Add to cart",
+                                                    style: GoogleFonts.notoSans(
+                                                        color: Colors.black,
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
                                           ),
                                         )),
                                     Spacer(),
@@ -167,22 +245,19 @@ class _ItemsState extends State<Items> {
                                         },
                                         child: liked
                                             ? Icon(
-                                          Icons.favorite,
-                                          color: Colors.red,
-                                        )
+                                                Icons.favorite,
+                                                color: Colors.red,
+                                              )
                                             : Icon(
-                                            Icons.favorite_border_outlined))
+                                                Icons.favorite_border_outlined))
                                   ],
                                 )
-
                               ],
                             ),
-
                           ),
                         ),
                       );
                     },
-
                   ),
                 ),
               ),

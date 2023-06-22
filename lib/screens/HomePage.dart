@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         flexibleSpace: Container(
           child: Padding(
-            padding: EdgeInsets.only(top: size.height * 0.0375),
+            padding: EdgeInsets.only(top: size.height * 0.03625),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -34,7 +34,8 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   'Divine Drapes',
                   style: GoogleFonts.notoSans(
-                    fontSize: width * 0.077,
+                    // fontSize: height * 0.035,
+                    fontSize: width * 0.075,
                     color: darkPurple,
                     fontWeight: FontWeight.w700,
                   ),
@@ -47,9 +48,9 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: size.height * 0.014,
-          ),
+          // SizedBox(
+          //   height: size.height * 0.004,
+          // ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,

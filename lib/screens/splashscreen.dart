@@ -15,15 +15,16 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
     return AnimatedSplashScreen(
       // splash: SvgPicture.asset('assets/Ellipse 4.svg'),
       splash: 'assets/Ellipse 4.png',
       centered: true,
-      splashIconSize: 200,
+      splashIconSize: screenHeight*0.3,
       backgroundColor: whiteColor,
       nextScreen: const Login(),
-      duration: 2000,
-      splashTransition: SplashTransition.fadeTransition,
+      duration: 1500,
+      splashTransition: SplashTransition.scaleTransition,
     );
   }
 }

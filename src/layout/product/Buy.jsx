@@ -4,10 +4,22 @@ import { Box, ChakraProvider, Heading, SimpleGrid, Image, Button, Select } from 
 import './Upload.css'
 import Footer from '../Footer/Footer';
 import Navbar from '../Navbar/Navbar';
+import {
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    useDisclosure
+} from '@chakra-ui/react'
+import Address from './Address/Address';
 
 
 function Buy() {
     const [selectedImage, setSelectedImage] = useState(null);
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const [pay, setPay] = useState()
 
 
@@ -24,7 +36,7 @@ function Buy() {
     };
     return (
         <div>
-            <Navbar/>
+            <Navbar />
             <ChakraProvider>
                 <Box className='productbody' >
                     <br />
@@ -72,7 +84,26 @@ function Buy() {
                                 </div>
                                 <br />
                                 <Box display={'flex'} justifyContent={'space-around'} width={'auto'} >
-                                    <Button>Shipping Address</Button>
+                                    <Button onClick={onOpen}>Shipping Address</Button>
+                                    <Modal isOpen={isOpen} onClose={onClose}>
+                                        <ModalOverlay />
+                                        <ModalContent>
+                                            <ModalHeader>Shipping Addresses</ModalHeader>
+                                            <ModalCloseButton />
+                                            <ModalBody>
+                                                <Address/>
+                                            </ModalBody>
+
+                                            <ModalFooter>
+                                                <Button colorScheme='blue' mr={3} onClick={onClose}>
+                                                    Close
+                                                </Button>
+                                                <Button variant='ghost' backgroundColor={'#F7BC62'}
+                                                _hover={{color:'black'}}
+                                                >Save & proceed</Button>
+                                            </ModalFooter>
+                                        </ModalContent>
+                                    </Modal>
                                     <Select id='payment' value={pay} placeholder='Paymeny method' width={'12vw'}
                                         onChange={e => setPay(e.target.value)}
                                     >
@@ -112,14 +143,14 @@ function Buy() {
                                     ) : (
                                         pay == "netbanking" ? (
                                             <>
-                                            <br />
-                                            <Select width={'auto'}
-                                                placeholder='Select your bank'
-                                            >
-                                                <option value='BOB'>Bank of Baroda</option>
-                                                <option value='AXIS'>Axis Bank</option>
-                                                <option value="HDFC">HDFC</option>
-                                            </Select>
+                                                <br />
+                                                <Select width={'auto'}
+                                                    placeholder='Select your bank'
+                                                >
+                                                    <option value='BOB'>Bank of Baroda</option>
+                                                    <option value='AXIS'>Axis Bank</option>
+                                                    <option value="HDFC">HDFC</option>
+                                                </Select>
                                             </>
                                         ) : (<p></p>)
                                     )
@@ -146,7 +177,7 @@ function Buy() {
                     </Box>
                 </Box>
                 <br />
-                <Footer/>
+                <Footer />
             </ChakraProvider>
         </div >
     )

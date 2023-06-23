@@ -1,19 +1,17 @@
 html {
   margin: 0;
   padding: 0;
-  overflow-y: hidden;
-  height: 100%;
 }
 
 body {
   font-family: "Ubuntu", sans-serif;
-  overflow-y: hidden;
-  height: 100%;
 }
 
 .signUp_main_container {
   max-width: 100vw;
   min-height: 100vh;
+  height: 100%;
+  overflow-y: hidden;
 }
 
 .box {

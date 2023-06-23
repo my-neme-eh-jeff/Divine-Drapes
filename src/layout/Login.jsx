@@ -293,7 +293,6 @@ const Login = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "100%",
-          scrollY
         }}
       >
         <Grid

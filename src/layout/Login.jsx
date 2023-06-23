@@ -217,7 +217,7 @@ const Login = () => {
           <Link
             to="/forgotpass"
             style={{
-              marginLeft: resp ? "5 rem" : "10rem",
+              marginLeft: resp ? "4rem" : "10rem",
               color: "#AF0D0D",
             }}
           >
@@ -293,6 +293,7 @@ const Login = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "100%",
+          scrollY
         }}
       >
         <Grid
@@ -304,7 +305,7 @@ const Login = () => {
             justifyContent: "center",
             alignItems: "center",
             position: "relative",
-            top: resp2 ? "6rem" : "",
+            top: resp2 ? "1.5rem" : "",
           }}
         >
           <img src={logo} alt="Logo" />
@@ -340,7 +341,7 @@ const Login = () => {
 
               <div
                 style={{
-                  marginLeft: "5.5rem",
+                  marginLeft: resp2 ? "1.5rem" : "5.5rem",
                 }}
               >
                 <span style={{ fontWeight: 600, margin: "0.6rem 0" }}>

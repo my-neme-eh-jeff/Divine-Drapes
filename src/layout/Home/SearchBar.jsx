@@ -8,7 +8,7 @@ const SearchBar = () => {
             <SearchIcon />
         </InputLeftElement>
         <Input placeholder='Search' border={'2px'} bgColor={'#fff'} height={'50px'}/>
-        <InputRightElement width={'80px'} m={'0.8% 2%'}>
+        <InputRightElement width={'80px'} m={'0 2%'} mt={['1.4%', null, '0.8%']}>
             <Button bgColor={'#A01E86'} color='#fff'>Explore</Button>
         </InputRightElement>
     </InputGroup>

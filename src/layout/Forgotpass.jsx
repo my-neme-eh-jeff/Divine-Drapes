@@ -183,7 +183,7 @@ const ForgOtpBtnass = () => {
               flexDirection: "column",
               justifyContent: "flex-start",
               alignItems: "center",
-              height: "36rem",
+              // height: "36rem",
             }}
           >
             <img

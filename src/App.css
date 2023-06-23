@@ -1,8 +1,6 @@
 html, body{
     font-family: 'Noto Sans';
     margin: 0;
-    overflow-y: hidden;
-    height: 100%;
   }
 
 .recom::-webkit-scrollbar{

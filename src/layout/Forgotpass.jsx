@@ -100,7 +100,7 @@ const ForgOtpBtnass = () => {
         <span
           style={{
             position: "relative",
-            right: resp2 ? "9.5rem" : "12rem",
+            right: resp ? "9.5rem" : "12rem",
             fontWeight: 500,
           }}
         >

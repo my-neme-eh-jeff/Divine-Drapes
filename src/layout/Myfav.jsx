@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import mug from '../images/coffee.png'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-
+import Footer from "./Footer/Footer";
 export default function Myorders() {
     const [like,setLike]=useState(0)
 

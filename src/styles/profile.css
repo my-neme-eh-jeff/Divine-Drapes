@@ -5,7 +5,7 @@
     .icons2{
         margin-left: 17.4rem;
     }
-    img{
+    .image{
         width: 80%;
         height: auto;
         border-radius: 50%;
@@ -15,23 +15,34 @@
 @media screen and (min-width:700px) {
     
     .icons1{
-        margin-left: 39rem;
+        margin-left: 86%;
     }
     .icons2{
-        margin-left: 39rem;
+        margin-left: 86%;
     }
-    img{
+    .image{
         width: 80%;
         height: auto;
         border-radius: 50%;
     }
 }
 
-/* .footer {
+
+@media only screen and (max-width: 700) and (min-width: 400px){
+
+    .icons1{
+        margin-left: 70%;
+    }
+    .icons2{
+        margin-left: 86%;
+    }
+}
+
+.footer {
     position: fixed;
     bottom: 0;
     width: 100%;
     background-color: #f9f9f9;
     padding: 0px;
     text-align: center;
-  } */
+  }

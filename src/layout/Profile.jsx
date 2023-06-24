@@ -35,7 +35,7 @@ export default function Profile() {
         <Grid item md={6} xs={12} sm={12} sx={{ backgroundColor: "white" }}>
           <Grid container rowSpacing={3}>
             <Grid item md={12} xs={12} sm={12}> </Grid>
-            <Grid item md={12} xs={12} sm={12}>
+            <Grid item md={12} xs={12} sm={12} sx={{}}>
               <Link to='/order'>
               <Paper
                 elevation={1}

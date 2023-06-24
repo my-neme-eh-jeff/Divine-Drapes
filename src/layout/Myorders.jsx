@@ -14,6 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import Footer from "./Footer/Footer";
 
 import { FormControl, TextareaAutosize } from "@mui/material";
 
@@ -269,7 +270,7 @@ export default function Myorders() {
           </Grid>
         </Grid>
       </Grid>
-
+      
       <Modal
         open={open}
         onClose={handleClose}

@@ -1,9 +1,14 @@
 @media screen and (max-width:700px){
     .icons1{
-        margin-left: 14rem;
+        margin-left: 17.4rem;
     }
     .icons2{
-        margin-left: 13.5rem;
+        margin-left: 17.4rem;
+    }
+    img{
+        width: 80%;
+        height: auto;
+        border-radius: 50%;
     }
 }
 
@@ -13,7 +18,12 @@
         margin-left: 39rem;
     }
     .icons2{
-        margin-left: 38.5rem;
+        margin-left: 39rem;
+    }
+    img{
+        width: 80%;
+        height: auto;
+        border-radius: 50%;
     }
 }
 
@@ -25,4 +35,3 @@
     padding: 0px;
     text-align: center;
   } */
-  

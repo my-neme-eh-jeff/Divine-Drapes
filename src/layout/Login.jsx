@@ -70,6 +70,9 @@ const Login = () => {
   const responsiveness2 = { responsive: width < 1000 };
   const resp2 = responsiveness2.responsive;
 
+  const responsiveness3 = { responsive: width < 370 };
+  const resp3 = responsiveness3.responsive;
+
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -80,7 +83,7 @@ const Login = () => {
     marginLeft: "1.2rem",
     textDecoration: "none",
     padding: "12px 15px ",
-    width: resp ? "22rem" : "28rem",
+    width: resp3 ? "20rem" : (resp ? "22rem" : "28rem"),
     height: "3.1875rem",
     color: "white",
     fontSize: "1rem",
@@ -95,7 +98,7 @@ const Login = () => {
       <React.Fragment>
         <span
           style={{
-            margin: resp2 ? "0 0 0.5rem -18rem" : "0 0 0.5rem 1rem",
+            margin: resp2 ? "0 0 0.5rem -15rem" : "0 0 0.5rem 1rem",
             fontWeight: 600,
           }}
         >
@@ -105,7 +108,7 @@ const Login = () => {
           style={{
             margin:
               formik.touched.email && formik.errors.email ? "0" : "0 0 1rem 0",
-            width: resp ? "40ch" : "50ch",
+            width: resp3 ? "37ch" : (resp ? "40ch" : "50ch"),
             borderRadius: "10px",
             border: "2.3px solid #4a3c3c",
           }}
@@ -149,7 +152,7 @@ const Login = () => {
       <React.Fragment>
         <span
           style={{
-            margin: resp2 ? "0 0 0.5rem -18rem" : "0 0 0.5rem 1rem",
+            margin: resp2 ? "0 0 0.5rem -15rem" : "0 0 0.5rem 1rem",
             fontWeight: 600,
           }}
         >
@@ -157,7 +160,7 @@ const Login = () => {
         </span>
         <FormControl
           sx={{
-            width: resp ? "40ch" : "50ch",
+            width: resp3 ? "37ch" : (resp ? "40ch" : "50ch"),
             margin: "1rem 0 0.5 0",
             borderRadius: "10px",
             border: "2.3px solid #4a3c3c",
@@ -212,7 +215,7 @@ const Login = () => {
   const ForgotPBlock = () => {
     return (
       <React.Fragment>
-        <div style={{ width: resp ? "40ch" : "50ch" }}>
+        <div style={{ width: resp ? "38ch" : "50ch" }}>
           <FormControlLabel control={<Checkbox />} label="Remember me" />
           <Link
             to="/forgotpass"
@@ -236,7 +239,7 @@ const Login = () => {
           href="#"
           sx={{
             border: "2px solid black",
-            width: resp ? "22rem" : "28rem",
+            width: resp3 ? "20rem" : (resp ? "22rem" : "28rem"),
             padding: "0.5rem",
             borderRadius: "0.7rem",
             margin: "1rem 0 2rem 0",
@@ -293,6 +296,7 @@ const Login = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "100%",
+          overflowY:'hidden', 
         }}
       >
         <Grid

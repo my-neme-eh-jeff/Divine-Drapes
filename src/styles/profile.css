@@ -5,7 +5,7 @@
     .icons2{
         margin-left: 17.4rem;
     }
-    .image{
+    img{
         width: 80%;
         height: auto;
         border-radius: 50%;
@@ -20,12 +20,11 @@
     .icons2{
         margin-left: 86%;
     }
-    .image{
+    img{
         width: 80%;
         height: auto;
         border-radius: 50%;
     }
-}
 
 
 @media only screen and (max-width: 700) and (min-width: 400px){

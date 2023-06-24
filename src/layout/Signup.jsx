@@ -12,7 +12,7 @@ import {
 import { styled } from "@mui/material/styles";
 import { useEffect } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import giftbox from "../images/giftbox.png";
@@ -21,6 +21,9 @@ import "./Login.css";
 import { useFormik } from "formik";
 import logo from "../images/logo.png";
 import React from "react";
+import publicAxios from "../Axios/publicAxios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -54,7 +57,7 @@ const validationSchema = yup.object({
 const Signup = () => {
   // adding event listener for responsiveness
   const [width, setWindowWidth] = useState(0);
-
+  const navigate = useNavigate();
   useEffect(() => {
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
@@ -83,9 +86,35 @@ const Signup = () => {
       password: "",
     },
     validationSchema: validationSchema,
-    // onSubmit: (values) => {
-    //   alert(JSON.stringify(values, null, 2));
-    // },
+    onSubmit: async (values) => {
+      console.log(values);
+      const options = {
+        url: `auth/signup`,
+        method: "POST",
+        data: {
+          ...values,
+          lName: values.lastName,
+          fName: values.firstName,
+          DOB: values.dob,
+          number: values.contact,
+        },
+      };
+      try {
+        const resp = await publicAxios.request(options);
+        console.log(resp);
+        if (resp.data.success) {
+          console.log("succcc");
+          navigate("/login");
+        }
+      } catch (err) {
+        console.log(err);
+        if (!err.response) {
+          toast.error("No server response");
+        } else {
+          toast.error("Invalid credentials");
+        }
+      }
+    },
   });
 
   const CreateButton = styled(Button)({

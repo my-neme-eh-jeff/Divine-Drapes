@@ -12,7 +12,7 @@ import {
 import { styled } from "@mui/material/styles";
 import { useEffect } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import "./Login.css";
@@ -23,6 +23,10 @@ import * as yup from "yup";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import googleIcon from "../images/googleIcon.png";
 import React from "react";
+import publicAxios from "../Axios/publicAxios";
+import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const validationschema = yup.object({
   email: yup
@@ -36,6 +40,7 @@ const validationschema = yup.object({
 });
 
 const Login = () => {
+  const navigate = useNavigate();
   // formik
 
   const formik = useFormik({
@@ -43,11 +48,34 @@ const Login = () => {
       email: "",
       password: "",
     },
+    onSubmit: async (values) => {
+      console.log(values);
+      const options = {
+        url: `auth/login`,
+        method: "POST",
+        data: { ...values },
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      };
+      try {
+        const resp = await publicAxios.request(options);
+        console.log(resp);
+        if (resp.data.success) {
+          console.log("succcc");
+          navigate("/");
+        }
+      } catch (err) {
+        console.log(err);
+        if (!err.response) {
+          toast.error("No server response");
+        } else {
+          toast.error("Invalid credentials");
+        }
+      }
+    },
     validationSchema: validationschema,
-    // onSubmit: (values) => {
-    //   console.log(values);
-    //   alert(JSON.stringify(values, null, 2));
-    // },
   });
 
   // adding event listener for responsiveness
@@ -284,86 +312,90 @@ const Login = () => {
 
   const LoginComponet = () => {
     return (
-      <Grid
-        container
-        spacing={0}
-        className="login_main_container"
-        style={{
-          display: resp2 ? "flex" : "",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100%",
-        }}
-      >
+      <>
+        <ToastContainer />
         <Grid
-          item
-          xs={6}
+          container
+          spacing={0}
+          className="login_main_container"
           style={{
-            display: "flex",
-            flexDirection: "column",
+            display: resp2 ? "flex" : "",
             justifyContent: "center",
             alignItems: "center",
-            position: "relative",
-            top: resp2 ? "6rem" : "",
+            height: "100%",
           }}
         >
-          <img src={logo} alt="Logo" />
-          <form onSubmit={formik.handleSubmit}>
-            <Box
-              sx={{
-                maxWidth: "31.25rem",
-                width: "31.25rem",
-                height: "31.25rem",
-                // border: "2px solid black",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: resp ? "center" : "flex-start",
-                padding: "1rem",
-                position: "relative",
-                left: "1.3rem",
-              }}
-            >
-              {EmailField()}
-              {PasswordField()}
-              {ForgotPBlock()}
-
-              <div style={{ display: "flex", marginTop: "2rem" }}>
-                <LoginButton type="submit">Log in</LoginButton>
-              </div>
-
-              <div style={{ display: "flex", padding: "0 1.8rem" }}>
-                <hr width={150} /> <span style={{ margin: "0 2rem" }}> OR</span>{" "}
-                <hr width={150} />
-              </div>
-
-              <GLoginBlock />
-
-              <div
-                style={{
-                  marginLeft: "5.5rem",
+          <Grid
+            item
+            xs={6}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "relative",
+              top: resp2 ? "6rem" : "",
+            }}
+          >
+            <img src={logo} alt="Logo" />
+            <form onSubmit={formik.handleSubmit}>
+              <Box
+                sx={{
+                  maxWidth: "31.25rem",
+                  width: "31.25rem",
+                  height: "31.25rem",
+                  // border: "2px solid black",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: resp ? "center" : "flex-start",
+                  padding: "1rem",
+                  position: "relative",
+                  left: "1.3rem",
                 }}
               >
-                <span style={{ fontWeight: 600, margin: "0.6rem 0" }}>
-                  Don&apos;t have an account?
-                </span>
-                <Link
-                  to="/signup"
+                {EmailField()}
+                {PasswordField()}
+                {ForgotPBlock()}
+
+                <div style={{ display: "flex", marginTop: "2rem" }}>
+                  <LoginButton type="submit">Log in</LoginButton>
+                </div>
+
+                <div style={{ display: "flex", padding: "0 1.8rem" }}>
+                  <hr width={150} />{" "}
+                  <span style={{ margin: "0 2rem" }}> OR</span>{" "}
+                  <hr width={150} />
+                </div>
+
+                <GLoginBlock />
+
+                <div
                   style={{
-                    textDecoration: "none",
-                    color: "#A01E86",
-                    margin: "0 0.7rem ",
+                    marginLeft: "5.5rem",
                   }}
                 >
-                  Sign Up
-                </Link>
-              </div>
-            </Box>
-          </form>
+                  <span style={{ fontWeight: 600, margin: "0.6rem 0" }}>
+                    Don&apos;t have an account?
+                  </span>
+                  <Link
+                    to="/signup"
+                    style={{
+                      textDecoration: "none",
+                      color: "#A01E86",
+                      margin: "0 0.7rem ",
+                    }}
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              </Box>
+            </form>
+          </Grid>
+          <Grid item xs={6} className="img1 c">
+            <GiftGridI />
+          </Grid>
         </Grid>
-        <Grid item xs={6} className="img1 c">
-          <GiftGridI />
-        </Grid>
-      </Grid>
+      </>
     );
   };
 

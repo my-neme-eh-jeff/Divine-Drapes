@@ -30,6 +30,9 @@ const OTPverify = () => {
 
   const responsiveness2 = { responsive: width < 1000 };
   const resp2 = responsiveness2.responsive;
+  
+  const responsiveness3 = { responsive: width < 370 };
+  const resp3 = responsiveness3.responsive;
   //
 
   const ContinueBtn = styled(Button)({
@@ -37,7 +40,7 @@ const OTPverify = () => {
     borderRadius: "0.3rem",
     textDecoration: "none",
     padding: "12px 15px ",
-    width: "27.8rem",
+    width: resp3 ? "20rem" : "27.8rem",
     height: "3.1875rem",
     color: "white",
     fontSize: "0.8rem",
@@ -51,7 +54,7 @@ const OTPverify = () => {
     borderRadius: "0.3rem",
     textDecoration: "none",
     padding: "12px 15px ",
-    width: "27.8rem",
+    width: resp3 ? "20rem" : "27.8rem",
     height: "3.1875rem",
     color: "white",
     fontSize: "0.8rem",

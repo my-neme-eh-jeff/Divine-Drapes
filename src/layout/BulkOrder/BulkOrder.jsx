@@ -1,6 +1,9 @@
 import { Box, ChakraProvider, Text, VStack, SimpleGrid, GridItem, FormControl, FormLabel, Input, Select, Button } from "@chakra-ui/react"
 import { ArrowBackIcon, ExternalLinkIcon } from "@chakra-ui/icons"
 import { useState } from 'react';
+import Navbar from "../Navbar/Navbar";
+import Footer from "../Footer/Footer";
+import { useNavigate } from "react-router-dom";
 
 const initialStates = {fname: '', lname: '', email: '', company: '', units: '', items: '', addinfo: ''};
 
@@ -10,15 +13,19 @@ const BulkOrder = () => {
 
     const [formData, setFormData] = useState(initialStates);
 
+    const navigate = useNavigate();
+
     const handleSubmit = () => {
         console.log(formData);
     }
 
   return (
     <ChakraProvider>
-        <SimpleGrid columns={12} columnGap={3} m='1% 0 2% 10%' alignItems={'center'}>
+        <Navbar />
+        <Box pt='5%' pb='4%'>
+        <SimpleGrid columns={12} columnGap={3} m='1% 0 2% 10%' alignItems={'center'} visibility={['hidden', null, 'visible']}>
             <GridItem colSpan={[2, null, 1]}>
-                <Button bgColor='#ffffff'>{<ArrowBackIcon fontSize='20px'/>}</Button>
+                <Button bgColor='#ffffff' onClick={() => navigate('/')}>{<ArrowBackIcon fontSize='20px'/>}</Button>
             </GridItem>
             <GridItem colSpan={[4, null, 1]}>
                 <Text fontWeight='500' fontSize='18px'>Bulk Orders</Text>
@@ -105,6 +112,8 @@ const BulkOrder = () => {
 
         </Box>
         </VStack>
+        </Box>
+        <Footer />
     </ChakraProvider>
   )
 }

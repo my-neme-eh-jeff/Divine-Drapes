@@ -21,6 +21,9 @@ html, body{
   .productbody{
     margin-left: 2vw;
   }
+  .namehere{
+    margin-top: 36px;
+  }
   .cardd{
     margin-left: 2px;
   }

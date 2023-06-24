@@ -1,8 +1,12 @@
 import React from 'react'
 import { Grid, Typography,Button } from '@mui/material'
 import mug from "./coffee.png";
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export default function New() {
+
+  const navigate = useNavigate();
+
   return (
     <Grid container>
           <Grid item md={10} sx={{backgroundColor:"white"}}>
@@ -27,6 +31,7 @@ export default function New() {
                       backgroundColor: "#A01E86",
                       "&:hover": { backgroundColor: "#A01E86", border: 2 },
                     }}
+                    onClick={() => navigate('/admin/orders/view')}
                   >
                     View
                   </Button>

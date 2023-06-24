@@ -45,6 +45,10 @@ const ForgOtpBtnass = () => {
 
   const responsiveness2 = { responsive: width < 1000 };
   const resp2 = responsiveness2.responsive;
+
+  
+  const responsiveness3 = { responsive: width < 370 };
+  const resp3 = responsiveness3.responsive;
   //
 
   let navigate = useNavigate();
@@ -100,7 +104,7 @@ const ForgOtpBtnass = () => {
         <span
           style={{
             position: "relative",
-            right: resp2 ? "9.5rem" : "12rem",
+            right: (resp ? "8.5rem" : "12rem"),
             fontWeight: 500,
           }}
         >
@@ -109,7 +113,7 @@ const ForgOtpBtnass = () => {
         <FormControl
           style={{
             margin: "0.5rem 0 1rem 0",
-            width: resp ? "42ch" : "50ch",
+            width: resp3 ? "37ch" : (resp ? "40ch" : "50ch"),
             border: "2px solid black",
             borderRadius: "0.7rem",
           }}
@@ -183,7 +187,7 @@ const ForgOtpBtnass = () => {
               flexDirection: "column",
               justifyContent: "flex-start",
               alignItems: "center",
-              height: "36rem",
+              // height: "36rem",
             }}
           >
             <img

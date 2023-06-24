@@ -4,6 +4,7 @@ import { Box, ChakraProvider, Grid, Heading, SimpleGrid, Image, Text, Stack, But
 import { Navigate } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Footer from '../Footer/Footer'
+import Navbar from '../Navbar/Navbar'
 
 
 function Product() {
@@ -14,11 +15,12 @@ function Product() {
     }
     return (
         <div>
+            <Navbar/>
             <ChakraProvider>
                 <Box className='productbody' >
                     <br />
                     {/* product name here  */}
-                    <Heading>M1 White Mugs</Heading>
+                    <Heading className='namehere'>M1 White Mugs</Heading>
                     <br />
                     <Box height={'auto'} className='mainpro'>
                         <SimpleGrid

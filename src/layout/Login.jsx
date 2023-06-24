@@ -98,6 +98,9 @@ const Login = () => {
   const responsiveness2 = { responsive: width < 1000 };
   const resp2 = responsiveness2.responsive;
 
+  const responsiveness3 = { responsive: width < 370 };
+  const resp3 = responsiveness3.responsive;
+
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -108,7 +111,7 @@ const Login = () => {
     marginLeft: "1.2rem",
     textDecoration: "none",
     padding: "12px 15px ",
-    width: resp ? "22rem" : "28rem",
+    width: resp3 ? "20rem" : (resp ? "22rem" : "28rem"),
     height: "3.1875rem",
     color: "white",
     fontSize: "1rem",
@@ -123,7 +126,7 @@ const Login = () => {
       <React.Fragment>
         <span
           style={{
-            margin: resp2 ? "0 0 0.5rem -18rem" : "0 0 0.5rem 1rem",
+            margin: resp2 ? "0 0 0.5rem -15rem" : "0 0 0.5rem 1rem",
             fontWeight: 600,
           }}
         >
@@ -133,7 +136,7 @@ const Login = () => {
           style={{
             margin:
               formik.touched.email && formik.errors.email ? "0" : "0 0 1rem 0",
-            width: resp ? "40ch" : "50ch",
+            width: resp3 ? "37ch" : (resp ? "40ch" : "50ch"),
             borderRadius: "10px",
             border: "2.3px solid #4a3c3c",
           }}
@@ -177,7 +180,7 @@ const Login = () => {
       <React.Fragment>
         <span
           style={{
-            margin: resp2 ? "0 0 0.5rem -18rem" : "0 0 0.5rem 1rem",
+            margin: resp2 ? "0 0 0.5rem -15rem" : "0 0 0.5rem 1rem",
             fontWeight: 600,
           }}
         >
@@ -185,7 +188,7 @@ const Login = () => {
         </span>
         <FormControl
           sx={{
-            width: resp ? "40ch" : "50ch",
+            width: resp3 ? "37ch" : (resp ? "40ch" : "50ch"),
             margin: "1rem 0 0.5 0",
             borderRadius: "10px",
             border: "2.3px solid #4a3c3c",
@@ -240,12 +243,12 @@ const Login = () => {
   const ForgotPBlock = () => {
     return (
       <React.Fragment>
-        <div style={{ width: resp ? "40ch" : "50ch" }}>
+        <div style={{ width: resp ? "38ch" : "50ch" }}>
           <FormControlLabel control={<Checkbox />} label="Remember me" />
           <Link
             to="/forgotpass"
             style={{
-              marginLeft: resp ? "5 rem" : "10rem",
+              marginLeft: resp ? "4rem" : "10rem",
               color: "#AF0D0D",
             }}
           >
@@ -264,7 +267,7 @@ const Login = () => {
           href="#"
           sx={{
             border: "2px solid black",
-            width: resp ? "22rem" : "28rem",
+            width: resp3 ? "20rem" : (resp ? "22rem" : "28rem"),
             padding: "0.5rem",
             borderRadius: "0.7rem",
             margin: "1rem 0 2rem 0",
@@ -313,49 +316,51 @@ const Login = () => {
   const LoginComponet = () => {
     return (
       <>
-        <ToastContainer />
+      <ToastContainer />
+      <Grid
+        container
+        spacing={0}
+        className="login_main_container"
+        style={{
+          display: resp2 ? "flex" : "",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+          overflowY:'hidden', 
+
+        }}
+      >
         <Grid
-          container
-          spacing={0}
-          className="login_main_container"
+          item
+          xs={6}
           style={{
-            display: resp2 ? "flex" : "",
+            display: "flex",
+            flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            height: "100%",
+            position: "relative",
+            top: resp2 ? "6rem" : "",
           }}
         >
-          <Grid
-            item
-            xs={6}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              position: "relative",
-              top: resp2 ? "6rem" : "",
-            }}
-          >
-            <img src={logo} alt="Logo" />
-            <form onSubmit={formik.handleSubmit}>
-              <Box
-                sx={{
-                  maxWidth: "31.25rem",
-                  width: "31.25rem",
-                  height: "31.25rem",
-                  // border: "2px solid black",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: resp ? "center" : "flex-start",
-                  padding: "1rem",
-                  position: "relative",
-                  left: "1.3rem",
-                }}
-              >
-                {EmailField()}
-                {PasswordField()}
-                {ForgotPBlock()}
+          <img src={logo} alt="Logo" />
+          <form onSubmit={formik.handleSubmit}>
+            <Box
+              sx={{
+                maxWidth: "31.25rem",
+                width: "31.25rem",
+                height: "31.25rem",
+                // border: "2px solid black",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: resp ? "center" : "flex-start",
+                padding: "1rem",
+                position: "relative",
+                left: "1.3rem",
+              }}
+            >
+              {EmailField()}
+              {PasswordField()}
+              {ForgotPBlock()}
 
                 <div style={{ display: "flex", marginTop: "2rem" }}>
                   <LoginButton type="submit">Log in</LoginButton>
@@ -369,32 +374,32 @@ const Login = () => {
 
                 <GLoginBlock />
 
-                <div
+              <div
+                style={{
+                  marginLeft: "5.5rem",
+                }}
+              >
+                <span style={{ fontWeight: 600, margin: "0.6rem 0" }}>
+                  Don&apos;t have an account?
+                </span>
+                <Link
+                  to="/signup"
                   style={{
-                    marginLeft: "5.5rem",
+                    textDecoration: "none",
+                    color: "#A01E86",
+                    margin: "0 0.7rem ",
                   }}
                 >
-                  <span style={{ fontWeight: 600, margin: "0.6rem 0" }}>
-                    Don&apos;t have an account?
-                  </span>
-                  <Link
-                    to="/signup"
-                    style={{
-                      textDecoration: "none",
-                      color: "#A01E86",
-                      margin: "0 0.7rem ",
-                    }}
-                  >
-                    Sign Up
-                  </Link>
-                </div>
-              </Box>
-            </form>
-          </Grid>
-          <Grid item xs={6} className="img1 c">
-            <GiftGridI />
-          </Grid>
+                  Sign Up
+                </Link>
+              </div>
+            </Box>
+          </form>
         </Grid>
+        <Grid item xs={6} className="img1 c">
+          <GiftGridI />
+        </Grid>
+      </Grid>
       </>
     );
   };

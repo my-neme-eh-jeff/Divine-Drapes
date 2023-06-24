@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import mug from '../images/coffee.png'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-
+import Footer from "./Footer/Footer";
 export default function Myorders() {
     const [like,setLike]=useState(0)
 
@@ -28,8 +28,8 @@ export default function Myorders() {
             <Grid item md={12} xs={12} sx={{ marginTop: "3px" }}>
               My Favourites
             </Grid>
-            <Grid item md={2.4} xs={12}>
-              <Card sx={{ maxWidth: 200 }}>
+            <Grid item md={2.4} xs={12} sm={12} sx={{justifyContent:"center",display:"flex",alignItems:"center"}}>
+              <Card sx={{ maxWidth: 250,"@media (min-width:700px)":{maxWidth:200} }}>
                 <CardMedia
                   component="img"
                   alt="green iguana"
@@ -57,8 +57,8 @@ export default function Myorders() {
                   </CardActions>
               </Card>
             </Grid>
-            <Grid item md={2.4} xs={12}>
-              <Card sx={{ maxWidth: 200 }}>
+            <Grid item md={2.4} xs={12} sm={12} sx={{justifyContent:"center",display:"flex",alignItems:"center"}}>
+              <Card sx={{ maxWidth: 250,"@media (min-width:700px)":{maxWidth:200} }}>
                 <CardMedia
                   component="img"
                   alt="green iguana"
@@ -80,8 +80,8 @@ export default function Myorders() {
                   </CardActions>
               </Card>
             </Grid>
-            <Grid item md={2.4} xs={12}>
-              <Card sx={{ maxWidth: 200 }}>
+            <Grid item md={2.4} xs={12} sm={12} sx={{justifyContent:"center",display:"flex",alignItems:"center"}}>
+              <Card sx={{ maxWidth: 250,"@media (min-width:700px)":{maxWidth:200} }}>
                 <CardMedia
                   component="img"
                   alt="green iguana"
@@ -103,8 +103,8 @@ export default function Myorders() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item md={2.4} xs={12}>
-              <Card sx={{ maxWidth: 200 }}>
+            <Grid item md={2.4} xs={12} sm={12} sx={{justifyContent:"center",display:"flex",alignItems:"center"}}>
+              <Card sx={{ maxWidth: 250,"@media (min-width:700px)":{maxWidth:200} }}>
                 <CardMedia
                   component="img"
                   alt="green iguana"
@@ -126,8 +126,8 @@ export default function Myorders() {
                   </CardActions>
               </Card>
             </Grid>
-            <Grid item md={2.4} xs={12}>
-              <Card sx={{ maxWidth: 200 }}>
+            <Grid item md={2.4} xs={12} sm={12} sx={{justifyContent:"center",display:"flex",alignItems:"center"}}>
+              <Card sx={{ maxWidth: 250,"@media (min-width:700px)":{maxWidth:200} }}>
                 <CardMedia
                   component="img"
                   alt="green iguana"

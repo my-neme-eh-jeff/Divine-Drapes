@@ -39,7 +39,7 @@ const Personalised = () => {
     <>
     <Carousel responsive={responsive}
       removeArrowOnDeviceType={["tablet", "mobile"]}
-      autoPlay={true}
+      // autoPlay={true}
       autoPlaySpeed={2000}>
             {topSelling?.map((item) => (
                     <Card maxW='sm' key={item}>
@@ -50,8 +50,7 @@ const Personalised = () => {
                         borderRadius='lg'
                       />
                       <Stack mt='6' spacing='3'>
-                        <Button><Heading size='md'>Item</Heading></Button>
-                        
+                        <Button><Heading size='md'>Item</Heading></Button>                       
                       </Stack>
                     </CardBody>
                   </Card>

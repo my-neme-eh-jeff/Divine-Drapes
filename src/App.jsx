@@ -7,13 +7,13 @@ import Profile from './layout/Profile'
 import Forgotpass from './layout/Forgotpass'
 import OTPverify from './layout/OTPverify'
 import Product from './layout/product/Product'
-import Navbar from './layout/Navbar/Navbar'
 import Home from './layout/Home/Home'
 import BulkOrder from './layout/BulkOrder/BulkOrder'
 import Buy from './layout/product/Buy'
 import Myorders from './layout/Myorders'
 import Myfav from './layout/Myfav'
 import Allorders from './layout/admin/Allorders'
+import ViewOrders from './layout/admin/ViewOrders'
 
 
 function App() {
@@ -56,6 +56,7 @@ function App() {
 
         <Routes>
           <Route path='/admin/orders' element={<><Allorders/></>}></Route>
+          <Route path='/admin/orders/view' element={<><ViewOrders/></>}></Route>
         </Routes>
 
 

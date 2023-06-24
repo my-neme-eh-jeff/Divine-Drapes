@@ -10,11 +10,15 @@ import TopSellingCarousel from './TopSelling';
 import Testimonials from './Testimonials';
 import Personalised from './Personalised';
 import SearchBar from './SearchBar';
+import Navbar  from "../Navbar/Navbar.jsx";
+import Footer from '../Footer/Footer.jsx';
 
 const Home = () => {
 
   return (
     <ChakraProvider>
+      <Navbar />
+      <Box pt='5%'>
     <Flex justifyContent='space-around' 
     align='center'
     // position='absolute'
@@ -26,11 +30,11 @@ const Home = () => {
     mb='1%'
     >
       <Flex flexDirection={'column'}>
-        <h1 id='home-h1'>A wide variety of customizable gifts for your loved ones.</h1>
+        <h1 id='home-h1'><center>A wide variety of customizable gifts for your loved ones.</center></h1>
         <SimpleGrid columns={4} columnGap={1} rowGap={2} m='2% 3% 3% 7%'>
             <Link className='home-tags' color='#fff'>Lockets</Link>
             <Link className='home-tags' color='#fff'>Frames</Link>
-            <Link className='home-tags' color='#fff'>Keychains</Link>
+            <Link className='home-tags' color='#fff'>Mugs</Link>
             <Link className='home-tags' color='#fff'>T-shirts</Link>
         </SimpleGrid>
             <SearchBar />
@@ -44,6 +48,8 @@ const Home = () => {
       <Text class='home-headings'>Testimonials</Text>
           <Testimonials />
     </Box>
+    </Box>
+    <Footer/>
     </ChakraProvider>
   )
 }

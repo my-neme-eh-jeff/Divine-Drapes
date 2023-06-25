@@ -192,7 +192,7 @@ const viewCart = async (req, res) => {
   try {
     const user = req.user;
     const User = await UserSchema.findById({ _id: user._id }).populate(
-      " order"
+      "order cart"
     );
 
     res.status(200).json({

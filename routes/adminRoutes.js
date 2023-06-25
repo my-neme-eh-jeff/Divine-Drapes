@@ -6,6 +6,19 @@ const fileVerify = require("../middleware/fileVerify");
 
 const router = express.Router();
 
+// add product
 router.post("/addProduct", adminC.addProduct);
-router.post("/allOrders", adminC.allOrders);
+
+//view all orders
+router.get("/allOrders", adminC.allOrders);
+
+//update a product
+router.patch("/updateProduct", adminC.updateProduct)
+
+//delete a product
+router.delete("/deleteProduct", adminC.deleteProduct)
+
+//find a particular user
+router.delete("/deleteProduct", adminC.deleteProduct)
+
 module.exports = router;

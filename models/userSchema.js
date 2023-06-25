@@ -65,8 +65,23 @@ const userSchema = new Schema(
           //home, office, relatives, etc
           type: String,
         },
-        address: {
+        houseNumber: {
           type: String,
+        },
+        building : {
+          type : String,
+        },
+        street:{
+          type : String,
+        },
+        city : {
+          type : String
+        },
+        state : {
+          type : String
+        },
+        country : {
+          type : String
         },
       },
     ],

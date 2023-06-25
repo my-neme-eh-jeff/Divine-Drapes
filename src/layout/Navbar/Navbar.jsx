@@ -6,25 +6,24 @@ import {
   Link,
   ChakraProvider,
   Avatar,
-  WrapItem,
   Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import Categories from "./Categories";
-import { useNavigate } from "react-router-dom";
 import SearchBar from "../Home/SearchBar";
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
   const toggleMenu = () => setShow(!show);
-
-  const navigate = useNavigate();
-
   const [showSearchBar, setShowSearchBar] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
       setShowSearchBar(scrollTop > 300);
     };
 
@@ -75,8 +74,8 @@ const Navbar = () => {
             direction={["column", "row", "row", "row"]}
             pt={[4, 4, 0, 0]}
           >
-            <Box mr='5%'>
-              {showSearchBar && <SearchBar />}
+            <Box mr="5%">
+            {window.location.pathname === "/" ? showSearchBar && <SearchBar /> : <SearchBar />}
             </Box>
 
             <Link>
@@ -98,9 +97,15 @@ const Navbar = () => {
                   Login
                 </Button>
             </Link>
-            <WrapItem onClick={() => navigate('/profile')} cursor='pointer'>
-              <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
-            </WrapItem>
+            <Menu>
+              <MenuButton bgColor='white'>
+                <Avatar />
+              </MenuButton>
+              <MenuList>
+                <MenuItem>Logout</MenuItem>
+                <MenuItem><Link href='/profile'>My Accounts</Link></MenuItem>
+              </MenuList>
+            </Menu>
           </Flex>
         </Box>
       </Flex>

@@ -2,7 +2,6 @@ const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const otpGenerator = require("otp-generator");
 const jwt = require("jsonwebtoken");
-
 const UserSchema = require("../models/userSchema");
 
 let mailTransporter = nodemailer.createTransport({

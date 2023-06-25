@@ -8,7 +8,9 @@ const router = express.Router()
 
 
 // Get account details
-router.get("/profile", verifyJWT, userC.profile)
+//TODO sabh jagah se middleware hata de maine app me dal diya h sidha 
+router.get("/profile", userC.profile)
+
 
 //edit user details
 router.put("/editUserInfo", auth.authToken, userC.updateUser)

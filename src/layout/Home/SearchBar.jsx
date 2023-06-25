@@ -1,8 +1,9 @@
-import { Input, InputLeftElement, InputGroup, InputRightElement, Button } from '@chakra-ui/react';
+import { Input, InputLeftElement, InputGroup, InputRightElement, Button, Box } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 
 const SearchBar = () => {
   return (
+    <Box>
     <InputGroup id='search-bar'>
         <InputLeftElement mt='1%' ml='1%'>
             <SearchIcon />
@@ -12,6 +13,7 @@ const SearchBar = () => {
             <Button bgColor={'#A01E86'} color='#fff'>Explore</Button>
         </InputRightElement>
     </InputGroup>
+    </Box>
   )
 }
 

@@ -60,9 +60,6 @@ const Categories = () => {
   const [selected, setSelected] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // const handleSelected = (item) => {
-  //   setSelected(selected => selected.concat(item))
-  // }
   const handleSelected = (item) => {
     setSelected((prevSelected) => new Set(prevSelected).add(item));
   };
@@ -115,7 +112,7 @@ const Categories = () => {
             </AlertDialogHeader>
             <AlertDialogBody>
               <SimpleGrid
-                columns={[2, null, 8]}
+                columns={{base: 2, md: 4, lg: 8}}
                 columnGap={[2, null, 4]}
                 rowGap={[2, null, 6]}
               >

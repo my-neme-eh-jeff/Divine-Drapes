@@ -22,12 +22,12 @@ const BulkOrder = () => {
   return (
     <ChakraProvider>
         <Navbar />
-        <Box pt='5%' pb='4%'>
+        <Box pt={{base: '5%', md: '10%', lg: '6%'}} pb='4%'>
         <SimpleGrid columns={12} columnGap={3} m='1% 0 2% 10%' alignItems={'center'} visibility={['hidden', null, 'visible']}>
             <GridItem colSpan={[2, null, 1]}>
                 <Button bgColor='#ffffff' onClick={() => navigate('/')}>{<ArrowBackIcon fontSize='20px'/>}</Button>
             </GridItem>
-            <GridItem colSpan={[4, null, 1]}>
+            <GridItem colSpan={[4, null, 2]}>
                 <Text fontWeight='500' fontSize='18px'>Bulk Orders</Text>
             </GridItem>
         </SimpleGrid>
@@ -37,7 +37,7 @@ const BulkOrder = () => {
             p='1% 15%'
             borderRadius={'20px'} 
             border='1px'
-            m='0 1% 0 0'>
+            m='0 1%'>
                 <VStack>
                     <Text color='#A01E86' fontWeight='700' fontSize='18px'>Have a bulk order ?</Text>
                     <Text color='#A01E86' fontWeight='500' fontSize='17px'>Fill the following details and we will get back to you</Text>

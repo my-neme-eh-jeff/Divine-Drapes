@@ -8,7 +8,6 @@ const UserSchema = require("../models/userSchema");
 const ProductSchema = require("../models/productSchema");
 const OrderSchema = require("../models/orderSchema");
 
-
 // Get account details
 const profile = async (req, res) => {
   try {
@@ -270,6 +269,42 @@ const viewOrder = async (req, res) => {
   }
 };
 
+//add review
+const addReview = async (req, res) => {
+  try {
+    const user = req.user;
+    const { productID, review, star } = req.body
+
+    const userPurchased = await UserSchema.findOne({ _id: user._id, order: { $in: [mongoose.Types.ObjectId(productID)] } });
+
+    const reviewObj = {
+      user : user._id,
+      fName : user.fName,
+      review,
+      star,
+      verifiedPurchase : userPurchased
+    }
+
+    await ProductSchema.findByIdAndUpdate({_id : productID}, {reviews : { $push : reviewObj}})
+    const product = await ProductSchema.findByIdAndUpdate({_id : productID})
+
+    const addReviewInUser = await UserSchema.findOne({ _id: user._id, reviews: { $push : review}})
+    
+
+    res.status(200).json({
+      success: true,
+      message: "Review added successfully",
+      data : product
+    })
+
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
 module.exports = {
   profile,
   updateUser,
@@ -281,4 +316,5 @@ module.exports = {
   directOrder,
   cartOrder,
   viewOrder,
+  addReview,
 };

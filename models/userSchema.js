@@ -104,6 +104,11 @@ const userSchema = new Schema(
         ref: "order",
       },
     ],
+    reviews : [
+      {
+        type : String
+      }
+    ],
     refreshToken: [String],
   },
   { timestamps: true }

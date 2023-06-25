@@ -1,12 +1,9 @@
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const otpGenerator = require("otp-generator");
-const auth = require("../middleware/auth");
 const jwt = require("jsonwebtoken");
 
 const UserSchema = require("../models/userSchema");
-const ProductSchema = require("../models/productSchema");
-const OrderSchema = require("../models/orderSchema");
 
 let mailTransporter = nodemailer.createTransport({
   service: "gmail",
@@ -19,6 +16,7 @@ let mailTransporter = nodemailer.createTransport({
 
 const createUser = async (req, res) => {
   try {
+    console.log(req.body);
     let userData = new UserSchema(req.body);
     let savedUserData = await userData.save();
     let id = savedUserData._id;
@@ -37,6 +35,7 @@ const createUser = async (req, res) => {
     const token = jwt.sign({ email: req.body.email }, process.env.SECRETKEY, {
       expiresIn: "1d",
     });
+    console.log(pass);
     res.status(201).json({
       success: true,
       data: pass,
@@ -57,8 +56,8 @@ const handleRefreshToken = async (req, res) => {
   res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
 
   const foundUser = await UserSchema.findOne({ refreshToken }).exec();
-
   // Detected refresh token reuse!
+  console.log(foundUser);
   if (!foundUser) {
     jwt.verify(
       refreshToken,
@@ -67,7 +66,7 @@ const handleRefreshToken = async (req, res) => {
         if (err) return res.sendStatus(403); //Forbidden
         console.log("attempted refresh token reuse!");
         const hackedUser = await UserSchema.findOne({
-          username: decoded.username,
+          email: decoded.email,
         }).exec();
         hackedUser.refreshToken = [];
         const result = await hackedUser.save();
@@ -86,30 +85,30 @@ const handleRefreshToken = async (req, res) => {
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET,
     async (err, decoded) => {
+      console.log(decoded);
       if (err) {
         console.log("expired refresh token");
         foundUser.refreshToken = [...newRefreshTokenArray];
         const result = await foundUser.save();
         console.log(result);
       }
-      if (err || foundUser.username !== decoded.username)
-        return res.sendStatus(403);
+      if (err || foundUser.email !== decoded.email) return res.sendStatus(403);
 
       // Refresh token was still valid
       const roles = Object.values(foundUser.roles);
       const accessToken = jwt.sign(
         {
           UserInfo: {
-            username: decoded.username,
+            email: decoded.email,
             roles: roles,
           },
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "10s" }
+        { expiresIn: "10m" }
       );
 
       const newRefreshToken = jwt.sign(
-        { username: foundUser.username },
+        { email: foundUser.email },
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: "1d" }
       );
@@ -125,7 +124,7 @@ const handleRefreshToken = async (req, res) => {
         maxAge: 24 * 60 * 60 * 1000,
       });
 
-      res.json({ roles, accessToken });
+      res.json({ accessToken,success:true });
     }
   );
 };
@@ -157,26 +156,29 @@ const handleLogout = async (req, res) => {
 
 const handleLogin = async (req, res) => {
   const cookies = req.cookies;
-  console.log(`cookie available at login: ${JSON.stringify(cookies)}`);
-
+  console.log(req.body)
   const email = req.body.email;
   const password = req.body.password;
+  console.log(password)
   if (!email || !password)
     return res
       .status(400)
-      .json({ message: "Username and password are required." });
+      .json({ message: "email and password are required." });
   const foundUser = await UserSchema.findOne({ email: email });
-
+  console.log(foundUser)
   if (!foundUser) return res.sendStatus(401); //Unauthorized
   // evaluate password
-  const match = await bcrypt.compare(password, foundUser.password);
+  // const match = await bcrypt.compare(password, foundUser.password);
+  const match = password === foundUser.password
+  console.log(match)
   if (match) {
+    console.log(foundUser);
     const roles = Object.values(foundUser.roles).filter(Boolean);
     // create JWTs
     const accessToken = jwt.sign(
       {
         UserInfo: {
-          username: foundUser.username,
+          email: foundUser.email,
           roles: roles,
         },
       },
@@ -184,12 +186,11 @@ const handleLogin = async (req, res) => {
       { expiresIn: "10m" }
     );
     const newRefreshToken = jwt.sign(
-      { username: foundUser.username },
+      { email: foundUser.email },
       process.env.REFRESH_TOKEN_SECRET,
       { expiresIn: "10d" }
     );
 
-    // Changed to let keyword
     let newRefreshTokenArray = !cookies?.jwt
       ? foundUser.refreshToken
       : foundUser.refreshToken.filter((rt) => rt !== cookies.jwt);
@@ -203,7 +204,7 @@ const handleLogin = async (req, res) => {
             */
 
       const refreshToken = cookies.jwt;
-      const foundToken = await User.findOne({ refreshToken }).exec();
+      const foundToken = await UserSchema.findOne({ refreshToken }).exec();
 
       // Detected refresh token reuse!
       if (!foundToken) {
@@ -221,9 +222,7 @@ const handleLogin = async (req, res) => {
 
     // Saving refreshToken with current user
     foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
-    const result = await foundUser.save();
-    console.log(result);
-    console.log(roles);
+    await foundUser.save();
 
     // Creates Secure Cookie with refresh token
     res.cookie("jwt", newRefreshToken, {
@@ -234,8 +233,9 @@ const handleLogin = async (req, res) => {
     });
 
     // Send authorization roles and access token to user
-    res.json({ roles, accessToken, foundUser });
+    res.json({ accessToken,success:true });
   } else {
+    console.log('23912039qsidbdak')
     res.sendStatus(401);
   }
 };
@@ -282,7 +282,6 @@ const forgotPSWD = async (req, res) => {
 };
 
 //enter otp for pswd reset
-
 const verifyOTP = async (req, res) => {
   try {
     const otp = req.body.otp;
@@ -316,12 +315,62 @@ const verifyOTP = async (req, res) => {
   }
 };
 
+const loginUser = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
+    console.log(req.body);
+    const user = await UserSchema.findOne({ email: email });
+    if (!user) {
+      return res.status(400).json({
+        error: "User does not exist",
+      });
+    }
+
+    const withoutPswd = await UserSchema.findOne(
+      { email: email },
+      { password: 0 }
+    );
+
+    const isPassValid = await bcrypt.compare(password, user.password);
+    if (isPassValid) {
+      const token = jwt.sign(
+        {
+          UserInfo: {
+            email: foundUser.email,
+            roles: roles,
+          },
+        },
+        process.env.SECRETKEY,
+        {
+          expiresIn: "30d",
+        }
+      );
+      res.status(200).json({
+        success: true,
+        data: withoutPswd,
+        token: token,
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        error: "Wrong password",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createUser,
-  // loginUser,
+  loginUser,
   handleRefreshToken,
   handleLogout,
-  loginUser: handleLogin,
+  handleLogin,
   forgotPSWD,
   verifyOTP,
 };

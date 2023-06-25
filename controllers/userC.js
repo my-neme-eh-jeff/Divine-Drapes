@@ -9,55 +9,22 @@ const ProductSchema = require("../models/productSchema");
 const OrderSchema = require("../models/orderSchema");
 
 
-
-// Login
-const loginUser = async (req, res) => {
-  try {
-    const email = req.body.email;
-    const password = req.body.password;
-    console.log(req.body);
-    const user = await UserSchema.findOne({ email: email });
-    if (!user) {
-      return res.status(400).json({
-        error: "User does not exist",
-      });
-    }
-
-    const withoutPswd = await UserSchema.findOne(
-      { email: email },
-      { password: 0 }
-    );
-
-    const isPassValid = await bcrypt.compare(password, user.password);
-    if (isPassValid) {
-      const token = jwt.sign({ email: req.body.email }, process.env.SECRETKEY, {
-        expiresIn: "1d",
-      });
-      res.status(200).json({
-        success: true,
-        data: withoutPswd,
-        token: token,
-      });
-    } else {
-      res.status(400).json({
-        success: false,
-        error: "Wrong password",
-      });
-    }
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: error.message,
-    });
-  }
-};
-
 // Get account details
 const profile = async (req, res) => {
   try {
+    const { fName, lName, DOB, profilePic, email, number, isVerified } =
+      req.user;
     res.status(200).json({
       success: true,
-      data: req.user,
+      data: {
+        fName,
+        lName,
+        DOB,
+        profilePic,
+        email,
+        number,
+        isVerified,
+      },
     });
   } catch (error) {
     res.status(500).json({
@@ -68,7 +35,6 @@ const profile = async (req, res) => {
 };
 
 //edit user profile
-
 const updateUser = async (req, res) => {
   // let uname = req.params.uname;
   let email = req.user.email;
@@ -104,7 +70,6 @@ const updateUser = async (req, res) => {
         const alreadyExist = await UserSchema.findOne({
           email: req.body.email,
         });
-
         if (alreadyExist.length != 0) {
           res.status(400).json({
             success: false,
@@ -123,7 +88,6 @@ const updateUser = async (req, res) => {
           { password: hashedPassword }
         );
       }
-
       res.status(201).json({
         success: true,
         data: req.body,
@@ -137,12 +101,7 @@ const updateUser = async (req, res) => {
   }
 };
 
-
-
-
-
 //view all products
-
 const allProducts = async (req, res) => {
   try {
     const list = await ProductSchema.find();
@@ -160,7 +119,6 @@ const allProducts = async (req, res) => {
 };
 
 //view products category wise
-
 const categoryWise = async (req, res) => {
   try {
     const category = req.params.category;
@@ -180,7 +138,6 @@ const categoryWise = async (req, res) => {
 };
 
 //add to cart
-
 const addCart = async (req, res) => {
   try {
     const User = req.user;
@@ -231,7 +188,6 @@ const removeCart = async (req, res) => {
 };
 
 //view my cart
-
 const viewCart = async (req, res) => {
   try {
     const user = req.user;
@@ -250,6 +206,7 @@ const viewCart = async (req, res) => {
     });
   }
 };
+
 //place order
 const directOrder = async (req, res) => {
   try {
@@ -271,6 +228,7 @@ const directOrder = async (req, res) => {
     });
   }
 };
+
 //order from cart
 const cartOrder = async (req, res) => {
   try {
@@ -292,6 +250,7 @@ const cartOrder = async (req, res) => {
     });
   }
 };
+
 //view Order
 const viewOrder = async (req, res) => {
   try {

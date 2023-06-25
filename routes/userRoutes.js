@@ -2,12 +2,13 @@ const userC = require("../controllers/userC.js")
 const express = require("express")
 const auth = require("../middleware/auth")
 const fileVerify = require("../middleware/fileVerify")
+const verifyJWT = require("../middleware/verifyJWT.js")
 
 const router = express.Router()
 
 
 // Get account details
-router.get("/profile", auth.authToken, userC.profile)
+router.get("/profile", verifyJWT, userC.profile)
 
 //edit user details
 router.put("/editUserInfo", auth.authToken, userC.updateUser)
@@ -20,6 +21,7 @@ router.get("/categoryWise", auth.authToken, userC.categoryWise)
 
 //view my cart
 router.get("/viewMyCart", auth.authToken, userC.viewCart)
+
 
 // add to cart
 router.post("/addCart/:pID", auth.authToken, userC.addCart)

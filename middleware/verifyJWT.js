@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const UserSchema = require("../models/userSchema");
 
 const verifyJWT = (req, res, next) => {
     const authHeader = req.headers.authorization || req.headers.Authorization;
@@ -8,9 +9,10 @@ const verifyJWT = (req, res, next) => {
     jwt.verify(
         token,
         process.env.ACCESS_TOKEN_SECRET,
-        (err, decoded) => {
+        async (err, decoded) => {
             if (err) return res.sendStatus(403); //invalid token
-            req.user = decoded.UserInfo.username;
+            const user = await UserSchema.findOne({email:decoded.UserInfo.email})
+            req.user = user
             req.roles = decoded.UserInfo.roles;
             next();
         }

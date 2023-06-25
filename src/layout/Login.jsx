@@ -12,7 +12,7 @@ import {
 import { styled } from "@mui/material/styles";
 import { useEffect } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import "./Login.css";
@@ -23,6 +23,10 @@ import * as yup from "yup";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import googleIcon from "../images/googleIcon.png";
 import React from "react";
+import publicAxios from "../Axios/publicAxios";
+import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const validationschema = yup.object({
   email: yup
@@ -36,6 +40,7 @@ const validationschema = yup.object({
 });
 
 const Login = () => {
+  const navigate = useNavigate();
   // formik
 
   const formik = useFormik({
@@ -43,11 +48,34 @@ const Login = () => {
       email: "",
       password: "",
     },
+    onSubmit: async (values) => {
+      console.log(values);
+      const options = {
+        url: `auth/login`,
+        method: "POST",
+        data: { ...values },
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      };
+      try {
+        const resp = await publicAxios.request(options);
+        console.log(resp);
+        if (resp.data.success) {
+          console.log("succcc");
+          navigate("/");
+        }
+      } catch (err) {
+        console.log(err);
+        if (!err.response) {
+          toast.error("No server response");
+        } else {
+          toast.error("Invalid credentials");
+        }
+      }
+    },
     validationSchema: validationschema,
-    // onSubmit: (values) => {
-    //   console.log(values);
-    //   alert(JSON.stringify(values, null, 2));
-    // },
   });
 
   // adding event listener for responsiveness
@@ -70,6 +98,9 @@ const Login = () => {
   const responsiveness2 = { responsive: width < 1000 };
   const resp2 = responsiveness2.responsive;
 
+  const responsiveness3 = { responsive: width < 370 };
+  const resp3 = responsiveness3.responsive;
+
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -80,7 +111,7 @@ const Login = () => {
     marginLeft: "1.2rem",
     textDecoration: "none",
     padding: "12px 15px ",
-    width: resp ? "22rem" : "28rem",
+    width: resp3 ? "20rem" : (resp ? "22rem" : "28rem"),
     height: "3.1875rem",
     color: "white",
     fontSize: "1rem",
@@ -95,7 +126,7 @@ const Login = () => {
       <React.Fragment>
         <span
           style={{
-            margin: resp2 ? "0 0 0.5rem -18rem" : "0 0 0.5rem 1rem",
+            margin: resp2 ? "0 0 0.5rem -15rem" : "0 0 0.5rem 1rem",
             fontWeight: 600,
           }}
         >
@@ -105,7 +136,7 @@ const Login = () => {
           style={{
             margin:
               formik.touched.email && formik.errors.email ? "0" : "0 0 1rem 0",
-            width: resp ? "40ch" : "50ch",
+            width: resp3 ? "37ch" : (resp ? "40ch" : "50ch"),
             borderRadius: "10px",
             border: "2.3px solid #4a3c3c",
           }}
@@ -149,7 +180,7 @@ const Login = () => {
       <React.Fragment>
         <span
           style={{
-            margin: resp2 ? "0 0 0.5rem -18rem" : "0 0 0.5rem 1rem",
+            margin: resp2 ? "0 0 0.5rem -15rem" : "0 0 0.5rem 1rem",
             fontWeight: 600,
           }}
         >
@@ -157,7 +188,7 @@ const Login = () => {
         </span>
         <FormControl
           sx={{
-            width: resp ? "40ch" : "50ch",
+            width: resp3 ? "37ch" : (resp ? "40ch" : "50ch"),
             margin: "1rem 0 0.5 0",
             borderRadius: "10px",
             border: "2.3px solid #4a3c3c",
@@ -212,7 +243,7 @@ const Login = () => {
   const ForgotPBlock = () => {
     return (
       <React.Fragment>
-        <div style={{ width: resp ? "40ch" : "50ch" }}>
+        <div style={{ width: resp ? "38ch" : "50ch" }}>
           <FormControlLabel control={<Checkbox />} label="Remember me" />
           <Link
             to="/forgotpass"
@@ -236,7 +267,7 @@ const Login = () => {
           href="#"
           sx={{
             border: "2px solid black",
-            width: resp ? "22rem" : "28rem",
+            width: resp3 ? "20rem" : (resp ? "22rem" : "28rem"),
             padding: "0.5rem",
             borderRadius: "0.7rem",
             margin: "1rem 0 2rem 0",
@@ -284,6 +315,8 @@ const Login = () => {
 
   const LoginComponet = () => {
     return (
+      <>
+      <ToastContainer />
       <Grid
         container
         spacing={0}
@@ -293,6 +326,8 @@ const Login = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "100%",
+          overflowY:'hidden', 
+
         }}
       >
         <Grid
@@ -304,7 +339,7 @@ const Login = () => {
             justifyContent: "center",
             alignItems: "center",
             position: "relative",
-            top: resp2 ? "1.5rem" : "",
+            top: resp2 ? "6rem" : "",
           }}
         >
           <img src={logo} alt="Logo" />
@@ -327,20 +362,21 @@ const Login = () => {
               {PasswordField()}
               {ForgotPBlock()}
 
-              <div style={{ display: "flex", marginTop: "2rem" }}>
-                <LoginButton type="submit">Log in</LoginButton>
-              </div>
+                <div style={{ display: "flex", marginTop: "2rem" }}>
+                  <LoginButton type="submit">Log in</LoginButton>
+                </div>
 
-              <div style={{ display: "flex", padding: "0 1.8rem" }}>
-                <hr width={150} /> <span style={{ margin: "0 2rem" }}> OR</span>{" "}
-                <hr width={150} />
-              </div>
+                <div style={{ display: "flex", padding: "0 1.8rem" }}>
+                  <hr width={150} />{" "}
+                  <span style={{ margin: "0 2rem" }}> OR</span>{" "}
+                  <hr width={150} />
+                </div>
 
-              <GLoginBlock />
+                <GLoginBlock />
 
               <div
                 style={{
-                  marginLeft: resp2 ? "1.5rem" : "5.5rem",
+                  marginLeft: "5.5rem",
                 }}
               >
                 <span style={{ fontWeight: 600, margin: "0.6rem 0" }}>
@@ -364,6 +400,7 @@ const Login = () => {
           <GiftGridI />
         </Grid>
       </Grid>
+      </>
     );
   };
 

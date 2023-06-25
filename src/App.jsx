@@ -15,14 +15,16 @@ import Myfav from './layout/Myfav'
 import Allorders from './layout/admin/Allorders'
 import ViewOrders from './layout/admin/ViewOrders'
 
-function App() {
 
+function App() {
+  
   return (
     <>
     <div className='App'>
       <Router>
         <Routes>
-          <Route path='/' element={<> <Home/> </>}></Route>
+          <Route path='/navbar' element={<> <Navbar/> </>}></Route>
+          <Route path='/' index element={<> <Home/> </>}></Route>
         </Routes>
         <Routes>
           <Route path='/login' element={<> <Login/> </>}></Route>
@@ -51,10 +53,14 @@ function App() {
         <Routes>
           <Route path='/fav' element={<><Myfav/></>}></Route>
         </Routes>
+
         <Routes>
           <Route path='/admin/orders' element={<><Allorders/></>}></Route>
           <Route path='/admin/orders/view' element={<><ViewOrders/></>}></Route>
         </Routes>
+
+
+        {/* </Route> */}
       </Router>
 
     </div>

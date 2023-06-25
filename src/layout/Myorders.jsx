@@ -14,6 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import Footer from "./Footer/Footer";
 
 import { FormControl, TextareaAutosize } from "@mui/material";
 
@@ -53,8 +54,8 @@ export default function Myorders() {
             <Grid item md={12} xs={12} sx={{ marginTop: "3px" }}>
               My Orders
             </Grid>
-            <Grid item md={2.4} xs={12}>
-              <Card sx={{ maxWidth: 200 }}>
+            <Grid item md={2.4} xs={12} sm={12} sx={{justifyContent:"center",display:"flex",alignItems:"center"}}>
+              <Card sx={{ maxWidth: 250,"@media (min-width:700px)":{maxWidth:200} }} className="cards">
                 <CardMedia
                   component="img"
                   alt="green iguana"
@@ -107,8 +108,8 @@ export default function Myorders() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item md={2.4} xs={12}>
-              <Card sx={{ maxWidth: 200 }}>
+            <Grid item md={2.4} xs={12} sm={12} sx={{justifyContent:"center",display:"flex",alignItems:"center"}}>
+              <Card sx={{ maxWidth: 250,"@media (min-width:700px)":{maxWidth:200} }}>
                 <CardMedia
                   component="img"
                   alt="green iguana"
@@ -160,8 +161,8 @@ export default function Myorders() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item md={2.4} xs={12}>
-              <Card sx={{ maxWidth: 200 }}>
+            <Grid item md={2.4} xs={12} sm={12} sx={{justifyContent:"center",display:"flex",alignItems:"center"}}>
+              <Card sx={{ maxWidth: 250,"@media (min-width:700px)":{maxWidth:200} }}>
                 <CardMedia
                   component="img"
                   alt="green iguana"
@@ -213,61 +214,8 @@ export default function Myorders() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item md={2.4} xs={12}>
-              <Card sx={{ maxWidth: 200 }}>
-                <CardMedia
-                  component="img"
-                  alt="green iguana"
-                  height="200"
-                  image={mug}
-                  sx={{
-                    borderTopLeftRadius: "10px",
-                    borderTopRightRadius: "10px",
-                    borderBottomRightRadius: "10px",
-                    borderBottomLeftRadius: "10px",
-                  }}
-                />
-                <CardContent sx={{}}>
-                  <Typography gutterBottom variant="h7" component="div" sx={{}}>
-                    Mug
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    some decription...
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    sx={{
-                      color: "white",
-                      backgroundColor: "#A01E86",
-                      "&:hover": { backgroundColor: "#A01E86", border: 2 },
-                    }}
-                  >
-                    View
-                  </Button>
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    sx={{
-                      borderColor: "#A01E86",
-                      color: "#A01E86",
-                      border: 2,
-                      "&:hover": {
-                        backgroundColor: "white",
-                        borderColor: "#A01E86",
-                        border: 2,
-                      },
-                    }}
-                  >
-                    Comment
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid item md={2.4} xs={12}>
-              <Card sx={{ maxWidth: 200 }}>
+            <Grid item md={2.4} xs={12} sm={12} sx={{justifyContent:"center",display:"flex",alignItems:"center"}}>
+              <Card sx={{ maxWidth: 250,"@media (min-width:700px)":{maxWidth:200} }}>
                 <CardMedia
                   component="img"
                   alt="green iguana"
@@ -322,7 +270,7 @@ export default function Myorders() {
           </Grid>
         </Grid>
       </Grid>
-
+      
       <Modal
         open={open}
         onClose={handleClose}

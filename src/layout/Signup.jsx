@@ -12,7 +12,7 @@ import {
 import { styled } from "@mui/material/styles";
 import { useEffect } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import giftbox from "../images/giftbox.png";
@@ -21,6 +21,9 @@ import "./Login.css";
 import { useFormik } from "formik";
 import logo from "../images/logo.png";
 import React from "react";
+import publicAxios from "../Axios/publicAxios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -54,7 +57,7 @@ const validationSchema = yup.object({
 const Signup = () => {
   // adding event listener for responsiveness
   const [width, setWindowWidth] = useState(0);
-
+  const navigate = useNavigate();
   useEffect(() => {
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
@@ -71,6 +74,9 @@ const Signup = () => {
 
   const responsiveness2 = { responsive: width < 1000 };
   const resp2 = responsiveness2.responsive;
+
+  const responsiveness3 = { responsive: width < 370 };
+  const resp3 = responsiveness3.responsive;
   //
 
   const formik = useFormik({
@@ -83,9 +89,35 @@ const Signup = () => {
       password: "",
     },
     validationSchema: validationSchema,
-    // onSubmit: (values) => {
-    //   alert(JSON.stringify(values, null, 2));
-    // },
+    onSubmit: async (values) => {
+      console.log(values);
+      const options = {
+        url: `auth/signup`,
+        method: "POST",
+        data: {
+          ...values,
+          lName: values.lastName,
+          fName: values.firstName,
+          DOB: values.dob,
+          number: values.contact,
+        },
+      };
+      try {
+        const resp = await publicAxios.request(options);
+        console.log(resp);
+        if (resp.data.success) {
+          console.log("succcc");
+          navigate("/login");
+        }
+      } catch (err) {
+        console.log(err);
+        if (!err.response) {
+          toast.error("No server response");
+        } else {
+          toast.error("Invalid credentials");
+        }
+      }
+    },
   });
 
   const CreateButton = styled(Button)({
@@ -141,7 +173,7 @@ const Signup = () => {
             helperText={formik.touched.firstName && formik.errors.firstName}
             style={{
               margin: "0.5rem 0 1rem 0",
-              width: resp ? "20ch" : "24ch",
+              width: resp3 ? "17ch" : (resp ? "20ch" : "24ch"),
               border: "2px solid black",
               borderRadius: "0.7rem",
             }}
@@ -169,7 +201,7 @@ const Signup = () => {
             required
             style={{
               margin: "0.5rem 0 1rem 1rem",
-              width: resp ? "20ch" : "24ch",
+              width: resp3 ? "17ch" : (resp ? "20ch" : "24ch"),
               border: "2px solid black",
               borderRadius: "0.7rem",
             }}
@@ -184,7 +216,7 @@ const Signup = () => {
       <React.Fragment>
         <span
           style={{
-            margin: resp2 ? "0 0 0 -20rem" : "0 0 0 1rem",
+            margin: resp3 ? "0 17rem 0 0" : (resp2 ? "0 0 0 -20rem" : "0 0 0 1rem"),
             fontWeight: 500,
           }}
         >
@@ -193,7 +225,7 @@ const Signup = () => {
         <FormControl
           style={{
             margin: "0.5rem 0 1rem 0",
-            width: resp ? "42ch" : "50ch",
+            width: resp3 ? "37ch" : (resp ? "40ch" : "50ch"),
             border: "2px solid black",
             borderRadius: "0.7rem",
           }}
@@ -231,7 +263,7 @@ const Signup = () => {
       <React.Fragment>
         <span
           style={{
-            margin: resp2 ? "0 0 0 -16rem" : "0 0 0 1rem",
+            margin: resp3 ? "0 13rem 0 0" : (resp2 ? "0 0 0 -16rem" : "0 0 0 1rem"),
             fontWeight: 500,
           }}
         >
@@ -249,7 +281,7 @@ const Signup = () => {
           required
           style={{
             margin: "0.5rem 0 1rem 0",
-            width: resp ? "42ch" : "50ch",
+            width: resp3 ? "37ch" : (resp ? "40ch" : "50ch"),
             border: "2px solid black",
             borderRadius: "0.7rem",
           }}
@@ -272,7 +304,7 @@ const Signup = () => {
           <FormControl
             sx={{
               margin: "0.5rem 0 1rem 1rem",
-              width: resp ? "20ch" : "24ch",
+              width: resp3 ? "17ch" : (resp ? "20ch" : "24ch"),
               border: "2px solid black",
               borderRadius: "0.7rem",
             }}
@@ -338,7 +370,7 @@ const Signup = () => {
             helperText={formik.touched.dob && formik.errors.dob}
             style={{
               margin: "0.5rem 0 1rem 0",
-              width: resp ? "20ch" : "24ch",
+              width: resp3 ? "17ch" : (resp ? "20ch" : "24ch"),
               border: "2px solid black",
               borderRadius: "0.7rem",
             }}
@@ -401,15 +433,15 @@ const Signup = () => {
               <div>
                 <span
                   style={{
-                    margin: resp2 ? "0 8rem 0 -5rem" : "0 0 0 1rem",
+                    margin: resp3 ? "0 6rem 0 -4rem" : (resp2 ? "0 8rem 0 -5rem" : "0 0 0 1rem"),
                     fontWeight: 500,
                   }}
                 >
                   First Name
-                </span>
+                </span> 
                 <span
                   style={{
-                    margin: resp2 ? "" : "0 0 0 9.5rem",
+                    margin: (resp2 ? "" : "0 0 0 9.5rem"),
                     fontWeight: 500,
                   }}
                 >
@@ -429,7 +461,7 @@ const Signup = () => {
               <div>
                 <span
                   style={{
-                    margin: resp2 ? "0 8rem 0 -5rem" : "0 0 0 1rem",
+                    margin: resp3 ? "0 6rem 0 -4rem" : (resp2 ? "0 8rem 0 -5rem" : "0 0 0 1rem"),
                     fontWeight: 500,
                   }}
                 >

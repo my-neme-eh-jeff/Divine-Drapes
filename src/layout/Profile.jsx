@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Paper, Button, IconButton, Box } from "@mui/material";
+import { Grid, Paper, Button, IconButton } from "@mui/material";
 import pfp from "../images/pfp.jpg";
 import EditIcon from "@mui/icons-material/Edit";
 import { createTheme } from "@mui/material/styles";
@@ -7,37 +7,35 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import "../styles/profile.css";
 import { Link } from "react-router-dom";
 import Footer from "./Footer/Footer";
-import Navbar from "./Navbar/Navbar";
 
 export default function Profile() {
   const theme = createTheme();
   console.log(theme.breakpoints.up("md"));
   return (
-    <>
-    <Navbar />
-    <Box paddingTop={'10%'} marginBottom={'5%'}>
+    <div>
       <Grid container>
-        <Grid item md={3} xs={12} sx={{ backgroundColor: "white" }}>
-          <Grid container>
-            <Grid item md={3} xs={4}></Grid>
-            <Grid item md={6} xs={4}>
+        <Grid item md={3} xs={12} sm={12} sx={{ backgroundColor: "white" }}>
+          <Grid container >
+            <Grid item md={3} xs={4} sm={4}></Grid>
+            <Grid item md={6} xs={4} sm={4} sx={{justifyContent:"center",display:"flex",alignItems:"center"}}>
               <img
                 src={pfp}
-                style={{ borderRadius: "69px", width: "83%" }}
+                className="image"
+                
               ></img>
             </Grid>
-            <Grid item md={3} xs={4}></Grid>
-            <Grid item md={4} xs={4}></Grid>
-            <Grid item md={5} xs={4}>
+            <Grid item md={3} xs={4} sm={4}></Grid>
+            <Grid item md={3} xs={4} sm={4}></Grid>
+            <Grid item md={6} xs={4} sm={4} sx={{display:"flex",justifyContent:"center",textAlign:"center"}}>
               Full Name
             </Grid>
-            <Grid item md={3} xs={4}></Grid>
+            <Grid item md={3} xs={4} sm={4}></Grid>
           </Grid>
         </Grid>
-        <Grid item md={6} xs={12} sx={{ backgroundColor: "white" }}>
+        <Grid item md={6} xs={12} sm={12} sx={{ backgroundColor: "white" }}>
           <Grid container rowSpacing={3}>
-            <Grid item md={12} xs={12}></Grid>
-            <Grid item md={12} xs={12}>
+            <Grid item md={12} xs={12} sm={12}> </Grid>
+            <Grid item md={12} xs={12} sm={12} sx={{}}>
               <Link to='/order'>
               <Paper
                 elevation={1}
@@ -56,7 +54,7 @@ export default function Profile() {
               </Paper>
               </Link>
             </Grid>
-            <Grid item md={12} xs={12}>
+            <Grid item md={12} xs={12} sm={12}>
               <Link to='/fav'>
               <Paper
                 elevation={1}
@@ -77,12 +75,12 @@ export default function Profile() {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item md={3} sx={{ backgroundColor: "white" }}></Grid>
-      </Grid> 
-    </Box>
+        <Grid item md={3} xs={0} sm={0} sx={{ backgroundColor: "white" }}></Grid>
+      </Grid>
       <div className="footer">
       <Footer></Footer>
       </div>
-    </>
+      
+    </div>
   );
 }

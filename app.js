@@ -8,7 +8,9 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const credentials = require("./middleware/credentials.js");
 const errorHandler = require("./middleware/errorHandler.js");
-const ROLES_LIST = require('../config/rolesList');
+const ROLES_LIST = require("./config/rolesList.js");
+const verifyJWT = require("./middleware/verifyJWT.js");
+const verifyRoles = require("./middleware/verifyRoles.js");
 
 require("./db.js");
 const app = express();
@@ -31,11 +33,11 @@ const authRoutes = require("./routes/authRoutes.js");
 app.use("/auth", authRoutes);
 
 // user
-app.use(verifyJWT)
+app.use(verifyJWT);
 app.use("/user", userRoutes);
 
 //admin routes
-app.use(verifyRoles(ROLES_LIST.admin))
+app.use(verifyRoles(ROLES_LIST.admin));
 app.use("/admin", adminRoutes);
 
 app.all("*", (req, res) => {

@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const UserSchema = require("../models/userSchema");
 const ProductSchema = require("../models/productSchema");
 const OrderSchema = require("../models/orderSchema");
+const ReviewSchema = require("../models/reviewSchema");
 
 // Get account details
 const profile = async (req, res) => {
@@ -103,7 +104,7 @@ const updateUser = async (req, res) => {
 //view all products
 const allProducts = async (req, res) => {
   try {
-    const list = await ProductSchema.find();
+    const list = await ProductSchema.find().populate("reviews");
 
     res.status(200).json({
       success: true,
@@ -117,12 +118,33 @@ const allProducts = async (req, res) => {
   }
 };
 
+//view a particular product
+const viewSpecificProduct = async (req, res) => {
+  try {
+
+    const { productID } = req.body
+    const product = await ProductSchema.findById({ _id: productID }).populate("reviews");
+
+    res.status(200).json({
+      success : true,
+      data : product
+    })
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    })
+  }
+};
+
 //view products category wise
 const categoryWise = async (req, res) => {
   try {
     const category = req.params.category;
 
-    const list = await ProductSchema.find({ category: category });
+    const list = await ProductSchema.find({ category: category }).populate(
+      "reviews"
+    );
 
     res.status(200).json({
       success: true,
@@ -144,7 +166,9 @@ const addCart = async (req, res) => {
     // const product = await  ProductSchema.findOne({name:productName})
     // const cart = await UserSchema.findById({_id:User._id}).populate('cart')
     const productID = req.params.pID;
-    const product = await ProductSchema.findById({ _id: productID });
+    const product = await ProductSchema.findById({ _id: productID }).populate(
+      "reviews"
+    );
     await UserSchema.findByIdAndUpdate(
       { _id: User._id },
       { $push: { cart: productID } }
@@ -168,7 +192,9 @@ const removeCart = async (req, res) => {
     const User = req.user;
     const productID = req.params.pID;
 
-    const product = await ProductSchema.findById({ productID });
+    const product = await ProductSchema.findById({ productID }).populate(
+      "reviews"
+    );
     await UserSchema.findByIdAndUpdate(
       { _id: User._id },
       { $pop: { cart: productID } }
@@ -211,7 +237,9 @@ const directOrder = async (req, res) => {
   try {
     const user = req.user;
     const productID = req.params.pID;
-    const Product = await ProductSchema.findById({ _id: productID });
+    const Product = await ProductSchema.findById({ _id: productID }).populate(
+      "reviews"
+    );
     const User = await UserSchema.findByIdAndUpdate(
       { _id: user._id },
       { $push: { order: productID } }
@@ -233,7 +261,9 @@ const cartOrder = async (req, res) => {
   try {
     const user = req.user;
     const productID = user.cart;
-    const product = await ProductSchema.findById({ _id: productID });
+    const product = await ProductSchema.findById({ _id: productID }).populate(
+      "reviews"
+    );
     const User = await UserSchema.findByIdAndUpdate(
       { _id: user._id },
       { $push: { order: productID } }
@@ -273,30 +303,42 @@ const viewOrder = async (req, res) => {
 const addReview = async (req, res) => {
   try {
     const user = req.user;
-    const { productID, review, star } = req.body
+    const { productID, review, star } = req.body;
 
-    const userPurchased = await UserSchema.findOne({ _id: user._id, order: { $in: [mongoose.Types.ObjectId(productID)] } });
+    const userPurchased = await UserSchema.findOne({
+      _id: user._id,
+      order: { $in: [mongoose.Types.ObjectId(productID)] },
+    });
 
     const reviewObj = {
-      user : user._id,
-      fName : user.fName,
+      user: user._id,
+      fName: user.fName,
       review,
       star,
-      verifiedPurchase : userPurchased
-    }
+      verifiedPurchase: userPurchased,
+    };
 
-    await ProductSchema.findByIdAndUpdate({_id : productID}, {reviews : { $push : reviewObj}})
-    const product = await ProductSchema.findByIdAndUpdate({_id : productID})
+    const addToReviewSchema = new ReviewSchema(reviewObj);
+    const savedReview = await addToReviewSchema.save();
 
-    const addReviewInUser = await UserSchema.findOne({ _id: user._id, reviews: { $push : review}})
-    
+    await ProductSchema.findByIdAndUpdate(
+      { _id: productID },
+      { reviews: { $push: savedReview._id } }
+    );
+    const product = await ProductSchema.findByIdAndUpdate({
+      _id: productID,
+    }).populate("review");
+
+    const addReviewInUser = await UserSchema.findOneAndUpdate(
+      { _id: user._id },
+      { reviews: { $push: savedReview._id } }
+    );
 
     res.status(200).json({
       success: true,
       message: "Review added successfully",
-      data : product
-    })
-
+      data: product,
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -317,4 +359,5 @@ module.exports = {
   cartOrder,
   viewOrder,
   addReview,
+  viewSpecificProduct
 };

@@ -1,10 +1,13 @@
-const userC = require("../controllers/userC.js")
 const express = require("express")
 const auth = require("../middleware/auth")
 const fileVerify = require("../middleware/fileVerify")
 const verifyJWT = require("../middleware/verifyJWT.js")
 
 const router = express.Router()
+
+//controllers 
+const userC = require("../controllers/userC.js")
+const reviewC = require("../controllers/reviewC")
 
 
 // Get account details
@@ -13,34 +16,49 @@ router.get("/profile", userC.profile)
 
 
 //edit user details
-router.put("/editUserInfo", auth.authToken, userC.updateUser)
+router.put("/editUserInfo", userC.updateUser)
 
 //get all products
-router.get("/allProducts", auth.authToken, userC.allProducts)
+router.get("/allProducts", userC.allProducts)
 
 //view products category wise
-router.get("/categoryWise", auth.authToken, userC.categoryWise)
+router.get("/categoryWise", userC.categoryWise)
 
 //view specific product
-router.get("/viewProduct", auth.authToken, userC.viewSpecificProduct)
+router.get("/viewProduct", userC.viewSpecificProduct)
 
 //view my cart
-router.get("/viewMyCart", auth.authToken, userC.viewCart)
+router.get("/viewMyCart", userC.viewCart)
 
 // add to cart
-router.post("/addCart/:pID", auth.authToken, userC.addCart)
+router.post("/addCart/:pID", userC.addCart)
 
 // remove from cart
-router.post("/removeCart/:pID",auth.authToken,userC.removeCart)
+router.post("/removeCart/:pID",userC.removeCart)
 
 //order
-router.post("/order/:pID",auth.authToken,userC.directOrder)
+router.post("/order/:pID",userC.directOrder)
 
 //cartOrder
-router.post("/cartOrder",auth.authToken,userC.cartOrder)
+router.post("/cartOrder",userC.cartOrder)
 
 //view Order
-router.get("/viewOrder",auth.authToken,userC.viewOrder)
+router.get("/viewOrder",userC.viewOrder)
+
+
+/// CRUD review
+
+//add review
+router.post("/createReview", reviewC.addReview)
+
+//read my review
+router.get("/myReviews", reviewC.myReview)
+
+//update review
+router.get("/updateMyReview", reviewC.updateReview)
+
+//delete review
+router.delete("/deleteReview", reviewC.deleteReview)
 
 module.exports = router;
 

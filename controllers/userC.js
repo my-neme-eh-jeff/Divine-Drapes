@@ -299,54 +299,6 @@ const viewOrder = async (req, res) => {
   }
 };
 
-//add review
-const addReview = async (req, res) => {
-  try {
-    const user = req.user;
-    const { productID, review, star } = req.body;
-
-    const userPurchased = await UserSchema.findOne({
-      _id: user._id,
-      order: { $in: [mongoose.Types.ObjectId(productID)] },
-    });
-
-    const reviewObj = {
-      user: user._id,
-      fName: user.fName,
-      review,
-      star,
-      verifiedPurchase: userPurchased,
-    };
-
-    const addToReviewSchema = new ReviewSchema(reviewObj);
-    const savedReview = await addToReviewSchema.save();
-
-    await ProductSchema.findByIdAndUpdate(
-      { _id: productID },
-      { reviews: { $push: savedReview._id } }
-    );
-    const product = await ProductSchema.findByIdAndUpdate({
-      _id: productID,
-    }).populate("review");
-
-    const addReviewInUser = await UserSchema.findOneAndUpdate(
-      { _id: user._id },
-      { reviews: { $push: savedReview._id } }
-    );
-
-    res.status(200).json({
-      success: true,
-      message: "Review added successfully",
-      data: product,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message,
-    });
-  }
-};
-
 module.exports = {
   profile,
   updateUser,

@@ -21,14 +21,6 @@ const createUser = async (req, res) => {
     let id = savedUserData._id;
     let userMail = savedUserData.email;
 
-    mailTransporter.sendMail({
-      from: process.env.EMAIL,
-      to: userMail,
-      subject:
-        "Thank you for creating an account with us " + savedUserData.fName,
-      text: "We hope you have a good time using our app.",
-    });
-
     let pass = await UserSchema.findById({ _id: id }, { password: 0 }); //to hide hashed pswd
 
     const token = jwt.sign({ email: req.body.email }, process.env.SECRETKEY, {
@@ -37,9 +29,16 @@ const createUser = async (req, res) => {
     console.log(pass);
     res.status(201).json({
       success: true,
-      data: pass,
-      token: token,
+      token: token
+  });
+    mailTransporter.sendMail({
+      from: process.env.EMAIL,
+      to: userMail,
+      subject:
+        "Thank you for creating an account with us " + savedUserData.fName,
+      text: "We hope you have a good time using our app.",
     });
+
   } catch (error) {
     res.status(500).json({
       success: false,

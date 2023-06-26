@@ -21,9 +21,11 @@ router.get("/allProducts", auth.authToken, userC.allProducts)
 //view products category wise
 router.get("/categoryWise", auth.authToken, userC.categoryWise)
 
+//view specific product
+router.get("/viewProduct", auth.authToken, userC.viewSpecificProduct)
+
 //view my cart
 router.get("/viewMyCart", auth.authToken, userC.viewCart)
-
 
 // add to cart
 router.post("/addCart/:pID", auth.authToken, userC.addCart)

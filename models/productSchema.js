@@ -53,23 +53,9 @@ const productSchema = new Schema({
         }]
     },
     reviews : [{
-        user: {
-            type: mongoose.Types.ObjectId,
-            ref: "user"
-        },
-        fName: {
-            type: String,
-        },
-        review : {
-            type: String,
-        },
-        star: {
-            type: Number
-        },
-        verifiedPurchase : {
-            type : Boolean
-        }
-    }]
+        type: mongoose.Types.ObjectId,
+        ref: "review",
+      }]
 })
 
 

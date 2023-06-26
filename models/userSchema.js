@@ -106,7 +106,8 @@ const userSchema = new Schema(
     ],
     reviews : [
       {
-        type : String
+        type: mongoose.Types.ObjectId,
+        ref: "review",
       }
     ],
     refreshToken: [String],

@@ -110,6 +110,12 @@ const userSchema = new Schema(
         ref: "review",
       }
     ],
+    tickets : [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "ticket",
+      }
+    ],
     refreshToken: [String],
   },
   { timestamps: true }

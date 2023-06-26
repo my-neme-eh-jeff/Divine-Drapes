@@ -1,9 +1,4 @@
-const bcrypt = require("bcryptjs");
-const nodemailer = require("nodemailer");
-const otpGenerator = require("otp-generator");
-const auth = require("../middleware/auth");
-const jwt = require("jsonwebtoken");
-
+//models
 const UserSchema = require("../models/userSchema");
 const ProductSchema = require("../models/productSchema");
 const OrderSchema = require("../models/orderSchema");

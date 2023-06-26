@@ -8,6 +8,7 @@ const router = express.Router()
 //controllers 
 const userC = require("../controllers/userC.js")
 const reviewC = require("../controllers/reviewC")
+const ticketC = require("../controllers/ticketC")
 
 
 // Get account details
@@ -46,19 +47,34 @@ router.post("/cartOrder",userC.cartOrder)
 router.get("/viewOrder",userC.viewOrder)
 
 
+
 /// CRUD review
 
 //add review
 router.post("/createReview", reviewC.addReview)
 
 //read my review
-router.get("/myReviews", reviewC.myReview)
+router.get("/myReview", reviewC.myReview)
 
 //update review
 router.get("/updateMyReview", reviewC.updateReview)
 
 //delete review
 router.delete("/deleteReview", reviewC.deleteReview)
+
+
+
+
+//CRUD ticket without update
+
+//add review
+router.post("/createTicket", ticketC.addTicket)
+
+//read my review
+router.get("/myTicket", ticketC.myTicket)
+
+//delete review
+router.delete("/deleteTicket", ticketC.deleteTicket)
 
 module.exports = router;
 

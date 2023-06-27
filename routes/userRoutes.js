@@ -8,12 +8,13 @@ const router = express.Router()
 //controllers 
 const userC = require("../controllers/userC.js")
 const reviewC = require("../controllers/reviewC")
+const ticketC = require("../controllers/ticketC")
 
+//middleware
+const userCheck = require("../middleware/userCheck")
 
 // Get account details
-//TODO sabh jagah se middleware hata de maine app me dal diya h sidha 
 router.get("/profile", userC.profile)
-
 
 //edit user details
 router.put("/editUserInfo", userC.updateUser)
@@ -46,19 +47,34 @@ router.post("/cartOrder",userC.cartOrder)
 router.get("/viewOrder",userC.viewOrder)
 
 
+
 /// CRUD review
 
 //add review
-router.post("/createReview", reviewC.addReview)
+router.post("/createReview", userCheck.verifyReview, reviewC.addReview)
 
 //read my review
-router.get("/myReviews", reviewC.myReview)
+router.get("/myReview", userCheck.verifyReview, reviewC.myReview)
 
 //update review
-router.get("/updateMyReview", reviewC.updateReview)
+router.get("/updateMyReview", userCheck.verifyReview, reviewC.updateReview)
 
 //delete review
-router.delete("/deleteReview", reviewC.deleteReview)
+router.delete("/deleteReview", userCheck.verifyReview, reviewC.deleteReview)
+
+
+
+
+//CRUD ticket without update
+
+//add review
+router.post("/createTicket", userCheck.verifyTicket , ticketC.addTicket)
+
+//read my review
+router.get("/myTicket", userCheck.verifyTicket , ticketC.myTicket)
+
+//delete review
+router.delete("/deleteTicket", userCheck.verifyTicket , ticketC.deleteTicket)
 
 module.exports = router;
 

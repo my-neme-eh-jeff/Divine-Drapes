@@ -1,9 +1,4 @@
-const bcrypt = require("bcryptjs");
-const nodemailer = require("nodemailer");
-const otpGenerator = require("otp-generator");
-const auth = require("../middleware/auth");
-const jwt = require("jsonwebtoken");
-
+//models
 const UserSchema = require("../models/userSchema");
 const ProductSchema = require("../models/productSchema");
 const OrderSchema = require("../models/orderSchema");
@@ -100,8 +95,8 @@ const updateReview = async (req, res) => {
 const deleteReview = async (req,res) => {
     try{
 
-        const { productID } = req.body
-        const deleteReview = await ReviewSchema.findByIdAndDelete({_id : productID})
+        const { ticketID } = req.body
+        const deleteReview = await ReviewSchema.findByIdAndDelete({_id : ticketID})
 
         res.status(200).json({
             success:true,

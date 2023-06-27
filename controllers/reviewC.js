@@ -95,8 +95,8 @@ const updateReview = async (req, res) => {
 const deleteReview = async (req,res) => {
     try{
 
-        const { productID } = req.body
-        const deleteReview = await ReviewSchema.findByIdAndDelete({_id : productID})
+        const { ticketID } = req.body
+        const deleteReview = await ReviewSchema.findByIdAndDelete({_id : ticketID})
 
         res.status(200).json({
             success:true,

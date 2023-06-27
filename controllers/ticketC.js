@@ -70,10 +70,8 @@ const myTicket = async (req, res) => {
 //delete ticket
 const deleteTicket = async (req, res) => {
   try {
-    const { ticketID } = req.body;
-    const deleteTicket = await TicketSchema.findByIdAndDelete({
-      _id: ticketID,
-    });
+    const ticket = req.ticket
+    const deleteTicket = await ticket.delete()
 
     res.status(200).json({
       success: true,

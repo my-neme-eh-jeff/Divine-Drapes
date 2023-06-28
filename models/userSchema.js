@@ -37,7 +37,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    profilePicPublicId: {
+    profilePic: {
       type: String,
     },
     email: {
@@ -121,18 +121,13 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-//hash the password
-// userSchema.pre("save", async function (next) {
-//   try {
-//     console.log(this.password)
-//     const salt = await bcrypt.genSalt(10);
-//     const hashedPassword = await bcrypt.hash(this.password, salt);
-//     this.password = hashedPassword;
-//     next();
-//   } catch (e) {
-//     console.log(e);
-//   }
-// });
+// hash the password
+userSchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, Number(process.env.SALT));
+  }
+  next();
+});
 
 const UserSchema = mongoose.model("user", userSchema);
 module.exports = UserSchema;

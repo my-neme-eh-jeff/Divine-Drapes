@@ -12,7 +12,7 @@ const ReviewSchema = require("../models/reviewSchema");
 // Get account details
 const profile = async (req, res) => {
   try {
-    const { fName, lName, DOB, profilePic, email, number, isVerified } =
+    const { fName, lName, DOB, profilePic, pfp, email, number, isVerified } =
       req.user;
     res.status(200).json({
       success: true,
@@ -24,6 +24,7 @@ const profile = async (req, res) => {
         email,
         number,
         isVerified,
+        profilePic
       },
     });
   } catch (error) {
@@ -37,7 +38,7 @@ const profile = async (req, res) => {
 //edit user profile
 const updateUser = async (req, res) => {
   // let uname = req.params.uname;
-  let email = req.user.email;
+  let email = (req.user.email || req.body.email);
 
   const updates = Object.keys(req.body);
   const allowedUpdates = [
@@ -46,7 +47,6 @@ const updateUser = async (req, res) => {
     "number",
     "password",
     "addressList",
-    "email",
     "DOB",
   ];
   const isValidOperation = updates.every((update) =>
@@ -310,6 +310,5 @@ module.exports = {
   directOrder,
   cartOrder,
   viewOrder,
-  addReview,
   viewSpecificProduct
 };

@@ -22,14 +22,23 @@ const createUser = async (req, res) => {
     let userMail = savedUserData.email;
 
     let pass = await UserSchema.findById({ _id: id }, { password: 0 }); //to hide hashed pswd
+    const roles = Object.values(savedUserData.roles).filter(Boolean)
+    console.log(roles)
 
-    const token = jwt.sign({ email: req.body.email }, process.env.SECRETKEY, {
-      expiresIn: "1d",
-    });
+    const accessToken = jwt.sign(
+      {
+        UserInfo: {
+          email: savedUserData.email,
+          roles: roles,
+        },
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "1y" }
+    )
     console.log(pass);
     res.status(201).json({
       success: true,
-      token: token
+      token: accessToken
   });
     mailTransporter.sendMail({
       from: process.env.EMAIL,
@@ -102,13 +111,13 @@ const handleRefreshToken = async (req, res) => {
           },
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "10m" }
+        { expiresIn: "1h" }
       );
 
       const newRefreshToken = jwt.sign(
         { email: foundUser.email },
         process.env.REFRESH_TOKEN_SECRET,
-        { expiresIn: "1d" }
+        { expiresIn: "30d" }
       );
       // Saving refreshToken with current user
       foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
@@ -166,8 +175,8 @@ const handleLogin = async (req, res) => {
   console.log(foundUser)
   if (!foundUser) return res.sendStatus(401); //Unauthorized
   // evaluate password
-  // const match = await bcrypt.compare(password, foundUser.password);
-  const match = password === foundUser.password
+  const match = await bcrypt.compare(password, foundUser.password);
+  // const match = password === foundUser.password
   console.log(match)
   if (match) {
     console.log(foundUser);
@@ -250,8 +259,6 @@ const forgotPSWD = async (req, res) => {
       });
     }
 
-    const token = await user.genAuthToken();
-
     const otp = otpGenerator.generate(6, {
       lowerCaseAlphabets: false,
       upperCaseAlphabets: false,
@@ -330,18 +337,20 @@ const loginUser = async (req, res) => {
       { password: 0 }
     );
 
+    const roles = Object.values(user.roles).filter(Boolean);
+
     const isPassValid = await bcrypt.compare(password, user.password);
     if (isPassValid) {
       const token = jwt.sign(
         {
           UserInfo: {
-            email: foundUser.email,
+            email: user.email,
             roles: roles,
           },
         },
-        process.env.SECRETKEY,
+        process.env.ACCESS_TOKEN_SECRET,
         {
-          expiresIn: "30d",
+          expiresIn: "1y",
         }
       );
       res.status(200).json({

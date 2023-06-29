@@ -1,7 +1,4 @@
 const express = require("express")
-const auth = require("../middleware/auth")
-const fileVerify = require("../middleware/fileVerify")
-const verifyJWT = require("../middleware/verifyJWT.js")
 
 const router = express.Router()
 
@@ -13,20 +10,22 @@ const ticketC = require("../controllers/ticketC")
 //middleware
 const userCheck = require("../middleware/userCheck")
 
+
+
+//user
+
 // Get account details
 router.get("/profile", userC.profile)
 
 //edit user details
 router.put("/editUserInfo", userC.updateUser)
 
-//get all products
-router.get("/allProducts", userC.allProducts)
+//delete user
+router.delete("/deleteUser", userC.deleteUser)
 
-//view products category wise
-router.get("/categoryWise", userC.categoryWise)
 
-//view specific product
-router.get("/viewProduct", userC.viewSpecificProduct)
+
+// cart
 
 //view my cart
 router.get("/viewMyCart", userC.viewCart)
@@ -34,16 +33,17 @@ router.get("/viewMyCart", userC.viewCart)
 // add to cart
 router.post("/addCart/:pID", userC.addCart)
 
-// remove from cart
-router.post("/removeCart/:pID",userC.removeCart)
+// delete from cart
+router.delete("/removeCart/:pID",userC.removeCart)
+
+
 
 //order
+
+// place order
 router.post("/order/:pID",userC.directOrder)
 
-//cartOrder
-router.post("/cartOrder",userC.cartOrder)
-
-//view Order
+// view Order
 router.get("/viewOrder",userC.viewOrder)
 
 

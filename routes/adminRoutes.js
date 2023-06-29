@@ -19,6 +19,6 @@ router.patch("/updateProduct", adminC.updateProduct)
 router.delete("/deleteProduct", adminC.deleteProduct)
 
 //find a particular user
-router.delete("/deleteProduct", adminC.deleteProduct)
+router.delete("/deleteProduct", adminC.viewUser)
 
 module.exports = router;

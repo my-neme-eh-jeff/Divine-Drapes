@@ -314,3 +314,5 @@
 20230629	21:00:58	69d612d3-ed0d-441e-9062-7a34790f6b79	DELETE	undefined	/user/deleteTicket
 20230629	21:03:54	6b345888-2d7b-4955-bcaa-b8074bf88e34	DELETE	undefined	/user/deleteTicket
 20230629	21:04:15	7c3dc51d-b992-4b43-a79d-af92e88250a2	DELETE	undefined	/user/deleteTicket
+20230629	22:30:51	e9081fc4-db11-41cb-9bdb-72b17427cb29	POST	undefined	/user/createTicket
+20230629	22:40:10	517d662f-7624-465c-b11a-be87635c9d5d	GET	undefined	/user/profile

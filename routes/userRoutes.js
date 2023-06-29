@@ -1,44 +1,80 @@
-const userC = require("../controllers/userC.js")
 const express = require("express")
-const auth = require("../middleware/auth")
-const fileVerify = require("../middleware/fileVerify")
-const verifyJWT = require("../middleware/verifyJWT.js")
 
 const router = express.Router()
 
+//controllers 
+const userC = require("../controllers/userC.js")
+const reviewC = require("../controllers/reviewC")
+const ticketC = require("../controllers/ticketC")
+
+//middleware
+const userCheck = require("../middleware/userCheck")
+
+
+
+//user
 
 // Get account details
-//TODO sabh jagah se middleware hata de maine app me dal diya h sidha 
 router.get("/profile", userC.profile)
 
-
 //edit user details
-router.put("/editUserInfo", auth.authToken, userC.updateUser)
+router.put("/editUserInfo", userC.updateUser)
 
-//get all products
-router.get("/allProducts", auth.authToken, userC.allProducts)
+//delete user
+router.delete("/deleteUser", userC.deleteUser)
 
-//view products category wise
-router.get("/categoryWise", auth.authToken, userC.categoryWise)
+
+
+// cart
 
 //view my cart
-router.get("/viewMyCart", auth.authToken, userC.viewCart)
-
+router.get("/viewMyCart", userC.viewCart)
 
 // add to cart
-router.post("/addCart/:pID", auth.authToken, userC.addCart)
+router.post("/addCart/:pID", userC.addCart)
 
-// remove from cart
-router.post("/removeCart/:pID",auth.authToken,userC.removeCart)
+// delete from cart
+router.delete("/removeCart/:pID",userC.removeCart)
+
+
 
 //order
-router.post("/order/:pID",auth.authToken,userC.directOrder)
 
-//cartOrder
-router.post("/cartOrder",auth.authToken,userC.cartOrder)
+// place order
+router.post("/order/:pID",userC.directOrder)
 
-//view Order
-router.get("/viewOrder",auth.authToken,userC.viewOrder)
+// view Order
+router.get("/viewOrder",userC.viewOrder)
+
+
+
+/// CRUD review
+
+//add review
+router.post("/createReview", reviewC.addReview)
+
+//read my review
+router.get("/myReview", userCheck.verifyReview, reviewC.myReview)
+
+//update review
+router.get("/updateMyReview", userCheck.verifyReview, reviewC.updateReview)
+
+//delete review
+router.delete("/deleteReview", userCheck.verifyReview, reviewC.deleteReview)
+
+
+
+
+//CRUD ticket without update
+
+//add review
+router.post("/createTicket" , ticketC.addTicket)
+
+//read my review
+router.get("/myTicket", userCheck.verifyTicket , ticketC.myTicket)
+
+//delete review
+router.delete("/deleteTicket", userCheck.verifyTicket , ticketC.deleteTicket)
 
 module.exports = router;
 

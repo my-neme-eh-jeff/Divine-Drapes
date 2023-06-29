@@ -28,6 +28,7 @@ app.use(cookieParser());
 const userRoutes = require("./routes/userRoutes");
 const adminRoutes = require("./routes/adminRoutes.js");
 const authRoutes = require("./routes/authRoutes.js");
+const productRoutes = require("./routes/productRoutes.js"); 
 
 // auth routes
 app.use("/auth", authRoutes);
@@ -36,8 +37,11 @@ app.use("/auth", authRoutes);
 app.use(verifyJWT);
 app.use("/user", userRoutes);
 
+// product routes
+app.use("/product", productRoutes)
+
 //admin routes
-app.use(verifyRoles(ROLES_LIST.admin));
+app.use(verifyRoles(ROLES_LIST.Admin));
 app.use("/admin", adminRoutes);
 
 app.all("*", (req, res) => {

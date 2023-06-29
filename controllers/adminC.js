@@ -23,8 +23,6 @@ const addProduct = async (req, res) => {
     const product = new ProductSchema(req.body);
     const savedProduct = await product.save();
     const email = req.user.email;
-    console.log(product)
-    console.log(email)
 
     // mailTransporter.sendMail({
     //   from: process.env.EMAIL,
@@ -52,10 +50,18 @@ const addProduct = async (req, res) => {
 const allOrders = async (req, res) => {
   try {
     //"received", "shipping", "shipped", "delivered"
-    const received = await OrderSchema.find({ orderStatus: "received" }).populate("user product");
-    const shipping = await OrderSchema.find({ orderStatus: "shipping" }).populate("user product");
-    const shipped = await OrderSchema.find({ orderStatus: "shipped" }).populate("user product");
-    const delivered = await OrderSchema.find({ orderStatus: "delivered" }).populate("user product");
+    const received = await OrderSchema.find({
+      orderStatus: "received",
+    }).populate("user product");
+    const shipping = await OrderSchema.find({
+      orderStatus: "shipping",
+    }).populate("user product");
+    const shipped = await OrderSchema.find({ orderStatus: "shipped" }).populate(
+      "user product"
+    );
+    const delivered = await OrderSchema.find({
+      orderStatus: "delivered",
+    }).populate("user product");
 
     res.status(200).json({
       success: true,
@@ -72,7 +78,77 @@ const allOrders = async (req, res) => {
   }
 };
 
+//update product
+const updateProduct = async (req, res) => {
+  try {
+    const productID = req.body.id;
+
+    await ProductSchema.findByIdAndUpdate(
+      { _id: productID },
+      { $set: req.body }
+    );
+
+    const product = await ProductSchema.findById({ _id: productID });
+
+    res.json(200).status({
+      success: true,
+      message: "Product updated successfully",
+      product: product,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+//delete a product
+
+const deleteProduct = async (req, res) => {
+  try {
+    const { productID } = req.body;
+
+    const product = await ProductSchema.findByIdAndDelete({ _id: productID });
+
+    res.status(200).json({
+      success: true,
+      message: "Product deleted",
+      data: product,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+// view a particular user
+
+const viewUser = async (req, res) => {
+  try {
+    const { userID } = req.body;
+
+    const user = await UserSchema.findById({_id : userID}).populate("product order review ticket")
+
+    res.status(200).json({
+      success : true,
+      data : user
+    })
+
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
 module.exports = {
   addProduct,
   allOrders,
+  updateProduct,
+  deleteProduct,
+  viewUser
 };

@@ -31,7 +31,7 @@ const productSchema = new Schema({
             required : true
         },
         picture : [{
-            type : Buffer
+            type : String
         }]
     },
     text : {
@@ -53,14 +53,9 @@ const productSchema = new Schema({
         }]
     },
     reviews : [{
-        reviewBy : {
-            type : mongoose.Types.ObjectId,
-            ref : "user"
-        },
-        review : {
-            type : String
-        }
-    }]
+        type: mongoose.Types.ObjectId,
+        ref: "review",
+      }]
 })
 
 

@@ -316,3 +316,5 @@
 20230629	21:04:15	7c3dc51d-b992-4b43-a79d-af92e88250a2	DELETE	undefined	/user/deleteTicket
 20230629	22:30:51	e9081fc4-db11-41cb-9bdb-72b17427cb29	POST	undefined	/user/createTicket
 20230629	22:40:10	517d662f-7624-465c-b11a-be87635c9d5d	GET	undefined	/user/profile
+20230629	22:56:22	997abc65-b5d5-496c-884c-8857e3550b2e	POST	undefined	/user/order/:pID
+20230629	22:56:36	c7728efb-e360-42cf-b976-7b4ebab41fce	GET	undefined	/user/viewOrder

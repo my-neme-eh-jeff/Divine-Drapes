@@ -12,7 +12,7 @@ const TicketSchema = require("../models/ticketSchema");
 const addTicket = async (req, res) => {
   try {
     const user = req.user;
-    const { productID, message } = req.body;
+    const { orderID, message } = req.body;
 
     // const sentiment = new Sentiment();
     // const result = sentiment.analyze(message);
@@ -74,11 +74,12 @@ const deleteTicket = async (req, res) => {
   try {
     const ticket = req.ticket
     console.log(ticket)
+    const { ticketId } = req.body.id;
     // const deleteTicket = await TicketSchema.delete({_id:ticket})
-    const deleteTicket = await TicketSchema.findByIdAndRemove({_id:ticket})
-    const user = await UserSchema.findByIdAndUpdate({_id:req.user.id},{
-      tickets:[]
-    })
+    const deleteTicket = await TicketSchema.findByIdAndRemove({_id:ticketId})
+    // const user = await UserSchema.findByIdAndUpdate({_id:req.user.id},{
+    //   tickets:[]
+    // })
     res.status(200).json({
       success: true,
       message: "Ticket deleted successfully",

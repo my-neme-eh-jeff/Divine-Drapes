@@ -11,7 +11,7 @@ const productC = require("../controllers/productC")
 router.get("/allProducts", productC.allProducts)
 
 //view products category wise
-router.get("/categoryWise", productC.categoryWise)
+router.get("/categoryWise/:category", productC.categoryWise)
 
 //view specific product
 router.get("/viewProduct", productC.viewSpecificProduct)

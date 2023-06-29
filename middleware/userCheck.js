@@ -30,11 +30,11 @@ const verifyTicket = async (req, res, next) => {
 
   const userContainsTicket = await UserSchema.findOne(
     { _id: user._id },
-    // { reviews: { $in: [mongoose.Types.ObjectId(ticketId)] } }
+    { reviews: { $in: [mongoose.Types.ObjectId(ticketId)] } }
   );
   if (userContainsTicket) {
-    console.log(user.tickets)
-    req.ticket = user.tickets;
+    // console.log(user.tickets)
+    // req.ticket = user.tickets;
     next();
   } else {
     res.status(401).json({

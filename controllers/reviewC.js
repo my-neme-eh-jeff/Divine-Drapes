@@ -3,7 +3,7 @@ const UserSchema = require("../models/userSchema");
 const ProductSchema = require("../models/productSchema");
 const OrderSchema = require("../models/orderSchema");
 const ReviewSchema = require("../models/reviewSchema");
-
+const mongoose = require("mongoose")
 //add review
 const addReview = async (req, res) => {
   try {
@@ -22,6 +22,7 @@ const addReview = async (req, res) => {
       star,
       verifiedPurchase: userPurchased,
     };
+    console.log(reviewObj)
 
     const addToReviewSchema = new ReviewSchema(reviewObj);
     const savedReview = await addToReviewSchema.save();

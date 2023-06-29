@@ -187,17 +187,47 @@ const addCart = async (req, res) => {
 };
 
 //remove from cart
+// const removeCart = async (req, res) => {
+//   try {
+//     const User = req.user;
+//     const productID = req.params.pID;
+
+//     const product = await ProductSchema.findById({ productID }).populate(
+//       "reviews"
+//     );
+//     await UserSchema.findByIdAndUpdate(
+//       { _id: User._id },
+//       { $pop: { cart: productID } }
+//     );
+
+//     res.status(200).json({
+//       success: true,
+//       data: product,
+//     });
+//   } catch (err) {
+//     res.status(500).json({
+//       success: false,
+//       message: err.message,
+//     });
+//   }
+// };
+//remove from cart
 const removeCart = async (req, res) => {
   try {
+    var ct=0;
+    var i;
     const User = req.user;
     const productID = req.params.pID;
-
-    const product = await ProductSchema.findById({ productID }).populate(
-      "reviews"
-    );
+    const product = await ProductSchema.findById({ _id:productID });
+    var filtered = User.cart.filter(function(value,index,arr){
+      return (value!=productID);
+    })
+    console.log(filtered);
     await UserSchema.findByIdAndUpdate(
       { _id: User._id },
-      { $pop: { cart: productID } }
+      {
+        cart:filtered
+      }
     );
 
     res.status(200).json({

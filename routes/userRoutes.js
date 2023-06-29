@@ -51,7 +51,7 @@ router.get("/viewOrder",userC.viewOrder)
 /// CRUD review
 
 //add review
-router.post("/createReview", userCheck.verifyReview, reviewC.addReview)
+router.post("/createReview", reviewC.addReview)
 
 //read my review
 router.get("/myReview", userCheck.verifyReview, reviewC.myReview)
@@ -68,7 +68,7 @@ router.delete("/deleteReview", userCheck.verifyReview, reviewC.deleteReview)
 //CRUD ticket without update
 
 //add review
-router.post("/createTicket", userCheck.verifyTicket , ticketC.addTicket)
+router.post("/createTicket" , ticketC.addTicket)
 
 //read my review
 router.get("/myTicket", userCheck.verifyTicket , ticketC.myTicket)

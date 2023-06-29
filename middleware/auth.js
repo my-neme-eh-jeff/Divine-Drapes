@@ -29,7 +29,7 @@ const authToken = async (req, res, next)=> {
 
 const authRole = async (req,res,next) => {
     try {
-      if (req.user.role != 'admin') {
+      if (req.user.roles != 'admin') {
         res.status(401).json({
           message: "Not allowed",
         });

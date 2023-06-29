@@ -14,24 +14,26 @@ const addTicket = async (req, res) => {
     const user = req.user;
     const { productID, message } = req.body;
 
-    const sentiment = new Sentiment();
-    const result = sentiment.analyze(message);
-    sentiment = result.score;
-
+    // const sentiment = new Sentiment();
+    // const result = sentiment.analyze(message);
+    // sentiment = result.score;
+    
     const ticketObj = {
       user: user._id,
       fName: user.fName,
       message,
-      sentiment,
-      verifiedPurchase: userPurchased,
+      // sentiment,
+      // verifiedPurchase: userPurchased,
     };
 
     const addToTicketSchema = new TicketSchema(ticketObj);
     const savedTicket = await addToTicketSchema.save();
+    console.log(savedTicket)
 
     const addTicketInUser = await UserSchema.findOneAndUpdate(
       { _id: user._id },
-      { tickets: { $push: savedTicket._id } }
+      // { tickets: { $push: savedTicket._id } }
+      {$push:{tickets:savedTicket._id}}
     );
 
     res.status(200).json({
@@ -71,8 +73,12 @@ const myTicket = async (req, res) => {
 const deleteTicket = async (req, res) => {
   try {
     const ticket = req.ticket
-    const deleteTicket = await ticket.delete()
-
+    console.log(ticket)
+    // const deleteTicket = await TicketSchema.delete({_id:ticket})
+    const deleteTicket = await TicketSchema.findByIdAndRemove({_id:ticket})
+    const user = await UserSchema.findByIdAndUpdate({_id:req.user.id},{
+      tickets:[]
+    })
     res.status(200).json({
       success: true,
       message: "Ticket deleted successfully",

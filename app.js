@@ -37,7 +37,7 @@ app.use(verifyJWT);
 app.use("/user", userRoutes);
 
 //admin routes
-app.use(verifyRoles(ROLES_LIST.admin));
+app.use(verifyRoles(ROLES_LIST.Admin));
 app.use("/admin", adminRoutes);
 
 app.all("*", (req, res) => {

@@ -130,7 +130,7 @@ const viewUser = async (req, res) => {
   try {
     const { userID } = req.body;
 
-    const user = await UserSchema.findById({_id : userID}).populate("product order")
+    const user = await UserSchema.findById({_id : userID}).populate("product order review ticket")
 
     res.status(200).json({
       success : true,

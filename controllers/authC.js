@@ -290,7 +290,7 @@ const forgotPSWD = async (req, res) => {
 const verifyOTP = async (req, res) => {
   try {
     const otp = req.body.otp;
-    const email = req.cookies.email;
+    const email = req.body.email;
     const user = await UserSchema.find({ email: email });
 
     if (req.user.OTP == otp) {

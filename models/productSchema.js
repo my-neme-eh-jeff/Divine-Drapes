@@ -31,7 +31,7 @@ const productSchema = new Schema({
             required : true
         },
         picture : [{
-            type : Buffer
+            type : String
         }]
     },
     text : {

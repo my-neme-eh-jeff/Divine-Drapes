@@ -23,6 +23,7 @@ const orderSchema = new Schema({
     orderStatus : {
         type : String,
         enum: ["received", "shipping", "shipped", "delivered"],
+        default : "received"
     }
 })
 

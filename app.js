@@ -1,6 +1,7 @@
 const morgan = require("morgan");
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser")
 const cors = require("cors");
 const corsOptions = require("./config/corsOptions.js");
 const { logger } = require("./middleware/logEvents");
@@ -23,6 +24,9 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(cookieParser());
+
+app.use(bodyParser.json()) // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // Routes
 const userRoutes = require("./routes/userRoutes");

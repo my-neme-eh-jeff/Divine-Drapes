@@ -111,13 +111,13 @@ const handleRefreshToken = async (req, res) => {
           },
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "1h" }
+        { expiresIn: "1y" }     //1h
       );
 
       const newRefreshToken = jwt.sign(
         { email: foundUser.email },
         process.env.REFRESH_TOKEN_SECRET,
-        { expiresIn: "30d" }
+        { expiresIn: "1y" }      //30d
       );
       // Saving refreshToken with current user
       foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
@@ -190,12 +190,12 @@ const handleLogin = async (req, res) => {
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "10m" }
+      { expiresIn: "1y" }        //10m
     );
     const newRefreshToken = jwt.sign(
       { email: foundUser.email },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "10d" }
+      { expiresIn: "1y" }    //10d
     );
 
     let newRefreshTokenArray = !cookies?.jwt

@@ -4,10 +4,9 @@ const otpGenerator = require("otp-generator");
 const auth = require("../middleware/auth");
 const jwt = require("jsonwebtoken");
 
+//Schema
 const UserSchema = require("../models/userSchema");
 const ProductSchema = require("../models/productSchema");
-const OrderSchema = require("../models/orderSchema");
-const ReviewSchema = require("../models/reviewSchema");
 
 // Get account details
 const profile = async (req, res) => {
@@ -24,7 +23,7 @@ const profile = async (req, res) => {
         email,
         number,
         isVerified,
-        profilePic
+        profilePic,
       },
     });
   } catch (error) {
@@ -38,7 +37,7 @@ const profile = async (req, res) => {
 //edit user profile
 const updateUser = async (req, res) => {
   // let uname = req.params.uname;
-  let email = (req.user.email || req.body.email);
+  let email = req.user.email || req.body.email;
 
   const updates = Object.keys(req.body);
   const allowedUpdates = [
@@ -101,60 +100,22 @@ const updateUser = async (req, res) => {
   }
 };
 
-//view all products
-const allProducts = async (req, res) => {
+//delete user
+const deleteUser = async (req, res) => {
   try {
-    const list = await ProductSchema.find().populate("reviews");
+    const user = req.user;
 
-    res.status(200).json({
-      success: true,
-      data: list,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message,
-    });
-  }
-};
-
-//view a particular product
-const viewSpecificProduct = async (req, res) => {
-  try {
-
-    const { productID } = req.body
-    const product = await ProductSchema.findById({ _id: productID }).populate("reviews");
+    const deletedUser = await UserSchema.findByIdAndDelete({ _id: user._id });
 
     res.status(200).json({
       success : true,
-      data : product
+      data : deletedUser
     })
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: err.message,
+      error: err.message,
     })
-  }
-};
-
-//view products category wise
-const categoryWise = async (req, res) => {
-  try {
-    const category = req.params.category;
-
-    const list = await ProductSchema.find({ category: category }).populate(
-      "reviews"
-    );
-
-    res.status(200).json({
-      success: true,
-      data: list,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message,
-    });
   }
 };
 
@@ -214,19 +175,19 @@ const addCart = async (req, res) => {
 //remove from cart
 const removeCart = async (req, res) => {
   try {
-    var ct=0;
+    var ct = 0;
     var i;
     const User = req.user;
     const productID = req.params.pID;
-    const product = await ProductSchema.findById({ _id:productID });
-    var filtered = User.cart.filter(function(value,index,arr){
-      return (value!=productID);
-    })
+    const product = await ProductSchema.findById({ _id: productID });
+    var filtered = User.cart.filter(function (value, index, arr) {
+      return value != productID;
+    });
     console.log(filtered);
     await UserSchema.findByIdAndUpdate(
       { _id: User._id },
       {
-        cart:filtered
+        cart: filtered,
       }
     );
 
@@ -286,30 +247,6 @@ const directOrder = async (req, res) => {
   }
 };
 
-//order from cart
-const cartOrder = async (req, res) => {
-  try {
-    const user = req.user;
-    const productID = user.cart;
-    const product = await ProductSchema.findById({ _id: productID }).populate(
-      "reviews"
-    );
-    const User = await UserSchema.findByIdAndUpdate(
-      { _id: user._id },
-      { $push: { order: productID } }
-    );
-    res.status(200).json({
-      success: true,
-      message: User,
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: err.message,
-    });
-  }
-};
-
 //view Order
 const viewOrder = async (req, res) => {
   try {
@@ -332,13 +269,10 @@ const viewOrder = async (req, res) => {
 module.exports = {
   profile,
   updateUser,
-  allProducts,
-  categoryWise,
+  deleteUser,
   addCart,
   removeCart,
   viewCart,
   directOrder,
-  cartOrder,
   viewOrder,
-  viewSpecificProduct
 };

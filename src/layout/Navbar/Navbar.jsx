@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Flex,
   Box,
@@ -6,19 +6,32 @@ import {
   Link,
   ChakraProvider,
   Avatar,
-  WrapItem,
   Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import Categories from "./Categories";
-import { useNavigate } from "react-router-dom";
-
+import SearchBar from "../Home/SearchBar";
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
   const toggleMenu = () => setShow(!show);
+  const [showSearchBar, setShowSearchBar] = useState(false);
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      setShowSearchBar(scrollTop > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
     <ChakraProvider>
@@ -32,7 +45,6 @@ const Navbar = () => {
         position={"fixed"}
         bgColor={"#fff"}
         zIndex={2}
-        // h='80px'
         boxShadow={"0px 5px 3px rgba(0, 0, 0, 0.25)"}
       >
         <Box w="200px">
@@ -62,7 +74,10 @@ const Navbar = () => {
             direction={["column", "row", "row", "row"]}
             pt={[4, 4, 0, 0]}
           >
-            
+            <Box mr="5%">
+            {window.location.pathname === "/" ? showSearchBar && <SearchBar /> : <SearchBar />}
+            </Box>
+
             <Link>
               <Categories />
             </Link>
@@ -72,14 +87,25 @@ const Navbar = () => {
                   Bulk orders
               </Button>
             </Link>
-            <Link href="/cart">
+            <Link href="/buy">
             <Button bgColor={'#fff'}>
                   Cart
                 </Button>
             </Link>
-            <WrapItem onClick={() => navigate('/profile')} cursor='pointer'>
-              <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
-            </WrapItem>
+            <Link href="/login">
+            <Button bgColor={"#f7bc62"}>
+                  Login
+                </Button>
+            </Link>
+            <Menu>
+              <MenuButton bgColor='white'>
+                <Avatar />
+              </MenuButton>
+              <MenuList>
+                <MenuItem>Logout</MenuItem>
+                <MenuItem><Link href='/profile'>My Accounts</Link></MenuItem>
+              </MenuList>
+            </Menu>
           </Flex>
         </Box>
       </Flex>

@@ -12,7 +12,7 @@ import {
 import { styled } from "@mui/material/styles";
 import { useEffect } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import "./Login.css";
@@ -25,23 +25,27 @@ import googleIcon from "../images/googleIcon.png";
 import React from "react";
 import publicAxios from "../Axios/publicAxios";
 import { ToastContainer } from "react-toastify";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+import useAuth from "../Hooks/useAuth";
 
 const validationschema = yup.object({
   email: yup
     .string("Enter your email")
     .email("Enter a valid email")
     .required("Email is required"),
-  password: yup
-    .string("Enter your password")
-    .min(8, "Password should be of minimum 8 characters length")
-    .required("Password is required"),
+  password: yup.string("Enter your password").required("Password is required"),
 });
 
 const Login = () => {
+  const { setAuth, auth } = useAuth();
   const navigate = useNavigate();
-  // formik
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
+  useEffect(() => {
+    console.log(auth);
+  }, [auth]);
 
   const formik = useFormik({
     initialValues: {
@@ -49,7 +53,6 @@ const Login = () => {
       password: "",
     },
     onSubmit: async (values) => {
-      console.log(values);
       const options = {
         url: `auth/login`,
         method: "POST",
@@ -61,17 +64,22 @@ const Login = () => {
       };
       try {
         const resp = await publicAxios.request(options);
-        console.log(resp);
-        if (resp.data.success) {
-          console.log("succcc");
-          navigate("/");
-        }
+        const accessToken = resp?.data?.accessToken;
+        const email = values.email;
+        var a = {
+          email: email,
+          accessToken: accessToken,
+        };
+        console.log(a);
+        setAuth({ email, accessToken });
+        //toast.success("Logged in successfully");
+        navigate(from, { replace: true });
       } catch (err) {
         console.log(err);
         if (!err.response) {
-          toast.error("No server response");
+          // toast.error("No server response");
         } else {
-          toast.error("Invalid credentials");
+          // toast.error(`${err.message}`);
         }
       }
     },
@@ -111,7 +119,7 @@ const Login = () => {
     marginLeft: "1.2rem",
     textDecoration: "none",
     padding: "12px 15px ",
-    width: resp3 ? "20rem" : (resp ? "22rem" : "28rem"),
+    width: resp3 ? "20rem" : resp ? "22rem" : "28rem",
     height: "3.1875rem",
     color: "white",
     fontSize: "1rem",
@@ -136,7 +144,7 @@ const Login = () => {
           style={{
             margin:
               formik.touched.email && formik.errors.email ? "0" : "0 0 1rem 0",
-            width: resp3 ? "37ch" : (resp ? "40ch" : "50ch"),
+            width: resp3 ? "37ch" : resp ? "40ch" : "50ch",
             borderRadius: "10px",
             border: "2.3px solid #4a3c3c",
           }}
@@ -188,7 +196,7 @@ const Login = () => {
         </span>
         <FormControl
           sx={{
-            width: resp3 ? "37ch" : (resp ? "40ch" : "50ch"),
+            width: resp3 ? "37ch" : resp ? "40ch" : "50ch",
             margin: "1rem 0 0.5 0",
             borderRadius: "10px",
             border: "2.3px solid #4a3c3c",
@@ -267,7 +275,7 @@ const Login = () => {
           href="#"
           sx={{
             border: "2px solid black",
-            width: resp3 ? "20rem" : (resp ? "22rem" : "28rem"),
+            width: resp3 ? "20rem" : resp ? "22rem" : "28rem",
             padding: "0.5rem",
             borderRadius: "0.7rem",
             margin: "1rem 0 2rem 0",
@@ -316,51 +324,50 @@ const Login = () => {
   const LoginComponet = () => {
     return (
       <>
-      <ToastContainer />
-      <Grid
-        container
-        spacing={0}
-        className="login_main_container"
-        style={{
-          display: resp2 ? "flex" : "",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100%",
-          overflowY:'hidden', 
-
-        }}
-      >
+        <ToastContainer />
         <Grid
-          item
-          xs={6}
+          container
+          spacing={0}
+          className="login_main_container"
           style={{
-            display: "flex",
-            flexDirection: "column",
+            display: resp2 ? "flex" : "",
             justifyContent: "center",
             alignItems: "center",
-            position: "relative",
-            top: resp2 ? "6rem" : "",
+            height: "100%",
+            overflowY: "hidden",
           }}
         >
-          <img src={logo} alt="Logo" />
-          <form onSubmit={formik.handleSubmit}>
-            <Box
-              sx={{
-                maxWidth: "31.25rem",
-                width: "31.25rem",
-                height: "31.25rem",
-                // border: "2px solid black",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: resp ? "center" : "flex-start",
-                padding: "1rem",
-                position: "relative",
-                left: "1.3rem",
-              }}
-            >
-              {EmailField()}
-              {PasswordField()}
-              {ForgotPBlock()}
+          <Grid
+            item
+            xs={6}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "relative",
+              top: resp2 ? "6rem" : "",
+            }}
+          >
+            <img src={logo} alt="Logo" />
+            <form onSubmit={formik.handleSubmit}>
+              <Box
+                sx={{
+                  maxWidth: "31.25rem",
+                  width: "31.25rem",
+                  height: "31.25rem",
+                  // border: "2px solid black",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: resp ? "center" : "flex-start",
+                  padding: "1rem",
+                  position: "relative",
+                  left: "1.3rem",
+                }}
+              >
+                {EmailField()}
+                {PasswordField()}
+                {ForgotPBlock()}
 
                 <div style={{ display: "flex", marginTop: "2rem" }}>
                   <LoginButton type="submit">Log in</LoginButton>
@@ -374,32 +381,32 @@ const Login = () => {
 
                 <GLoginBlock />
 
-              <div
-                style={{
-                  marginLeft: "5.5rem",
-                }}
-              >
-                <span style={{ fontWeight: 600, margin: "0.6rem 0" }}>
-                  Don&apos;t have an account?
-                </span>
-                <Link
-                  to="/signup"
+                <div
                   style={{
-                    textDecoration: "none",
-                    color: "#A01E86",
-                    margin: "0 0.7rem ",
+                    marginLeft: "5.5rem",
                   }}
                 >
-                  Sign Up
-                </Link>
-              </div>
-            </Box>
-          </form>
+                  <span style={{ fontWeight: 600, margin: "0.6rem 0" }}>
+                    Don&apos;t have an account?
+                  </span>
+                  <Link
+                    to="/signup"
+                    style={{
+                      textDecoration: "none",
+                      color: "#A01E86",
+                      margin: "0 0.7rem ",
+                    }}
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              </Box>
+            </form>
+          </Grid>
+          <Grid item xs={6} className="img1 c">
+            <GiftGridI />
+          </Grid>
         </Grid>
-        <Grid item xs={6} className="img1 c">
-          <GiftGridI />
-        </Grid>
-      </Grid>
       </>
     );
   };

@@ -9,10 +9,20 @@ import React from "react";
 import "./Login.css";
 import logo from "../images/logo.png";
 import { useTimer } from "react-timer-hook";
+import { useLocation, useNavigate } from "react-router";
 
 const OTPverify = () => {
   // adding event listener for responsiveness
   const [width, setWindowWidth] = useState(0);
+  let navigate = useNavigate();
+  const [email, setEmail] = useState();
+  const location = useLocation();
+  if (location?.state?.OTPMail) {
+    console.log(location?.state?.OTPMail);
+    setEmail(location?.state?.OTPMail);
+  } else {
+    navigate(-1);
+  }
 
   useEffect(() => {
     updateDimensions();
@@ -30,7 +40,7 @@ const OTPverify = () => {
 
   const responsiveness2 = { responsive: width < 1000 };
   const resp2 = responsiveness2.responsive;
-  
+
   const responsiveness3 = { responsive: width < 370 };
   const resp3 = responsiveness3.responsive;
   //
@@ -121,11 +131,11 @@ const OTPverify = () => {
   };
 
   function MyTimer({ expiryTimestamp }) {
-    const { seconds, minutes, isRunning, start, restart} = useTimer({
+    const { seconds, minutes, isRunning, start, restart } = useTimer({
       expiryTimestamp,
       onExpire: () => console.warn("onExpire called"),
     });
- 
+
     return (
       <div style={{}}>
         <div
@@ -135,7 +145,7 @@ const OTPverify = () => {
             fontSize: "0.7rem",
             position: "relative",
             left: resp ? "11.3rem" : "19rem",
-            display: isRunning ? (isSubmitted ? 'none' : '') :'none'
+            display: isRunning ? (isSubmitted ? "none" : "") : "none",
           }}
         >
           <span>Resend OTP in : {minutes < 10 ? `0${minutes}` : minutes}</span>:
@@ -150,17 +160,17 @@ const OTPverify = () => {
           }}
         >
           {isRunning ? (
-            <ContinueBtn className="submit-btn" type="submit"
-            
-            >
+            <ContinueBtn className="submit-btn" type="submit">
               Continue
             </ContinueBtn>
           ) : (
-            <ResendOtpBtn className="resend-btn" type="submit" 
-            onClick={() => {
+            <ResendOtpBtn
+              className="resend-btn"
+              type="submit"
+              onClick={() => {
                 // Restarts to 1 minutes timer
                 const time = new Date();
-                time.setSeconds(time.getSeconds() + 60);
+                time.setSeconds(time.getSeconds() + 300);
                 restart(time);
               }}
             >
@@ -168,14 +178,12 @@ const OTPverify = () => {
             </ResendOtpBtn>
           )}
         </div>
-
       </div>
     );
   }
 
   const time = new Date();
   time.setSeconds(time.getSeconds() + 60); // 1 minutes timer
-
 
   return (
     <React.Fragment>
@@ -188,8 +196,8 @@ const OTPverify = () => {
           display: resp2 ? "flex" : "",
           justifyContent: "center",
           alignItems: "center",
-          width : resp ? '100vw' : '',
-          height : resp ? '100vh' : ''
+          width: resp ? "100vw" : "",
+          height: resp ? "100vh" : "",
         }}
       >
         <Grid

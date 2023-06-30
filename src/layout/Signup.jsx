@@ -22,8 +22,8 @@ import { useFormik } from "formik";
 import logo from "../images/logo.png";
 import React from "react";
 import publicAxios from "../Axios/publicAxios";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -90,7 +90,6 @@ const Signup = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
       const options = {
         url: `auth/signup`,
         method: "POST",
@@ -110,11 +109,10 @@ const Signup = () => {
           navigate("/login");
         }
       } catch (err) {
-        console.log(err);
         if (!err.response) {
-          toast.error("No server response");
+          console.log('132123')
         } else {
-          toast.error("Invalid credentials");
+          // toast.error(`${err.message}`);
         }
       }
     },
@@ -173,7 +171,7 @@ const Signup = () => {
             helperText={formik.touched.firstName && formik.errors.firstName}
             style={{
               margin: "0.5rem 0 1rem 0",
-              width: resp3 ? "17ch" : (resp ? "20ch" : "24ch"),
+              width: resp3 ? "17ch" : resp ? "20ch" : "24ch",
               border: "2px solid black",
               borderRadius: "0.7rem",
             }}
@@ -201,7 +199,7 @@ const Signup = () => {
             required
             style={{
               margin: "0.5rem 0 1rem 1rem",
-              width: resp3 ? "17ch" : (resp ? "20ch" : "24ch"),
+              width: resp3 ? "17ch" : resp ? "20ch" : "24ch",
               border: "2px solid black",
               borderRadius: "0.7rem",
             }}
@@ -216,7 +214,11 @@ const Signup = () => {
       <React.Fragment>
         <span
           style={{
-            margin: resp3 ? "0 17rem 0 0" : (resp2 ? "0 0 0 -20rem" : "0 0 0 1rem"),
+            margin: resp3
+              ? "0 17rem 0 0"
+              : resp2
+              ? "0 0 0 -20rem"
+              : "0 0 0 1rem",
             fontWeight: 500,
           }}
         >
@@ -225,7 +227,7 @@ const Signup = () => {
         <FormControl
           style={{
             margin: "0.5rem 0 1rem 0",
-            width: resp3 ? "37ch" : (resp ? "40ch" : "50ch"),
+            width: resp3 ? "37ch" : resp ? "40ch" : "50ch",
             border: "2px solid black",
             borderRadius: "0.7rem",
           }}
@@ -263,7 +265,11 @@ const Signup = () => {
       <React.Fragment>
         <span
           style={{
-            margin: resp3 ? "0 13rem 0 0" : (resp2 ? "0 0 0 -16rem" : "0 0 0 1rem"),
+            margin: resp3
+              ? "0 13rem 0 0"
+              : resp2
+              ? "0 0 0 -16rem"
+              : "0 0 0 1rem",
             fontWeight: 500,
           }}
         >
@@ -281,7 +287,7 @@ const Signup = () => {
           required
           style={{
             margin: "0.5rem 0 1rem 0",
-            width: resp3 ? "37ch" : (resp ? "40ch" : "50ch"),
+            width: resp3 ? "37ch" : resp ? "40ch" : "50ch",
             border: "2px solid black",
             borderRadius: "0.7rem",
           }}
@@ -304,7 +310,7 @@ const Signup = () => {
           <FormControl
             sx={{
               margin: "0.5rem 0 1rem 1rem",
-              width: resp3 ? "17ch" : (resp ? "20ch" : "24ch"),
+              width: resp3 ? "17ch" : resp ? "20ch" : "24ch",
               border: "2px solid black",
               borderRadius: "0.7rem",
             }}
@@ -370,7 +376,7 @@ const Signup = () => {
             helperText={formik.touched.dob && formik.errors.dob}
             style={{
               margin: "0.5rem 0 1rem 0",
-              width: resp3 ? "17ch" : (resp ? "20ch" : "24ch"),
+              width: resp3 ? "17ch" : resp ? "20ch" : "24ch",
               border: "2px solid black",
               borderRadius: "0.7rem",
             }}
@@ -433,15 +439,19 @@ const Signup = () => {
               <div>
                 <span
                   style={{
-                    margin: resp3 ? "0 6rem 0 -4rem" : (resp2 ? "0 8rem 0 -5rem" : "0 0 0 1rem"),
+                    margin: resp3
+                      ? "0 6rem 0 -4rem"
+                      : resp2
+                      ? "0 8rem 0 -5rem"
+                      : "0 0 0 1rem",
                     fontWeight: 500,
                   }}
                 >
                   First Name
-                </span> 
+                </span>
                 <span
                   style={{
-                    margin: (resp2 ? "" : "0 0 0 9.5rem"),
+                    margin: resp2 ? "" : "0 0 0 9.5rem",
                     fontWeight: 500,
                   }}
                 >
@@ -461,7 +471,11 @@ const Signup = () => {
               <div>
                 <span
                   style={{
-                    margin: resp3 ? "0 6rem 0 -4rem" : (resp2 ? "0 8rem 0 -5rem" : "0 0 0 1rem"),
+                    margin: resp3
+                      ? "0 6rem 0 -4rem"
+                      : resp2
+                      ? "0 8rem 0 -5rem"
+                      : "0 0 0 1rem",
                     fontWeight: 500,
                   }}
                 >

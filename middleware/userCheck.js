@@ -24,14 +24,14 @@ const verifyReview = async (req, res, next) => {
 
 
 const verifyTicket = async (req, res, next) => {
-  const { ticketId } = req.body.id;
+  const { ticketId } = req.body;
   const user = req.user;
   const ticket = await TicketSchema.findOne({ _id: ticketId });
 
-  const userContainsTicket = await UserSchema.findOne(
-    { _id: user._id },
-    { reviews: { $in: [mongoose.Types.ObjectId(ticketId)] } }
-  );
+  const userContainsTicket = await UserSchema.findOne({
+    _id: user._id,
+    tickets: { $in: [mongoose.Types.ObjectId(ticketId)] }
+  });
   if (userContainsTicket) {
     // console.log(user.tickets)
     // req.ticket = user.tickets;

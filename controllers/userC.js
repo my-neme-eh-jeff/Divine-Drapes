@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 //Schema
 const UserSchema = require("../models/userSchema");
 const ProductSchema = require("../models/productSchema");
+const OrderSchema = require("../models/orderSchema");
 
 // Get account details
 const profile = async (req, res) => {
@@ -227,10 +228,16 @@ const viewCart = async (req, res) => {
 const directOrder = async (req, res) => {
   try {
     const user = req.user;
-    const productID = req.params.pID;
+    const productID = req.body.pID;
     const Product = await ProductSchema.findById({ _id: productID }).populate(
       "reviews"
     );
+    const order = new OrderSchema({
+      user : user._id,
+      product : productID,
+      paymentStatus,
+      paymentType,
+    })
     const User = await UserSchema.findByIdAndUpdate(
       { _id: user._id },
       { $push: { order: productID } }

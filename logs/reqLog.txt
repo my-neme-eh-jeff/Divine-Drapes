@@ -363,3 +363,13 @@
 20230630	00:55:30	887078e6-4411-4118-8cbf-89d29bb1f920	GET	undefined	/product/viewProduct
 20230630	00:55:58	ba5e76cd-b746-4c4d-babf-2abdb709bb37	GET	undefined	/admin/allOrders
 20230630	00:56:07	41dcb817-27bf-4ec7-b095-ba5723f6573d	GET	undefined	/admin/allOrders
+20230703	12:53:59	48e4038d-f514-4bb2-9c3c-380f70fe1008	POST	undefined	/auth/login
+20230703	12:55:08	31e22865-fd13-4be5-8a07-6c70e84658ff	POST	undefined	/auth/login
+20230703	12:55:27	d5304c8b-6f50-4774-87ac-682e5ebac0bf	POST	undefined	/auth/login
+20230703	12:55:31	5249e84f-ce99-4a64-a50a-82ee575c73f1	POST	undefined	/auth/login
+20230703	12:55:55	78d5d6a9-3510-4136-8092-88e151d29f29	GET	undefined	/product/categoryWise/Electronics
+20230703	23:31:22	34b4deef-9d3a-4ba8-a2d6-c6f82cda7702	POST	undefined	/auth/login
+20230703	23:31:26	3ae49a56-1923-46c5-98f5-10b1a97794ca	POST	undefined	/auth/login
+20230703	23:40:19	653fc0f8-cf22-4f40-a70e-335253037c2b	POST	undefined	/auth/login
+20230703	23:40:33	184044be-a050-4458-bf95-a79aaf46c93e	POST	undefined	/auth/login
+20230703	23:46:12	9c417b6b-2263-4008-b157-94aa57fc6c64	POST	undefined	/auth/login

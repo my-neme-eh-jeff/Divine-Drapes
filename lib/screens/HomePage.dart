@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                margin: EdgeInsets.only(left: width * 0.05),
+                margin: EdgeInsets.only(left: width * 0.04),
                 padding: EdgeInsets.only(top: 0),
                 width: width * 0.792,
                 // height: height * 0.06,
@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                 onTap: _showCategories,
                 child: Container(
                     margin: EdgeInsets.only(
-                        right: width * 0.045, left: width * 0.026),
+                        right: width * 0.045, left: width * 0.025),
                     height: height * 0.05,
                     child: Icon(
                       Icons.menu,
@@ -202,7 +202,7 @@ class _HomePageState extends State<HomePage> {
                                     builder: (context) => const Items()));
                               },
                               child: Container(
-                                height: width * 0.215,
+                                height: width * 0.213,
                                 width: width * 0.215,
                                 decoration: BoxDecoration(
                                     boxShadow: [

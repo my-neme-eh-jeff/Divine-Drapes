@@ -12,7 +12,8 @@ import '../admin_screens/AdminBottomNav.dart';
 import '../admin_screens/AdminHome.dart';
 
 class Login extends StatefulWidget {
-  const Login({super.key});
+  const Login({
+    super.key});
 
   @override
   State<Login> createState() => _LoginState();
@@ -224,7 +225,7 @@ class _LoginState extends State<Login> {
                     children: [
                       Checkbox(
                         checkColor: Colors.white,
-                        fillColor: MaterialStateProperty.all(Colors.green),
+                        fillColor: MaterialStateProperty.all(Colors.grey.shade900),
                         value: isChecked,
                         onChanged: (bool? value) {
                           setState(() {

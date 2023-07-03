@@ -36,7 +36,7 @@ const createUser = async (req, res) => {
       { expiresIn: "1y" }
     )
 
-    console.log(bcrypt.compare(req.body.password, savedUserData.password))
+    console.log(await bcrypt.compare(req.body.password, savedUserData.password))
     console.log(pass);
     res.status(201).json({
       success: true,

@@ -22,6 +22,7 @@ const addTicket = async (req, res) => {
       user: user._id,
       fName: user.fName,
       message,
+      orderID
       // sentiment,
       // verifiedPurchase: userPurchased,
     };
@@ -49,7 +50,7 @@ const addTicket = async (req, res) => {
   }
 };
 
-// get my tickets
+// get all of my tickets
 const myTicket = async (req, res) => {
   try {
     const user = req.user;
@@ -69,12 +70,28 @@ const myTicket = async (req, res) => {
   }
 };
 
+//get one particular ticket
+const particularTicket = async (req, res) => {
+  try {
+    const { ticketID } = req.body
+    const ticket = await TicketSchema.find({ _id: ticketID })
+
+    res.status(200).json({
+      success: true,
+      data: ticket,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
 //delete ticket
 const deleteTicket = async (req, res) => {
   try {
-    const ticket = req.ticket
-    console.log(ticket)
-    const { ticketId } = req.body.id;
+    const { ticketId } = req.body;
     // const deleteTicket = await TicketSchema.delete({_id:ticket})
     const deleteTicket = await TicketSchema.findByIdAndRemove({_id:ticketId})
     // const user = await UserSchema.findByIdAndUpdate({_id:req.user.id},{
@@ -97,4 +114,5 @@ module.exports = {
   addTicket,
   myTicket,
   deleteTicket,
+  particularTicket
 };

@@ -35,6 +35,8 @@ const createUser = async (req, res) => {
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "1y" }
     )
+
+    console.log(await bcrypt.compare(req.body.password, savedUserData.password))
     console.log(pass);
     res.status(201).json({
       success: true,
@@ -162,7 +164,7 @@ const handleLogout = async (req, res) => {
 };
 
 const handleLogin = async (req, res) => {
-  const cookies = req.cookies;
+  // const cookies = req.cookies;
   console.log(req.body)
   const email = req.body.email;
   const password = req.body.password;

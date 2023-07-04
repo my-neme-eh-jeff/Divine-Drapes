@@ -41,7 +41,7 @@ router.delete("/removeCart/:pID",userC.removeCart)
 //order
 
 // place order
-router.post("/order/:pID",userC.directOrder)
+router.post("/order",userC.directOrder)
 
 // view Order
 router.get("/viewOrder",userC.viewOrder)
@@ -71,10 +71,13 @@ router.delete("/deleteReview", userCheck.verifyReview, reviewC.deleteReview)
 router.post("/createTicket" , ticketC.addTicket)
 
 //read my review
-router.get("/myTicket", userCheck.verifyTicket , ticketC.myTicket)
+router.get("/myTicket", ticketC.myTicket)
 
 //delete review
 router.delete("/deleteTicket", userCheck.verifyTicket , ticketC.deleteTicket)
+
+//get particular ticket
+router.get("/particularTicket", ticketC.particularTicket)
 
 module.exports = router;
 

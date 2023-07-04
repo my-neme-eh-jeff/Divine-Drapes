@@ -1,13 +1,14 @@
 import 'dart:convert';
+import 'package:divine_drapes/screens/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart'as http;
+import 'package:http/http.dart' as http;
 
 import '../../SharedPref.dart';
 import '../../screens/Login.dart';
-class AuthProvider extends ChangeNotifier{
 
+class AuthProvider extends ChangeNotifier {
   Future<void> UserSignUp({
     required String fName,
     required String lName,
@@ -19,14 +20,15 @@ class AuthProvider extends ChangeNotifier{
   }) async {
     String? token1;
     try {
-      final uri = Uri.parse('https://divine-drapes.onrender.com/auth/signup');
+      final uri =
+          Uri.parse('https://divine-drapes.onrender.com/auth/si+++gnup');
       print('Here');
       http.Response response = await http.post(uri,
           headers: {
             "Content-Type": 'application/json',
           },
-          body: json.encode(
-              {"fName": fName,
+          body: json.encode({
+            "fName": fName,
             "lName": lName,
             "DOB": DOB,
             "email": email,
@@ -41,7 +43,7 @@ class AuthProvider extends ChangeNotifier{
         var json = response.body;
         var data = jsonDecode(json);
         print(data);
-        token1= data['token'];
+        token1 = data['token'];
         print(token1);
         SharedPreferencesFile().setToken(data['token']);
         // SharedPreferencesFile().setIsAdmin(false);
@@ -59,7 +61,6 @@ class AuthProvider extends ChangeNotifier{
           context,
           MaterialPageRoute(builder: (context) => Login()),
         );
-
       } else {
         Fluttertoast.showToast(
             msg: "Something went wrong",
@@ -77,4 +78,51 @@ class AuthProvider extends ChangeNotifier{
     }
   }
 
+  Future<void> login({
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
+    try {
+      var headers = {'Content-Type': 'application/json'};
+      var request = http.Request('POST',
+          Uri.parse('https://divine-drapes.onrender.com/auth/applogin'));
+      request.body = json.encode({"email": email, "password": password});
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        // print(await response.stream.bytesToString());
+        print(response.statusCode);
+
+        Fluttertoast.showToast(
+            msg: "Logged in successfully!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        // return true;
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
+      } else {
+        print(response.reasonPhrase);
+        Fluttertoast.showToast(
+            msg: "Something went wrong",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } catch (error) {
+      print(error);
+      //return false;
+    }
+  }
 }

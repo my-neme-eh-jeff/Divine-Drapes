@@ -3,11 +3,21 @@ const nodemailer = require("nodemailer");
 const otpGenerator = require("otp-generator");
 const auth = require("../middleware/auth");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 //Schema
 const UserSchema = require("../models/userSchema");
 const ProductSchema = require("../models/productSchema");
 const OrderSchema = require("../models/orderSchema");
+
+let mailTransporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD,
+  },
+  port: 587,
+});
 
 // Get account details
 const profile = async (req, res) => {
@@ -25,6 +35,7 @@ const profile = async (req, res) => {
         number,
         isVerified,
         profilePic,
+        pfp
       },
     });
   } catch (error) {

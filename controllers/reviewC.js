@@ -4,6 +4,7 @@ const ProductSchema = require("../models/productSchema");
 const OrderSchema = require("../models/orderSchema");
 const ReviewSchema = require("../models/reviewSchema");
 const mongoose = require("mongoose")
+require("dotenv").config();
 //add review
 const addReview = async (req, res) => {
   try {

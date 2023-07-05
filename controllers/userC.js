@@ -258,9 +258,25 @@ const directOrder = async (req, res) => {
     const order = new OrderSchema({
       user : user._id,
       product : productID,
-      paymentStatus,
-      paymentType,
+      photo : {
+        idCust : req.body.isCustPhoto,
+        photo : req.body.file       //enter cloudinary link 
+      },
+      text : {
+        isCust : req.body.isCustText,
+        text : req.body.text
+      },
+      color : {
+        isCust : req.body.isCustColor,
+        color : req.body.color
+    },
+      paymentStatus : req.body.paymentStatus,
+      paymentType : req.body.paymentType
     })
+
+    await order.save()
+
+
     const User = await UserSchema.findByIdAndUpdate(
       { _id: user._id },
       { $push: { order: productID } }

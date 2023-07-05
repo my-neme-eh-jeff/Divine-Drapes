@@ -3,6 +3,7 @@ const nodemailer = require("nodemailer");
 const otpGenerator = require("otp-generator");
 const jwt = require("jsonwebtoken");
 const UserSchema = require("../models/userSchema");
+require("dotenv").config();
 
 let mailTransporter = nodemailer.createTransport({
   service: "gmail",
@@ -10,7 +11,7 @@ let mailTransporter = nodemailer.createTransport({
     user: process.env.EMAIL,
     pass: process.env.PASSWORD,
   },
-  port: 4,
+  port: 587,
 });
 
 const createUser = async (req, res) => {

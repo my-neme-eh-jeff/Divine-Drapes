@@ -1,6 +1,6 @@
 // Models
 const ProductSchema = require("../models/productSchema");
-
+require("dotenv").config();
 //view all products
 const allProducts = async (req, res) => {
   try {

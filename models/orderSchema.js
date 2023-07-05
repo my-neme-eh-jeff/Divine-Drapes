@@ -10,6 +10,33 @@ const orderSchema = new Schema({
         type : mongoose.Types.ObjectId,
         ref : "product"
     },
+    photo : {
+        isCust : {
+            type : Boolean,
+            required : true
+        },
+        picture : [{
+            type : String
+        }]
+    },
+    text : {
+        isCust : {
+            type : Boolean,
+            required : true
+        },
+        text : {
+            type : String
+        }
+    },
+    color : {
+        isCust : {
+            type : Boolean,
+            required : true
+        },
+        color : [{
+            type : String
+        }]
+    },
     paymentStatus: {
         type: String,
         enum: ["pending", "completed", "cancelled", "refund"],

@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const otpGenerator = require("otp-generator");
 const { model } = require("mongoose");
+require("dotenv").config();
 
 let mailTransporter = nodemailer.createTransport({
   service: "gmail",
@@ -24,15 +25,13 @@ const addProduct = async (req, res) => {
     const savedProduct = await product.save();
     const email = req.user.email;
 
-    // mailTransporter.sendMail({
-    //   from: process.env.EMAIL,
-    //   to: email,
-    //   subject: "New product added",
-    //   text:
-    //     "A new product : (" +
-    //     savedProduct.name +
-    //     ") has been added on the website.",
-    // });
+    mailTransporter.sendMail({
+      from: process.env.EMAIL,
+      to: email,
+      subject: "New product added",
+      text:
+        `A new product ${savedProduct.name}, with product ID ${savedProduct._id} has been added on the website.`,
+    });
 
     res.status(201).json({
       success: true,
@@ -130,7 +129,7 @@ const viewUser = async (req, res) => {
   try {
     const { userID } = req.body;
 
-    const user = await UserSchema.findById({_id : userID}).populate("product order review ticket")
+    const user = await UserSchema.findById({_id : userID}).populate("product order reviews tickets")
 
     res.status(200).json({
       success : true,

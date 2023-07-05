@@ -232,6 +232,18 @@ const directOrder = async (req, res) => {
     const Product = await ProductSchema.findById({ _id: productID }).populate(
       "reviews"
     );
+    
+    const remQuantity = await ProductSchema.findByIdAndUpdate({_id : productID}, {$inc : {quantity : -1}})
+    if(remQuantity.quantity == 0){
+      mailTransporter.sendMail({
+        from: process.env.EMAIL,
+        to: process.env.EMAIL,
+        subject: "Stock over for a product",
+        text: `Dear Admin, a product on your website ${Product.name}, with the product id ${productID} , is out of stock. Kindly refill the items, untill then it will be shown as out of stock`,
+      });
+    }
+
+
     const order = new OrderSchema({
       user : user._id,
       product : productID,
@@ -242,6 +254,14 @@ const directOrder = async (req, res) => {
       { _id: user._id },
       { $push: { order: productID } }
     );
+
+    mailTransporter.sendMail({
+      from: process.env.EMAIL,
+      to: user.email,
+      subject: "Order succesfully placed.",
+      text: `Your order for ${Product.name} with product ID ${productID} has been placed succefully, and can be tracked on our app in the orders section.`,
+    });
+
     res.status(200).json({
       success: true,
       data: Product,

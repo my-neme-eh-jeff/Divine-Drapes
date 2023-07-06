@@ -274,8 +274,8 @@ class _LoginState extends State<Login> {
                           print(emailController.text);
                           print(passwordController.text);
                           loginProvider.login(
-                              email: emailController.text,
-                              password: passwordController.text,
+                              email: emailController.text.trim(),
+                              password: passwordController.text.trim(),
                               context: context);
                         } else
                           Center(child: (CircularProgressIndicator()));

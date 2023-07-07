@@ -7,9 +7,7 @@ import 'Account.dart';
 import 'Items.dart';
 
 class Home extends StatefulWidget {
-  final String? token;
-
-  Home({required this.token, Key? key}) : super(key: key);
+  Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -25,7 +23,7 @@ class _HomeState extends State<Home> {
     _widgetOptions = <Widget>[
       HomePage(),
       Cart(),
-      MyAccount(token: widget.token),
+      MyAccount(),
     ];
   }
 

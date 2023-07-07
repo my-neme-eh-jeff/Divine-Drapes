@@ -4,7 +4,6 @@ import 'package:divine_drapes/consts/constants.dart';
 import 'package:flutter/material.dart';
 
 import 'Account.dart';
-import 'Items.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

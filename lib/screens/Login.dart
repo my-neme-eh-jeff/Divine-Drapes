@@ -3,7 +3,6 @@ import 'package:divine_drapes/payment/cod.dart';
 import 'package:divine_drapes/screens/forgotpassword.dart';
 import 'package:divine_drapes/screens/home.dart';
 import 'package:divine_drapes/screens/signup.dart';
-import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,7 +10,6 @@ import 'package:provider/provider.dart';
 
 import '../Provider/Auth/AuthProvider.dart';
 import '../admin_screens/AdminBottomNav.dart';
-import '../admin_screens/AdminHome.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

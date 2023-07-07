@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:math';
+import 'package:divine_drapes/models/login_model.dart' as user;
 import 'package:divine_drapes/screens/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../SharedPref.dart';
 import '../../screens/Login.dart';
@@ -20,8 +23,7 @@ class AuthProvider extends ChangeNotifier {
   }) async {
     String? token1;
     try {
-      final uri =
-          Uri.parse('https://divine-drapes.onrender.com/auth/si+++gnup');
+      final uri = Uri.parse('https://divine-drapes.onrender.com/auth/signup');
       print('Here');
       http.Response response = await http.post(uri,
           headers: {
@@ -78,51 +80,55 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> login({
-    required String email,
-    required String password,
-    required BuildContext context,
-  }) async {
-    try {
-      var headers = {'Content-Type': 'application/json'};
-      var request = http.Request('POST',
-          Uri.parse('https://divine-drapes.onrender.com/auth/applogin'));
-      request.body = json.encode({"email": email, "password": password});
-      request.headers.addAll(headers);
+  static const String authTokenKey = 'auth_token';
+  user.Login? currentUser;
 
-      http.StreamedResponse response = await request.send();
+  Future<bool> login(String email, String password) async {
+    final url = Uri.parse('https://divine-drapes.onrender.com/auth/applogin');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'email': email, 'password': password}),
+    );
 
-      if (response.statusCode == 200) {
-        // print(await response.stream.bytesToString());
-        print(response.statusCode);
-
-        Fluttertoast.showToast(
-            msg: "Logged in successfully!",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 16.0);
-        // return true;
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => Home()),
-        );
-      } else {
-        print(response.reasonPhrase);
-        Fluttertoast.showToast(
-            msg: "Something went wrong",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      }
-    } catch (error) {
-      print(error);
-      //return false;
+    if (response.statusCode == 200) {
+      final token = json.decode(response.body)['token'];
+      await saveAuthToken(token);
+      print(response.statusCode);
+      getAuthToken();
+      Fluttertoast.showToast(
+          msg: "Logged in successfully!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      return true;
+    } else {
+      print(response.statusCode);
+      return false;
     }
+  }
+
+  Future<String> getAuthToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(authTokenKey);
+    if (token != null) {
+      print(token);
+    }
+    print(token ?? 'no_token');
+    return token ?? 'no_token';
+  }
+
+  Future<void> saveAuthToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(authTokenKey, token);
+  }
+
+  Future<void> deleteAuthToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(authTokenKey);
+    await prefs.remove("current user");
   }
 }

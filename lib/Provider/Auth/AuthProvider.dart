@@ -129,6 +129,42 @@ class AuthProvider extends ChangeNotifier {
   Future<void> deleteAuthToken() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(authTokenKey);
-    await prefs.remove("current user");
+  }
+
+  void Logout({
+    required BuildContext context,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(authTokenKey);
+    print(token);
+    var headers = {'Authorization': 'Bearer $token'};
+    var request = http.Request(
+        'POST', Uri.parse('https://divine-drapes.onrender.com/auth/logout'));
+    request.body = '''''';
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      print(await response.stream.bytesToString());
+      print("Logged out succesfully");
+      print(response.statusCode);
+
+      Fluttertoast.showToast(
+          msg: "Logged out successfully!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Login()),
+      );
+    } else {
+      print(response.reasonPhrase);
+    }
   }
 }

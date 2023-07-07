@@ -334,19 +334,12 @@ class _LoginState extends State<Login> {
                     GestureDetector(
                       onTap: () async {
                         if (_formKey.currentState!.validate()) {
-                          // if (ConnectionState == ConnectionState.waiting) {
-                          //   Center(child: CircularProgressIndicator());
-                          // } else {
-                          //   loginProvider.login(
-                          //       email: emailController.text,
-                          //       password: passwordController.text,
-                          //       context: context);
-                          // }
-
                           showDialog(
                               context: context,
-                              builder: (context) => const Center(
-                                    child: CircularProgressIndicator(),
+                              builder: (context) => Center(
+                                    child: CircularProgressIndicator(
+                                      color: cream,
+                                    ),
                                   ));
                           final success = await AuthProvider().login(
                               emailController.text.trim(),

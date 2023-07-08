@@ -279,7 +279,7 @@ const forgotPSWD = async (req, res) => {
     res.status(200).cookie("email", email, { secure: true }).json({
       success: true,
       message: "OTP sent via mail",
-      token: token,
+      // token: token,
     });
   } catch (err) {
     res.status(500).json({

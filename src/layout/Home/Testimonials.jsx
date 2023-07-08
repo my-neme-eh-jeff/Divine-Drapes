@@ -22,7 +22,16 @@ const Testimonials = () => {
         {testimonials.map((index) => {
           return(
             <GridItem key={index}>
-                <Card maxW='md' border='2px solid' borderRadius='10px'>
+                <Card 
+                  maxW='md' 
+                  border='2px solid' 
+                  borderRadius='10px'
+                  transition="box-shadow 0.2s ease-in-out"
+                  _hover={{
+                    boxShadow: '0px 20px 20px rgba(0, 0, 0, 0.5)',
+                    bgColor: 'gray.200'
+                  }}
+                >
                   <CardHeader>
                     <Flex spacing='5'>
                       <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>

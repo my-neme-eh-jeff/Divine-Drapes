@@ -267,8 +267,9 @@ const forgotPSWD = async (req, res) => {
       upperCaseAlphabets: false,
       specialChars: false,
     });
-    await UserSchema.findOneAndUpdate({ email: email }, { OTP: otp });
-
+    const User = await UserSchema.findOneAndUpdate({ email: email },{ OTP: otp });
+    await User.save();
+    console.log(User)
     mailTransporter.sendMail({
       from: process.env.EMAIL,
       to: user.email,
@@ -295,19 +296,18 @@ const verifyOTP = async (req, res) => {
     const otp = req.body.otp;
     const email = req.body.email;
     const user = await UserSchema.find({ email: email });
-
-    if (req.user.OTP == otp) {
+    if (user[0].OTP == otp) {
       await UserSchema.findOneAndUpdate(
         { email: email }, //req.user.email
         { $set: { OTP: null } }
       );
 
-      const token = await user.genAuthToken();
+      // const token = await user.genAuthToken();
 
       res.status(200).clearCookie("email").json({
         success: true,
         message: "OTP verified",
-        token: token,
+        // token: token,
       });
     } else {
       res.status(400).json({

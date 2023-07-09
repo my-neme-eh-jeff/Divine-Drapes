@@ -5,6 +5,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:provider/provider.dart';
+
+import '../Provider/Auth/forgotPasswordProvider.dart';
+
 class Forgotpass extends StatefulWidget {
   const Forgotpass({super.key});
 
@@ -17,6 +21,7 @@ final TextEditingController emailController = TextEditingController();
 class _ForgotpassState extends State<Forgotpass> {
   @override
   Widget build(BuildContext context) {
+
     var size = MediaQuery.of(context).size;
     double sizefont = size.width * 0.05;
 
@@ -174,9 +179,31 @@ class _ForgotpassState extends State<Forgotpass> {
                   ),
                   SizedBox(height: size.height * 0.07),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => const OTP()));
+                    onTap: () async {
+                      showDialog(
+                              context: context,
+                              builder: (context) => Center(
+                                    child: CircularProgressIndicator(
+                                      color: cream,
+                                    ),
+                                  ));
+                          final success = await PasswordProvider().changePassword(email: emailController.text);
+
+                          Navigator.pop(context);
+                          if (success) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => OTP(email: emailController.text)),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('There seems to be an issue'),
+                                duration: Duration(seconds: 3),
+                              ),
+                            );
+                          }
+                          
                     },
                     child: Container(
                       width: double.infinity,
@@ -194,7 +221,7 @@ class _ForgotpassState extends State<Forgotpass> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'Send OTP',
+                            'Send Email',
                             style: GoogleFonts.notoSans(
                               fontSize: sizefont * 0.7,
                               color: Colors.white,

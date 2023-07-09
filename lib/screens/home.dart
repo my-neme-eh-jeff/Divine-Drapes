@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'Account.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -14,11 +14,17 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
-    HomePage(),
-    Cart(),
-    MyAccount()
-  ];
+  late List<Widget> _widgetOptions;
+
+  @override
+  void initState() {
+    super.initState();
+    _widgetOptions = <Widget>[
+      HomePage(),
+      Cart(),
+      MyAccount(),
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {

@@ -66,13 +66,13 @@ class _CartState extends State<Cart> {
               ),
               Row(
                 children: [
-                  InkWell(
-                      onTap: (){
-                        // Navigator.of(context).push(MaterialPageRoute(
-                        //     builder: (context) => const Home()));
-                        Navigator.of(context).pop();
-                      },
-                      child: Icon(Icons.arrow_back)),
+                  // InkWell(
+                  //     // onTap: (){
+                  //     //   // Navigator.of(context).push(MaterialPageRoute(
+                  //     //   //     builder: (context) => const Home()));
+                  //     //   Navigator.of(context).pop();
+                  //     // },
+                  //     child: Icon(Icons.arrow_back)),
                   SizedBox(width: 10,),
                   Text("My Cart",style: GoogleFonts.notoSans(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w700),
                   ),

@@ -1,4 +1,6 @@
+import 'package:divine_drapes/Provider/Auth/AuthProvider.dart';
 import 'package:divine_drapes/consts/constants.dart';
+import 'package:divine_drapes/screens/Login.dart';
 import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +13,10 @@ class new_pass extends StatefulWidget {
   State<new_pass> createState() => _new_passState();
 }
 
-final TextEditingController emailController = TextEditingController();
-
 class _new_passState extends State<new_pass> {
   bool isHidden = true;
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController2 = TextEditingController();
   bool isChecked = false;
 
   @override
@@ -45,7 +45,7 @@ class _new_passState extends State<new_pass> {
             const Spacer(),
             Container(
               padding: EdgeInsets.symmetric(
-                  horizontal: size.width * 0.147, vertical: size.height * 0.1),
+                  horizontal: size.width * 0.147, vertical: size.height * 0.07),
               height: size.height * 0.7,
               width: double.infinity,
               decoration: BoxDecoration(
@@ -70,7 +70,7 @@ class _new_passState extends State<new_pass> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
                         'Reset password',
@@ -82,7 +82,7 @@ class _new_passState extends State<new_pass> {
                       ),
                     ],
                   ),
-                  SizedBox(height: size.height * 0.01),
+                  SizedBox(height: size.height * 0.04),
                   Text(
                     'Create new password',
                     style: GoogleFonts.notoSans(
@@ -185,7 +185,7 @@ class _new_passState extends State<new_pass> {
                         style: TextStyle(fontSize: sizefont),
                         obscureText: isHidden,
                         autofocus: false,
-                        controller: passwordController,
+                        controller: passwordController2,
                         validator: (value) {
                           if (value!.isEmpty) {
                             return ("Please Enter your Password");
@@ -196,7 +196,7 @@ class _new_passState extends State<new_pass> {
                           return null;
                         },
                         onSaved: (value) {
-                          passwordController.text = value!;
+                          passwordController2.text = value!;
                         },
                         textInputAction: TextInputAction.done,
                         decoration: InputDecoration(
@@ -243,30 +243,67 @@ class _new_passState extends State<new_pass> {
                     ),
                   ),
                   SizedBox(height: size.height * 0.05),
-                  Container(
-                    width: double.infinity,
-                    height: size.height * 0.052,
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(160, 30, 134, 1),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 2,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Reset Password',
-                          style: GoogleFonts.notoSans(
-                            fontSize: sizefont * 0.7,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
+                  GestureDetector(
+                    onTap: () async {
+                      if (passwordController.text != passwordController2.text) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Passwords do not match.'),
+                              duration: Duration(seconds: 3),
+                            ),
+                          );
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (context) => Center(
+                                  child: CircularProgressIndicator(
+                                    color: cream,
+                                  ),
+                                ));
+                        final success = await AuthProvider().editUserPassword(
+                            password: passwordController.text);
+
+                        Navigator.pop(context);
+                        if (success) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => Login()),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('There seems to be an issue'),
+                              duration: Duration(seconds: 3),
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: size.height * 0.052,
+                      decoration: BoxDecoration(
+                        color: Color.fromRGBO(160, 30, 134, 1),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 2,
                         ),
-                      ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Reset Password',
+                            style: GoogleFonts.notoSans(
+                              fontSize: sizefont * 0.7,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

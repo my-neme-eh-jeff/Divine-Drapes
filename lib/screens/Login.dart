@@ -5,11 +5,14 @@ import 'package:divine_drapes/screens/home.dart';
 import 'package:divine_drapes/screens/signup.dart';
 // import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../Provider/Auth/AuthProvider.dart';
 import '../admin_screens/AdminBottomNav.dart';
+import '../admin_screens/AdminHome.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -74,11 +77,12 @@ class _LoginState extends State<Login> {
                   border: Border.all(color: whiteColor, width: 5)),
               child: Form(
                 key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: size.height * 0.08),
+                    SizedBox(height: size.height * 0.065),
                     Text(
                       'Email',
                       style: GoogleFonts.notoSans(
@@ -88,66 +92,124 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     SizedBox(height: size.height * 0.01),
-                    Container(
-                      height: size.height * 0.052,
-                      child: Padding(
-                        padding: const EdgeInsets.all(0),
-                        child: TextFormField(
-                          style: TextStyle(fontSize: sizefont),
-                          autofocus: false,
-                          controller: emailController,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return ("Please enter your Email ID");
-                            }
-                            if (!RegExp(
-                                    "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9,-]+.[a-z]")
-                                .hasMatch(value)) {
-                              return ("Please Enter a valid Email");
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            emailController.text = value!;
-                          },
-                          textInputAction: TextInputAction.next,
-                          decoration: InputDecoration(
-                            suffixIcon: emailController.text.isEmpty
-                                ? Container(
-                                    width: 0,
-                                  )
-                                : IconButton(
-                                    icon: Icon(
-                                      Icons.close,
-                                      size: sizefont,
-                                    ),
-                                    onPressed: () => emailController.clear(),
+                    // Expanded(
+                    //   child: Container(
+                    //     // height: size.height * 0.052,
+                    //     height: size.height * 0.032,
+                    //     child: Padding(
+                    //       padding: const EdgeInsets.all(0),
+                    //       child: TextFormField(
+                    //         style: TextStyle(fontSize: sizefont * 0.85),
+                    //         autofocus: false,
+                    //         controller: emailController,
+                    //         // validator: (value) {
+                    //         //   if (value!.isEmpty) {
+                    //         //     return ("Please enter your Email ID");
+                    //         //   }
+                    //         //   if (!RegExp(
+                    //         //           "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9,-]+.[a-z]")
+                    //         //       .hasMatch(value)) {
+                    //         //     return ("Please Enter a valid Email");
+                    //         //   }
+                    //         //   return null;
+                    //         // },
+                    //         validator: MultiValidator([
+                    //           EmailValidator(
+                    //               errorText: "  "
+                    //                   'Please enter a valid email address'),
+                    //           RequiredValidator(errorText: "    " '*Required')
+                    //         ]),
+                    //         onSaved: (value) {
+                    //           emailController.text = value!;
+                    //         },
+                    //         textInputAction: TextInputAction.next,
+                    //         decoration: InputDecoration(
+                    //           suffixIcon: emailController.text.isEmpty
+                    //               ? Container(
+                    //                   width: 0,
+                    //                 )
+                    //               : IconButton(
+                    //                   icon: Icon(
+                    //                     Icons.close,
+                    //                     size: sizefont,
+                    //                   ),
+                    //                   onPressed: () => emailController.clear(),
+                    //                 ),
+                    //           contentPadding: EdgeInsets.symmetric(
+                    //               vertical: size.width * 0.005,
+                    //               horizontal: size.width * 0.03),
+                    //           isDense: true,
+                    //           hintText: 'Enter your Email address',
+                    //           hintStyle: TextStyle(fontSize: sizefont * 0.8),
+                    //           enabledBorder: const OutlineInputBorder(
+                    //               borderSide: BorderSide(
+                    //                 color: Colors.black,
+                    //                 width: 2,
+                    //               ),
+                    //               borderRadius:
+                    //                   BorderRadius.all(Radius.circular(10))),
+                    //           focusedBorder: const OutlineInputBorder(
+                    //               borderSide: BorderSide(
+                    //                 color: Colors.black,
+                    //                 width: 2,
+                    //               ),
+                    //               borderRadius:
+                    //                   BorderRadius.all(Radius.circular(10))),
+                    //           prefixIcon: const Icon(Icons.email),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    Expanded(
+                      child: Container(
+                        height: size.height * 0.052,
+                        child: Padding(
+                          padding: const EdgeInsets.all(0),
+                          child: TextFormField(
+                            style: TextStyle(fontSize: sizefont * 0.85),
+                            autofocus: false,
+                            controller: emailController,
+                            validator: MultiValidator([
+                              EmailValidator(
+                                  errorText: "  "
+                                      'Please enter a valid email address'),
+                              RequiredValidator(errorText: "    " '* Required')
+                            ]),
+                            onSaved: (value) {
+                              emailController.text = value!;
+                            },
+                            textInputAction: TextInputAction.done,
+                            decoration: InputDecoration(
+                              hintText: 'Enter your email',
+                              hintStyle: TextStyle(fontSize: sizefont * 0.8),
+                              contentPadding: const EdgeInsets.all(10),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                      const BorderSide(color: Colors.black)),
+                              enabledBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.black,
+                                    width: 2,
                                   ),
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: size.width * 0.005,
-                                horizontal: size.width * 0.03),
-                            isDense: true,
-                            hintText: 'Enter your Email address',
-                            hintStyle: TextStyle(fontSize: sizefont * 0.8),
-                            enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.black,
-                                  width: 2,
-                                ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.black,
-                                  width: 2,
-                                ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            prefixIcon: const Icon(Icons.email),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              focusedBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.black,
+                                    width: 2,
+                                  ),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              prefixIcon: const Icon(Icons.email),
+                              isDense: true,
+                            ),
                           ),
                         ),
                       ),
                     ),
+
                     SizedBox(height: size.height * 0.03),
                     Text(
                       'Password',
@@ -164,19 +226,21 @@ class _LoginState extends State<Login> {
                         child: Padding(
                           padding: const EdgeInsets.all(0),
                           child: TextFormField(
-                            style: TextStyle(fontSize: sizefont),
+                            style: TextStyle(fontSize: sizefont * 0.85),
                             obscureText: isHidden,
                             autofocus: false,
                             controller: passwordController,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return ("Please Enter your Password");
-                              }
-                              if (!RegExp(r'^.{8,}$').hasMatch(value)) {
-                                return ("Please Enter a valid Password");
-                              }
-                              return null;
-                            },
+                            // validator: (value) {
+                            //   if (value!.isEmpty) {
+                            //     return ("Please Enter your Password");
+                            //   }
+                            //   if (!RegExp(r'^.{8,}$').hasMatch(value)) {
+                            //     return ("Please Enter a valid Password");
+                            //   }
+                            //   return null;
+                            // },
+                            validator:
+                                RequiredValidator(errorText: "   " '*Required'),
                             onSaved: (value) {
                               passwordController.text = value!;
                             },
@@ -225,7 +289,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
-                    SizedBox(height: size.height * 0.0015),
+                    SizedBox(height: 15),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -267,16 +331,33 @@ class _LoginState extends State<Login> {
                     ),
                     SizedBox(height: size.height * 0.01),
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         if (_formKey.currentState!.validate()) {
-                          print(emailController.text);
-                          print(passwordController.text);
-                          loginProvider.login(
-                              email: emailController.text,
-                              password: passwordController.text,
-                              context: context);
-                        } else
-                          Center(child: (CircularProgressIndicator()));
+                          showDialog(
+                              context: context,
+                              builder: (context) => Center(
+                                    child: CircularProgressIndicator(
+                                      color: cream,
+                                    ),
+                                  ));
+                          final success = await AuthProvider().login(
+                              emailController.text.trim(),
+                              passwordController.text.trim());
+                          Navigator.pop(context);
+                          if (success) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => Home()),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('There seems to be an issue'),
+                                duration: Duration(seconds: 3),
+                              ),
+                            );
+                          }
+                        }
                       },
                       child: Container(
                         width: double.infinity,
@@ -396,7 +477,7 @@ class _LoginState extends State<Login> {
                         ),
                       ],
                     ),
-                    SizedBox(height: size.height * 0.03),
+                    SizedBox(height: size.height * 0.04),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

@@ -20,30 +20,38 @@ class _HomePageState extends State<HomePage> {
     var height = size.height;
     var width = size.width;
     return Scaffold(
+      // appBar: AppBar(
+      //   automaticallyImplyLeading: false,
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   flexibleSpace: Container(
+      //     child: Padding(
+      //       padding: EdgeInsets.only(top: size.height * 0.03625),
+      //       child: Row(
+      //         mainAxisAlignment: MainAxisAlignment.start,
+      //         children: [
+      //           SizedBox(width: size.width * 0.075),
+      //           Text(
+      //             'Divine Drapes',
+      //             style: GoogleFonts.notoSans(
+      //               // fontSize: height * 0.035,
+      //               fontSize: width * 0.075,
+      //               color: darkPurple,
+      //               fontWeight: FontWeight.w700,
+      //             ),
+      //           ),
+      //         ],
+      //       ),
+      //     ),
+      //   ),
+      // ),
       appBar: AppBar(
+        backgroundColor: whiteColor,
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        flexibleSpace: Container(
-          child: Padding(
-            padding: EdgeInsets.only(top: size.height * 0.03625),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(width: size.width * 0.075),
-                Text(
-                  'Divine Drapes',
-                  style: GoogleFonts.notoSans(
-                    // fontSize: height * 0.035,
-                    fontSize: width * 0.075,
-                    color: darkPurple,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        title: Text("Divine Drapes",
+            style: GoogleFonts.notoSans(
+                color: darkPurple, fontSize: 28, fontWeight: FontWeight.w700)),
+        elevation: 0.0,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

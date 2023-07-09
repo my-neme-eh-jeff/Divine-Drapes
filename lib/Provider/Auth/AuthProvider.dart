@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:divine_drapes/models/login_model.dart' as user;
-import 'package:divine_drapes/screens/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';

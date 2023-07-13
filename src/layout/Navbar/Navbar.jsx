@@ -78,6 +78,12 @@ const Navbar = () => {
             {window.location.pathname === "/" ? showSearchBar && <SearchBar /> : <SearchBar />}
             </Box>
 
+            <Link href="/">
+              <Button bgColor={'#fff'}>
+                  Home
+              </Button>
+            </Link>
+
             <Link>
               <Categories />
             </Link>

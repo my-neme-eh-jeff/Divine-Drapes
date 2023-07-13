@@ -165,7 +165,7 @@ const handleLogout = async (req, res) => {
 };
 
 const handleLogin = async (req, res) => {
-  // const cookies = req.cookies;
+  const cookies = req.cookies;
   console.log(req.body)
   const email = req.body.email;
   const password = req.body.password;

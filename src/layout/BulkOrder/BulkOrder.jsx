@@ -1,5 +1,5 @@
 import { Box, ChakraProvider, Text, VStack, SimpleGrid, GridItem, FormControl, FormLabel, Input, Select, Button } from "@chakra-ui/react"
-import { ArrowBackIcon, ExternalLinkIcon } from "@chakra-ui/icons"
+import { ArrowBackIcon } from "@chakra-ui/icons"
 import { useState } from 'react';
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
@@ -99,7 +99,9 @@ const BulkOrder = () => {
                         <GridItem colSpan={2}>
                             <FormControl>
                                 <FormLabel>Upload any custom photo/logo</FormLabel>
-                                <Button border='2px' variant='outlined' width='100%'>Upload {<ExternalLinkIcon/>}</Button>
+                                <Box>
+                                    <input id="upload-input" type="file" accept="image/*"/>
+                                </Box>
                             </FormControl>
                         </GridItem>
                         <GridItem colSpan={2} m='5% 0'>

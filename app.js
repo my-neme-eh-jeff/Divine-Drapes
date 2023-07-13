@@ -1,7 +1,7 @@
 const morgan = require("morgan");
 const express = require("express");
 const cookieParser = require("cookie-parser");
-const bodyParser = require("body-parser")
+const bodyParser = require("body-parser");
 const cors = require("cors");
 const corsOptions = require("./config/corsOptions.js");
 const { logger } = require("./middleware/logEvents");
@@ -25,14 +25,14 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(bodyParser.json()) // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
 const userRoutes = require("./routes/userRoutes");
 const adminRoutes = require("./routes/adminRoutes.js");
 const authRoutes = require("./routes/authRoutes.js");
-const productRoutes = require("./routes/productRoutes.js"); 
+const productRoutes = require("./routes/productRoutes.js");
 
 // auth routes
 app.use("/auth", authRoutes);
@@ -42,7 +42,7 @@ app.use(verifyJWT);
 app.use("/user", userRoutes);
 
 // product routes
-app.use("/product", productRoutes)
+app.use("/product", productRoutes);
 
 //admin routes
 app.use(verifyRoles(ROLES_LIST.Admin));

@@ -16,18 +16,27 @@ import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import Categories from "./Categories";
 import SearchBar from "../Home/SearchBar";
 import useAuth from "../../Hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import privateAxios from "../../Axios/privateAxios";
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
   const toggleMenu = () => setShow(!show);
   const [showSearchBar, setShowSearchBar] = useState(false);
-  const { auth } = useAuth();
-  const navigate = useNavigate();
+  const { auth, setAuth } = useAuth();
+
+  
   const isLogin = auth?.accessToken
-  console.log(isLogin)
-  const handleLogout = () => {
-    navigate('/login')
+
+  const handleLogout = async () => {
+    try {
+      const res = await privateAxios.post('auth/logout')
+      setAuth({})
+      console.log(res)
+    } catch(err) {
+      console.log("hello")
+      console.log(err)
+    }
+    
   }
   
   useEffect(() => {

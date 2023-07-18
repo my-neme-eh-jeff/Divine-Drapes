@@ -30,7 +30,7 @@ import CheckAuth from "./layout/CheckAuth";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" index element={<Home />} />
+      <Route element={<PersistLogin />}>
       <Route element={<CheckAuth />}>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
@@ -38,12 +38,12 @@ const router = createBrowserRouter(
         <Route path="/otpverify" element={<OTPverify />} />
       </Route>
 
-      <Route element={<PersistLogin />}>
         <Route
           element={
             <RequireAuth allowedRoles={[import.meta.env.VITE_USER_ROLE]} />
           }
         >
+          <Route path='/' index element={<Home/>} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/product" element={<Product />} />
           <Route path="/bulkorder" element={<BulkOrder />} />

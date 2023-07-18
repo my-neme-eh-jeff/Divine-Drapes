@@ -15,12 +15,21 @@ import {
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import Categories from "./Categories";
 import SearchBar from "../Home/SearchBar";
+import useAuth from "../../Hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
   const toggleMenu = () => setShow(!show);
   const [showSearchBar, setShowSearchBar] = useState(false);
-
+  const { auth } = useAuth();
+  const navigate = useNavigate();
+  const isLogin = auth?.accessToken
+  console.log(isLogin)
+  const handleLogout = () => {
+    navigate('/login')
+  }
+  
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -98,20 +107,25 @@ const Navbar = () => {
                   Cart
                 </Button>
             </Link>
+          {
+            !isLogin ? (
             <Link href="/login">
-            <Button bgColor={"#f7bc62"}>
+              <Button bgColor={"#f7bc62"}>
                   Login
-                </Button>
+              </Button>
             </Link>
+            ) : (
             <Menu>
               <MenuButton bgColor='white'>
                 <Avatar />
               </MenuButton>
               <MenuList>
-                <MenuItem>Logout</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 <MenuItem><Link href='/profile'>My Accounts</Link></MenuItem>
               </MenuList>
             </Menu>
+            )
+          }
           </Flex>
         </Box>
       </Flex>

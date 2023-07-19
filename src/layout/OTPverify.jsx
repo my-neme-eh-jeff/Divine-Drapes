@@ -1,6 +1,6 @@
 import { useState } from "react";
 import OtpInput from "react-otp-input";
-import { Box, Button } from "@mui/material";
+import { Box, Button,TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useEffect } from "react";
 import Grid from "@mui/material/Grid";
@@ -10,19 +10,21 @@ import "./Login.css";
 import logo from "../images/logo.png";
 import { useTimer } from "react-timer-hook";
 import { useLocation, useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
-const OTPverify = () => {
+const OTPverify = ({email,page,setPage}) => {
   // adding event listener for responsiveness
   const [width, setWindowWidth] = useState(0);
-  let navigate = useNavigate();
-  const [email, setEmail] = useState();
-  const location = useLocation();
-  if (location?.state?.OTPMail) {
-    console.log(location?.state?.OTPMail);
-    setEmail(location?.state?.OTPMail);
-  } else {
-    navigate(-1);
-  }
+
+  // let navigate = useNavigate();
+  // const [email, setEmail] = useState();
+  // const location = useLocation();
+  // if (location?.state?.OTPMail) {
+  //   console.log(location?.state?.OTPMail);
+  //   setEmail(location?.state?.OTPMail);
+  // } else {
+  //   navigate(-1);
+  // }
 
   useEffect(() => {
     updateDimensions();
@@ -44,6 +46,22 @@ const OTPverify = () => {
   const responsiveness3 = { responsive: width < 370 };
   const resp3 = responsiveness3.responsive;
   //
+
+  const EmailField = () => {
+    return (
+      <>
+        <TextField
+          id="email"
+          type="text"
+          label={email}
+          placeholder="email"
+          name="email"
+          disabled
+          style={{ width: resp3 ? "20rem" : "27.8rem",}}
+        />
+      </>
+    );
+  };
 
   const ContinueBtn = styled(Button)({
     backgroundColor: "#A01E86",
@@ -128,7 +146,10 @@ const OTPverify = () => {
     event.preventDefault();
     console.log(`OTP = ${otp}`);
     setIsSubmitted(true); // Pause the timer
+    setPage(() => 3)
   };
+
+
 
   function MyTimer({ expiryTimestamp }) {
     const { seconds, minutes, isRunning, start, restart } = useTimer({
@@ -255,11 +276,17 @@ const OTPverify = () => {
                 Enter the OTP received on your email address
               </p>
 
+              {EmailField()}
+              <Link onClick={() => setPage(1)} style={{color:'red',textDecoration:'none',marginTop:'0.3rem',position:'relative',left:'35%'}}>
+                Reset Email
+              </Link>
+
               {OtpIp()}
 
               <div>
                 <MyTimer expiryTimestamp={time} />
               </div>
+
             </Box>
           </form>
         </Grid>

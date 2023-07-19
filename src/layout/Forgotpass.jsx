@@ -17,7 +17,9 @@ import React from "react";
 import "./Login.css";
 import { useFormik } from "formik";
 import logo from "../images/logo.png";
-import publicAxios from "../Axios/publicAxios";
+import OTPverify from "./OTPverify";
+import ResetPassword from "./ResetPassword"
+// import publicAxios from "../Axios/publicAxios";
 
 const validationSchema = yup.object({
   email: yup
@@ -26,7 +28,7 @@ const validationSchema = yup.object({
     .required("Email is required"),
 });
 
-const ForgOtpBtnass = () => {
+const Forgotpass = () => {
   // adding event listener for responsiveness
   const [width, setWindowWidth] = useState(0);
 
@@ -51,25 +53,33 @@ const ForgOtpBtnass = () => {
   const resp3 = responsiveness3.responsive;
   //
 
-  let navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const [email, setEmail] = useState(null);
+
+  // let navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
       email: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: (values) => {
       try {
-        const options = {
-          url: "auth/forgotPSWD",
-          method: "POST",
-          data: values,
-        };
-        const resp = await publicAxios.request(options);
-        const path = `/otpverify`;
-        navigate(path);
+        // const options = {
+        //   url: "auth/forgotPSWD",
+        //   method: "POST",
+        //   data: values,
+        // };
+        // const resp = await publicAxios.request(options);
+        // alert(JSON.stringify(values, null, 2));
+        setEmail(formik.values.email);
+        setPage(2);
+        // const path = `/otpverify`;
+        // navigate(path);
       } catch (err) {
-        //display error
+        console.log(
+          `Error while submitting email in forgot password page : ${err}`
+        );
       }
     },
   });
@@ -171,8 +181,8 @@ const ForgOtpBtnass = () => {
     );
   };
 
-  return (
-    <React.Fragment>
+  if (page === 1) {
+    return (
       <React.Fragment>
         <Grid
           container
@@ -255,8 +265,18 @@ const ForgOtpBtnass = () => {
           </Grid>
         </Grid>
       </React.Fragment>
-    </React.Fragment>
-  );
+    );
+  }
+  else if(page === 2){
+    return (
+      <OTPverify email={email} page={page} setPage={setPage}/>
+    )
+  }
+  else if(page === 3){
+    return(
+      <ResetPassword/>
+    )
+  }
 };
 
-export default ForgOtpBtnass;
+export default Forgotpass;

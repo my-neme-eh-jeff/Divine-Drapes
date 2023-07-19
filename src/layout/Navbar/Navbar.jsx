@@ -26,6 +26,7 @@ const Navbar = () => {
 
   
   const isLogin = auth?.accessToken
+  console.log(isLogin);
 
   const handleLogout = async () => {
     try {

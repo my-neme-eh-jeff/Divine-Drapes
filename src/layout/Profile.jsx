@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid, Paper, Button, IconButton } from "@mui/material";
 import pfp from "../images/pfp.jpg";
 import EditIcon from "@mui/icons-material/Edit";
@@ -7,10 +7,36 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import "../styles/profile.css";
 import { Link } from "react-router-dom";
 import Footer from "./Footer/Footer";
-
+import useAuth from "./../Hooks/useAuth";
+import privateAxios from "./../Axios/privateAxios";
+import { useState } from "react";
 export default function Profile() {
-  const theme = createTheme();
-  console.log(theme.breakpoints.up("md"));
+  const { auth, setAuth } = useAuth();
+  const isLogin = auth?.accessToken;
+  useEffect(() => {
+
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: 'localhost:7777/user/profile',
+      headers: { 
+        'Authorization': 'Bearer '+isLogin,
+      }
+    };
+    
+    async function makeRequest() {
+      try {
+        const response = await privateAxios.request(config);
+        console.log((response.data));
+      }
+      catch (error) {
+        console.log(error);
+      }
+    }
+    
+    makeRequest();
+    
+  }, [isLogin]);
   return (
     <div>
       <Grid container>

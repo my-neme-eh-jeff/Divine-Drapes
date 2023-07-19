@@ -340,23 +340,25 @@ class _LoginState extends State<Login> {
                                   color: cream,
                                 ),
                               ));
-                          final success = await AuthProvider().login(
+                          await AuthProvider().login(
                               emailController.text.trim(),
-                              passwordController.text.trim());
-                          Navigator.pop(context);
-                          if (success) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => Home()),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('There seems to be an issue'),
-                                duration: Duration(seconds: 3),
-                              ),
-                            );
-                          }
+                              passwordController.text.trim(),
+                            context
+                          );
+                          //Navigator.pop(context);
+                          // if (success) {
+                          //   Navigator.pushReplacement(
+                          //     context,
+                          //     MaterialPageRoute(builder: (context) => Home()),
+                          //   );
+                          // } else {
+                          //   ScaffoldMessenger.of(context).showSnackBar(
+                          //     const SnackBar(
+                          //       content: Text('There seems to be an issue'),
+                          //       duration: Duration(seconds: 3),
+                          //     ),
+                          //   );
+                          // }
                         }
                       },
                       child: Container(

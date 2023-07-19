@@ -15,12 +15,31 @@ import {
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import Categories from "./Categories";
 import SearchBar from "../Home/SearchBar";
+import useAuth from "../../Hooks/useAuth";
+import privateAxios from "../../Axios/privateAxios";
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
   const toggleMenu = () => setShow(!show);
   const [showSearchBar, setShowSearchBar] = useState(false);
+  const { auth, setAuth } = useAuth();
 
+  
+  const isLogin = auth?.accessToken
+  console.log(isLogin);
+
+  const handleLogout = async () => {
+    try {
+      const res = await privateAxios.post('auth/logout')
+      setAuth({})
+      console.log(res)
+    } catch(err) {
+      console.log("hello")
+      console.log(err)
+    }
+    
+  }
+  
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -78,6 +97,12 @@ const Navbar = () => {
             {window.location.pathname === "/" ? showSearchBar && <SearchBar /> : <SearchBar />}
             </Box>
 
+            <Link href="/">
+              <Button bgColor={'#fff'}>
+                  Home
+              </Button>
+            </Link>
+
             <Link>
               <Categories />
             </Link>
@@ -92,20 +117,25 @@ const Navbar = () => {
                   Cart
                 </Button>
             </Link>
+          {
+            !isLogin ? (
             <Link href="/login">
-            <Button bgColor={"#f7bc62"}>
+              <Button bgColor={"#f7bc62"}>
                   Login
-                </Button>
+              </Button>
             </Link>
+            ) : (
             <Menu>
               <MenuButton bgColor='white'>
                 <Avatar />
               </MenuButton>
               <MenuList>
-                <MenuItem>Logout</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 <MenuItem><Link href='/profile'>My Accounts</Link></MenuItem>
               </MenuList>
             </Menu>
+            )
+          }
           </Flex>
         </Box>
       </Flex>

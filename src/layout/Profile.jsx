@@ -13,12 +13,14 @@ import { useState } from "react";
 export default function Profile() {
   const { auth, setAuth } = useAuth();
   const isLogin = auth?.accessToken;
+  console.log(isLogin)
+  const [userdata,setUserdata]=useState();
   useEffect(() => {
 
     let config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'localhost:7777/user/profile',
+      url: 'https://divine-drapes.onrender.com/user/profile',
       headers: { 
         'Authorization': 'Bearer '+isLogin,
       }
@@ -27,7 +29,8 @@ export default function Profile() {
     async function makeRequest() {
       try {
         const response = await privateAxios.request(config);
-        console.log((response.data));
+        console.log((response.data.data));
+        setUserdata(response.data)
       }
       catch (error) {
         console.log(error);
@@ -39,6 +42,7 @@ export default function Profile() {
   }, [isLogin]);
   return (
     <div>
+      {userdata?<>
       <Grid container>
         <Grid item md={3} xs={12} sm={12} sx={{ backgroundColor: "white" }}>
           <Grid container >
@@ -53,7 +57,7 @@ export default function Profile() {
             <Grid item md={3} xs={4} sm={4}></Grid>
             <Grid item md={3} xs={4} sm={4}></Grid>
             <Grid item md={6} xs={4} sm={4} sx={{display:"flex",justifyContent:"center",textAlign:"center"}}>
-              Full Name
+              {userdata.data.fName}{" "}{userdata.data.lName}
             </Grid>
             <Grid item md={3} xs={4} sm={4}></Grid>
           </Grid>
@@ -103,6 +107,10 @@ export default function Profile() {
         </Grid>
         <Grid item md={3} xs={0} sm={0} sx={{ backgroundColor: "white" }}></Grid>
       </Grid>
+      
+      
+      </>:<></>}
+      
       <div className="footer">
       <Footer></Footer>
       </div>

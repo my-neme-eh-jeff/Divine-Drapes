@@ -35,7 +35,7 @@ const router = createBrowserRouter(
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgotpass" element={<Forgotpass />} />
-        <Route path="/otpverify" element={<OTPverify />} />
+        <Route path="/otpverify" element={<OTPverify/>} />
       </Route>
 
         <Route

@@ -12,9 +12,37 @@ import mug from '../images/coffee.png'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Footer from "./Footer/Footer";
+import useAuth from "./../Hooks/useAuth";
+import privateAxios from "./../Axios/privateAxios";
+import { useEffect } from "react";
 export default function Myorders() {
     const [like,setLike]=useState(0)
+    const { auth, setAuth } = useAuth();
+  const isLogin = auth?.accessToken;
+  console.log(isLogin);
+    useEffect(() => {
 
+      let config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: 'https://divine-drapes.onrender.com/user/viewMyCart',
+        headers: {
+          Authorization:
+            "Bearer " +isLogin,
+        },
+      };
+  
+      async function makeRequest() {
+        try {
+          const response = await privateAxios.request(config);
+          console.log((response.data));
+        } catch (error) {
+          console.log(error);
+        }
+      }
+  
+      makeRequest();
+    }, []);
   return (
     <>
       <Grid container>

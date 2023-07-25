@@ -13,7 +13,6 @@ import { useState } from "react";
 export default function Profile() {
   const { auth, setAuth } = useAuth();
   const isLogin = auth?.accessToken;
-  console.log(isLogin)
   const [userdata,setUserdata]=useState();
   useEffect(() => {
 

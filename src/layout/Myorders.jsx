@@ -14,8 +14,11 @@ import CloseIcon from "@mui/icons-material/Close";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import useAuth from "./../Hooks/useAuth";
+import privateAxios from "./../Axios/privateAxios";
 import Footer from "./Footer/Footer";
-
+import axios from "axios";
+import { useEffect } from "react";
 import { FormControl, TextareaAutosize } from "@mui/material";
 
 export default function Myorders() {
@@ -23,10 +26,35 @@ export default function Myorders() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [age, setAge] = React.useState("");
-
+  const { auth, setAuth } = useAuth();
+  const isLogin = auth?.accessToken;
+  console.log(isLogin);
   const handleChange = (event) => {
     setAge(event.target.value);
   };
+  useEffect(() => {
+
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: 'https://divine-drapes.onrender.com/user/viewOrder',
+      headers: {
+        Authorization:
+          "Bearer " +isLogin,
+      },
+    };
+
+    async function makeRequest() {
+      try {
+        const response = await privateAxios.request(config);
+        console.log((response.data));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    makeRequest();
+  }, []);
 
   const style = {
     position: "absolute",
@@ -54,8 +82,24 @@ export default function Myorders() {
             <Grid item md={12} xs={12} sx={{ marginTop: "3px" }}>
               My Orders
             </Grid>
-            <Grid item md={2.4} xs={12} sm={12} sx={{justifyContent:"center",display:"flex",alignItems:"center"}}>
-              <Card sx={{ maxWidth: 250,"@media (min-width:700px)":{maxWidth:200} }} className="cards">
+            <Grid
+              item
+              md={2.4}
+              xs={12}
+              sm={12}
+              sx={{
+                justifyContent: "center",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Card
+                sx={{
+                  maxWidth: 250,
+                  "@media (min-width:700px)": { maxWidth: 200 },
+                }}
+                className="cards"
+              >
                 <CardMedia
                   component="img"
                   alt="green iguana"
@@ -108,8 +152,23 @@ export default function Myorders() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item md={2.4} xs={12} sm={12} sx={{justifyContent:"center",display:"flex",alignItems:"center"}}>
-              <Card sx={{ maxWidth: 250,"@media (min-width:700px)":{maxWidth:200} }}>
+            <Grid
+              item
+              md={2.4}
+              xs={12}
+              sm={12}
+              sx={{
+                justifyContent: "center",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Card
+                sx={{
+                  maxWidth: 250,
+                  "@media (min-width:700px)": { maxWidth: 200 },
+                }}
+              >
                 <CardMedia
                   component="img"
                   alt="green iguana"
@@ -161,8 +220,23 @@ export default function Myorders() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item md={2.4} xs={12} sm={12} sx={{justifyContent:"center",display:"flex",alignItems:"center"}}>
-              <Card sx={{ maxWidth: 250,"@media (min-width:700px)":{maxWidth:200} }}>
+            <Grid
+              item
+              md={2.4}
+              xs={12}
+              sm={12}
+              sx={{
+                justifyContent: "center",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Card
+                sx={{
+                  maxWidth: 250,
+                  "@media (min-width:700px)": { maxWidth: 200 },
+                }}
+              >
                 <CardMedia
                   component="img"
                   alt="green iguana"
@@ -214,8 +288,23 @@ export default function Myorders() {
                 </CardActions>
               </Card>
             </Grid>
-            <Grid item md={2.4} xs={12} sm={12} sx={{justifyContent:"center",display:"flex",alignItems:"center"}}>
-              <Card sx={{ maxWidth: 250,"@media (min-width:700px)":{maxWidth:200} }}>
+            <Grid
+              item
+              md={2.4}
+              xs={12}
+              sm={12}
+              sx={{
+                justifyContent: "center",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Card
+                sx={{
+                  maxWidth: 250,
+                  "@media (min-width:700px)": { maxWidth: 200 },
+                }}
+              >
                 <CardMedia
                   component="img"
                   alt="green iguana"
@@ -270,7 +359,7 @@ export default function Myorders() {
           </Grid>
         </Grid>
       </Grid>
-      
+
       <Modal
         open={open}
         onClose={handleClose}

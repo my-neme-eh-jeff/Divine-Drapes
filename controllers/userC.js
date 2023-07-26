@@ -4,6 +4,7 @@ const otpGenerator = require("otp-generator");
 const auth = require("../middleware/auth");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const imageUpload = require('../utils/imageUpload');
 
 //Schema
 const UserSchema = require("../models/userSchema");
@@ -320,6 +321,17 @@ const viewOrder = async (req, res) => {
   }
 };
 
+// const profilePic=async(req,res)=>{
+
+//   const profile = await imageUpload.imageUpload(req)
+//   try{
+//     await UserSchema.findByIdAndUpdate(req.user._id,{profilePic:profile.url})
+//     res.status(200).json({message: profile.url})
+//   }catch(err){
+//       res.status(400).json(err)
+//   }
+// }
+
 module.exports = {
   profile,
   updateUser,
@@ -329,4 +341,5 @@ module.exports = {
   viewCart,
   directOrder,
   viewOrder,
+  // profilePic
 };

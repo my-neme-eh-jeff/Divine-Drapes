@@ -16,7 +16,7 @@ const verifyReview = async (req, res, next) => {
     next();
   } else {
     res.status(401).json({
-      success: true,
+      success: false,
       message: "Unauthorized",
     });
   }
@@ -38,7 +38,7 @@ const verifyTicket = async (req, res, next) => {
     next();
   } else {
     res.status(401).json({
-      success: true,
+      success: false,
       message: "Unauthorized",
     });
   }

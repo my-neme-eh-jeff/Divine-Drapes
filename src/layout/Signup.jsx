@@ -227,7 +227,7 @@ const Signup = () => {
         <FormControl
           style={{
             margin: "0.5rem 0 1rem 0",
-            width: resp3 ? "37ch" : resp ? "40ch" : "50ch",
+            width: resp2 ? "42ch" : resp ? "40ch" : "50ch",
             border: "2px solid black",
             borderRadius: "0.7rem",
           }}
@@ -287,7 +287,7 @@ const Signup = () => {
           required
           style={{
             margin: "0.5rem 0 1rem 0",
-            width: resp3 ? "37ch" : resp ? "40ch" : "50ch",
+            width: resp2 ? "42ch" : resp ? "40ch" : "50ch",
             border: "2px solid black",
             borderRadius: "0.7rem",
           }}

@@ -134,7 +134,7 @@ const Login = () => {
       <React.Fragment>
         <span
           style={{
-            margin: resp2 ? "0 0 0.5rem -15rem" : "0 0 0.5rem 1rem",
+            margin: resp2 ? "7px 300px 0.5rem 0rem" : "0 0 0.5rem 1rem",
             fontWeight: 600,
           }}
         >
@@ -188,7 +188,7 @@ const Login = () => {
       <React.Fragment>
         <span
           style={{
-            margin: resp2 ? "0 0 0.5rem -15rem" : "0 0 0.5rem 1rem",
+            margin: resp2 ? "7px 270px 0.5rem 0rem" : "0 0 0.5rem 1rem",
             fontWeight: 600,
           }}
         >
@@ -333,8 +333,8 @@ const Login = () => {
             display: resp2 ? "flex" : "",
             justifyContent: "center",
             alignItems: "center",
-            height: "100%",
-            overflowY: "hidden",
+            height:"100%",
+            // overflowY: "hidden",
           }}
         >
           <Grid
@@ -362,7 +362,7 @@ const Login = () => {
                   alignItems: resp ? "center" : "flex-start",
                   padding: "1rem",
                   position: "relative",
-                  left: "1.3rem",
+                  // left: resp3 ? "" : "1.3rem",
                 }}
               >
                 {EmailField()}
@@ -383,10 +383,12 @@ const Login = () => {
 
                 <div
                   style={{
-                    marginLeft: "5.5rem",
+                    marginLeft: resp ? "0rem" : "5.5rem",
                   }}
                 >
-                  <span style={{ fontWeight: 600, margin: "0.6rem 0" }}>
+                  <span style={{ fontWeight: 600, 
+                    // margin: "0.6rem 0" 
+                    }}>
                     Don&apos;t have an account?
                   </span>
                   <Link
@@ -394,7 +396,7 @@ const Login = () => {
                     style={{
                       textDecoration: "none",
                       color: "#A01E86",
-                      margin: "0 0.7rem ",
+                      margin: "0 0 0 0.7rem ",
                     }}
                   >
                     Sign Up

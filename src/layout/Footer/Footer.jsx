@@ -9,6 +9,7 @@ import {
     Image,
     Textarea,
     Button,
+    Flex,
   } from '@chakra-ui/react';
   import { ChakraProvider } from '@chakra-ui/react'
   import Logodd from '../../assets/ddlogo.png'
@@ -40,8 +41,11 @@ import {
       <Box
         bg={useColorModeValue('gray.50', 'gray.900')}
         backgroundColor={'#F7BC62'}
+        className='containerbodyfooter'
+        width="100%"
+        // maxW="1200px" // Adjust the maximum width based on your design requirements
         color={'black'}>
-        <Container as={Stack} maxW={'6xl'} py={10}>
+        <Container as={Stack}  maxW={'6xl'} py={10}>
           <SimpleGrid
             columns={{md:5,sm:1}}
             spacing={8}>

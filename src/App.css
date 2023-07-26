@@ -16,6 +16,9 @@ html, body{
   width: auto;
   height: auto;
 }
+.containerbodyfooter{
+  max-width: 300vw;
+}
 /* Responsive */
 @media (max-width:800px){
   .productbody{

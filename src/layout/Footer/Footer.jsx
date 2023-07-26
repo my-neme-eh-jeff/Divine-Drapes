@@ -96,7 +96,7 @@ import {
                   placeholder={'Write a message'}
                   backgroundColor={'white'}
                   rows={5}
-                  width={'350px'}
+                  // width={'auto'}
                   border={0}
                   
                 />

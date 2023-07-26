@@ -24,6 +24,9 @@ router.put("/editUserInfo", userC.updateUser)
 //delete user
 router.delete("/deleteUser", userC.deleteUser)
 
+//upload pfp
+router.post("/profilePic",upload.single('file') ,userC.profilePic)
+
 
 
 // cart
@@ -46,8 +49,6 @@ router.post("/order",userC.directOrder)
 
 // view Order
 router.get("/viewOrder",userC.viewOrder)
-
-// router.post("/profilePic",upload.single('profile') ,userC.profilePic)
 
 
 /// CRUD review

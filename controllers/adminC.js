@@ -8,7 +8,7 @@ const otpGenerator = require("otp-generator");
 const { model } = require("mongoose");
 require("dotenv").config();
 
-const imageUpload = require('../utils/imageUpload');
+const imageUpload = require('../Utils/imageUpload');
 const deleteImage = require("../Utils/imageDelete")
 const fs = require('fs')
 

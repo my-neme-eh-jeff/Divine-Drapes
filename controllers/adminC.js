@@ -8,6 +8,10 @@ const otpGenerator = require("otp-generator");
 const { model } = require("mongoose");
 require("dotenv").config();
 
+const imageUpload = require('../Utils/imageUpload');
+const deleteImage = require("../Utils/imageDelete")
+const fs = require('fs')
+
 let mailTransporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -29,8 +33,7 @@ const addProduct = async (req, res) => {
       from: process.env.EMAIL,
       to: email,
       subject: "New product added",
-      text:
-        `A new product ${savedProduct.name}, with product ID ${savedProduct._id} has been added on the website.`,
+      text: `A new product ${savedProduct.name}, with product ID ${savedProduct._id} has been added on the website.`,
     });
 
     res.status(201).json({
@@ -38,6 +41,31 @@ const addProduct = async (req, res) => {
       message: "New Product added",
       product: savedProduct,
     });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+const addImagesForProduct = async (req, res) => {
+  try {
+    const _id = req.body.id;
+    const product = await ProductSchema.findById({ _id });
+    const files = req.files;
+    const array = [];
+    for (let image of files) {
+      const profile = await imageUpload.imageUpload(image, "Products");
+      array.push(profile.url);
+      fs.unlinkSync(image.path)
+    }
+    product.photo.picture = array;
+    product.save();
+    res.status(200).json({
+      success : true,
+      data : product
+    })
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -108,7 +136,15 @@ const deleteProduct = async (req, res) => {
   try {
     const { productID } = req.body;
 
-    const product = await ProductSchema.findByIdAndDelete({ _id: productID });
+    const product = await ProductSchema.findById({ _id: productID });
+
+    const arrayImages = product.photo.picture
+    for(let url of arrayImages){
+      console.log(url);
+      await deleteImage(url, "Products")
+    }
+
+    await product.delete()
 
     res.status(200).json({
       success: true,
@@ -129,13 +165,14 @@ const viewUser = async (req, res) => {
   try {
     const { userID } = req.body;
 
-    const user = await UserSchema.findById({_id : userID}).populate("product order reviews tickets")
+    const user = await UserSchema.findById({ _id: userID }).populate(
+      "product order reviews tickets"
+    );
 
     res.status(200).json({
-      success : true,
-      data : user
-    })
-
+      success: true,
+      data: user,
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -149,5 +186,6 @@ module.exports = {
   allOrders,
   updateProduct,
   deleteProduct,
-  viewUser
+  viewUser,
+  addImagesForProduct,
 };

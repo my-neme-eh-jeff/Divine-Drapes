@@ -1,7 +1,8 @@
 const express = require("express")
 
 const router = express.Router()
-
+const multer=require('multer')
+const upload=multer({dest:'uploads/'})
 //controllers 
 const userC = require("../controllers/userC.js")
 const reviewC = require("../controllers/reviewC")
@@ -22,6 +23,9 @@ router.put("/editUserInfo", userC.updateUser)
 
 //delete user
 router.delete("/deleteUser", userC.deleteUser)
+
+//upload pfp
+router.post("/profilePic",upload.single('file') ,userC.profilePic)
 
 
 
@@ -45,7 +49,6 @@ router.post("/order",userC.directOrder)
 
 // view Order
 router.get("/viewOrder",userC.viewOrder)
-
 
 
 /// CRUD review

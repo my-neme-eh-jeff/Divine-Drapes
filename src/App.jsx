@@ -32,19 +32,19 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route element={<PersistLogin />}>
-      <Route element={<CheckAuth />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/forgotpass" element={<Forgotpass />} />
-        <Route path="/otpverify" element={<OTPverify/>} />
-      </Route>
+        <Route element={<CheckAuth />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/forgotpass" element={<Forgotpass />} />
+          <Route path="/otpverify" element={<OTPverify />} />
+        </Route>
 
+        <Route path="/" index element={<Home />} />
         <Route
           element={
             <RequireAuth allowedRoles={[import.meta.env.VITE_USER_ROLE]} />
           }
         >
-          <Route path='/' index element={<Home/>} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/product" element={<Product />} />
           <Route path="/bulkorder" element={<BulkOrder />} />

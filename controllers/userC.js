@@ -6,9 +6,9 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 //cloudinary
-const imageUpload = require('../Utils/imageUpload');
-const fs = require('fs')
-const deleteImage = require('../Utils/imageDelete')
+const imageUpload = require("../utils/imageUpload");
+const fs = require("fs");
+const deleteImage = require("../utils/imageDelete");
 
 //Schema
 const UserSchema = require("../models/userSchema");
@@ -41,7 +41,7 @@ const profile = async (req, res) => {
         number,
         isVerified,
         profilePic,
-        pfp
+        pfp,
       },
     });
   } catch (error) {
@@ -126,14 +126,14 @@ const deleteUser = async (req, res) => {
     const deletedUser = await UserSchema.findByIdAndDelete({ _id: user._id });
 
     res.status(200).json({
-      success : true,
-      data : deletedUser
-    })
+      success: true,
+      data: deletedUser,
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
       error: err.message,
-    })
+    });
   }
 };
 
@@ -249,9 +249,12 @@ const directOrder = async (req, res) => {
     const Product = await ProductSchema.findById({ _id: productID }).populate(
       "reviews"
     );
-    
-    const remQuantity = await ProductSchema.findByIdAndUpdate({_id : productID}, {$inc : {quantity : -1}})
-    if(remQuantity.quantity == 0){
+
+    const remQuantity = await ProductSchema.findByIdAndUpdate(
+      { _id: productID },
+      { $inc: { quantity: -1 } }
+    );
+    if (remQuantity.quantity == 0) {
       mailTransporter.sendMail({
         from: process.env.EMAIL,
         to: process.env.EMAIL,
@@ -260,28 +263,26 @@ const directOrder = async (req, res) => {
       });
     }
 
-
     const order = new OrderSchema({
-      user : user._id,
-      product : productID,
-      photo : {
-        idCust : req.body.isCustPhoto,
-        photo : req.body.file       //enter cloudinary link 
+      user: user._id,
+      product: productID,
+      photo: {
+        idCust: req.body.isCustPhoto,
+        photo: req.body.file, //enter cloudinary link
       },
-      text : {
-        isCust : req.body.isCustText,
-        text : req.body.text
+      text: {
+        isCust: req.body.isCustText,
+        text: req.body.text,
       },
-      color : {
-        isCust : req.body.isCustColor,
-        color : req.body.color
-    },
-      paymentStatus : req.body.paymentStatus,
-      paymentType : req.body.paymentType
-    })
+      color: {
+        isCust: req.body.isCustColor,
+        color: req.body.color,
+      },
+      paymentStatus: req.body.paymentStatus,
+      paymentType: req.body.paymentType,
+    });
 
-    await order.save()
-
+    await order.save();
 
     const User = await UserSchema.findByIdAndUpdate(
       { _id: user._id },
@@ -326,19 +327,27 @@ const viewOrder = async (req, res) => {
   }
 };
 
-const profilePic=async(req,res)=>{
-  try{
-    const profile = await imageUpload.imageUpload(req.file, "profilePictures")
-    if(req.user.profilePic){
-      await deleteImage(req.user.profilePic, "profilePictures")
+const profilePic = async (req, res) => {
+  try {
+    if (req.user.profilePic) {
+      await deleteImage(req.user.profilePic, "profilePictures");
     }
-    await UserSchema.findByIdAndUpdate(req.user._id,{profilePic:profile.url})
-    fs.unlinkSync(req.file.path)
-    res.status(200).json({message: profile.url})
-  }catch(err){
-      res.status(400).json(err)
+    if (req.file) {
+      const profile = await imageUpload.imageUpload(
+        req.file,
+        "profilePictures"
+      );
+
+      await UserSchema.findByIdAndUpdate(req.user._id, {
+        profilePic: profile.url,
+      });
+      fs.unlinkSync(req.file.path);
+      res.status(200).json({ message: profile.url });
+    }
+  } catch (err) {
+    res.status(400).json(err);
   }
-}
+};
 
 module.exports = {
   profile,
@@ -349,5 +358,5 @@ module.exports = {
   viewCart,
   directOrder,
   viewOrder,
-  profilePic
+  profilePic,
 };

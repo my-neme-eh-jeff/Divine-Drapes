@@ -341,7 +341,7 @@ class _BulkOrderState extends State<BulkOrder> {
                         keyboardType: TextInputType.phone,
                         style: TextStyle(fontSize: sizefont),
                         autofocus: false,
-                        controller: emailController,
+                        controller: phoneController,
                         // validator: (value) {
                         //   if (value!.isEmpty) {
                         //     return ("Please enter your Email ID");

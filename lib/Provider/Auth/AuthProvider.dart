@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:divine_drapes/admin_screens/AdminBottomNav.dart';
+import 'package:divine_drapes/admin_screens/AdminHome.dart';
 import 'package:divine_drapes/models/login_model.dart' as user;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -99,14 +100,16 @@ class AuthProvider extends ChangeNotifier {
       var json1 = response.body;
 
       Map<String, dynamic> parsedResponse = json.decode(json1);
-      int adminData = parsedResponse['data']['roles']['Admin'];
+      int? adminData = parsedResponse['data']['roles']['Admin'];
       print('Admin data: $adminData');
       if(adminData == 5150)
         {
-          Navigator.pushReplacement(
+          Navigator.pushNamedAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => AdminBottomNav()),
+            '/admin_bottom_nav', // Replace this with the actual name of the AdminBottomNav route.
+                (route) => false, // Remove all the previous routes from the stack.
           );
+
           Fluttertoast.showToast(
               msg: "Logged in as Admin!",
               toastLength: Toast.LENGTH_SHORT,
@@ -115,12 +118,14 @@ class AuthProvider extends ChangeNotifier {
               backgroundColor: Colors.green,
               textColor: Colors.white,
               fontSize: 16.0);
+
         }
       else
         {
-          Navigator.pushReplacement(
+          Navigator.pushNamedAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => Home()),
+            '/home', // Replace this with the actual name of the AdminBottomNav route.
+                (route) => false, // Remove all the previous routes from the stack.
           );
           Fluttertoast.showToast(
               msg: "Logged in as user!",
@@ -133,7 +138,9 @@ class AuthProvider extends ChangeNotifier {
         }
 
       return true;
-    } else {
+    }
+    else
+    {
       print(response.statusCode);
       return false;
     }

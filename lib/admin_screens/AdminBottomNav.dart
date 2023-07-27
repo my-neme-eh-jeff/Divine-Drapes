@@ -1,3 +1,4 @@
+import 'package:divine_drapes/admin_screens/AddProducts.dart';
 import 'package:divine_drapes/admin_screens/AdminBulkOrders.dart';
 import 'package:divine_drapes/admin_screens/AdminHome.dart';
 import 'package:divine_drapes/consts/constants.dart';
@@ -14,8 +15,9 @@ class AdminBottomNav extends StatefulWidget {
 
 class _AdminBottomNavState extends State<AdminBottomNav> {
   int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
+  static  List<Widget> _widgetOptions = <Widget>[
     AdminBulkOrders(),
+    AddProductPage(),
     AdminHome(),
   ];
 
@@ -37,6 +39,10 @@ class _AdminBottomNavState extends State<AdminBottomNav> {
             BottomNavigationBarItem(
                 icon: Text("Bulk Orders",style: GoogleFonts.notoSans(fontSize: 14,fontWeight: FontWeight.w700),),
                 label: "", backgroundColor: cream),
+            BottomNavigationBarItem(
+                icon: Text("Add Products",style: GoogleFonts.notoSans(fontSize: 14,fontWeight: FontWeight.w700),),
+                label: "",
+                backgroundColor: cream),
             BottomNavigationBarItem(
                 icon: Text("Orders",style: GoogleFonts.notoSans(fontSize: 14,fontWeight: FontWeight.w700),),
                 label: "",

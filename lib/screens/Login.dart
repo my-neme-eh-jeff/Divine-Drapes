@@ -161,50 +161,48 @@ class _LoginState extends State<Login> {
                     //     ),
                     //   ),
                     // ),
-                    Expanded(
-                      child: Container(
-                        height: size.height * 0.052,
-                        child: Padding(
-                          padding: const EdgeInsets.all(0),
-                          child: TextFormField(
-                            style: TextStyle(fontSize: sizefont * 0.85),
-                            autofocus: false,
-                            controller: emailController,
-                            validator: MultiValidator([
-                              EmailValidator(
-                                  errorText: "  "
-                                      'Please enter a valid email address'),
-                              RequiredValidator(errorText: "    " '* Required')
-                            ]),
-                            onSaved: (value) {
-                              emailController.text = value!;
-                            },
-                            textInputAction: TextInputAction.done,
-                            decoration: InputDecoration(
-                              hintText: 'Enter your email',
-                              hintStyle: TextStyle(fontSize: sizefont * 0.8),
-                              contentPadding: const EdgeInsets.all(10),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                  const BorderSide(color: Colors.black)),
-                              enabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                              focusedBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                              prefixIcon: const Icon(Icons.email),
-                              isDense: true,
-                            ),
+                    Container(
+                      height: size.height * 0.065,
+                      child: Padding(
+                        padding: const EdgeInsets.all(0),
+                        child: TextFormField(
+                          style: TextStyle(fontSize: sizefont * 0.85),
+                          autofocus: false,
+                          controller: emailController,
+                          validator: MultiValidator([
+                            EmailValidator(
+                                errorText: "  "
+                                    'Please enter a valid email address'),
+                            RequiredValidator(errorText: "    " '* Required')
+                          ]),
+                          onSaved: (value) {
+                            emailController.text = value!;
+                          },
+                          textInputAction: TextInputAction.done,
+                          decoration: InputDecoration(
+                            hintText: 'Enter your email',
+                            hintStyle: TextStyle(fontSize: sizefont * 0.8),
+                            contentPadding: const EdgeInsets.all(10),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide:
+                                const BorderSide(color: Colors.black)),
+                            enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                  width: 2,
+                                ),
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                  width: 2,
+                                ),
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                            prefixIcon: const Icon(Icons.email),
+                            isDense: true,
                           ),
                         ),
                       ),
@@ -220,67 +218,65 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     SizedBox(height: size.height * 0.01),
-                    Expanded(
-                      child: Container(
-                        height: size.height * 0.052,
-                        child: Padding(
-                          padding: const EdgeInsets.all(0),
-                          child: TextFormField(
-                            style: TextStyle(fontSize: sizefont * 0.85),
-                            obscureText: isHidden,
-                            autofocus: false,
-                            controller: passwordController,
-                            // validator: (value) {
-                            //   if (value!.isEmpty) {
-                            //     return ("Please Enter your Password");
-                            //   }
-                            //   if (!RegExp(r'^.{8,}$').hasMatch(value)) {
-                            //     return ("Please Enter a valid Password");
-                            //   }
-                            //   return null;
-                            // },
-                            validator:
-                            RequiredValidator(errorText: "   " '*Required'),
-                            onSaved: (value) {
-                              passwordController.text = value!;
-                            },
-                            textInputAction: TextInputAction.done,
-                            decoration: InputDecoration(
-                              hintText: 'Enter your password',
-                              hintStyle: TextStyle(fontSize: sizefont * 0.8),
-                              contentPadding: const EdgeInsets.all(10),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                  const BorderSide(color: Colors.black)),
-                              enabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                              focusedBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                              prefixIcon: const Icon(Icons.lock),
-                              isDense: true,
-                              suffixIcon: InkWell(
-                                onTap: togglePasswordView,
-                                child: FittedBox(
-                                  alignment: Alignment.center,
-                                  fit: BoxFit.fitHeight,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Icon(
-                                      isHidden
-                                          ? Icons.visibility_off
-                                          : Icons.visibility,
-                                    ),
+                    Container(
+                      height: size.height * 0.065,
+                      child: Padding(
+                        padding: const EdgeInsets.all(0),
+                        child: TextFormField(
+                          style: TextStyle(fontSize: sizefont * 0.85),
+                          obscureText: isHidden,
+                          autofocus: false,
+                          controller: passwordController,
+                          // validator: (value) {
+                          //   if (value!.isEmpty) {
+                          //     return ("Please Enter your Password");
+                          //   }
+                          //   if (!RegExp(r'^.{8,}$').hasMatch(value)) {
+                          //     return ("Please Enter a valid Password");
+                          //   }
+                          //   return null;
+                          // },
+                          validator:
+                          RequiredValidator(errorText: "   " '*Required'),
+                          onSaved: (value) {
+                            passwordController.text = value!;
+                          },
+                          textInputAction: TextInputAction.done,
+                          decoration: InputDecoration(
+                            hintText: 'Enter your password',
+                            hintStyle: TextStyle(fontSize: sizefont * 0.8),
+                            contentPadding: const EdgeInsets.all(10),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide:
+                                const BorderSide(color: Colors.black)),
+                            enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                  width: 2,
+                                ),
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                            focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.black,
+                                  width: 2,
+                                ),
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                            prefixIcon: const Icon(Icons.lock),
+                            isDense: true,
+                            suffixIcon: InkWell(
+                              onTap: togglePasswordView,
+                              child: FittedBox(
+                                alignment: Alignment.center,
+                                fit: BoxFit.fitHeight,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    isHidden
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
                                   ),
                                 ),
                               ),
@@ -479,34 +475,7 @@ class _LoginState extends State<Login> {
                         ),
                       ],
                     ),
-                    SizedBox(height: size.height * 0.04),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Are you an Admin? ',
-                          style: GoogleFonts.poppins(
-                            fontSize: sizefont * 0.7,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const AdminBottomNav()));
-                          },
-                          child: Text(
-                            'Login',
-                            style: GoogleFonts.poppins(
-                              fontSize: sizefont * 0.7,
-                              color: const Color.fromRGBO(175, 13, 13, 0.85),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+
                   ],
                 ),
               ),

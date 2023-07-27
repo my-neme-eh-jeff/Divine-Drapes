@@ -4,13 +4,17 @@ const otpGenerator = require("otp-generator");
 const auth = require("../middleware/auth");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+
+//cloudinary
 const imageUpload = require('../utils/imageUpload');
 const fs = require('fs')
+const deleteImage = require("../Utils/imageDelete")
 
 //Schema
 const UserSchema = require("../models/userSchema");
 const ProductSchema = require("../models/productSchema");
 const OrderSchema = require("../models/orderSchema");
+const { log } = require("console");
 
 let mailTransporter = nodemailer.createTransport({
   service: "gmail",
@@ -324,7 +328,10 @@ const viewOrder = async (req, res) => {
 
 const profilePic=async(req,res)=>{
   try{
-    const profile = await imageUpload.imageUpload(req.file)
+    const profile = await imageUpload.imageUpload(req.file, "profilePictures")
+    if(req.user.profilePic){
+      await deleteImage(req.user.profilePic)
+    }
     await UserSchema.findByIdAndUpdate(req.user._id,{profilePic:profile.url})
     fs.unlinkSync(req.file.path)
     res.status(200).json({message: profile.url})

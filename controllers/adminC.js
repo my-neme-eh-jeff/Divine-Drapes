@@ -55,7 +55,7 @@ const addImagesForProduct = async (req, res) => {
     const files = req.files;
     const array = [];
     for (let image of files) {
-      const profile = await imageUpload.imageUpload(image);
+      const profile = await imageUpload.imageUpload(image, "Products");
       array.push(profile.url);
       fs.unlinkSync(image.path)
     }

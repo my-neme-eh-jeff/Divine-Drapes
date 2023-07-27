@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { Box, ChakraProvider, Heading, SimpleGrid, Image, Button, Select } from '@chakra-ui/react'
 import './Upload.css'
@@ -15,12 +15,19 @@ import {
     useDisclosure
 } from '@chakra-ui/react'
 import Address from './Address/Address';
+import publicAxios from '../../Axios/publicAxios'
+import privateAxios from '../../Axios/privateAxios';
+import useAuth from '../../Hooks/useAuth';
 
 
 function Buy() {
     const [selectedImage, setSelectedImage] = useState(null);
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [pay, setPay] = useState()
+
+    const { auth, setAuth } = useAuth();
+    const isLogin = auth?.accessToken;
+    console.log(isLogin);
 
 
     const handleImageChange = (event) => {
@@ -34,11 +41,35 @@ function Buy() {
         }
         console.log(selectedImage)
     };
+
+    const getCartItems = () => {
+        let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: 'https://divine-drapes.onrender.com/user/viewMyCart',
+            headers: {
+                'Authorization': "Bearer " + isLogin
+            }
+        };
+
+        privateAxios.request(config)
+            .then((response) => {
+                console.log(JSON.stringify(response.data));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+    }
+
+    useEffect(() => {
+        getCartItems()
+    }, [])
     return (
         <div>
-            
+
             <ChakraProvider>
-            <Navbar />
+                <Navbar />
                 <Box className='productbody' >
                     <br />
                     {/* product name here  */}

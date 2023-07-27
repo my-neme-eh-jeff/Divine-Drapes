@@ -8,7 +8,8 @@ const otpGenerator = require("otp-generator");
 const { model } = require("mongoose");
 require("dotenv").config();
 
-const imageUpload = require('../utils/imageUpload');
+const imageUpload = require('../Utils/imageUpload');
+const deleteImage = require("../Utils/imageDelete")
 const fs = require('fs')
 
 let mailTransporter = nodemailer.createTransport({
@@ -55,7 +56,7 @@ const addImagesForProduct = async (req, res) => {
     const files = req.files;
     const array = [];
     for (let image of files) {
-      const profile = await imageUpload.imageUpload(image);
+      const profile = await imageUpload.imageUpload(image, "Products");
       array.push(profile.url);
       fs.unlinkSync(image.path)
     }
@@ -135,7 +136,15 @@ const deleteProduct = async (req, res) => {
   try {
     const { productID } = req.body;
 
-    const product = await ProductSchema.findByIdAndDelete({ _id: productID });
+    const product = await ProductSchema.findById({ _id: productID });
+
+    const arrayImages = product.photo.picture
+    for(let url of arrayImages){
+      console.log(url);
+      await deleteImage(url, "Products")
+    }
+
+    await product.delete()
 
     res.status(200).json({
       success: true,

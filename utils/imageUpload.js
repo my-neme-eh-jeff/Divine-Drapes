@@ -7,9 +7,11 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const imageUpload = async (file) => {
+const imageUpload = async (file, folder) => {
   try {
-    const img = await cloudinary.uploader.upload(file.path);
+    const img = await cloudinary.uploader.upload(file.path,{
+      folder
+    });
     return img;
   } catch (err) {
     console.log(err);

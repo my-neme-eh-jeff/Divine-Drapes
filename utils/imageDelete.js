@@ -5,11 +5,11 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-async function imageDelete(url) {
+async function imageDelete(url, folder) {
   try {
     const parts = url.split("/");
     const publicId = parts.pop().split(".")[0];
-    const deletionResponse = await cloudinary.uploader.destroy(publicId);
+    const deletionResponse = await cloudinary.uploader.destroy(`${folder}/${publicId}`);
 
     // The response will indicate success or failure of the deletion
     if (deletionResponse.result === "ok") {

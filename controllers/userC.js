@@ -330,7 +330,7 @@ const profilePic=async(req,res)=>{
   try{
     const profile = await imageUpload.imageUpload(req.file, "profilePictures")
     if(req.user.profilePic){
-      await deleteImage(req.user.profilePic)
+      await deleteImage(req.user.profilePic, "profilePictures")
     }
     await UserSchema.findByIdAndUpdate(req.user._id,{profilePic:profile.url})
     fs.unlinkSync(req.file.path)

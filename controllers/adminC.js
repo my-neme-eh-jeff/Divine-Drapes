@@ -9,6 +9,7 @@ const { model } = require("mongoose");
 require("dotenv").config();
 
 const imageUpload = require('../utils/imageUpload');
+const deleteImage = require("../Utils/imageDelete")
 const fs = require('fs')
 
 let mailTransporter = nodemailer.createTransport({
@@ -135,7 +136,15 @@ const deleteProduct = async (req, res) => {
   try {
     const { productID } = req.body;
 
-    const product = await ProductSchema.findByIdAndDelete({ _id: productID });
+    const product = await ProductSchema.findById({ _id: productID });
+
+    const arrayImages = product.photo.picture
+    for(let url of arrayImages){
+      console.log(url);
+      await deleteImage(url, "Products")
+    }
+
+    await product.delete()
 
     res.status(200).json({
       success: true,

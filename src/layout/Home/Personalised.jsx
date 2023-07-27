@@ -3,6 +3,8 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import axios from 'axios'
 import { Card, Button, Image, Stack, Heading, CardBody } from '@chakra-ui/react';
+import privateAxios from '../../Axios/privateAxios';
+import useAuth from '../../Hooks/useAuth';
 
 const responsive = {
   superLargeDesktop: {
@@ -28,10 +30,26 @@ const Personalised = () => {
 
     const [topSelling, setTopSelling] = useState([]);
 
-    useEffect(() => {
-        axios.get('https://dummyjson.com/posts')
-        .then(res => setTopSelling(res.data.posts))
-      },[])
+    const { auth, setAuth } = useAuth();
+    const isLogin = auth?.accessToken;
+
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: 'product/allProducts',
+      headers: {
+          'Authorization': "Bearer " + isLogin
+      }
+  };
+
+  privateAxios.request(config)
+      .then((response) => {
+          const product = response.data;
+          setTopSelling(product.data)
+      })
+      .catch((error) => {
+          console.log(error);
+      });
 
     
 
@@ -50,7 +68,7 @@ const Personalised = () => {
                         borderRadius='lg'
                       />
                       <Stack mt='6' spacing='3'>
-                        <Button><Heading size='md'>Item</Heading></Button>                       
+                        <Button><Heading size='md'>{item.name}</Heading></Button>                       
                       </Stack>
                     </CardBody>
                   </Card>

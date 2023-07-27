@@ -13,6 +13,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
 
 const categories = [
   "Mugs",
@@ -59,6 +60,7 @@ const categories = [
 const Categories = () => {
   const [selected, setSelected] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
 
   const handleSelected = (item) => {
     setSelected((prevSelected) => new Set(prevSelected).add(item));
@@ -69,6 +71,11 @@ const Categories = () => {
     updatedSelected.delete(item);
     setSelected(updatedSelected);
   };
+
+  const handleApply = () => {
+    selected.size === 0 ? alert("Please choose some category!") : console.log(selected) 
+    navigate('categories')
+  }
 
   var chars = new Set(selected);
 
@@ -131,7 +138,7 @@ const Categories = () => {
               </SimpleGrid>
             </AlertDialogBody>
             <AlertDialogFooter>
-              <Button bgColor={"#f7bc62"} onClick={onClose} width={"120px"}>
+              <Button bgColor={"#f7bc62"} onClick={handleApply} width={"120px"}>
                 Apply
               </Button>
             </AlertDialogFooter>

@@ -17,13 +17,14 @@ import Categories from "./Categories";
 import SearchBar from "../Home/SearchBar";
 import useAuth from "../../Hooks/useAuth";
 import privateAxios from "../../Axios/privateAxios";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
   const toggleMenu = () => setShow(!show);
   const [showSearchBar, setShowSearchBar] = useState(false);
   const { auth, setAuth } = useAuth();
-
+  const navigate = useNavigate();
   
   const isLogin = auth?.accessToken
   console.log(isLogin);
@@ -131,7 +132,7 @@ const Navbar = () => {
               </MenuButton>
               <MenuList>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                <MenuItem><Link href='/profile'>My Accounts</Link></MenuItem>
+                <MenuItem onClick={() => navigate('/profile')}>My Accounts</MenuItem>
               </MenuList>
             </Menu>
             )

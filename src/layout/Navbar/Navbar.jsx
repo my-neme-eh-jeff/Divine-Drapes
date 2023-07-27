@@ -16,39 +16,38 @@ import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import Categories from "./Categories";
 import SearchBar from "../Home/SearchBar";
 import useAuth from "../../Hooks/useAuth";
-import privateAxios from "../../Axios/privateAxios";
+import useLogout from "../../Hooks/useLogout";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
   const toggleMenu = () => setShow(!show);
   const [showSearchBar, setShowSearchBar] = useState(false);
-  const { auth, setAuth } = useAuth();
+  const { auth } = useAuth();
+  const logout = useLogout();
+  const navigate = useNavigate();
 
-  
-  const isLogin = auth?.accessToken
+  const isLogin = auth?.accessToken;
   console.log(isLogin);
 
   const handleLogout = async () => {
     try {
-      const res = await privateAxios.post('auth/logout')
-      setAuth({})
-      console.log(res)
-    } catch(err) {
-      console.log("hello")
-      console.log(err)
+      await logout();
+      navigate("/");
+    } catch (err) {
+      console.log(err);
     }
-    
-  }
-  
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       setShowSearchBar(scrollTop > 300);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -94,13 +93,15 @@ const Navbar = () => {
             pt={[4, 4, 0, 0]}
           >
             <Box mr="5%">
-            {window.location.pathname === "/" ? showSearchBar && <SearchBar /> : <SearchBar />}
+              {window.location.pathname === "/" ? (
+                showSearchBar && <SearchBar />
+              ) : (
+                <SearchBar />
+              )}
             </Box>
 
             <Link href="/">
-              <Button bgColor={'#fff'}>
-                  Home
-              </Button>
+              <Button bgColor={"#fff"}>Home</Button>
             </Link>
 
             <Link>
@@ -108,34 +109,28 @@ const Navbar = () => {
             </Link>
 
             <Link href="/bulkorder">
-              <Button bgColor={'#fff'}>
-                  Bulk orders
-              </Button>
+              <Button bgColor={"#fff"}>Bulk orders</Button>
             </Link>
             <Link href="/buy">
-            <Button bgColor={'#fff'}>
-                  Cart
-                </Button>
+              <Button bgColor={"#fff"}>Cart</Button>
             </Link>
-          {
-            !isLogin ? (
-            <Link href="/login">
-              <Button bgColor={"#f7bc62"}>
-                  Login
-              </Button>
-            </Link>
+            {!isLogin ? (
+              <Link href="/login">
+                <Button bgColor={"#f7bc62"}>Login</Button>
+              </Link>
             ) : (
-            <Menu>
-              <MenuButton bgColor='white'>
-                <Avatar />
-              </MenuButton>
-              <MenuList>
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                <MenuItem><Link href='/profile'>My Accounts</Link></MenuItem>
-              </MenuList>
-            </Menu>
-            )
-          }
+              <Menu>
+                <MenuButton bgColor="white">
+                  <Avatar />
+                </MenuButton>
+                <MenuList>
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  <MenuItem>
+                    <Link href="/profile">My Accounts</Link>
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            )}
           </Flex>
         </Box>
       </Flex>

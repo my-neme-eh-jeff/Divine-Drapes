@@ -6,9 +6,9 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 //cloudinary
-const imageUpload = require('../Utils/imageUpload');
+const imageUpload = require('../utils/imageUpload');
 const fs = require('fs')
-const deleteImage = require('../Utils/imageDelete')
+const deleteImage = require('../utils/imageDelete')
 
 //Schema
 const UserSchema = require("../models/userSchema");

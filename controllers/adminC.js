@@ -8,8 +8,8 @@ const otpGenerator = require("otp-generator");
 const { model } = require("mongoose");
 require("dotenv").config();
 
-const imageUpload = require('../Utils/imageUpload');
-const deleteImage = require("../Utils/imageDelete")
+const imageUpload = require('../utils/imageUpload');
+const deleteImage = require("../utils/imageDelete")
 const fs = require('fs')
 
 let mailTransporter = nodemailer.createTransport({

@@ -54,7 +54,7 @@ const Login = () => {
     },
     onSubmit: async (values) => {
       const options = {
-        url: `auth/login`,
+        url: `https://divine-drapes.onrender.com/auth/login`,
         method: "POST",
         data: { ...values },
         headers: {

@@ -73,8 +73,7 @@ const Categories = () => {
   };
 
   const handleApply = () => {
-    selected.size === 0 ? alert("Please choose some category!") : console.log(selected) 
-    navigate('categories')
+    (selected.size === undefined || selected.size === 0) ? alert("Please choose some category!") : navigate('/categories')
   }
 
   var chars = new Set(selected);

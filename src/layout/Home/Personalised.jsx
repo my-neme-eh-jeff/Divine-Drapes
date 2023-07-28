@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import axios from 'axios'
 import { Card, Button, Image, Stack, Heading, CardBody } from '@chakra-ui/react';
 import privateAxios from '../../Axios/privateAxios';
 import useAuth from '../../Hooks/useAuth';
@@ -30,7 +29,7 @@ const Personalised = () => {
 
     const [topSelling, setTopSelling] = useState([]);
 
-    const { auth, setAuth } = useAuth();
+    const { auth } = useAuth();
     const isLogin = auth?.accessToken;
 
     let config = {

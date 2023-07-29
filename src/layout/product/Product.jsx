@@ -1,21 +1,58 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Content from './Content'
 import { Box, ChakraProvider, Grid, Heading, SimpleGrid, Image, Text, Stack, Button } from '@chakra-ui/react'
 import { Navigate } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Footer from '../Footer/Footer'
 import Navbar from '../Navbar/Navbar'
+import publicAxios from '../../Axios/publicAxios'
+import privateAxios from '../../Axios/privateAxios';
+import useAuth from '../../Hooks/useAuth';
+
 
 
 function Product() {
     const nav = useNavigate();
-    const buy=()=>{
+    const buy = () => {
         console.log("buy now")
         nav('/buy')
     }
+    const { auth, setAuth } = useAuth();
+    const isLogin = auth?.accessToken;
+    console.log(isLogin);
+    
+    const getProduct = () => {
+        let data = JSON.stringify({
+          "productID": "64c214b470ae96235c9e103f"
+        });
+    
+        let config = {
+          method: 'get',
+          url: 'https://divine-drapes.onrender.com/product/viewProduct',
+          headers: {
+            'Content-Type': 'application/json',
+            // 'Authorization': 'Bearer ' + isLogin
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6InNhaGlsa2FtYXRoMDEwOEBnbWFpbC5jb20iLCJyb2xlcyI6WzIwMDEsNTE1MF19LCJpYXQiOjE2OTAzOTU2MDQsImV4cCI6MTcyMTk1MzIwNH0.c7DiBEAGKavFwFa3fhkpddhjjdHxslYzj71pjrsFG3E'
+          },
+          data: data
+        };
+    
+        privateAxios.request(config)
+          .then((response) => {
+            console.log(JSON.stringify(response.data));
+          })
+          .catch((error) => {
+            alert(error)
+            console.log(error);
+          });
+      }
+    
+      useEffect(() => {
+        getProduct();
+      }, [isLogin]);
     return (
         <div>
-            <Navbar/>
+            <Navbar />
             <ChakraProvider>
                 <Box className='productbody' >
                     <br />
@@ -97,7 +134,7 @@ function Product() {
                         <Content />
                     </Box>
                 </Box>
-                <Footer/>
+                <Footer />
             </ChakraProvider>
         </div >
     )

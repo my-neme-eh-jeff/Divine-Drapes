@@ -69,7 +69,7 @@ class _BulkOrderState extends State<BulkOrder> {
         elevation: 0.0,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(18.0),
+        padding: const EdgeInsets.all(15.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -83,7 +83,7 @@ class _BulkOrderState extends State<BulkOrder> {
                       },
                       child: Icon(Icons.arrow_back)),
                   SizedBox(
-                    width: 20,
+                    width: 10,
                   ),
                   Text(
                     "Bulk Order",
@@ -93,6 +93,9 @@ class _BulkOrderState extends State<BulkOrder> {
                         fontWeight: FontWeight.w700),
                   ),
                 ],
+              ),
+              SizedBox(
+                height: 8,
               ),
               Row(
                 children: [
@@ -338,7 +341,7 @@ class _BulkOrderState extends State<BulkOrder> {
                         keyboardType: TextInputType.phone,
                         style: TextStyle(fontSize: sizefont),
                         autofocus: false,
-                        controller: emailController,
+                        controller: phoneController,
                         // validator: (value) {
                         //   if (value!.isEmpty) {
                         //     return ("Please enter your Email ID");

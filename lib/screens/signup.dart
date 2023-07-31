@@ -195,7 +195,6 @@ class _SignupState extends State<Signup> {
                               SizedBox(
                                 height: size.height * 0.06,
                                 width: size.width * 0.361,
-                                // width: size.width * 0.32,
                                 child: Padding(
                                   padding: const EdgeInsets.all(0),
                                   child: TextFormField(
@@ -211,27 +210,26 @@ class _SignupState extends State<Signup> {
                                     onSaved: (value) {
                                       lnameController.text = value!;
                                     },
-                                    textInputAction: TextInputAction.next,
+                                    // textInputAction: TextInputAction.next,
                                     decoration: InputDecoration(
                                       suffixIcon: lnameController.text.isEmpty
                                           ? Container(
-                                              width: 0,
-                                            )
+                                        width: 0,
+                                      )
                                           : IconButton(
-                                              icon: Icon(
-                                                Icons.close,
-                                                size: sizefont,
-                                              ),
-                                              onPressed: () =>
-                                                  lnameController.clear(),
-                                            ),
+                                        icon: Icon(
+                                          Icons.close,
+                                          size: sizefont,
+                                        ),
+                                        onPressed: () =>
+                                            lnameController.clear(),
+                                      ),
                                       contentPadding: EdgeInsets.symmetric(
                                           vertical: size.width * 0.005,
                                           horizontal: size.width * 0.03),
                                       isDense: true,
                                       hintText: 'Last name',
-                                      hintStyle:
-                                          TextStyle(fontSize: sizefont * 0.8),
+                                      hintStyle: TextStyle(fontSize: sizefont * 0.8),
                                       enabledBorder: const OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: Colors.black,
@@ -239,13 +237,13 @@ class _SignupState extends State<Signup> {
                                           ),
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10))),
-                                      focusedBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.black,
-                                            width: 2,
-                                          ),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10))),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.black,
+                                          width: 2,
+                                        ),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
                                       errorBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
                                             width: 1, color: Colors.red,strokeAlign: BorderSide.strokeAlignInside),

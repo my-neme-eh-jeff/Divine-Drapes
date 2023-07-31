@@ -1,13 +1,15 @@
 
 import 'package:divine_drapes/Provider/Auth/AuthProvider.dart';
+import 'package:divine_drapes/screens/home.dart';
 import 'package:divine_drapes/screens/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'Provider/CartProvider.dart';
+import 'admin_screens/AdminBottomNav.dart';
+
 void main() {
   runApp(const MyApp());
-
-
 }
 
 class MyApp extends StatelessWidget {
@@ -19,10 +21,16 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context)=> AuthProvider()),
+        ChangeNotifierProvider(create: (context) => CartProvider(),),
       ],
-      child: const MaterialApp(
+      child:  MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Divine Drapes', home: SplashScreen(),
+          title: 'Divine Drapes',
+        home: SplashScreen(),
+        routes: {
+          '/admin_bottom_nav': (context) => AdminBottomNav(),
+          '/home': (context) => Home(),
+        },
       ),
     );
     // home:

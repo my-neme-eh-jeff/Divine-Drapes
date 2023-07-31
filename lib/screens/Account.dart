@@ -87,7 +87,7 @@ class _MyAccountState extends State<MyAccount> {
                         children: [
                           Container(
                             height: screenHeight * 0.2,
-                            width: screenWidth * 0.35,
+                            width: screenWidth * 0.33,
                             decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
@@ -153,7 +153,7 @@ class _MyAccountState extends State<MyAccount> {
                             decoration: BoxDecoration(
                                 color: whiteColor,
                                 border:
-                                    Border.all(width: 2, color: Colors.black),
+                                Border.all(width: 2, color: Colors.black),
                                 borderRadius: BorderRadius.circular(5),
                                 boxShadow: [
                                   BoxShadow(
@@ -197,7 +197,7 @@ class _MyAccountState extends State<MyAccount> {
                             decoration: BoxDecoration(
                                 color: whiteColor,
                                 border:
-                                    Border.all(width: 2, color: Colors.black),
+                                Border.all(width: 2, color: Colors.black),
                                 borderRadius: BorderRadius.circular(5),
                                 boxShadow: [
                                   BoxShadow(
@@ -241,7 +241,7 @@ class _MyAccountState extends State<MyAccount> {
                             decoration: BoxDecoration(
                                 color: whiteColor,
                                 border:
-                                    Border.all(width: 2, color: Colors.black),
+                                Border.all(width: 2, color: Colors.black),
                                 borderRadius: BorderRadius.circular(5),
                                 boxShadow: [
                                   BoxShadow(
@@ -284,7 +284,7 @@ class _MyAccountState extends State<MyAccount> {
                             decoration: BoxDecoration(
                                 color: whiteColor,
                                 border:
-                                    Border.all(width: 2, color: Colors.black),
+                                Border.all(width: 2, color: Colors.black),
                                 borderRadius: BorderRadius.circular(5),
                                 boxShadow: [
                                   BoxShadow(

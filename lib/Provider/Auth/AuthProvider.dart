@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:math';
+import 'package:divine_drapes/admin_screens/AdminBottomNav.dart';
+import 'package:divine_drapes/admin_screens/AdminHome.dart';
 import 'package:divine_drapes/models/login_model.dart' as user;
-import 'package:divine_drapes/screens/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../SharedPref.dart';
 import '../../screens/Login.dart';
+import '../../screens/home.dart';
 
 class AuthProvider extends ChangeNotifier {
   Future<void> UserSignUp({
@@ -83,7 +84,7 @@ class AuthProvider extends ChangeNotifier {
   static const String authTokenKey = 'auth_token';
   user.Login? currentUser;
 
-  Future<bool> login(String email, String password) async {
+  Future<bool> login(String email, String password,BuildContext context,) async {
     final url = Uri.parse('https://divine-drapes.onrender.com/auth/applogin');
     final response = await http.post(
       url,
@@ -96,16 +97,50 @@ class AuthProvider extends ChangeNotifier {
       await saveAuthToken(token);
       print(response.statusCode);
       getAuthToken();
-      Fluttertoast.showToast(
-          msg: "Logged in successfully!",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      var json1 = response.body;
+
+      Map<String, dynamic> parsedResponse = json.decode(json1);
+      int? adminData = parsedResponse['data']['roles']['Admin'];
+      print('Admin data: $adminData');
+      if(adminData == 5150)
+        {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/admin_bottom_nav', // Replace this with the actual name of the AdminBottomNav route.
+                (route) => false, // Remove all the previous routes from the stack.
+          );
+
+          Fluttertoast.showToast(
+              msg: "Logged in as Admin!",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16.0);
+
+        }
+      else
+        {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/home', // Replace this with the actual name of the AdminBottomNav route.
+                (route) => false, // Remove all the previous routes from the stack.
+          );
+          Fluttertoast.showToast(
+              msg: "Logged in as user!",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16.0);
+        }
+
       return true;
-    } else {
+    }
+    else
+    {
       print(response.statusCode);
       return false;
     }
@@ -165,6 +200,64 @@ class AuthProvider extends ChangeNotifier {
       );
     } else {
       print(response.reasonPhrase);
+    }
+  }
+
+  Future<bool> editUserPassword({
+    required String password,
+  }) async {
+    print('edit user password');
+    print(password);
+    try {
+      final url =
+          Uri.parse('https://divine-drapes.onrender.com/user/editUserInfo');
+
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString(authTokenKey);
+      print(token);
+
+      final response = await http.put(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json'
+        },
+        body: json.encode({'password': password}),
+      );
+
+      print(response.statusCode);
+      if (response.statusCode == 200 ||
+          response.statusCode == 202 ||
+          response.statusCode == 201) {
+        var json = response.body;
+        var data = jsonDecode(json);
+        print(data);
+
+        print("password changed succesfully");
+
+        Fluttertoast.showToast(
+            msg: "Password Updated",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        return true;
+      } else {
+        Fluttertoast.showToast(
+            msg: "Something went wrong.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        return false;
+      }
+    } catch (error) {
+      print(error);
+      return false;
     }
   }
 }

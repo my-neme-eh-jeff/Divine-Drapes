@@ -1,3 +1,4 @@
+import 'package:divine_drapes/Provider/Auth/otpProvider.dart';
 import 'package:divine_drapes/consts/constants.dart';
 import 'package:divine_drapes/screens/new_pass.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -8,16 +9,19 @@ import 'package:google_fonts/google_fonts.dart';
 import '../widgets/dashed_textfield.dart';
 
 class OTP extends StatefulWidget {
-  const OTP({super.key});
+  final String email;
+
+  const OTP({super.key, required this.email});
 
   @override
   State<OTP> createState() => _OTPState();
 }
 
-final TextEditingController emailController = TextEditingController();
+final TextEditingController otpController = TextEditingController();
 
 class _OTPState extends State<OTP> {
   void _onOtpChanged(String otp) {
+    otpController.text = otp;
     // Handle the OTP value here
     print('OTP entered: $otp');
   }
@@ -85,7 +89,7 @@ class _OTPState extends State<OTP> {
                       Text(
                         'Enter the OTP received on your',
                         style: GoogleFonts.notoSans(
-                          fontSize: sizefont * 0.8,
+                          fontSize: sizefont * 0.79,
                           color: Colors.black,
                           fontWeight: FontWeight.w500,
                         ),
@@ -98,7 +102,7 @@ class _OTPState extends State<OTP> {
                       Text(
                         'email address',
                         style: GoogleFonts.notoSans(
-                          fontSize: sizefont * 0.8,
+                          fontSize: sizefont * 0.82,
                           color: Colors.black,
                           fontWeight: FontWeight.w500,
                         ),
@@ -131,10 +135,32 @@ class _OTPState extends State<OTP> {
                   ),
                   SizedBox(height: size.height * 0.07),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const new_pass()));
-                    },
+                    onTap: () async {
+                      showDialog(
+                              context: context,
+                              builder: (context) => Center(
+                                    child: CircularProgressIndicator(
+                                      color: cream,
+                                    ),
+                                  ));
+                          final success = await otpProvider().verifyOtp(email: widget.email, otp: otpController.text);
+
+                          Navigator.pop(context);
+                          if (success) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => new_pass()),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('There seems to be an issue'),
+                                duration: Duration(seconds: 3),
+                              ),
+                            );
+                          }
+
+                          },
                     child: Container(
                       width: double.infinity,
                       height: size.height * 0.052,

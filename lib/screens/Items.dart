@@ -406,12 +406,15 @@ class _ItemsState extends State<Items> {
                                                           }
                                                         },
                                                         child:
-                                                        Text(
-                                                          cartProvider.addedProductsIds.contains(productId) ? "Added" : "Add to cart",
-                                                          style: GoogleFonts.notoSans(
-                                                            color: Colors.black,
-                                                            fontSize: 16,
-                                                            fontWeight: FontWeight.w600,
+                                                        Padding(
+                                                          padding: const EdgeInsets.all(8.0),
+                                                          child: Text(
+                                                            cartProvider.addedProductsIds.contains(productId) ? "Added" : "Add to cart",
+                                                            style: GoogleFonts.notoSans(
+                                                              color: Colors.black,
+                                                              fontSize: 16,
+                                                              fontWeight: FontWeight.w600,
+                                                            ),
                                                           ),
                                                         ),
                                                         // isAdded[index] ?

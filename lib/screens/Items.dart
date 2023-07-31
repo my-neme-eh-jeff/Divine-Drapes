@@ -293,7 +293,7 @@ class _ItemsState extends State<Items> {
                                             builder: (context) => ItemDetails(
                                                   id: productsCategoryWise[index]!.id,
                                                   image: (productsCategoryWise[index]!.photo .picture.isEmpty)
-                                                  ? 'assets/mug.png'
+                                                  ? 'assets/Vector.png'
                                                   : productsCategoryWise[index]!.photo.picture[0],
                                                   desc: productsCategoryWise[index]!.description,
                                                   cost: productsCategoryWise[index]!.cost,
@@ -321,7 +321,7 @@ class _ItemsState extends State<Items> {
                                                     .picture
                                                     .isEmpty)
                                                 ? Image.asset(
-                                                    'assets/mug.png',
+                                                    'assets/Vector.png',
                                                     // height: screenHeight*0.05,
                                                     fit: BoxFit.fill,
                                                   )

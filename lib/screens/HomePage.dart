@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                                                       .photo
                                                       .picture
                                                       .isEmpty)
-                                                  ? AssetImage('assets/mug.png')
+                                                  ? AssetImage('assets/Vector.png')
                                                   : NetworkImage(
                                                           products[index]!
                                                               .photo

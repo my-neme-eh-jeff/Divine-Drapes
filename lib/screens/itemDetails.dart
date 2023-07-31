@@ -176,7 +176,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                             width: screenWidth * 0.416,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: (widget.image == "assets/mug.png")
+                                    image: (widget.image == "assets/Vector.png")
                                         ? AssetImage(widget.image)
                                         : NetworkImage(widget.image)
                                             as ImageProvider),

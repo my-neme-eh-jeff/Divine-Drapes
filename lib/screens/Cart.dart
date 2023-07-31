@@ -17,17 +17,33 @@ class _CartState extends State<Cart> {
   TextEditingController search = TextEditingController();
   String? searchData;
   bool liked = false;
+  List<data.Data?> filteredProducts = [];
+  bool isLoading = true;
 
   List<data.Data?> cartProducts = [];
 
-  Future CartData() async {
+  Future<void> CartData() async {
     try {
       cartProducts = await Products().getCartData();
       print("future cart data: ");
       print(cartProducts.map((e) => e?.id));
+      filteredProducts = List.from(cartProducts);
+      setState(() {
+        isLoading = false;
+      });
     } catch (e) {
       print(e);
     }
+  }
+
+  void _performSearch(String query) {
+    setState(() {
+      filteredProducts = cartProducts
+          .where((product) =>
+              product?.name.toLowerCase().contains(query.toLowerCase()) ??
+              false)
+          .toList();
+    });
   }
 
   @override
@@ -67,6 +83,8 @@ class _CartState extends State<Cart> {
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: TextField(
+                  controller: search,
+                  onChanged: _performSearch,
                   cursorColor: Colors.grey,
                   decoration: InputDecoration(
                     fillColor: Colors.white,
@@ -96,23 +114,14 @@ class _CartState extends State<Cart> {
                   ),
                 ],
               ),
-              Container(
-                height: screenHeight,
-                child: FutureBuilder(
-                  future: CartData(),
-                  builder: (builder, snapshot) {
-                    print('Snapshot: ${snapshot.connectionState}');
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(
-                          color: cream,
-                        ),
-                      );
-                    } else if (snapshot.hasError) {
-                      print(snapshot.error);
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return SingleChildScrollView(
+              isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(
+                      color: cream,
+                    ))
+                  : Container(
+                      height: screenHeight,
+                      child: SingleChildScrollView(
                         physics: NeverScrollableScrollPhysics(),
                         child: Padding(
                             padding:
@@ -129,7 +138,6 @@ class _CartState extends State<Cart> {
                                   Divider(
                                     thickness: 2,
                                   ),
-
                                   Container(
                                     height: screenHeight * 0.75,
                                     child: ListView.builder(
@@ -138,7 +146,7 @@ class _CartState extends State<Cart> {
                                       ),
                                       shrinkWrap: true,
                                       physics: BouncingScrollPhysics(),
-                                      itemCount: cartProducts.length,
+                                      itemCount: filteredProducts.length,
                                       itemBuilder: (context, index) {
                                         return GestureDetector(
                                           onTap: () {
@@ -146,30 +154,33 @@ class _CartState extends State<Cart> {
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         ItemDetails(
-                                                          id: cartProducts[
+                                                          id: filteredProducts[
                                                                   index]!
                                                               .id,
-                                                          image: (cartProducts[
+                                                          image: (filteredProducts[
                                                                       index]!
                                                                   .photo
                                                                   .picture
                                                                   .isEmpty)
                                                               ? 'assets/Vector.png'
-                                                              : cartProducts[
+                                                              : filteredProducts[
                                                                       index]!
                                                                   .photo
                                                                   .picture[0],
-                                                          desc: cartProducts[
-                                                                  index]!
-                                                              .description,
-                                                          cost: cartProducts[
-                                                                  index]!
-                                                              .cost,
-                                                          name: cartProducts[
-                                                                  index]!
-                                                              .name,
+                                                          desc:
+                                                              filteredProducts[
+                                                                      index]!
+                                                                  .description,
+                                                          cost:
+                                                              filteredProducts[
+                                                                      index]!
+                                                                  .cost,
+                                                          name:
+                                                              filteredProducts[
+                                                                      index]!
+                                                                  .name,
                                                           category:
-                                                              cartProducts[
+                                                              filteredProducts[
                                                                       index]!
                                                                   .category,
                                                           added: [],
@@ -189,7 +200,8 @@ class _CartState extends State<Cart> {
                                                       screenHeight * 0.0024,
                                                   child: AspectRatio(
                                                     aspectRatio: 1,
-                                                    child: (cartProducts[index]!
+                                                    child: (filteredProducts[
+                                                                index]!
                                                             .photo
                                                             .picture
                                                             .isEmpty)
@@ -199,7 +211,8 @@ class _CartState extends State<Cart> {
                                                             fit: BoxFit.fill,
                                                           )
                                                         : Image.network(
-                                                            cartProducts[index]!
+                                                            filteredProducts[
+                                                                    index]!
                                                                 .photo
                                                                 .picture[0],
                                                             fit: BoxFit.fill,
@@ -219,7 +232,8 @@ class _CartState extends State<Cart> {
                                                       Row(
                                                         children: [
                                                           Text(
-                                                            cartProducts[index]!
+                                                            filteredProducts[
+                                                                    index]!
                                                                 .name,
                                                             style: GoogleFonts.notoSans(
                                                                 color: Colors
@@ -233,11 +247,12 @@ class _CartState extends State<Cart> {
                                                           ),
                                                           Spacer(),
                                                           Text(
-                                                            cartProducts[index]!
+                                                            filteredProducts[
+                                                                        index]!
                                                                     .cost
                                                                     .currency +
                                                                 " " +
-                                                                cartProducts[
+                                                                filteredProducts[
                                                                         index]!
                                                                     .cost
                                                                     .value
@@ -255,19 +270,18 @@ class _CartState extends State<Cart> {
                                                         ],
                                                       ),
                                                       Text(
-                                                          cartProducts[
+                                                          filteredProducts[
                                                                   index]!
                                                               .description,
-                                                          style: GoogleFonts
-                                                              .notoSans(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize:
-                                                                      screenWidth *
-                                                                          0.0348,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500)),
+                                                          style: GoogleFonts.notoSans(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize:
+                                                                  screenWidth *
+                                                                      0.0348,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500)),
                                                       SizedBox(
                                                         height: screenHeight *
                                                             0.0078,
@@ -365,11 +379,7 @@ class _CartState extends State<Cart> {
                                 ],
                               );
                             })),
-                      );
-                    }
-                  },
-                ),
-              )
+                      )),
             ],
           ),
         ),

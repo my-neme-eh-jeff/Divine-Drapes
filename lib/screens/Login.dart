@@ -186,21 +186,21 @@ class _LoginState extends State<Login> {
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide:
-                                const BorderSide(color: Colors.black)),
+                                    const BorderSide(color: Colors.black)),
                             enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Colors.black,
                                   width: 2,
                                 ),
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
+                                    BorderRadius.all(Radius.circular(10))),
                             focusedBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Colors.black,
                                   width: 2,
                                 ),
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
+                                    BorderRadius.all(Radius.circular(10))),
                             prefixIcon: const Icon(Icons.email),
                             isDense: true,
                           ),
@@ -237,7 +237,7 @@ class _LoginState extends State<Login> {
                           //   return null;
                           // },
                           validator:
-                          RequiredValidator(errorText: "   " '*Required'),
+                              RequiredValidator(errorText: "   " '*Required'),
                           onSaved: (value) {
                             passwordController.text = value!;
                           },
@@ -249,21 +249,21 @@ class _LoginState extends State<Login> {
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide:
-                                const BorderSide(color: Colors.black)),
+                                    const BorderSide(color: Colors.black)),
                             enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Colors.black,
                                   width: 2,
                                 ),
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
+                                    BorderRadius.all(Radius.circular(10))),
                             focusedBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Colors.black,
                                   width: 2,
                                 ),
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
+                                    BorderRadius.all(Radius.circular(10))),
                             prefixIcon: const Icon(Icons.lock),
                             isDense: true,
                             suffixIcon: InkWell(
@@ -292,7 +292,7 @@ class _LoginState extends State<Login> {
                         Checkbox(
                           checkColor: Colors.white,
                           fillColor:
-                          MaterialStateProperty.all(Colors.grey.shade900),
+                              MaterialStateProperty.all(Colors.grey.shade900),
                           value: isChecked,
                           onChanged: (bool? value) {
                             setState(() {
@@ -332,15 +332,14 @@ class _LoginState extends State<Login> {
                           showDialog(
                               context: context,
                               builder: (context) => Center(
-                                child: CircularProgressIndicator(
-                                  color: cream,
-                                ),
-                              ));
+                                    child: CircularProgressIndicator(
+                                      color: cream,
+                                    ),
+                                  ));
                           await AuthProvider().login(
                               emailController.text.trim(),
                               passwordController.text.trim(),
-                            context
-                          );
+                              context);
                           //Navigator.pop(context);
                           // if (success) {
                           //   Navigator.pushReplacement(
@@ -391,9 +390,9 @@ class _LoginState extends State<Login> {
                       children: [
                         Expanded(
                             child: Divider(
-                              color: Colors.black,
-                              thickness: 1,
-                            )),
+                          color: Colors.black,
+                          thickness: 1,
+                        )),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20),
                           child: Text(
@@ -404,9 +403,9 @@ class _LoginState extends State<Login> {
                         ),
                         Expanded(
                             child: Divider(
-                              color: Colors.black,
-                              thickness: 1,
-                            )),
+                          color: Colors.black,
+                          thickness: 1,
+                        )),
                       ],
                     ),
                     SizedBox(
@@ -475,7 +474,6 @@ class _LoginState extends State<Login> {
                         ),
                       ],
                     ),
-
                   ],
                 ),
               ),

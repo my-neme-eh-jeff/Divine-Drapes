@@ -20,10 +20,16 @@ class _HomePageState extends State<HomePage> {
 
   List<data.Data?> products = [];
   String? fname;
+  List<data.Data?> filteredProducts = [];
+  bool isLoading = true;
 
-  Future getProducts() async {
+  Future<void> getProducts() async {
     try {
       products = await Products().getProductsData();
+      filteredProducts = List.from(products);
+      setState(() {
+        isLoading = false;
+      });
       // print(products.map((e) => e?.photo.picture));
       // print((products[13]!.photo.picture.isEmpty) ? "asset": "network");
     } catch (e) {
@@ -31,10 +37,20 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void _performSearch(String query) {
+    setState(() {
+      filteredProducts = products
+          .where((product) =>
+              product?.category.toLowerCase().contains(query.toLowerCase()) ??
+              false)
+          .toList();
+    });
+  }
+
   @override
   void initState() {
     getProducts();
-    
+
     super.initState();
   }
 
@@ -44,34 +60,22 @@ class _HomePageState extends State<HomePage> {
     var height = size.height;
     var width = size.width;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: whiteColor,
-        automaticallyImplyLeading: false,
-        title: Text("Divine Drapes",
-            style: GoogleFonts.notoSans(
-                color: darkPurple, fontSize: 28, fontWeight: FontWeight.w700)),
-        elevation: 0.0,
-      ),
-      body: FutureBuilder(
-          future: getProducts(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(
-                    child: CircularProgressIndicator(
-                      color: cream,
-                    ),
-                  ),
-                ],
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text(snapshot.error.toString()),
-              );
-            } else {
-              return Column(
+        appBar: AppBar(
+          backgroundColor: whiteColor,
+          automaticallyImplyLeading: false,
+          title: Text("Divine Drapes",
+              style: GoogleFonts.notoSans(
+                  color: darkPurple,
+                  fontSize: 28,
+                  fontWeight: FontWeight.w700)),
+          elevation: 0.0,
+        ),
+        body: isLoading
+            ? Center(
+                child: CircularProgressIndicator(
+                color: cream,
+              ))
+            : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // SizedBox(
@@ -95,6 +99,8 @@ class _HomePageState extends State<HomePage> {
                         child: TextField(
                           cursorColor: Colors.black,
                           cursorHeight: height * 0.03,
+                          controller: search,
+                          onChanged: _performSearch,
                           decoration: InputDecoration(
                             fillColor: Colors.white,
                             filled: true,
@@ -158,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                             mainAxisSpacing: 10.0,
                             shrinkWrap: true,
                             children: List.generate(
-                              products.length,
+                              filteredProducts.length,
                               (index) {
                                 return Column(
                                   children: [
@@ -167,7 +173,8 @@ class _HomePageState extends State<HomePage> {
                                         Navigator.of(context)
                                             .push(MaterialPageRoute(
                                                 builder: (context) => Items(
-                                                      category: products[index]!.category,
+                                                      category: products[index]!
+                                                          .category,
                                                     )));
                                       },
                                       child: Container(
@@ -182,16 +189,17 @@ class _HomePageState extends State<HomePage> {
                                             ],
                                             border: Border.all(width: 0),
                                             image: DecorationImage(
-                                              image: (products[index]!
+                                              image: (filteredProducts[index]!
                                                       .photo
                                                       .picture
                                                       .isEmpty)
-                                                  ? AssetImage('assets/Vector.png')
+                                                  ? AssetImage(
+                                                      'assets/Vector.png')
                                                   : NetworkImage(
-                                                          products[index]!
+                                                      filteredProducts[index]!
                                                               .photo
-                                                              .picture[0])
-                                                      as ImageProvider,
+                                                              .picture[
+                                                          0]) as ImageProvider,
 
                                               // image: AssetImage('assets/mug.png'),
                                               fit: BoxFit.cover,
@@ -201,7 +209,9 @@ class _HomePageState extends State<HomePage> {
                                             )),
                                       ),
                                     ),
-                                    Text(products[index]?.category ?? "Mugs",
+                                    Text(
+                                        filteredProducts[index]?.category ??
+                                            "Mugs",
                                         style: GoogleFonts.notoSans(
                                             color: Colors.black,
                                             fontSize: width * 0.03,
@@ -295,10 +305,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ],
-              );
-            }
-          }),
-    );
+              ));
   }
 
   Future<void> _showCategories() async {

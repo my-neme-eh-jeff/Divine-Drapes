@@ -1,8 +1,11 @@
+import 'package:divine_drapes/screens/home.dart';
 import 'package:divine_drapes/screens/itemDetails.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../consts/constants.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:divine_drapes/models/ProductModel.dart' as data;
 import 'package:divine_drapes/Provider/Auth/products_API.dart';
 
@@ -17,6 +20,8 @@ class _CartState extends State<Cart> {
   TextEditingController search = TextEditingController();
   String? searchData;
   bool liked = false;
+  static const String authTokenKey = 'auth_token';
+
   List<data.Data?> filteredProducts = [];
   bool isLoading = true;
 
@@ -44,6 +49,47 @@ class _CartState extends State<Cart> {
               false)
           .toList();
     });
+  }
+
+  Future<bool> removeFromCart(String productId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(authTokenKey);
+    var headers = {'Authorization': 'Bearer $token'};
+    var request = http.Request(
+        'DELETE',
+        Uri.parse(
+            'https://divine-drapes.onrender.com/user/removeCart/$productId'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+      print("Item removed successfully");
+      Fluttertoast.showToast(
+        msg: "Item removed successfully",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      return true;
+    } else {
+      print(response.reasonPhrase);
+      Fluttertoast.showToast(
+        msg: "Something went Wrong",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      return false;
+    }
   }
 
   @override
@@ -298,18 +344,39 @@ class _CartState extends State<Cart> {
                                                               child:
                                                                   GestureDetector(
                                                                 onTap:
-                                                                    () async {},
-                                                                child: Text(
-                                                                  "Remove",
-                                                                  style: GoogleFonts
-                                                                      .notoSans(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontSize:
-                                                                        16,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
+                                                                    () async {
+                                                                  print(cartProducts[
+                                                                          index]
+                                                                      ?.id);
+                                                                  var success =
+                                                                      await removeFromCart(
+                                                                          cartProducts[index]!
+                                                                              .id);
+                                                                  if (success) {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .push(MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                Home()));
+                                                                  }
+                                                                },
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .all(
+                                                                          8.0),
+                                                                  child: Text(
+                                                                    "Remove",
+                                                                    style: GoogleFonts
+                                                                        .notoSans(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                                 // isAdded[index] ?

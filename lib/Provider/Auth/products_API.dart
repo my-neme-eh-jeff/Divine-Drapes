@@ -93,7 +93,7 @@ class Products {
   getCartData() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(authTokenKey);
-    var headers = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImRkdXNlckBnbWFpbC5jb20iLCJyb2xlcyI6WzIwMDFdfSwiaWF0IjoxNjkwODEwMTA4LCJleHAiOjE3MjIzNjc3MDh9.iFZJAkjbJgv644RuH1yet10ubDMRKEWkSKIR5YZMC9k'};
+    var headers = {'Authorization': 'Bearer $token'};
     var request = http.Request('GET',
         Uri.parse('https://divine-drapes.onrender.com/user/viewMyCart'));
     request.body = '''''';

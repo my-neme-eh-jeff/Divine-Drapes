@@ -252,10 +252,7 @@ class _HomePageState extends State<HomePage> {
                                       onTap: () {
                                         Navigator.of(context)
                                             .push(MaterialPageRoute(
-                                                builder: (context) => Items(
-                                                      category: products[index]!
-                                                          .category,
-                                                    )));
+                                                builder: (context) => Items(category: products[index]!.category,)));
                                       },
                                       child: Container(
                                         height: width * 0.213,

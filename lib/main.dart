@@ -5,6 +5,7 @@ import 'package:divine_drapes/screens/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'Provider/CartProvider.dart';
 import 'admin_screens/AdminBottomNav.dart';
 
 void main() {
@@ -20,9 +21,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context)=> AuthProvider()),
+        ChangeNotifierProvider(create: (context) => CartProvider(),),
       ],
       child:  MaterialApp(
-
           debugShowCheckedModeBanner: false,
           title: 'Divine Drapes',
         home: SplashScreen(),

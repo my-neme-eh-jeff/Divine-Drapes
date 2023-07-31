@@ -14,6 +14,7 @@ class ItemDetails extends StatefulWidget {
   var cost;
   final String name;
   final String category;
+  late List<bool> isAdded;
 
   ItemDetails({
     Key? key,
@@ -22,7 +23,7 @@ class ItemDetails extends StatefulWidget {
     required this.desc,
     required this.cost,
     required this.name,
-    required this.category,
+    required this.category, required List<bool> added,
   }) : super(key: key);
 
   @override
@@ -262,25 +263,30 @@ class _ItemDetailsState extends State<ItemDetails> {
                           padding: EdgeInsets.only(
                             top: 10,
                           ),
-                          child: Container(
-                            width: screenWidth * 0.85,
-                            height: screenHeight * 0.052,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: Colors.black,
-                                width: 2,
+                          child: GestureDetector(
+                            onTap: (){
+                              print(widget.id);
+                            },
+                            child: Container(
+                              width: screenWidth * 0.85,
+                              height: screenHeight * 0.052,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 2,
+                                ),
                               ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'Add to Cart',
-                                style: GoogleFonts.notoSans(
-                                  fontSize: screenWidth * 0.04,
-                                  color:
-                                      const Color.fromRGBO(160, 30, 134, 1),
-                                  fontWeight: FontWeight.w600,
+                              child: Center(
+                                child: Text(
+                                  isAdded?'Added': 'Add to cart',
+                                  style: GoogleFonts.notoSans(
+                                    fontSize: screenWidth * 0.04,
+                                    color:
+                                        const Color.fromRGBO(160, 30, 134, 1),
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ),
@@ -377,6 +383,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                                     category:
                                                                         productsCategoryWise[index]!
                                                                             .category,
+                                                                    added: [],
                                                                   )));
                                                 },
                                                 child: (productsCategoryWise[index]!

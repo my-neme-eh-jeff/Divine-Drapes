@@ -167,8 +167,7 @@ class _HomePageState extends State<HomePage> {
                                         Navigator.of(context)
                                             .push(MaterialPageRoute(
                                                 builder: (context) => Items(
-                                                      category: products[index]!
-                                                          .category,
+                                                      category: products[index]!.category,
                                                     )));
                                       },
                                       child: Container(

@@ -1,9 +1,15 @@
+import 'dart:convert';
+
 import 'package:divine_drapes/screens/itemDetails.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:divine_drapes/models/ProductModel.dart' as data;
 import 'package:divine_drapes/Provider/Auth/products_API.dart';
-
+import 'package:http/http.dart'as http;
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../Provider/CartProvider.dart';
 import '../consts/constants.dart';
 
 class Items extends StatefulWidget {
@@ -21,6 +27,18 @@ class _ItemsState extends State<Items> {
   bool liked = false;
   late List<bool> isAdded;
   List<data.Data?> productsCategoryWise = [];
+  static const String authTokenKey = 'auth_token';
+
+  // Future<void> _saveCartState() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   final List<String> addedProductsIds = productsCategoryWise
+  //       .asMap()
+  //       .entries
+  //       .where((entry) => isAdded[entry.key])
+  //       .map((entry) => entry.value!.id)
+  //       .toList();
+  //   prefs.setStringList('cartItems', addedProductsIds);
+  // }
 
   Future getProductsCategory() async {
     print('products category here');
@@ -29,9 +47,9 @@ class _ItemsState extends State<Items> {
           await Products().getProductsDataCategorywise(widget.category);
       // print(productsCategoryWise.map((e) => e?.id));
       // print((products[13]!.photo.picture.isEmpty) ? "asset": "network");
-
-      isAdded = List.filled(productsCategoryWise.length, false);
-      print(isAdded);
+      //
+      // isAdded = List.filled(productsCategoryWise.length, false);
+      // print(isAdded);
     } catch (e) {
       print(e);
     }
@@ -41,10 +59,94 @@ class _ItemsState extends State<Items> {
 
   // @override
   // void initState() {
+  //   super.initState();
+  //   _loadCartState(); // Call the method to load cart state
+  // }
+
+  // Future<void> _loadCartState() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   final List<String> addedProductsIds =
+  //       prefs.getStringList('cartItems') ?? []; // Retrieve stored cart items
+  //   setState(() {
+  //     isAdded = productsCategoryWise
+  //         .map((product) => addedProductsIds.contains(product!.id))
+  //         .toList();
+  //   });
+  // }
+
+
+  // @override
+  // void initState() {
   //   getProductsCategory();
   //   super.initState();
   // }
 
+  Future<bool> addToCart(String productId, BuildContext context,int index) async {
+    final url = Uri.parse('https://divine-drapes.onrender.com/user/addCart/$productId');
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(authTokenKey);
+    print(token);
+    if (token == null) {
+      print('Authentication token is missing');
+      return false;
+    }
+
+    // Show the circular progress indicator
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent closing the dialog by tapping outside
+      builder: (context) => Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    // Hide the circular progress indicator
+    Navigator.pop(context);
+
+    if (response.statusCode == 200) {
+      // Item added to cart successfully
+      // Handle the response or show a success message
+      print('Item added to cart successfully');
+      print('Response: ${response.body}');
+
+      // Show a success message
+      Fluttertoast.showToast(
+        msg: "Item added to cart successfully!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      CartProvider cartProvider = Provider.of<CartProvider>(context, listen: false);
+      cartProvider.addToCart(productId);
+      return true;
+    } else {
+      // Failed to add item to cart
+      // Handle the error or show an error message
+      Fluttertoast.showToast(
+        msg: "Failed to add item to cart!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      print(response.statusCode);
+      print('Response: ${response.body}');
+      return false;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -95,6 +197,7 @@ class _ItemsState extends State<Items> {
                 child: Text(snapshot.error.toString()),
               );
             } else {
+              isAdded = List.filled(productsCategoryWise.length, false);
               return SingleChildScrollView(
                 physics: NeverScrollableScrollPhysics(),
                 child: Padding(
@@ -181,6 +284,8 @@ class _ItemsState extends State<Items> {
                               physics: BouncingScrollPhysics(),
                               itemCount: productsCategoryWise.length,
                               itemBuilder: (context, index) {
+                                String productId = productsCategoryWise[index]!.id;
+                                CartProvider cartProvider = Provider.of<CartProvider>(context);
                                 return GestureDetector(
                                   onTap: () {
                                     Navigator.of(context)
@@ -194,6 +299,8 @@ class _ItemsState extends State<Items> {
                                                   cost: productsCategoryWise[index]!.cost,
                                                   name: productsCategoryWise[index]!.name,
                                                   category: productsCategoryWise[index]!.category,
+                                                 added: isAdded,
+
                                                 )));
                                   },
                                   child: Padding(
@@ -288,62 +395,61 @@ class _ItemsState extends State<Items> {
                                                               BorderRadius
                                                                   .circular(5)),
                                                       child: GestureDetector(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            isAdded[index] =
-                                                                !isAdded[index];
-                                                            print(isAdded);
-                                                          });
+                                                        onTap: () async {
+                                                          bool success = await addToCart(productsCategoryWise[index]!.id, context, index);
+                                                          if (success) {
+                                                            // setState(() {
+                                                            //   isAdded[index] = !isAdded[index];
+                                                            //   print(isAdded);
+                                                            //   _saveCartState();
+                                                            // });
+                                                          }
                                                         },
-                                                        child: Padding(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal:
-                                                                      screenWidth *
-                                                                          0.028,
-                                                                  vertical: 5),
-                                                          child: isAdded[index]
-                                                              ? Row(
-                                                                  children: [
-                                                                    Text(
-                                                                      "Added",
-                                                                      style: GoogleFonts.notoSans(
-                                                                          color: Colors
-                                                                              .black,
-                                                                          fontSize: screenWidth *
-                                                                              0.04,
-                                                                          fontWeight:
-                                                                              FontWeight.w600),
-                                                                    ),
-                                                                    SizedBox(
-                                                                      width: 2,
-                                                                    ),
-                                                                    Container(
-                                                                        width:
-                                                                            25,
-                                                                        height:
-                                                                            20,
-                                                                        color: Colors
-                                                                            .transparent,
-                                                                        child: Image
-                                                                            .asset(
-                                                                          'assets/tickmark.png',
-                                                                        ))
-                                                                  ],
-                                                                )
-                                                              : Text(
-                                                                  "Add to cart",
-                                                                  style: GoogleFonts.notoSans(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600),
-                                                                ),
+                                                        child:
+                                                        Text(
+                                                          cartProvider.addedProductsIds.contains(productId) ? "Added" : "Add to cart",
+                                                          style: GoogleFonts.notoSans(
+                                                            color: Colors.black,
+                                                            fontSize: 16,
+                                                            fontWeight: FontWeight.w600,
+                                                          ),
                                                         ),
-                                                      )),
+                                                        // isAdded[index] ?
+                                                        // Row(
+                                                        //         children: [
+                                                        //           Text(
+                                                        //             "Added",
+                                                        //             style: GoogleFonts.notoSans(
+                                                        //                 color: Colors
+                                                        //                     .black,
+                                                        //                 fontSize: screenWidth *
+                                                        //                     0.04,
+                                                        //                 fontWeight:
+                                                        //                     FontWeight.w600),
+                                                        //           ),
+                                                        //           SizedBox(
+                                                        //             width: 2,
+                                                        //           ),
+                                                        //           Container(
+                                                        //               width:
+                                                        //                   25,
+                                                        //               height:
+                                                        //                   20,
+                                                        //               color: Colors
+                                                        //                   .transparent,
+                                                        //               child: Image
+                                                        //                   .asset(
+                                                        //                 'assets/tickmark.png',
+                                                        //               ))
+                                                        //         ],
+                                                        //       ) : Text("Add to cart", style: GoogleFonts.notoSans(color: Colors.black,
+                                                        //             fontSize:
+                                                        //                 16,
+                                                        //             fontWeight:
+                                                        //                 FontWeight
+                                                        //                     .w600),),
+                                                      )
+                                                  ),
                                                   Spacer(),
                                                   InkWell(
                                                       onTap: () {

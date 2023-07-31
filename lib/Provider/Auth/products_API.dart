@@ -89,4 +89,30 @@ class Products {
       print(response.statusCode);
     }
   }
+
+  getCartData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(authTokenKey);
+    var headers = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6ImRkdXNlckBnbWFpbC5jb20iLCJyb2xlcyI6WzIwMDFdfSwiaWF0IjoxNjkwODEwMTA4LCJleHAiOjE3MjIzNjc3MDh9.iFZJAkjbJgv644RuH1yet10ubDMRKEWkSKIR5YZMC9k'};
+    var request = http.Request('GET',
+        Uri.parse('https://divine-drapes.onrender.com/user/viewMyCart'));
+    request.body = '''''';
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    http.Response streamResponse = await http.Response.fromStream(response);
+
+    if (response.statusCode == 200) {
+      log("get card data");
+      print(token);
+      var data = jsonDecode(streamResponse.body);
+      //print(token);
+      // print(data);
+      var getProducts = AllProducts.fromJson(data);
+      _productsData = getProducts.data;
+      return _productsData;
+    } else {
+      print(token);
+      print(response.statusCode);
+    }
+  }
 }

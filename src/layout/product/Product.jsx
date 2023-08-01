@@ -20,36 +20,58 @@ function Product() {
     const { auth, setAuth } = useAuth();
     const isLogin = auth?.accessToken;
     console.log(isLogin);
-    
-    const getProduct = () => {
-        let data = JSON.stringify({
-          "productID": "64c214b470ae96235c9e103f"
-        });
-    
+     
+    const categoryProduct = ()=>{
         let config = {
-          method: 'get',
-          url: 'https://divine-drapes.onrender.com/product/viewProduct',
-          headers: {
-            'Content-Type': 'application/json',
-            // 'Authorization': 'Bearer ' + isLogin
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6InNhaGlsa2FtYXRoMDEwOEBnbWFpbC5jb20iLCJyb2xlcyI6WzIwMDEsNTE1MF19LCJpYXQiOjE2OTAzOTU2MDQsImV4cCI6MTcyMTk1MzIwNH0.c7DiBEAGKavFwFa3fhkpddhjjdHxslYzj71pjrsFG3E'
-          },
-          data: data
-        };
-    
-        privateAxios.request(config)
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: 'https://divine-drapes.onrender.com/product/categoryWise/Mugs',
+            headers: { 
+              'Authorization': 'Bearer '+isLogin
+            }
+          };
+          
+          privateAxios.request(config)
           .then((response) => {
             console.log(JSON.stringify(response.data));
           })
           .catch((error) => {
-            alert(error)
             console.log(error);
           });
-      }
-    
-      useEffect(() => {
-        getProduct();
-      }, [isLogin]);
+          
+    }
+    const getSingleProduct = ()=>{
+        let data = JSON.stringify({
+            "productID": "64c214b470ae96235c9e103f"
+          });
+          
+          let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: 'https://divine-drapes.onrender.com/product/viewProduct',
+            headers: { 
+              'Content-Type': 'application/json', 
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6InNhaGlsa2FtYXRoMDEwOEBnbWFpbC5jb20iLCJyb2xlcyI6WzIwMDEsNTE1MF19LCJpYXQiOjE2OTAzOTU2MDQsImV4cCI6MTcyMTk1MzIwNH0.c7DiBEAGKavFwFa3fhkpddhjjdHxslYzj71pjrsFG3E'
+            },
+            data : data
+          };
+          
+          privateAxios.request(config)
+          .then((response) => {
+            console.log(JSON.stringify(response.data));
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+          
+    }
+    useEffect(
+        ()=>{
+            categoryProduct()
+            getSingleProduct() //this API is not working in frontEnd
+        },[]
+    )
+
     return (
         <div>
             <Navbar />

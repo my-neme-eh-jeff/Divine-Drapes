@@ -21,7 +21,7 @@ const allProducts = async (req, res) => {
 //view a particular product
 const viewSpecificProduct = async (req, res) => {
   try {
-    const { productID } = req.body;
+    const productID = req.params.productID;
     const product = await ProductSchema.findById({ _id: productID }).populate(
       "reviews"
     );

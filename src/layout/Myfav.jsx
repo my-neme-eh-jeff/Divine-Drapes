@@ -25,7 +25,7 @@ export default function Myorders() {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'localhost:7777/user/removeCart/'+id,
+        url: 'https://divine-drapes.onrender.com/user/removeCart/'+id,
         headers: { 
           'Authorization': 'Bearer '+isLogin,
         }

@@ -20,57 +20,84 @@ function Product() {
     const { auth, setAuth } = useAuth();
     const isLogin = auth?.accessToken;
     console.log(isLogin);
-     
-    const categoryProduct = ()=>{
+
+    const categoryProduct = async() => {
+        let config = {
+            method: 'get',
+            // maxBodyLength: Infinity,
+            // url: 'https://divine-drapes.onrender.com/product/categoryWise/Mugs',
+            url: 'product/categoryWise/Mugs',
+            headers: {
+                'Authorization': 'Bearer ' + isLogin
+            }
+        };
+
+        
+        try{
+            console.log(privateAxios)
+            const response = await privateAxios.request(config)
+            console.log(response.data)
+        }
+        catch(err){
+            console.log(err)
+        }
+            // .then((response) => {
+            //     console.log((response.data));
+            // })
+            // catch((error) => {
+            //     console.log(error);
+            // });
+
+    }
+    const getSingleProduct = () => {
+
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: 'https://divine-drapes.onrender.com/product/categoryWise/Mugs',
-            headers: { 
-              'Authorization': 'Bearer '+isLogin
-            }
-          };
-          
-          privateAxios.request(config)
-          .then((response) => {
-            console.log((response.data));
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-          
-    }
-    const getSingleProduct = ()=>{
-        let data = JSON.stringify({
-            "productID": "64c214b470ae96235c9e103f"
-          });
-          
-          let config = {
-            method: 'get',
-            maxBodyLength: Infinity,
-            url: 'https://divine-drapes.onrender.com/product/viewProduct/',
-            headers: { 
-              'Content-Type': 'application/json', 
-              'Authorization': 'Bearer '+isLogin
+            url: 'https://divine-drapes.onrender.com/product/viewProduct/64c214b470ae96235c9e103f',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + isLogin
             },
-            data : data
-          };
-          
-          privateAxios.request(config)
-          .then((response) => {
-            console.log(JSON.stringify(response.data));
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-          
+        };
+
+        privateAxios.request(config)
+            .then((response) => {
+                alert("hitted")
+                console.log(JSON.stringify(response.data));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
     }
     useEffect(
-        ()=>{
+        () => {
             categoryProduct()
-            getSingleProduct() //this API is not working in frontEnd
-        },[]
+            getSingleProduct() 
+        }, []
     )
+
+    const addToCartAPI = () => {
+        let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'https://divine-drapes.onrender.com/user/addCart/64c214b470ae96235c9e103f',
+            headers: {
+                'Authorization': 'Bearer ' + isLogin
+            }
+        };
+
+        privateAxios.request(config)
+            .then((response) => {
+                console.log(JSON.stringify(response.data));
+                alert("Added to card")
+            })
+            .catch((error) => {
+                console.log(error);
+                alert("Error")
+            });
+    }
 
     return (
         <div>
@@ -121,9 +148,13 @@ function Product() {
                                         }}
                                         onClick={buy}
                                     >Buy Now</Button>
-                                    <Button marginLeft={'25px'}
-                                        border={' 3px solid #A01E86'}
-                                    >Add To Cart</Button>
+                                    <Button
+                                    marginLeft={'25px'}
+                                    onClick={addToCartAPI}
+                                    border={' 3px solid #A01E86'}
+                                    >
+                                        Add To Cart
+                                    </Button>
                                 </Box>
 
                             </Box>

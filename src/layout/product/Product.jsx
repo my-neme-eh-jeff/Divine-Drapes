@@ -13,7 +13,9 @@ import useAuth from '../../Hooks/useAuth';
 
 function Product() {
     const {productId} = useParams()
-    console.log(productId)
+    const prodId = productId.split(':')[1]
+    console.log(prodId)
+    // console.log(productId)
     const nav = useNavigate();
     const buy = () => {
         console.log("buy now")
@@ -56,7 +58,7 @@ function Product() {
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: 'https://divine-drapes.onrender.com/product/viewProduct/64c214b470ae96235c9e103f',
+            url: `https://divine-drapes.onrender.com/product/viewProduct/${prodId}`,
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + isLogin

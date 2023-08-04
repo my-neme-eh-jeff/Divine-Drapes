@@ -4,6 +4,7 @@ import "react-multi-carousel/lib/styles.css";
 import { Card, Button, Image, Stack, Heading, CardBody } from '@chakra-ui/react';
 import privateAxios from '../../Axios/privateAxios';
 import useAuth from '../../Hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const responsive = {
   superLargeDesktop: {
@@ -28,7 +29,7 @@ const responsive = {
 const Personalised = () => {
 
     const [topSelling, setTopSelling] = useState([]);
-
+    const navigate = useNavigate();
     const { auth } = useAuth();
     const isLogin = auth?.accessToken;
 
@@ -50,7 +51,10 @@ const Personalised = () => {
           console.log(error);
       });
 
-    
+    const handleItem = (id) => {
+      console.log(id)
+        navigate(`/product/:${id}`)
+    }
 
   return (
     <>
@@ -58,7 +62,8 @@ const Personalised = () => {
       removeArrowOnDeviceType={["tablet", "mobile"]}
       // autoPlay={true}
       autoPlaySpeed={2000}>
-            {topSelling?.map((item) => (
+            {topSelling?.map((item) => { console.log(item)
+            return(
                     <Card maxW='sm' key={item}>
                     <CardBody>
                       <Image
@@ -67,11 +72,11 @@ const Personalised = () => {
                         borderRadius='lg'
                       />
                       <Stack mt='6' spacing='3'>
-                        <Button><Heading size='md'>{item.name}</Heading></Button>                       
+                        <Button onClick={() => handleItem(item._id)}><Heading size='md'>{item.name}</Heading></Button>                       
                       </Stack>
                     </CardBody>
                   </Card>
-                )               
+                )  }             
             )} 
         </Carousel>
         </>

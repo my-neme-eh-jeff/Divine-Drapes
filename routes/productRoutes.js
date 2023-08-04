@@ -14,6 +14,6 @@ router.get("/allProducts", productC.allProducts)
 router.get("/categoryWise/:category", productC.categoryWise)
 
 //view specific product
-router.get("/viewProduct", productC.viewSpecificProduct)
+router.get("/viewProduct/:productID", productC.viewSpecificProduct)
 
 module.exports = router

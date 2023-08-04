@@ -33,7 +33,7 @@ function Product() {
           
           privateAxios.request(config)
           .then((response) => {
-            console.log(JSON.stringify(response.data));
+            console.log((response.data));
           })
           .catch((error) => {
             console.log(error);
@@ -48,10 +48,10 @@ function Product() {
           let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: 'https://divine-drapes.onrender.com/product/viewProduct',
+            url: 'https://divine-drapes.onrender.com/product/viewProduct/',
             headers: { 
               'Content-Type': 'application/json', 
-              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6InNhaGlsa2FtYXRoMDEwOEBnbWFpbC5jb20iLCJyb2xlcyI6WzIwMDEsNTE1MF19LCJpYXQiOjE2OTAzOTU2MDQsImV4cCI6MTcyMTk1MzIwNH0.c7DiBEAGKavFwFa3fhkpddhjjdHxslYzj71pjrsFG3E'
+              'Authorization': 'Bearer '+isLogin
             },
             data : data
           };

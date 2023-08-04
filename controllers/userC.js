@@ -145,9 +145,16 @@ const addCart = async (req, res) => {
     // const product = await  ProductSchema.findOne({name:productName})
     // const cart = await UserSchema.findById({_id:User._id}).populate('cart')
     const productID = req.params.pID;
-    const product = await ProductSchema.findById({ _id: productID }).populate(
-      "reviews"
-    );
+
+    const isProductAlreadyInCart = User.cart.includes(productID)
+
+    if(isProductAlreadyInCart){
+      return res.status(400).json({
+        success : false,
+        message : "Product already exists in cart"
+      })
+    }
+
     await UserSchema.findByIdAndUpdate(
       { _id: User._id },
       { $push: { cart: productID } }

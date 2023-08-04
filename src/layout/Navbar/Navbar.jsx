@@ -111,7 +111,7 @@ const Navbar = () => {
             <Link href="/bulkorder">
               <Button bgColor={"#fff"}>Bulk orders</Button>
             </Link>
-            <Link href="/buy">
+            <Link href="/fav">
               <Button bgColor={"#fff"}>Cart</Button>
             </Link>
             {!isLogin ? (

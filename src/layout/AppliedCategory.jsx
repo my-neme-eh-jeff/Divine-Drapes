@@ -5,10 +5,12 @@ import Navbar from './Navbar/Navbar';
 import { ArrowBackIcon } from '@chakra-ui/icons'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useNavigate } from 'react-router-dom';
 
 const AppliedCategory = () => {
     const [products, setProducts] = useState([]);
-    const [favIcon, setFavIcon] = useState(false)
+    const [favIcon, setFavIcon] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get('https://dummyjson.com/posts?limit=8')
@@ -47,7 +49,7 @@ const AppliedCategory = () => {
                         </Stack>
                     </Flex>
                     <Flex justifyContent={'space-between'}>
-                        <Button bgColor={"#f7bc62"} p='0 12%'>
+                        <Button bgColor={"#f7bc62"} p='0 12%' onClick={() => navigate()}>
                             Add to Cart
                         </Button>
                         <Button bgColor={'white'} onClick={handleFavoriteClick}>

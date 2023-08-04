@@ -19,7 +19,7 @@ const categories = [
   "Mugs",
   "Paper Weight",
   "Coasters",
-  " Hair Comb",
+  "Hair Comb",
   "Envelop",
   "Diary",
   "Folders",
@@ -73,7 +73,7 @@ const Categories = () => {
   };
 
   const handleApply = () => {
-    (selected.size === undefined || selected.size === 0) ? alert("Please choose some category!") : navigate('/categories')
+    (selected.size === undefined || selected.size === 0) ? alert("Please choose some category!") : console.log(selected)
   }
 
   var chars = new Set(selected);

@@ -274,8 +274,7 @@ const directOrder = async (req, res) => {
       user: user._id,
       product: productID,
       photo: {
-        idCust: req.body.isCustPhoto,
-        photo: req.body.file, //enter cloudinary link
+        isCust: req.body.isCustPhoto,
       },
       text: {
         isCust: req.body.isCustText,
@@ -300,7 +299,7 @@ const directOrder = async (req, res) => {
       from: process.env.EMAIL,
       to: user.email,
       subject: "Order succesfully placed.",
-      text: `Your order for ${Product.name} with product ID ${productID} has been placed succefully, and can be tracked on our app in the orders section.`,
+      text: `Your order for ${Product.name} with product ID ${productID} has been placed succesfully, and can be tracked on our app in the orders section.`,
     });
 
     res.status(200).json({
@@ -314,6 +313,31 @@ const directOrder = async (req, res) => {
     });
   }
 };
+
+const addImagesForOrder = async (req, res) => {
+  try {
+    const _id = req.body.id; 
+    const order = await OrderSchema.findById(_id)      //orderID
+    const files = req.files;
+    const array = [];
+    for (let image of files) {
+      const img = await imageUpload.imageUpload(image, "Orders");
+      array.push(img.url);
+      fs.unlinkSync(image.path)
+    }
+    order.photo.picture = array;
+    order.save();
+    res.status(200).json({
+      success : true,
+      data : order
+    })
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+}
 
 //view Order
 const viewOrder = async (req, res) => {
@@ -366,4 +390,5 @@ module.exports = {
   directOrder,
   viewOrder,
   profilePic,
+  addImagesForOrder
 };

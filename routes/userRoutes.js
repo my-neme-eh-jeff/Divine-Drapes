@@ -47,6 +47,9 @@ router.delete("/removeCart/:pID",userC.removeCart)
 // place order
 router.post("/order",userC.directOrder)
 
+// add images for customization
+router.post("/orderPicture", upload.array('files'), userC.addImagesForOrder)
+
 // view Order
 router.get("/viewOrder",userC.viewOrder)
 

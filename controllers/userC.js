@@ -162,7 +162,7 @@ const addCart = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: product,
+      message : "Product added succesfully",
     });
   } catch (err) {
     res.status(500).json({

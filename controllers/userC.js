@@ -358,6 +358,30 @@ const viewOrder = async (req, res) => {
   }
 };
 
+//view single Order
+const viewSingleOrder = async(req,res) => {
+  try{
+    const { orderID } = req.body
+    const order = await OrderSchema.findById(orderID)
+    if(!order){
+      return res.status(404).json({
+        success: false,
+        message: "No order with this id",
+      })
+    }
+
+    res.status(200).json({
+      success : true,
+      data : order
+    })
+  }catch(err){
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    })
+  }
+}
+
 const profilePic = async (req, res) => {
   try {
     if (req.user.profilePic) {
@@ -390,5 +414,6 @@ module.exports = {
   directOrder,
   viewOrder,
   profilePic,
-  addImagesForOrder
+  addImagesForOrder,
+  viewSingleOrder
 };

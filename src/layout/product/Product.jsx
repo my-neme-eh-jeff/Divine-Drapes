@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import Content from './Content'
 import { Box, ChakraProvider, Grid, Heading, SimpleGrid, Image, Text, Stack, Button } from '@chakra-ui/react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import Footer from '../Footer/Footer'
 import Navbar from '../Navbar/Navbar'
@@ -12,6 +12,8 @@ import useAuth from '../../Hooks/useAuth';
 
 
 function Product() {
+    const {productId} = useParams()
+    console.log(productId)
     const nav = useNavigate();
     const buy = () => {
         console.log("buy now")

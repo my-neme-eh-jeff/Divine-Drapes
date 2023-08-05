@@ -5,13 +5,19 @@ import Navbar from './Navbar/Navbar';
 import { ArrowBackIcon } from '@chakra-ui/icons'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const AppliedCategory = () => {
     const [products, setProducts] = useState([]);
     const [favIcon, setFavIcon] = useState(false);
     const navigate = useNavigate();
 
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const selectedCategories = searchParams.get("selected"); 
+    const selected = selectedCategories ? selectedCategories.split(",") : [];
+    console.log(selected)
+    
     useEffect(() => {
         axios.get('https://dummyjson.com/posts?limit=8')
         .then(res => setProducts(res.data.posts))

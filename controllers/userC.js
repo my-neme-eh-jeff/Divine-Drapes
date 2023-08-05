@@ -232,6 +232,7 @@ const removeCart = async (req, res) => {
 const viewCart = async (req, res) => {
   try {
     const user = req.user;
+    console.log(user)
     const User = await UserSchema.findById({ _id: user._id }).populate(
       "order cart"
     );
@@ -304,7 +305,7 @@ const directOrder = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: Product,
+      data: order,
     });
   } catch (err) {
     res.status(500).json({

@@ -48,7 +48,7 @@ const router = createBrowserRouter(
           <Route path="/profile" element={<Profile />} />
           <Route path="/product/:productId" element={<Product />} />
           <Route path="/bulkorder" element={<BulkOrder />} />
-          <Route path="/buy" element={<Buy />} />
+          <Route path="/buy/:productId" element={<Buy />} />
           <Route path="/order" element={<Myorders />} />
           <Route path="/fav" element={<Myfav />} />
           <Route path="/categories" element={<AppliedCategory />} />

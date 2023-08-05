@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Content from './Content'
 import { Box, ChakraProvider, Grid, Heading, SimpleGrid, Image, Text, Stack, Button } from '@chakra-ui/react'
 import { Navigate, useParams } from 'react-router-dom'
@@ -12,45 +12,71 @@ import useAuth from '../../Hooks/useAuth';
 
 
 function Product() {
-    const {productId} = useParams()
+    const [body, setBody] = useState([])
+    const [catBody, setCatBody] = useState([])
+    const [flag, setFlag] = useState(false)
+    const { productId } = useParams()
     const prodId = productId.split(':')[1]
     console.log(prodId)
     // console.log(productId)
+
+    // const handleItem = (id) => {
+    //   console.log(id)
+    //     navigate(`/product/:${id}`)
+    // }
     const nav = useNavigate();
-    const buy = () => {
-        console.log("buy now")
-        nav('/buy')
-    }
     const { auth, setAuth } = useAuth();
     const isLogin = auth?.accessToken;
     console.log(isLogin);
 
-    const categoryProduct = async() => {
+    // Calculate categoryWise based on flag
+    const categoryWise = flag ? catBody?.data : catBody?.data || [];
+
+    useEffect(() => {
+        // Call the categoryProduct function when the component mounts or when the flag changes
+        categoryProduct();
+    }, [flag]);
+
+
+    const categoryProduct = () => {
         let config = {
             method: 'get',
-            // maxBodyLength: Infinity,
-            // url: 'https://divine-drapes.onrender.com/product/categoryWise/Mugs',
-            url: 'product/categoryWise/Mugs',
+            maxBodyLength: Infinity,
+            // url: `product/categoryWise/${body[0]?.data.category}`,
+            url: `https://divine-drapes.onrender.com/product/categoryWise/${body[0]?.data.category}`,
             headers: {
                 'Authorization': 'Bearer ' + isLogin
             }
         };
+        privateAxios.request(config)
+            .then((response) => {
+                console.log(JSON.stringify(response.data));
+                console.log("I am running")
+                alert("Category hitted")
+                console.log("This is a flag " + flag)
+                setFlag(true)
+                console.log(response.data)
+                setCatBody(response.data)
+                // setCatBody([response.data])
+            })
+            .catch((error) => {
+                console.log(error);
+            });
 
-        
-        try{
-            console.log(privateAxios)
-            const response = await privateAxios.request(config)
-            console.log(response.data)
-        }
-        catch(err){
-            console.log(err)
-        }
-            // .then((response) => {
-            //     console.log((response.data));
-            // })
-            // catch((error) => {
-            //     console.log(error);
-            // });
+
+
+        // try {
+        //     console.log(privateAxios)
+        //     const response = await privateAxios.request(config)
+        //     // alert("category Hitted")
+        //     console.log("I am runnign")
+        //     setFlag(true)
+        //     console.log(response.data)
+        //     setCatBody(response.data)
+        // }
+        // catch (err) {
+        //     console.log(err)
+        // }
 
     }
     const getSingleProduct = () => {
@@ -67,8 +93,9 @@ function Product() {
 
         privateAxios.request(config)
             .then((response) => {
-                alert("hitted")
+                // alert("hitted")
                 console.log(JSON.stringify(response.data));
+                setBody([response.data]);
             })
             .catch((error) => {
                 console.log(error);
@@ -77,8 +104,10 @@ function Product() {
     }
     useEffect(
         () => {
-            categoryProduct()
-            getSingleProduct() 
+            if (flag == false) {
+                categoryProduct()
+            }
+            getSingleProduct()
         }, []
     )
 
@@ -86,7 +115,7 @@ function Product() {
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: 'https://divine-drapes.onrender.com/user/addCart/64c214b470ae96235c9e103f',
+            url: `https://divine-drapes.onrender.com/user/addCart/${prodId}`,
             headers: {
                 'Authorization': 'Bearer ' + isLogin
             }
@@ -103,6 +132,13 @@ function Product() {
             });
     }
 
+    console.log(body[0]?.data.name)
+    console.log(body)
+    // Calculate categoryWise based on flag
+    // const categoryWise = flag ? catBody?.data : catBody?.data || [];
+    // console.log(catBody.data)
+    // console.log(categoryWise)
+
     return (
         <div>
             <Navbar />
@@ -110,7 +146,8 @@ function Product() {
                 <Box className='productbody' >
                     <br />
                     {/* product name here  */}
-                    <Heading className='namehere'>M1 White Mugs</Heading>
+
+                    <Heading className='namehere'>{body[0]?.data.category}</Heading>
                     <br />
                     <Box height={'auto'} className='mainpro'>
                         <SimpleGrid
@@ -139,23 +176,24 @@ function Product() {
                                 alignItems={'left'}
                                 flexWrap={'center'}
                                 flexDirection={'column'}>
-                                <p><Heading fontSize={28} fontWeight={700}>M1 white mugs</Heading></p>
-                                <p >Customizable with photo</p>
+                                <p><Heading fontSize={28} fontWeight={700}>{body[0]?.data.name}</Heading></p>
+                                <p >{body[0]?.data.description}</p>
                                 <br />
-                                <p><Heading fontSize={24} fontWeight={700}>$150</Heading></p>
+                                <p><Heading fontSize={24} fontWeight={700}> ₹ {body[0]?.data.cost.value}</Heading></p>
                                 <br />
                                 <Box>
-                                    <Button backgroundColor={'#A01E86'} color={'white'}
+                                    <Button
+                                        onClick={() => (nav(`/buy/:${prodId}`))}
+                                        backgroundColor={'#A01E86'} color={'white'}
                                         _hover={{
                                             backgroundColor: '#A01E86',
                                             color: 'black'
                                         }}
-                                        onClick={buy}
                                     >Buy Now</Button>
                                     <Button
-                                    marginLeft={'25px'}
-                                    onClick={addToCartAPI}
-                                    border={' 3px solid #A01E86'}
+                                        marginLeft={'25px'}
+                                        onClick={addToCartAPI}
+                                        border={' 3px solid #A01E86'}
                                     >
                                         Add To Cart
                                     </Button>
@@ -176,19 +214,19 @@ function Product() {
                     </Box>
 
 
+
                     <br />
                     <Heading fontSize={'28px'} fontWeight={700} lineHeight={'38px'}>More Like This..</Heading>
                     <Box display={'flex'} flexWrap={'nowrap'} padding={'20px'} overflowX={'auto'}
                         className='recom'
                     >
-                        <Content />
-                        <Content />
-                        <Content />
-                        <Content />
-                        <Content />
-                        <Content />
-                        <Content />
-                        <Content />
+                        {
+                            categoryWise.map(map => {
+                                return (
+                                    <Content title={map.name} price={map.cost.value} desc={map.description} />
+                                )
+                            })
+                        }
                     </Box>
                 </Box>
                 <Footer />

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react';
-import { Box, ChakraProvider, Heading, SimpleGrid, Image, Button, Select } from '@chakra-ui/react'
+import { Box, ChakraProvider, Heading, SimpleGrid, Image, Button, Select, Input } from '@chakra-ui/react'
 import './Upload.css'
 import Footer from '../Footer/Footer';
 import Navbar from '../Navbar/Navbar';
@@ -18,10 +18,16 @@ import Address from './Address/Address';
 import publicAxios from '../../Axios/publicAxios'
 import privateAxios from '../../Axios/privateAxios';
 import useAuth from '../../Hooks/useAuth';
+import { useParams } from 'react-router-dom';
 
 
 function Buy() {
+    const [body, setBody] = useState([])
+    const { productId } = useParams()
+    const prodId = productId.split(':')[1]
+    console.log(prodId)
     const [selectedImage, setSelectedImage] = useState(null);
+    const [custText, setCustText] = useState('');
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [pay, setPay] = useState()
 
@@ -42,19 +48,22 @@ function Buy() {
         console.log(selectedImage)
     };
 
-    const getCartItems = () => {
+    const getSingleProd = () => {
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: 'https://divine-drapes.onrender.com/user/viewMyCart',
+            url: `https://divine-drapes.onrender.com/product/viewProduct/${prodId}`,
             headers: {
-                'Authorization': "Bearer " + isLogin
-            }
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + isLogin
+            },
         };
 
         privateAxios.request(config)
             .then((response) => {
+                // alert("hitted")
                 console.log(JSON.stringify(response.data));
+                setBody([response.data]);
             })
             .catch((error) => {
                 console.log(error);
@@ -63,8 +72,41 @@ function Buy() {
     }
 
     useEffect(() => {
-        getCartItems()
+        getSingleProd()
     }, [])
+
+    const placeOrder = () => {
+        let data = JSON.stringify({
+            "pID": prodId,
+            "isCustPhoto": body[0]?.data.photo.isCust,
+            "isCustText": body[0]?.data.text.isCust,
+            "text": custText,
+            "isCustColor": body[0]?.data.color.isCust,
+            "paymentStatus": "pending",
+            "paymentType": pay
+        });
+
+        let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'https://divine-drapes.onrender.com/user/order',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + isLogin,
+            },
+            data: data
+        };
+
+        privateAxios.request(config)
+            .then((response) => {
+                console.log(JSON.stringify(response.data));
+                alert("Placed Successfully")
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+    }
     return (
         <div>
 
@@ -73,7 +115,7 @@ function Buy() {
                 <Box className='productbody' >
                     <br />
                     {/* product name here  */}
-                    <Heading className='namehere'>M1 White Mugs</Heading>
+                    <Heading className='namehere'>{body[0]?.data.category}</Heading>
                     <br />
                     <Box height={'auto'} className='mainpro'>
                         <SimpleGrid
@@ -102,18 +144,31 @@ function Buy() {
                                 alignItems={'left'}
                                 flexWrap={'center'}
                                 flexDirection={'column'}>
-                                <p><Heading fontSize={28} fontWeight={700}>M1 white mugs</Heading></p>
-                                <p >Customizable with photo</p>
+                                <p><Heading fontSize={28} fontWeight={700}>{body[0]?.data.name}</Heading></p>
+                                <p >{body[0]?.data.description}</p>
                                 <br />
-                                <p><Heading fontSize={24} fontWeight={700}>$150</Heading></p>
+                                <p><Heading fontSize={24} fontWeight={700}>₹ {body[0]?.data.cost.value}</Heading></p>
                                 <br />
                                 <div className="image-uploader">
                                     <label htmlFor="upload-input" className="upload-label">
                                         <span className="upload-text">Upload your customization</span>
-                                        <input id="upload-input" type="file" accept="image/*" onChange={handleImageChange} />
+                                        {
+                                            body[0]?.data.photo.isCust ? (
+                                                <input id="upload-input" type="file" accept="image/*" onChange={handleImageChange} />
+                                            ) : (
+                                                <input id="upload-input" disabled='true' type="file" accept="image/*" onChange={handleImageChange} />
+                                            )
+                                        }
+
                                     </label>
                                     {selectedImage && <img src={selectedImage} alt="Preview" className="preview-image" />}
                                 </div>
+                                <br />
+                                <Heading fontSize={24} fontWeight={700}>Text Customization</Heading>
+                                {
+                                    body[0]?.data.text.isCust ? (<Input value={custText} onChange={e => { setCustText(e.target.value) }} placeholder='Enter your Text' />) : (<Input placeholder='Enter your Text' disabled='true' />)
+                                }
+
                                 <br />
                                 <Box display={'flex'} justifyContent={'space-around'} width={'auto'} >
                                     <Button onClick={onOpen}>Shipping Address</Button>
@@ -139,13 +194,14 @@ function Buy() {
                                     <Select id='payment' value={pay} placeholder='Paymeny method' width={'12vw'}
                                         onChange={e => setPay(e.target.value)}
                                     >
-                                        <option value='COD'>Cash On Delivery</option>
-                                        <option value='Cards'>Credit/Debit Card</option>
-                                        <option value="netbanking">Net banking</option>
+                                        <option value='cod'>Cash On Delivery</option>
+                                        <option value='card'>Credit/Debit Card</option>
+                                        <option value="net banking">Net banking</option>
+                                        <option value="UPI">UPI (G-pay , paytm , phonePay)</option>
                                     </Select>
                                 </Box>
                                 {
-                                    pay == 'Cards' ? (
+                                    pay == 'card' ? (
                                         <div class="modal">
                                             <form class="form">
                                                 <div class="separator">
@@ -190,6 +246,7 @@ function Buy() {
                                 <br />
                                 <Box textAlign={'center'} justifyContent={'center'} display={'flex'}>
                                     <Button backgroundColor={'#A01E86'} color={'white'}
+                                        onClick={placeOrder}
                                         _hover={{
                                             backgroundColor: '#A01E86',
                                             color: 'black'

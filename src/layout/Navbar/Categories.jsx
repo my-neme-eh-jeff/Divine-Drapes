@@ -73,7 +73,11 @@ const Categories = () => {
   };
 
   const handleApply = () => {
-    (selected.size === undefined || selected.size === 0) ? alert("Please choose some category!") : console.log(selected)
+    if(selected.size === undefined || selected.size === 0) 
+      alert("Please choose some category!") 
+    else{
+      navigate(`/categories?selected=${Array.from(selected).join(",")}`);
+    }
   }
 
   var chars = new Set(selected);

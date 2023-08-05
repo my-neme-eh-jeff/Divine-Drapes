@@ -20,34 +20,66 @@ import Footer from "./Footer/Footer";
 import axios from "axios";
 import { useEffect } from "react";
 import { FormControl, TextareaAutosize } from "@mui/material";
+import Rating from "@mui/material/Rating";
 
 export default function Myorders() {
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  const [rating, setRating] = React.useState(0);
+  const [comment, setComment] = React.useState("");
+  const [norders, setNorders] = React.useState();
+  const [prodid, setProdid] = React.useState();
+  const handleOpen = (id) => {
+    console.log(id);
+    setOpen(true);
+    setProdid(id);
+  };
   const handleClose = () => setOpen(false);
   const [age, setAge] = React.useState("");
   const { auth, setAuth } = useAuth();
   const isLogin = auth?.accessToken;
-  console.log(isLogin);
   const handleChange = (event) => {
     setAge(event.target.value);
   };
-  useEffect(() => {
 
+  const [pdetails, setPdetails] = React.useState([]);
+  let details = [];
+  useEffect(() => {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
-      url: 'https://divine-drapes.onrender.com/user/viewOrder',
+      url: "https://divine-drapes.onrender.com/user/viewOrder",
       headers: {
-        Authorization:
-          "Bearer " +isLogin,
+        Authorization: "Bearer " + isLogin,
       },
     };
 
     async function makeRequest() {
       try {
         const response = await privateAxios.request(config);
-        console.log((response.data));
+        console.log(response.data);
+        setNorders(response.data.data);
+        response.data.data.map((order) => {
+          let config1 = {
+            method: "get",
+            maxBodyLength: Infinity,
+            url: `https://divine-drapes.onrender.com/product/viewProduct/${order}`,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + isLogin,
+            },
+          };
+
+          privateAxios
+            .request(config1)
+            .then((response) => {
+              console.log(response.data.data);
+              setPdetails((prevdata) => [...prevdata, response.data.data]);
+              console.log(pdetails);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        });
       } catch (error) {
         console.log(error);
       }
@@ -68,6 +100,37 @@ export default function Myorders() {
     p: 4,
     borderRadius: 5,
   };
+  const addcomment = () => {
+    console.log(typeof(prodid));
+    let data =JSON.stringify(
+      {
+      "productID" : prodid,
+      "review" : comment,
+      "star" : rating});
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "https://divine-drapes.onrender.com/user/createReview",
+      headers: {
+        Authorization:
+          "Bearer " + isLogin,
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    async function makeRequest() {
+      try {
+        const response = await privateAxios.request(config);
+        console.log((response.data));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    makeRequest();
+  };
 
   return (
     <>
@@ -82,280 +145,96 @@ export default function Myorders() {
             <Grid item md={12} xs={12} sx={{ marginTop: "3px" }}>
               My Orders
             </Grid>
-            <Grid
-              item
-              md={2.4}
-              xs={12}
-              sm={12}
-              sx={{
-                justifyContent: "center",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <Card
-                sx={{
-                  maxWidth: 250,
-                  "@media (min-width:700px)": { maxWidth: 200 },
-                }}
-                className="cards"
-              >
-                <CardMedia
-                  component="img"
-                  alt="green iguana"
-                  height="200"
-                  image={mug}
-                  sx={{
-                    borderTopLeftRadius: "10px",
-                    borderTopRightRadius: "10px",
-                    borderBottomRightRadius: "10px",
-                    borderBottomLeftRadius: "10px",
-                  }}
-                />
-                <CardContent sx={{}}>
-                  <Typography gutterBottom variant="h7" component="div" sx={{}}>
-                    Mug
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    some decription...
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    sx={{
-                      color: "white",
-                      backgroundColor: "#A01E86",
-                      "&:hover": { backgroundColor: "#A01E86", border: 2 },
-                    }}
-                  >
-                    View
-                  </Button>
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    onClick={handleOpen}
-                    sx={{
-                      borderColor: "#A01E86",
-                      color: "#A01E86",
-                      border: 2,
-                      "&:hover": {
-                        backgroundColor: "white",
-                        borderColor: "#A01E86",
-                        border: 2,
-                      },
-                    }}
-                  >
-                    Comment
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid
-              item
-              md={2.4}
-              xs={12}
-              sm={12}
-              sx={{
-                justifyContent: "center",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <Card
-                sx={{
-                  maxWidth: 250,
-                  "@media (min-width:700px)": { maxWidth: 200 },
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  alt="green iguana"
-                  height="200"
-                  image={mug}
-                  sx={{
-                    borderTopLeftRadius: "10px",
-                    borderTopRightRadius: "10px",
-                    borderBottomRightRadius: "10px",
-                    borderBottomLeftRadius: "10px",
-                  }}
-                />
-                <CardContent sx={{}}>
-                  <Typography gutterBottom variant="h7" component="div" sx={{}}>
-                    Mug
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    some decription...
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    sx={{
-                      color: "white",
-                      backgroundColor: "#A01E86",
-                      "&:hover": { backgroundColor: "#A01E86", border: 2 },
-                    }}
-                  >
-                    View
-                  </Button>
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    sx={{
-                      borderColor: "#A01E86",
-                      color: "#A01E86",
-                      border: 2,
-                      "&:hover": {
-                        backgroundColor: "white",
-                        borderColor: "#A01E86",
-                        border: 2,
-                      },
-                    }}
-                  >
-                    Comment
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid
-              item
-              md={2.4}
-              xs={12}
-              sm={12}
-              sx={{
-                justifyContent: "center",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <Card
-                sx={{
-                  maxWidth: 250,
-                  "@media (min-width:700px)": { maxWidth: 200 },
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  alt="green iguana"
-                  height="200"
-                  image={mug}
-                  sx={{
-                    borderTopLeftRadius: "10px",
-                    borderTopRightRadius: "10px",
-                    borderBottomRightRadius: "10px",
-                    borderBottomLeftRadius: "10px",
-                  }}
-                />
-                <CardContent sx={{}}>
-                  <Typography gutterBottom variant="h7" component="div" sx={{}}>
-                    Mug
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    some decription...
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    sx={{
-                      color: "white",
-                      backgroundColor: "#A01E86",
-                      "&:hover": { backgroundColor: "#A01E86", border: 2 },
-                    }}
-                  >
-                    View
-                  </Button>
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    sx={{
-                      borderColor: "#A01E86",
-                      color: "#A01E86",
-                      border: 2,
-                      "&:hover": {
-                        backgroundColor: "white",
-                        borderColor: "#A01E86",
-                        border: 2,
-                      },
-                    }}
-                  >
-                    Comment
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid
-              item
-              md={2.4}
-              xs={12}
-              sm={12}
-              sx={{
-                justifyContent: "center",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <Card
-                sx={{
-                  maxWidth: 250,
-                  "@media (min-width:700px)": { maxWidth: 200 },
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  alt="green iguana"
-                  height="200"
-                  image={mug}
-                  sx={{
-                    borderTopLeftRadius: "10px",
-                    borderTopRightRadius: "10px",
-                    borderBottomRightRadius: "10px",
-                    borderBottomLeftRadius: "10px",
-                  }}
-                />
-                <CardContent sx={{}}>
-                  <Typography gutterBottom variant="h7" component="div" sx={{}}>
-                    Mug
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    some decription...
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    sx={{
-                      color: "white",
-                      backgroundColor: "#A01E86",
-                      "&:hover": { backgroundColor: "#A01E86", border: 2 },
-                    }}
-                  >
-                    View
-                  </Button>
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    sx={{
-                      borderColor: "#A01E86",
-                      color: "#A01E86",
-                      border: 2,
-                      "&:hover": {
-                        backgroundColor: "white",
-                        borderColor: "#A01E86",
-                        border: 2,
-                      },
-                    }}
-                  >
-                    Comment
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
+            {pdetails ? (
+              <>
+                {pdetails.map((order, k) => {
+                  return (
+                    <>
+                      <Grid
+                        item
+                        md={2.4}
+                        xs={12}
+                        sm={12}
+                        sx={{
+                          justifyContent: "center",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Card
+                          sx={{
+                            maxWidth: 250,
+                            "@media (min-width:700px)": { maxWidth: 200 },
+                          }}
+                          className="cards"
+                        >
+                          <CardMedia
+                            component="img"
+                            alt="green iguana"
+                            height="200"
+                            image={mug}
+                            sx={{
+                              borderTopLeftRadius: "10px",
+                              borderTopRightRadius: "10px",
+                              borderBottomRightRadius: "10px",
+                              borderBottomLeftRadius: "10px",
+                            }}
+                          />
+                          <CardContent sx={{}}>
+                            <Typography
+                              gutterBottom
+                              variant="h7"
+                              component="div"
+                              sx={{}}
+                            >
+                              {order.name}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              {order.description}
+                            </Typography>
+                          </CardContent>
+                          <CardActions>
+                            <Button
+                              size="small"
+                              variant="contained"
+                              sx={{
+                                color: "white",
+                                backgroundColor: "#A01E86",
+                                "&:hover": {
+                                  backgroundColor: "#A01E86",
+                                  border: 2,
+                                },
+                              }}
+                            >
+                              View
+                            </Button>
+                            <Button
+                              size="small"
+                              variant="outlined"
+                              onClick={() => handleOpen(order._id)}
+                              sx={{
+                                borderColor: "#A01E86",
+                                color: "#A01E86",
+                                border: 2,
+                                "&:hover": {
+                                  backgroundColor: "white",
+                                  borderColor: "#A01E86",
+                                  border: 2,
+                                },
+                              }}
+                            >
+                              Comment
+                            </Button>
+                          </CardActions>
+                        </Card>
+                      </Grid>
+                    </>
+                  );
+                })}
+              </>
+            ) : (
+              <></>
+            )}
           </Grid>
         </Grid>
       </Grid>
@@ -377,36 +256,30 @@ export default function Myorders() {
               </IconButton>
             </Grid>
             <Grid item md={2}>
-              Stars
+              Rate:
             </Grid>
             <Grid item md={3}>
-              <Box sx={{ minWidth: 50 }}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Stars</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={age}
-                    label="Age"
-                    onChange={handleChange}
-                  >
-                    <MenuItem value={1}>1</MenuItem>
-                    <MenuItem value={2}>2</MenuItem>
-                    <MenuItem value={3}>3</MenuItem>
-                    <MenuItem value={4}>4</MenuItem>
-                    <MenuItem value={5}>5</MenuItem>
-                  </Select>
-                </FormControl>
-              </Box>
+              <Rating
+                name="half-rating"
+                value={rating}
+                onChange={(event) => {
+                  setRating(event.target.value);
+                }}
+                precision={0.5}
+              />
             </Grid>
             <Grid item md={7}></Grid>
             <br />
             <Grid item md={12}>
               <FormControl>
                 <TextareaAutosize
+                  value={comment}
+                  onChange={(event) => {
+                    setComment(event.target.value);
+                  }}
                   minRows={5}
                   placeholder="Add Comment..."
-                  style={{ width: "21rem", borderRadius: 10 }}
+                  style={{ width: "21rem", borderRadius: 10, padding: 3 }}
                 />
               </FormControl>
             </Grid>
@@ -419,6 +292,7 @@ export default function Myorders() {
                   backgroundColor: "#A01E86",
                   "&:hover": { backgroundColor: "#A01E86", border: 2 },
                 }}
+                onClick={addcomment}
               >
                 ADD
               </Button>

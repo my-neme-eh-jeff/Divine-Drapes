@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:divine_drapes/screens/HomePage.dart';
+import 'package:http/http.dart'as http;
 import 'package:divine_drapes/Provider/Auth/profile_API.dart';
 import 'package:divine_drapes/consts/constants.dart';
 import 'package:divine_drapes/models/ProfileModel.dart' as data;
@@ -6,7 +9,11 @@ import 'package:divine_drapes/screens/MyOrders.dart';
 import 'package:divine_drapes/screens/favourites.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Provider/Auth/AuthProvider.dart';
 
@@ -20,6 +27,71 @@ class MyAccount extends StatefulWidget {
 class _MyAccountState extends State<MyAccount> {
   data.Data? _profile;
   String? fname;
+  String? value1;
+  String ItemName = "";
+  File? _selectedImage;
+  String? newURL;
+  static const String authTokenKey = 'auth_token';
+
+  Future<void> uploadpfp(File _selectedImage)
+  async
+  {
+    final url = Uri.parse('https://divine-drapes.onrender.com/user/profilePic');
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(authTokenKey);
+
+    if (token == null) {
+      print('Authentication token is missing');
+      return;
+    }
+
+    var headers = {
+      'Authorization': 'Bearer $token',
+    };
+    var request = http.MultipartRequest('POST', url);
+    request.headers.addAll(headers);
+
+
+    if (_selectedImage != null) {
+      String fileName = _selectedImage.path.split('/').last;
+      String extension = fileName.split('.').last;
+
+      Directory tempDir = await getTemporaryDirectory();
+      File newFile = File('${tempDir.path}/$fileName');
+
+      await _selectedImage.copy(newFile.path);
+
+      request.files.add(await http.MultipartFile.fromPath(
+        'file',
+        newFile.path,
+        contentType: MediaType('image', extension),
+      ));
+
+    }
+    else
+      {
+        print("Image is null");
+      }
+
+    http.StreamedResponse response = await request.send();
+    String responseBody = await response.stream.bytesToString();
+    print('Response: $responseBody');
+
+    if (response.statusCode == 200) {
+      print('Image added successfully!');
+      setState(() {
+        // Navigator.pushReplacement(
+        //         context,
+        //         MaterialPageRoute(builder: (context) => HomePage()),
+        //       );
+      });
+    } else {
+      print("Image was not added!");
+      print(response.reasonPhrase);
+    }
+  }
+
+
 
   Future getProfile() async {
     print('HELLO');
@@ -28,6 +100,28 @@ class _MyAccountState extends State<MyAccount> {
     // setState(() {
     //   // Trigger a rebuild after fetching the profile data
     // });
+  }
+
+
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final pickedImage = await ImagePicker().pickImage(source: source);
+      if (pickedImage == null) return;
+
+      final pickedImageFile = File(pickedImage.path);
+      setState(() {
+        _selectedImage = pickedImageFile;
+      });
+      uploadpfp(_selectedImage!);
+      if(_selectedImage == null)
+        {
+          print("IsNull");
+        }
+
+    } catch (e) {
+      // Handle error during image picking
+      print('Error picking image: $e');
+    }
   }
 
   @override
@@ -39,8 +133,14 @@ class _MyAccountState extends State<MyAccount> {
   @override
   Widget build(BuildContext context) {
     final logoutProvider = Provider.of<AuthProvider>(context, listen: false);
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+    double screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
@@ -85,17 +185,45 @@ class _MyAccountState extends State<MyAccount> {
                       ),
                       Row(
                         children: [
-                          Container(
-                            height: screenHeight * 0.2,
-                            width: screenWidth * 0.33,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/446b1af0-e6ba-4b0f-a9de-6ae6d3ed27a3/dfjhqn3-23d30b9d-16e3-42b6-aa12-e010a3999ef6.png/v1/fill/w_736,h_736,q_80,strp/satoru_gojo_aesthetic_pfp_by_harvester0fs0uls_dfjhqn3-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzM2IiwicGF0aCI6IlwvZlwvNDQ2YjFhZjAtZTZiYS00YjBmLWE5ZGUtNmFlNmQzZWQyN2EzXC9kZmpocW4zLTIzZDMwYjlkLTE2ZTMtNDJiNi1hYTEyLWUwMTBhMzk5OWVmNi5wbmciLCJ3aWR0aCI6Ijw9NzM2In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.F7_Ce5Ih1dhahsCnvFHRZgivj_8AByd9ZYHS3Ju0aws"),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+                          Stack(
+                              children: [
+                                Container(
+                                  height: screenHeight * 0.2,
+                                  width: screenWidth * 0.33,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: (_profile!.profilePic.isEmpty)
+                                          ? NetworkImage(
+                                          "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/446b1af0-e6ba-4b0f-a9de-6ae6d3ed27a3/dfjhqn3-23d30b9d-16e3-42b6-aa12-e010a3999ef6.png/v1/fill/w_736,h_736,q_80,strp/satoru_gojo_aesthetic_pfp_by_harvester0fs0uls_dfjhqn3-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzM2IiwicGF0aCI6IlwvZlwvNDQ2YjFhZjAtZTZiYS00YjBmLWE5ZGUtNmFlNmQzZWQyN2EzXC9kZmpocW4zLTIzZDMwYjlkLTE2ZTMtNDJiNi1hYTEyLWUwMTBhMzk5OWVmNi5wbmciLCJ3aWR0aCI6Ijw9NzM2In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.F7_Ce5Ih1dhahsCnvFHRZgivj_8AByd9ZYHS3Ju0aws"
+                                      )
+                                          : NetworkImage(
+                                          _profile!.profilePic)
+                                      as ImageProvider,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 20,
+                                  right: 0,
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      await _pickImage(ImageSource.gallery);
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundColor: cream,
+                                      // Customize the background color of the camera icon.
+                                      radius: 18,
+                                      child: Icon(
+                                        Icons.camera_alt,
+                                        color: Colors
+                                            .black, // Customize the color of the camera icon.
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ]
                           ),
                           SizedBox(
                             width: 20,

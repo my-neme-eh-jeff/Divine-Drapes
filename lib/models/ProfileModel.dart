@@ -6,7 +6,7 @@ class User {
   late final bool success;
   late final Data data;
 
-  User.fromJson(Map<String, dynamic> json) {
+  User.fromJson(Map<String, dynamic> json){
     success = json['success'];
     data = Data.fromJson(json['data']);
   }
@@ -24,6 +24,7 @@ class Data {
     required this.fName,
     required this.lName,
     required this.DOB,
+    required this.profilePic,
     required this.email,
     required this.number,
     required this.isVerified,
@@ -31,14 +32,16 @@ class Data {
   late final String fName;
   late final String lName;
   late final String DOB;
+  late final String profilePic;
   late final String email;
   late final int number;
   late final bool isVerified;
 
-  Data.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json){
     fName = json['fName'];
     lName = json['lName'];
     DOB = json['DOB'];
+    profilePic = json['profilePic'];
     email = json['email'];
     number = json['number'];
     isVerified = json['isVerified'];
@@ -49,6 +52,7 @@ class Data {
     _data['fName'] = fName;
     _data['lName'] = lName;
     _data['DOB'] = DOB;
+    _data['profilePic'] = profilePic;
     _data['email'] = email;
     _data['number'] = number;
     _data['isVerified'] = isVerified;

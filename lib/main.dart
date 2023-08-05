@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'Provider/CartProvider.dart';
+import 'Provider/OrderStausProvider.dart';
 import 'admin_screens/AdminBottomNav.dart';
 
 void main() {
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context)=> AuthProvider()),
         ChangeNotifierProvider(create: (context) => CartProvider(),),
+         ChangeNotifierProvider<OrderStatusProvider>(create: (context) => OrderStatusProvider(),)
       ],
       child:  MaterialApp(
           debugShowCheckedModeBanner: false,

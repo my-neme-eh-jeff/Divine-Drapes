@@ -1,10 +1,15 @@
+import 'dart:convert';
 import 'dart:math';
-
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart'as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:divine_drapes/models/ProductModel.dart' as data;
 import 'package:divine_drapes/Provider/Auth/products_API.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Provider/OrderStausProvider.dart';
 import '../consts/constants.dart';
 
 class ItemDetails extends StatefulWidget {
@@ -33,6 +38,11 @@ class ItemDetails extends StatefulWidget {
 class _ItemDetailsState extends State<ItemDetails> {
   bool liked = false;
   bool isAdded = false;
+  bool placed = false;
+  static const String authTokenKey = 'auth_token';
+
+
+
 
   var product;
   Future SpecificProduct() async {
@@ -61,6 +71,75 @@ class _ItemDetailsState extends State<ItemDetails> {
     print(productsCategoryWise.length);
   }
 
+
+  // Future<void> placeOrder(String pID) async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   final token = prefs.getString(authTokenKey);
+  //   var headers = {
+  //     'Authorization': 'Bearer $token',
+  //     'Content-Type': 'application/json'
+  //   };
+  //
+  //   var jsonData = {
+  //     "pID": pID,
+  //     "isCustPhoto": true,
+  //     "isCustText": true,
+  //     "text": "ABC",
+  //     "isCustColor": false,
+  //     "paymentStatus": "pending",
+  //     "paymentType": "cod"
+  //   };
+  //
+  //   var request = http.Request('POST', Uri.parse('https://divine-drapes.onrender.com/user/order'));
+  //   request.body = json.encode(jsonData);
+  //   request.headers.addAll(headers);
+  //
+  //   // Show circular progress indicator while waiting for the response
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: false,
+  //     builder: (BuildContext context) {
+  //       return Center(
+  //         child: CircularProgressIndicator(
+  //           valueColor: AlwaysStoppedAnimation<Color>(cream),
+  //         ),
+  //       );
+  //     },
+  //   );
+  //
+  //   http.StreamedResponse response = await request.send();
+  //
+  //   Navigator.of(context).pop(); // Hide the circular progress indicator
+  //
+  //   if (response.statusCode == 200) {
+  //     print(await response.stream.bytesToString());
+  //     Fluttertoast.showToast(
+  //       msg: "Order Placed Successfully",
+  //       toastLength: Toast.LENGTH_SHORT,
+  //       gravity: ToastGravity.BOTTOM,
+  //       timeInSecForIosWeb: 3,
+  //       backgroundColor: Colors.green,
+  //       textColor: Colors.white,
+  //       fontSize: 16.0,
+  //     );
+  //     setState(() {
+  //       placed = !placed;
+  //     });
+  //   } else {
+  //     print(response.reasonPhrase);
+  //     Fluttertoast.showToast(
+  //       msg: "Failed to place the order",
+  //       toastLength: Toast.LENGTH_SHORT,
+  //       gravity: ToastGravity.BOTTOM,
+  //       timeInSecForIosWeb: 3,
+  //       backgroundColor: Colors.red,
+  //       textColor: Colors.white,
+  //       fontSize: 16.0,
+  //     );
+  //   }
+  // }
+
+
   @override
   void initState() {
     SpecificProduct();
@@ -71,6 +150,14 @@ class _ItemDetailsState extends State<ItemDetails> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+    final orderStatusProvider = Provider.of<OrderStatusProvider>(context);
+    @override
+    void initState() {
+      super.initState();
+      // Call checkOrderStatus for each product ID in initState
+      // to initialize the order status and retain it on refreshing the page
+      orderStatusProvider.checkOrderStatus(widget.id);
+    }
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
@@ -231,25 +318,41 @@ class _ItemDetailsState extends State<ItemDetails> {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(top: 8),
-                          child: Container(
-                            width: screenWidth * 0.85,
-                            height: screenHeight * 0.052,
-                            decoration: BoxDecoration(
-                              color: const Color.fromRGBO(160, 30, 134, 1),
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: Colors.black,
-                                width: 2,
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'Buy Now',
-                                style: GoogleFonts.notoSans(
-                                  fontSize: screenWidth * 0.04,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
+                          child: GestureDetector(
+                            onTap: (){
+                              orderStatusProvider.placeOrder(widget.id);
+                            },
+                            child: Container(
+                              width: screenWidth * 0.85,
+                              height: screenHeight * 0.052,
+                              decoration: BoxDecoration(
+                                color: const Color.fromRGBO(160, 30, 134, 1),
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 2,
                                 ),
+                              ),
+                              child: Center(
+
+                                child:
+                                orderStatusProvider.placedProducts[widget.id] ?? false?
+                                Text(
+                                  'Order Placed',
+                                  style: GoogleFonts.notoSans(
+                                    fontSize: screenWidth * 0.04,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ):
+                                    Text(
+                                      'Buy Now',
+                                      style: GoogleFonts.notoSans(
+                                        fontSize: screenWidth * 0.04,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    )
                               ),
                             ),
                           ),

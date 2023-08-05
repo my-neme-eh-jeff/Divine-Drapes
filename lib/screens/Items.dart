@@ -408,14 +408,42 @@ class _ItemsState extends State<Items> {
                                                         child:
                                                         Padding(
                                                           padding: const EdgeInsets.all(8.0),
-                                                          child: Text(
-                                                            cartProvider.addedProductsIds.contains(productId) ? "Added" : "Add to cart",
+                                                          child: cartProvider.addedProductsIds.contains(productId) ?
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                 "Added" ,
+                                                                style: GoogleFonts.notoSans(
+                                                                  color: Colors.black,
+                                                                  fontSize: 16,
+                                                                  fontWeight: FontWeight.w600,
+                                                                ),
+                                                              ),
+                                                          SizedBox(
+                                                                        width: 2,
+                                                                      ),
+                                                                      Container(
+                                                                          width:
+                                                                              25,
+                                                                          height:
+                                                                              20,
+                                                                          color: Colors
+                                                                              .transparent,
+                                                                          child: Image
+                                                                              .asset(
+                                                                            'assets/tickmark.png',
+                                                                          ))
+                                                            ],
+                                                          ):
+                                                          Text(
+                                                            "Add To Cart" ,
                                                             style: GoogleFonts.notoSans(
                                                               color: Colors.black,
                                                               fontSize: 16,
                                                               fontWeight: FontWeight.w600,
                                                             ),
-                                                          ),
+                                                          )
+
                                                         ),
                                                         // isAdded[index] ?
                                                         // Row(
@@ -430,20 +458,7 @@ class _ItemsState extends State<Items> {
                                                         //                 fontWeight:
                                                         //                     FontWeight.w600),
                                                         //           ),
-                                                        //           SizedBox(
-                                                        //             width: 2,
-                                                        //           ),
-                                                        //           Container(
-                                                        //               width:
-                                                        //                   25,
-                                                        //               height:
-                                                        //                   20,
-                                                        //               color: Colors
-                                                        //                   .transparent,
-                                                        //               child: Image
-                                                        //                   .asset(
-                                                        //                 'assets/tickmark.png',
-                                                        //               ))
+                                                        //
                                                         //         ],
                                                         //       ) : Text("Add to cart", style: GoogleFonts.notoSans(color: Colors.black,
                                                         //             fontSize:

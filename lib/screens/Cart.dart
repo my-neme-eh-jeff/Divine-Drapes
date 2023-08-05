@@ -3,7 +3,9 @@ import 'package:divine_drapes/screens/itemDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../Provider/CartProvider.dart';
 import '../consts/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:divine_drapes/models/ProductModel.dart' as data;
@@ -76,6 +78,8 @@ class _CartState extends State<Cart> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+      CartProvider cartProvider = Provider.of<CartProvider>(context, listen: false);
+      cartProvider.removeFromCart(productId);
       return true;
     } else {
       print(response.reasonPhrase);

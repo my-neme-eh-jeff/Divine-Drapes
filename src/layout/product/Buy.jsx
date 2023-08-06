@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useState } from 'react';
 import { Box, ChakraProvider, Heading, SimpleGrid, Image, Button, Select, Input } from '@chakra-ui/react'
 import './Upload.css'
@@ -19,14 +19,18 @@ import publicAxios from '../../Axios/publicAxios'
 import privateAxios from '../../Axios/privateAxios';
 import useAuth from '../../Hooks/useAuth';
 import { useParams } from 'react-router-dom';
+import { Toast } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react'
 
 
 function Buy() {
     const [body, setBody] = useState([])
+    const toast = useToast()
     const { productId } = useParams()
     const prodId = productId.split(':')[1]
     console.log(prodId)
     const [selectedImage, setSelectedImage] = useState(null);
+    const fileInputRef = useRef(null);
     const [custText, setCustText] = useState('');
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [pay, setPay] = useState()
@@ -46,6 +50,7 @@ function Buy() {
             reader.readAsDataURL(file);
         }
         console.log(selectedImage)
+        console.log(fileInputRef)
     };
 
     const getSingleProd = () => {
@@ -75,6 +80,53 @@ function Buy() {
         getSingleProd()
     }, [])
 
+    const imageUploader = (id) => {
+        if (body[0]?.data.photo.isCust) {
+            let data = new FormData();
+            // data.append('files', fileInputRef.current.files[0]);
+              data.append('files', selectedImage);
+            data.append('id', id);//here the order id is passed
+
+            let config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                url: 'https://divine-drapes.onrender.com/user/orderPicture',
+                headers: {
+                    'Authorization': `Bearer ` + isLogin,
+                },
+                data: data
+            };
+
+
+            privateAxios.request(config)
+                .then((response) => {
+                    console.log(JSON.stringify(response.data));
+                    toast({
+                        title: 'Your Post is uploaded',
+                        description: JSON.stringify(response.data.message),
+                        status: 'success',
+                        duration: 2500,
+                        isClosable: true,
+                    })
+                })
+                .catch((error) => {
+                    console.log(error);
+                    toast({
+                        title: 'Image cannot be posted',
+                        description: error.message,
+                        status: 'error',
+                        duration: 2500,
+                        isClosable: true,
+                    })
+                });
+        }
+        else {
+            alert("No imaage required")
+        }
+    }
+
+
+
     const placeOrder = () => {
         let data = JSON.stringify({
             "pID": prodId,
@@ -100,6 +152,7 @@ function Buy() {
         privateAxios.request(config)
             .then((response) => {
                 console.log(JSON.stringify(response.data));
+                imageUploader(body[0]?.data._id)
                 alert("Placed Successfully")
             })
             .catch((error) => {
@@ -154,9 +207,9 @@ function Buy() {
                                         <span className="upload-text">Upload your customization</span>
                                         {
                                             body[0]?.data.photo.isCust ? (
-                                                <input id="upload-input" type="file" accept="image/*" onChange={handleImageChange} />
+                                                <input id="upload-input" ref={fileInputRef} type="file" accept="image/*" onChange={handleImageChange} />
                                             ) : (
-                                                <input id="upload-input" disabled='true' type="file" accept="image/*" onChange={handleImageChange} />
+                                                <input id="upload-input" ref={fileInputRef} disabled='true' type="file" accept="image/*" onChange={handleImageChange} />
                                             )
                                         }
 

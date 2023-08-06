@@ -8,9 +8,11 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+import '../Provider/Auth/AuthProvider.dart';
 import '../consts/constants.dart';
 
 class AddProductPage extends StatefulWidget {
@@ -198,14 +200,69 @@ class _AddProductPageState extends State<AddProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    final logoutProvider = Provider.of<AuthProvider>(context, listen: false);
+
     var size = MediaQuery.of(context).size;
     double sizefont = size.width * 0.044;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
+      drawer: Drawer(
+        child :Padding(
+          padding: const EdgeInsets.only(top: 80.0),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 50, // Set the desired height
+                width: 200, // Set the desired width
+                child: InkWell(
+                  onTap: () {
+                    logoutProvider.Logout(context: context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: whiteColor,
+                      border: Border.all(width: 2, color: Colors.black),
+                      borderRadius: BorderRadius.circular(5),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          blurRadius: 0.5,
+                          spreadRadius: 0.5,
+                          offset: Offset(2, 2),
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Log out",
+                            style: GoogleFonts.notoSans(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          Spacer(),
+                          Icon(
+                            Icons.logout,
+                            color: Colors.red,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+      ),
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: whiteColor,
-        automaticallyImplyLeading: false,
         title: Text("Divine Drapes",style: GoogleFonts.notoSans(color: darkPurple,fontSize: 28,fontWeight: FontWeight.w700)),
         elevation: 0.0,
       ),

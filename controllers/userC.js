@@ -320,28 +320,40 @@ const directOrder = async (req, res) => {
 
 const addImagesForOrder = async (req, res) => {
   try {
-    const _id = req.body.id; 
-    const order = await OrderSchema.findById(_id)      //orderID
-    const files = req.files;
+    const _id = req.body.id;
+    const order = await OrderSchema.findById(_id); //orderID
+    const files = req.files.files;
     const array = [];
-    for (let image of files) {
-      const img = await imageUpload.imageUpload(image, "Orders");
-      array.push(img.url);
-      fs.unlinkSync(image.path)
+    let i = 0;
+    if (files[0]) {
+      for (i = 0; i < files.length; i++) {
+        const img = await imageUpload.imageUpload(files[i], "Orders");
+        array.push(img.url);
+        fs.unlinkSync(files[i].path);
+      }
+    } else {
+      const img = await imageUpload.imageUpload(files, "Orders");
+      array.push(img.url)
+      fs.unlinkSync(files.path)
     }
+    // for (let image of files) {
+    //   const img = await imageUpload.imageUpload(image, "Orders");
+    //   array.push(img.url);
+    //   fs.unlinkSync(image.path);
+    // }
     order.photo.picture = array;
     order.save();
     res.status(200).json({
-      success : true,
-      data : order
-    })
+      success: true,
+      data: order,
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
       message: err.message,
     });
   }
-}
+};
 
 //view Order
 const viewOrder = async (req, res) => {

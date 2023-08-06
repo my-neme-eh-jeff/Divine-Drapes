@@ -181,6 +181,32 @@ const viewUser = async (req, res) => {
   }
 };
 
+const changeOrderStatus = async(req,res) => {
+  const { orderID, status} = req.body
+  const orderUpdate = await OrderSchema.findByIdAndUpdate(orderID, {orderStatus : status}).populate("user product")
+
+  if(!orderUpdate){
+    return res.status(404).json({
+      success : false,
+      message : "No such order exists"
+    })
+  }
+
+  const email = orderUpdate.user.email
+
+  mailTransporter.sendMail({
+    from: process.env.EMAIL,
+    to: email,
+    subject: "Change in order status",
+    text: `Your order ${orderUpdate.product.name} has been updated to ${status} state by Divine Drapes`,
+  })
+
+  res.status(200).json({
+    sucess :true,
+    data : orderUpdate
+  })
+}
+
 module.exports = {
   addProduct,
   allOrders,
@@ -188,4 +214,5 @@ module.exports = {
   deleteProduct,
   viewUser,
   addImagesForProduct,
+  changeOrderStatus
 };

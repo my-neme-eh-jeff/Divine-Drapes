@@ -26,4 +26,7 @@ router.delete("/deleteProduct", adminC.deleteProduct)
 //find a particular user
 router.delete("/viewUser", adminC.viewUser)
 
+//change order status
+router.patch("/statusChange", adminC.changeOrderStatus)
+
 module.exports = router;

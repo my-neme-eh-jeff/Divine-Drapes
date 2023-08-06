@@ -292,10 +292,11 @@ const directOrder = async (req, res) => {
     });
 
     await order.save();
+    console.log(order)
 
     const User = await UserSchema.findByIdAndUpdate(
       { _id: user._id },
-      { $push: { order: productID } }
+      { $push: { order: order } }
     );
 
     mailTransporter.sendMail({
@@ -347,8 +348,8 @@ const viewOrder = async (req, res) => {
   try {
     const user = req.user;
     console.log(user);
-    const User = await UserSchema.findById({ _id: user._id });
-    console.log(User);
+    const User = await UserSchema.findById({ _id: user._id }).populate("order").select("order");
+    console.log(User)
     res.status(200).json({
       success: true,
       data: User.order,

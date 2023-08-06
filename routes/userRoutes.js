@@ -88,5 +88,11 @@ router.delete("/deleteTicket", userCheck.verifyTicket , ticketC.deleteTicket)
 //get particular ticket
 router.get("/particularTicket", ticketC.particularTicket)
 
+
+
+
+//payment
+router.get("/payment",userC.payment)
+
 module.exports = router;
 

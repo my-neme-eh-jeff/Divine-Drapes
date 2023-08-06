@@ -15,7 +15,9 @@ import Footer from "./Footer/Footer";
 import useAuth from "./../Hooks/useAuth";
 import privateAxios from "./../Axios/privateAxios";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 export default function Myorders() {
+    const navigate = useNavigate();
     const [like,setLike]=useState(0)
     const { auth, setAuth } = useAuth();
     const [favitem,setFavitem]=useState() 
@@ -157,7 +159,12 @@ makeRequest();
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small" variant="contained" sx={{color:"white",backgroundColor:"#A01E86","&:hover": {backgroundColor: "#A01E86",border:2 }}}>View</Button>
+                  <Button
+                  size="small" 
+                  variant="contained" 
+                  sx={{color:"white",backgroundColor:"#A01E86","&:hover": {backgroundColor: "#A01E86",border:2 }}}
+                  onClick={()=>navigate('/product/:'+item._id)}
+                  >View</Button>
                   
                   {item.liked ? (
             <IconButton sx={{ marginLeft: "5.5rem" }} onClick={() => toggleLike1(item._id)}>

@@ -56,10 +56,10 @@ router.get("/singleOrder/:orderID", userC.viewSingleOrder);
 router.post("/createReview", reviewC.addReview);
 
 //read my review
-router.get("/myReview", userCheck.verifyReview, reviewC.myReview);
+router.get("/myReview", reviewC.myReview)
 
 //update review
-router.get("/updateMyReview", userCheck.verifyReview, reviewC.updateReview);
+router.patch("/updateReview", userCheck.verifyReview, reviewC.updateReview)
 
 //delete review
 router.delete("/deleteReview", userCheck.verifyReview, reviewC.deleteReview);
@@ -76,6 +76,12 @@ router.get("/myTicket", ticketC.myTicket);
 router.delete("/deleteTicket", userCheck.verifyTicket, ticketC.deleteTicket);
 
 //get particular ticket
-router.get("/particularTicket", ticketC.particularTicket);
+router.get("/particularTicket", ticketC.particularTicket)
+
+
+
+
+//payment
+router.get("/payment",userC.payment)
 
 module.exports = router;

@@ -14,7 +14,8 @@ const productSchema = new Schema({
         required : true
     },
     quantity : {
-        type : Number
+        type : Number,
+        required : true
     },
     cost : {
         currency : {
@@ -55,8 +56,9 @@ const productSchema = new Schema({
     reviews : [{
         type: mongoose.Types.ObjectId,
         ref: "review",
-      }]
-})
+      }],
+      
+},{ timestamps: true })
 
 
 const ProductSchema = mongoose.model("product", productSchema)

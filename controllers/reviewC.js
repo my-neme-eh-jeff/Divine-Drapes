@@ -15,6 +15,7 @@ const addReview = async (req, res) => {
       _id: user._id,
       order: { $in: [mongoose.Types.ObjectId(productID)] },
     });
+    console.log(userPurchased);
 
     const reviewObj = {
       user: user._id,
@@ -30,15 +31,15 @@ const addReview = async (req, res) => {
 
     await ProductSchema.findByIdAndUpdate(
       { _id: productID },
-      { reviews: { $push: savedReview._id } }
+      { $push: { reviews: (savedReview._id) } }
     );
     const product = await ProductSchema.findByIdAndUpdate({
       _id: productID,
-    }).populate("review");
+    }).populate("reviews");
 
     const addReviewInUser = await UserSchema.findOneAndUpdate(
       { _id: user._id },
-      { reviews: { $push: savedReview._id } }
+      { $push: { reviews: (savedReview._id) } }
     );
 
     res.status(200).json({

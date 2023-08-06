@@ -49,10 +49,10 @@ const orderSchema = new Schema({
     },
     orderStatus : {
         type : String,
-        enum: ["received", "shipping", "shipped", "delivered"],
+        enum: ["received", "shipping", "shipped", "dispatched", "delivered"],
         default : "received"
     }
-})
+},{ timestamps: true })
 
 
 const OrderSchema = mongoose.model("order", orderSchema)

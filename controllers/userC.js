@@ -3,6 +3,7 @@ const nodemailer = require("nodemailer");
 const otpGenerator = require("otp-generator");
 const auth = require("../middleware/auth");
 const jwt = require("jsonwebtoken");
+const Razorpay = require("razorpay")
 require("dotenv").config();
 
 //cloudinary
@@ -28,7 +29,7 @@ let mailTransporter = nodemailer.createTransport({
 // Get account details
 const profile = async (req, res) => {
   try {
-    const { fName, lName, DOB, profilePic, pfp, email, number, isVerified } =
+    const { fName, lName, DOB, profilePic, pfp, email, number, isVerified, addressList } =
       req.user;
     res.status(200).json({
       success: true,
@@ -41,6 +42,7 @@ const profile = async (req, res) => {
         number,
         isVerified,
         profilePic,
+        addressList,
         pfp,
       },
     });
@@ -290,10 +292,11 @@ const directOrder = async (req, res) => {
     });
 
     await order.save();
+    console.log(order)
 
     const User = await UserSchema.findByIdAndUpdate(
       { _id: user._id },
-      { $push: { order: productID } }
+      { $push: { order: order } }
     );
 
     mailTransporter.sendMail({
@@ -319,13 +322,25 @@ const addImagesForOrder = async (req, res) => {
   try {
     const _id = req.body.id;
     const order = await OrderSchema.findById(_id); //orderID
-    const files = req.files;
+    const files = req.files.files;
     const array = [];
-    for (let image of files) {
-      const img = await imageUpload.imageUpload(image, "Orders");
-      array.push(img.url);
-      fs.unlinkSync(image.path);
+    let i = 0;
+    if (files[0]) {
+      for (i = 0; i < files.length; i++) {
+        const img = await imageUpload.imageUpload(files[i], "Orders");
+        array.push(img.url);
+        fs.unlinkSync(files[i].path);
+      }
+    } else {
+      const img = await imageUpload.imageUpload(files, "Orders");
+      array.push(img.url)
+      fs.unlinkSync(files.path)
     }
+    // for (let image of files) {
+    //   const img = await imageUpload.imageUpload(image, "Orders");
+    //   array.push(img.url);
+    //   fs.unlinkSync(image.path);
+    // }
     order.photo.picture = array;
     order.save();
     res.status(200).json({
@@ -345,8 +360,8 @@ const viewOrder = async (req, res) => {
   try {
     const user = req.user;
     console.log(user);
-    const User = await UserSchema.findById({ _id: user._id });
-    console.log(User);
+    const User = await UserSchema.findById({ _id: user._id }).populate("order").select("order");
+    console.log(User)
     res.status(200).json({
       success: true,
       data: User.order,
@@ -405,6 +420,37 @@ const profilePic = async (req, res) => {
   }
 };
 
+//payment
+const payment = async(req,res)=>{
+  try{
+    const orderID = req.body.orderID;
+    const orderDetails = await OrderSchema.findById({_id: orderID});
+    // console.log(orderDetails)
+    if(orderDetails.paymentType != 'cod'){
+        const product = await ProductSchema.findById({_id: orderDetails.product})
+        var instance = new Razorpay({ key_id: process.env.key_id, key_secret: process.env.key_secret })
+        let paymentOrder = await instance.orders.create({
+          amount: product.cost.value*100,
+          currency: product.cost.currency
+          // receipt: "receipt#1"
+    })
+    res.status(200).json({
+      success: true,
+      data: paymentOrder,orderDetails
+  })}else{
+  res.status(200).json({
+      success: true,
+      message: "PaymentType: Cash On Delivery"
+    })
+  } 
+  }catch(err){
+    res.status(400).json({
+      success: false,
+      message: err.message
+    })
+  }
+}
+
 module.exports = {
   profile,
   updateUser,
@@ -417,4 +463,5 @@ module.exports = {
   profilePic,
   addImagesForOrder,
   viewSingleOrder,
+  payment
 };

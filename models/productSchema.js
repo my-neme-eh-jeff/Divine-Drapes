@@ -14,7 +14,8 @@ const productSchema = new Schema({
         required : true
     },
     quantity : {
-        type : Number
+        type : Number,
+        required : true
     },
     cost : {
         currency : {

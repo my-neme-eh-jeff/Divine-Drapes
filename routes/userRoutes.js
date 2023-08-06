@@ -63,10 +63,10 @@ router.get("/singleOrder", userC.viewSingleOrder)
 router.post("/createReview", reviewC.addReview)
 
 //read my review
-router.get("/myReview", userCheck.verifyReview, reviewC.myReview)
+router.get("/myReview", reviewC.myReview)
 
 //update review
-router.get("/updateMyReview", userCheck.verifyReview, reviewC.updateReview)
+router.patch("/updateReview", userCheck.verifyReview, reviewC.updateReview)
 
 //delete review
 router.delete("/deleteReview", userCheck.verifyReview, reviewC.deleteReview)

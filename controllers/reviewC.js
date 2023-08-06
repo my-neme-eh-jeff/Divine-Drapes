@@ -15,6 +15,7 @@ const addReview = async (req, res) => {
       _id: user._id,
       order: { $in: [mongoose.Types.ObjectId(productID)] },
     });
+    console.log(userPurchased);
 
     const reviewObj = {
       user: user._id,

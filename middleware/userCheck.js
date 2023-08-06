@@ -3,14 +3,13 @@ const UserSchema = require("../models/userSchema");
 const TicketSchema = require("../models/ticketSchema")
 const mongoose = require("mongoose")
 const verifyReview = async (req, res, next) => {
-  const { reviewId } = req.body;
+  const { reviewID } = req.body;
   const user = req.user;
-  const review = await ReviewSchema.findOne({ _id: reviewId });
+  const review = await ReviewSchema.findOne({ _id: reviewID });
+  console.log(user);
 
-  const userContainsReview = await UserSchema.findOne(
-    { _id: user._id },
-    { reviews: { $in: [mongoose.Types.ObjectId(reviewId)] } }
-  );
+  const userContainsReview = user.reviews.includes(reviewID)
+
   if (userContainsReview) {
     req.review = review;
     next();

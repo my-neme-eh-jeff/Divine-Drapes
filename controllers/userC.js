@@ -146,13 +146,13 @@ const addCart = async (req, res) => {
     // const cart = await UserSchema.findById({_id:User._id}).populate('cart')
     const productID = req.params.pID;
 
-    const isProductAlreadyInCart = User.cart.includes(productID)
+    const isProductAlreadyInCart = User.cart.includes(productID);
 
-    if(isProductAlreadyInCart){
+    if (isProductAlreadyInCart) {
       return res.status(400).json({
-        success : false,
-        message : "Product already exists in cart"
-      })
+        success: false,
+        message: "Product already exists in cart",
+      });
     }
 
     await UserSchema.findByIdAndUpdate(
@@ -162,7 +162,7 @@ const addCart = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message : "Product added succesfully",
+      message: "Product added succesfully",
     });
   } catch (err) {
     res.status(500).json({
@@ -232,7 +232,7 @@ const removeCart = async (req, res) => {
 const viewCart = async (req, res) => {
   try {
     const user = req.user;
-    console.log(user)
+    console.log(user);
     const User = await UserSchema.findById({ _id: user._id }).populate(
       "order cart"
     );
@@ -317,28 +317,28 @@ const directOrder = async (req, res) => {
 
 const addImagesForOrder = async (req, res) => {
   try {
-    const _id = req.body.id; 
-    const order = await OrderSchema.findById(_id)      //orderID
+    const _id = req.body.id;
+    const order = await OrderSchema.findById(_id); //orderID
     const files = req.files;
     const array = [];
     for (let image of files) {
       const img = await imageUpload.imageUpload(image, "Orders");
       array.push(img.url);
-      fs.unlinkSync(image.path)
+      fs.unlinkSync(image.path);
     }
     order.photo.picture = array;
     order.save();
     res.status(200).json({
-      success : true,
-      data : order
-    })
+      success: true,
+      data: order,
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
       message: err.message,
     });
   }
-}
+};
 
 //view Order
 const viewOrder = async (req, res) => {
@@ -360,28 +360,28 @@ const viewOrder = async (req, res) => {
 };
 
 //view single Order
-const viewSingleOrder = async(req,res) => {
-  try{
-    const { orderID } = req.body
-    const order = await OrderSchema.findById(orderID)
-    if(!order){
+const viewSingleOrder = async (req, res) => {
+  try {
+    const orderID = req.params.orderID;
+    const order = await OrderSchema.findById(orderID);
+    if (!order) {
       return res.status(404).json({
         success: false,
         message: "No order with this id",
-      })
+      });
     }
 
     res.status(200).json({
-      success : true,
-      data : order
-    })
-  }catch(err){
+      success: true,
+      data: order,
+    });
+  } catch (err) {
     res.status(500).json({
       success: false,
       message: err.message,
-    })
+    });
   }
-}
+};
 
 const profilePic = async (req, res) => {
   try {
@@ -416,5 +416,5 @@ module.exports = {
   viewOrder,
   profilePic,
   addImagesForOrder,
-  viewSingleOrder
+  viewSingleOrder,
 };

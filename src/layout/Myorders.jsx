@@ -21,8 +21,9 @@ import axios from "axios";
 import { useEffect } from "react";
 import { FormControl, TextareaAutosize } from "@mui/material";
 import Rating from "@mui/material/Rating";
-
+import { useNavigate } from "react-router-dom";
 export default function Myorders() {
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const [rating, setRating] = React.useState(0);
   const [comment, setComment] = React.useState("");
@@ -205,6 +206,7 @@ export default function Myorders() {
                                   border: 2,
                                 },
                               }}
+                              onClick={() => {navigate(`/product/:${order._id}`)}}
                             >
                               View
                             </Button>

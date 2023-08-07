@@ -54,7 +54,7 @@ router.post("/orderPicture", upload.array('files'), userC.addImagesForOrder)
 router.get("/viewOrder",userC.viewOrder)
 
 // view single order
-router.get("/singleOrder", userC.viewSingleOrder)
+router.get("/singleOrder/:orderID", userC.viewSingleOrder)
 
 
 /// CRUD review

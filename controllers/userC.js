@@ -365,7 +365,7 @@ const viewOrder = async (req, res) => {
 //view single Order
 const viewSingleOrder = async(req,res) => {
   try{
-    const { orderID } = req.body
+    const  orderID  = req.params.orderID;
     const order = await OrderSchema.findById(orderID)
     if(!order){
       return res.status(404).json({

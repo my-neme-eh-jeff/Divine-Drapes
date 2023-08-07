@@ -11,6 +11,8 @@ import 'package:http/http.dart' as http;
 import 'package:divine_drapes/models/ProductModel.dart' as data;
 import 'package:divine_drapes/Provider/Auth/products_API.dart';
 
+import '../widgets/shimmer_widget.dart';
+
 class Cart extends StatefulWidget {
   const Cart({Key? key}) : super(key: key);
 
@@ -30,6 +32,7 @@ class _CartState extends State<Cart> {
   List<data.Data?> cartProducts = [];
 
   Future<void> CartData() async {
+
     try {
       cartProducts = await Products().getCartData();
       print("future cart data: ");
@@ -78,7 +81,8 @@ class _CartState extends State<Cart> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-      CartProvider cartProvider = Provider.of<CartProvider>(context, listen: false);
+      CartProvider cartProvider =
+          Provider.of<CartProvider>(context, listen: false);
       cartProvider.removeFromCart(productId);
       return true;
     } else {
@@ -106,6 +110,45 @@ class _CartState extends State<Cart> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
+    Widget buildShimmer() => SingleChildScrollView(
+      child: Column(
+        children: [
+          ListView.builder(
+            shrinkWrap: true,
+            physics: BouncingScrollPhysics(),
+                    itemCount: cartProducts.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: EdgeInsets.all(12),
+                        child: Row(
+                          children: [
+                            ShimmerWidget.rectangular(width: screenWidth * 0.3, height: screenHeight *0.135,),
+                            SizedBox(width: 10,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    ShimmerWidget.rectangular(width: screenWidth * 0.35, height: 20),
+                                    SizedBox(width: screenWidth * 0.1,),
+                                    ShimmerWidget.rectangular(width: screenWidth * 0.1, height: 18),
+                                  ],
+                                ),
+                                SizedBox(height: 10,),
+                                ShimmerWidget.rectangular(width: screenWidth * 0.55, height: 30),
+                                SizedBox(height: 10,),
+                                ShimmerWidget.rectangular(width: screenWidth * 0.3, height: screenHeight*0.04),
+                              ],
+                            )
+                          ],
+                        ),
+                      );
+                    }),
+        ],
+      ),
+    );
+
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
@@ -165,14 +208,11 @@ class _CartState extends State<Cart> {
                 ],
               ),
               isLoading
-                  ? Center(
-                      child: CircularProgressIndicator(
-                      color: cream,
-                    ))
-                  : Container(
-                      height: screenHeight,
-                      child: SingleChildScrollView(
-                        physics: NeverScrollableScrollPhysics(),
+                  ? buildShimmer()
+                  : SingleChildScrollView(
+                    physics: NeverScrollableScrollPhysics(),
+                    child: Container(
+                        height: screenHeight ,
                         child: Padding(
                             padding:
                                 const EdgeInsets.only(right: 4, bottom: 10),
@@ -189,7 +229,7 @@ class _CartState extends State<Cart> {
                                     thickness: 2,
                                   ),
                                   Container(
-                                    height: screenHeight * 0.75,
+                                    height: screenHeight * 0.7,
                                     child: ListView.builder(
                                       padding: EdgeInsets.only(
                                         top: 5,
@@ -239,205 +279,207 @@ class _CartState extends State<Cart> {
                                           child: Padding(
                                             padding: const EdgeInsets.only(
                                                 top: 10, bottom: 10),
-                                            child: Container(
-                                              height: screenHeight * 0.14,
-                                              width: screenWidth,
-                                              child: ListTile(
-                                                leading: FractionallySizedBox(
-                                                  //widthFactor: 0.25,
-                                                  //heightFactor: 1.6,// Adjust the width factor as needed
-                                                  heightFactor:
-                                                      screenHeight * 0.0024,
-                                                  child: AspectRatio(
-                                                    aspectRatio: 1,
-                                                    child: (filteredProducts[
-                                                                index]!
-                                                            .photo
-                                                            .picture
-                                                            .isEmpty)
-                                                        ? Image.asset(
-                                                            'assets/Vector.png',
-                                                            // height: screenHeight*0.05,
-                                                            fit: BoxFit.fill,
-                                                          )
-                                                        : Image.network(
-                                                            filteredProducts[
-                                                                    index]!
-                                                                .photo
-                                                                .picture[0],
-                                                            fit: BoxFit.fill,
-                                                          ),
-                                                  ),
-                                                ),
-                                                title: Transform.translate(
-                                                  offset: Offset(
-                                                      0.0, -screenWidth * 0.04),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            filteredProducts[
-                                                                    index]!
-                                                                .name,
-                                                            style: GoogleFonts.notoSans(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize:
-                                                                    screenWidth *
-                                                                        0.036,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700),
-                                                          ),
-                                                          Spacer(),
-                                                          Text(
-                                                            filteredProducts[
-                                                                        index]!
-                                                                    .cost
-                                                                    .currency +
-                                                                " " +
-                                                                filteredProducts[
-                                                                        index]!
-                                                                    .cost
-                                                                    .value
-                                                                    .toString(),
-                                                            style: GoogleFonts.notoSans(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize:
-                                                                    screenWidth *
-                                                                        0.036,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Text(
-                                                          filteredProducts[
+                                            child: FittedBox(
+                                              child: Container(
+                                                height: screenHeight * 0.15,
+                                                width: screenWidth,
+                                                child: ListTile(
+                                                  leading: FractionallySizedBox(
+                                                    //widthFactor: 0.25,
+                                                    //heightFactor: 1.6,// Adjust the width factor as needed
+                                                    heightFactor:
+                                                        screenHeight * 0.0024,
+                                                    child: AspectRatio(
+                                                      aspectRatio: 1,
+                                                      child: (filteredProducts[
                                                                   index]!
-                                                              .description,
-                                                          style: GoogleFonts.notoSans(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize:
-                                                                  screenWidth *
-                                                                      0.0348,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500)),
-                                                      SizedBox(
-                                                        height: screenHeight *
-                                                            0.0078,
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Container(
-                                                              decoration: BoxDecoration(
-                                                                  color: cream,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              5)),
-                                                              child:
-                                                                  GestureDetector(
-                                                                onTap:
-                                                                    () async {
-                                                                  print(cartProducts[
-                                                                          index]
-                                                                      ?.id);
-                                                                  var success =
-                                                                      await removeFromCart(
-                                                                          cartProducts[index]!
-                                                                              .id);
-                                                                  if (success) {
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .push(MaterialPageRoute(
-                                                                            builder: (context) =>
-                                                                                Home()));
-                                                                  }
-                                                                },
-                                                                child: Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .all(
-                                                                          8.0),
-                                                                  child: Text(
-                                                                    "Remove",
-                                                                    style: GoogleFonts
-                                                                        .notoSans(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
+                                                              .photo
+                                                              .picture
+                                                              .isEmpty)
+                                                          ? Image.asset(
+                                                              'assets/Vector.png',
+                                                              // height: screenHeight*0.05,
+                                                              fit: BoxFit.fill,
+                                                            )
+                                                          : Image.network(
+                                                              filteredProducts[
+                                                                      index]!
+                                                                  .photo
+                                                                  .picture[0],
+                                                              fit: BoxFit.fill,
+                                                            ),
+                                                    ),
+                                                  ),
+                                                  title: Transform.translate(
+                                                    offset: Offset(
+                                                        0.0, -screenWidth * 0.04),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(
+                                                          children: [                                                                        
+                                                            Text(
+                                                              filteredProducts[
+                                                                      index]!
+                                                                  .name,
+                                                              style: GoogleFonts.notoSans(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize:
+                                                                      screenWidth *
+                                                                          0.036,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700),
+                                                            ),
+                                                            Spacer(),
+                                                            Text(
+                                                              filteredProducts[
+                                                                          index]!
+                                                                      .cost
+                                                                      .currency +
+                                                                  " " +
+                                                                  filteredProducts[
+                                                                          index]!
+                                                                      .cost
+                                                                      .value
+                                                                      .toString(),
+                                                              style: GoogleFonts.notoSans(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize:
+                                                                      screenWidth *
+                                                                          0.036,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Text(
+                                                            filteredProducts[
+                                                                    index]!
+                                                                .description,
+                                                            style: GoogleFonts.notoSans(
+                                                                color:
+                                                                    Colors.black,
+                                                                fontSize:
+                                                                    screenWidth *
+                                                                        0.0348,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500)),
+                                                        SizedBox(
+                                                          height: screenHeight *
+                                                              0.0078,
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            Container(
+                                                                decoration: BoxDecoration(
+                                                                    color: cream,
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                                5)),
+                                                                child:
+                                                                    GestureDetector(
+                                                                  onTap:
+                                                                      () async {
+                                                                    print(cartProducts[
+                                                                            index]
+                                                                        ?.id);
+                                                                    var success =
+                                                                        await removeFromCart(
+                                                                            cartProducts[index]!
+                                                                                .id);
+                                                                    if (success) {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .push(MaterialPageRoute(
+                                                                              builder: (context) =>
+                                                                                  Home()));
+                                                                    }
+                                                                  },
+                                                                  child: Padding(
+                                                                    padding:
+                                                                        const EdgeInsets
+                                                                                .all(
+                                                                            8.0),
+                                                                    child: Text(
+                                                                      "Remove",
+                                                                      style: GoogleFonts
+                                                                          .notoSans(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontSize:
+                                                                            screenWidth * 0.04,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w600,
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                                // isAdded[index] ?
-                                                                // Row(
-                                                                //         children: [
-                                                                //           Text(
-                                                                //             "Added",
-                                                                //             style: GoogleFonts.notoSans(
-                                                                //                 color: Colors
-                                                                //                     .black,
-                                                                //                 fontSize: screenWidth *
-                                                                //                     0.04,
-                                                                //                 fontWeight:
-                                                                //                     FontWeight.w600),
-                                                                //           ),
-                                                                //           SizedBox(
-                                                                //             width: 2,
-                                                                //           ),
-                                                                //           Container(
-                                                                //               width:
-                                                                //                   25,
-                                                                //               height:
-                                                                //                   20,
-                                                                //               color: Colors
-                                                                //                   .transparent,
-                                                                //               child: Image
-                                                                //                   .asset(
-                                                                //                 'assets/tickmark.png',
-                                                                //               ))
-                                                                //         ],
-                                                                //       ) : Text("Add to cart", style: GoogleFonts.notoSans(color: Colors.black,
-                                                                //             fontSize:
-                                                                //                 16,
-                                                                //             fontWeight:
-                                                                //                 FontWeight
-                                                                //                     .w600),),
-                                                              )),
-                                                          Spacer(),
-                                                          InkWell(
-                                                              onTap: () {
-                                                                setState(() {
-                                                                  liked =
-                                                                      !liked;
-                                                                });
-                                                              },
-                                                              child: liked
-                                                                  ? Icon(
-                                                                      Icons
-                                                                          .favorite,
-                                                                      color: Colors
-                                                                          .red,
-                                                                    )
-                                                                  : Icon(Icons
-                                                                      .favorite_border_outlined))
-                                                        ],
-                                                      )
-                                                    ],
+                                                                  // isAdded[index] ?
+                                                                  // Row(
+                                                                  //         children: [
+                                                                  //           Text(
+                                                                  //             "Added",
+                                                                  //             style: GoogleFonts.notoSans(
+                                                                  //                 color: Colors
+                                                                  //                     .black,
+                                                                  //                 fontSize: screenWidth *
+                                                                  //                     0.04,
+                                                                  //                 fontWeight:
+                                                                  //                     FontWeight.w600),
+                                                                  //           ),
+                                                                  //           SizedBox(
+                                                                  //             width: 2,
+                                                                  //           ),
+                                                                  //           Container(
+                                                                  //               width:
+                                                                  //                   25,
+                                                                  //               height:
+                                                                  //                   20,
+                                                                  //               color: Colors
+                                                                  //                   .transparent,
+                                                                  //               child: Image
+                                                                  //                   .asset(
+                                                                  //                 'assets/tickmark.png',
+                                                                  //               ))
+                                                                  //         ],
+                                                                  //       ) : Text("Add to cart", style: GoogleFonts.notoSans(color: Colors.black,
+                                                                  //             fontSize:
+                                                                  //                 16,
+                                                                  //             fontWeight:
+                                                                  //                 FontWeight
+                                                                  //                     .w600),),
+                                                                )),
+                                                            Spacer(),
+                                                            InkWell(
+                                                                onTap: () {
+                                                                  setState(() {
+                                                                    liked =
+                                                                        !liked;
+                                                                  });
+                                                                },
+                                                                child: liked
+                                                                    ? Icon(
+                                                                        Icons
+                                                                            .favorite,
+                                                                        color: Colors
+                                                                            .red,
+                                                                      )
+                                                                    : Icon(Icons
+                                                                        .favorite_border_outlined))
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -449,8 +491,8 @@ class _CartState extends State<Cart> {
                                   ),
                                 ],
                               );
-                            })),
-                      )),
+                            }))),
+                  ),
             ],
           ),
         ),

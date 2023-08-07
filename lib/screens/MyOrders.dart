@@ -12,6 +12,7 @@ import 'package:divine_drapes/Provider/Auth/products_API.dart';
 import 'package:divine_drapes/Provider/Auth/order_API.dart';
 
 import '../consts/constants.dart';
+import '../widgets/shimmer_widget.dart';
 import 'home.dart';
 
 class MyOrders extends StatefulWidget {
@@ -65,6 +66,55 @@ class _MyOrdersState extends State<MyOrders> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
+    Widget buildShimmer() => SingleChildScrollView(
+      child: Column(
+        children: [
+          ShimmerWidget.rectangular(width: screenWidth * 0.9, height: screenHeight * 0.055),
+          SizedBox(height: screenHeight*0.022,),
+          Transform.translate(
+            offset: Offset(-screenWidth * 0.3, 0),
+            child: ShimmerWidget.rectangular(width: 100, height: 20)),
+          Divider(thickness: 2,),
+          Container(
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: BouncingScrollPhysics(),
+                      itemCount: orders.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          
+                          padding: EdgeInsets.all(12),
+                          child: Row(
+                            children: [
+                              ShimmerWidget.rectangular(width: screenWidth * 0.3, height: screenHeight *0.12,),
+                              SizedBox(width: 10,),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      ShimmerWidget.rectangular(width: screenWidth * 0.38, height: 20),
+                                      SizedBox(width: screenWidth * 0.1,),
+                                      ShimmerWidget.rectangular(width: screenWidth * 0.1, height: 18),
+
+                                    ],
+                                  ),
+                                  SizedBox(height: 10,),
+                                  ShimmerWidget.rectangular(width: screenWidth * 0.6, height: 30),
+                                  SizedBox(height: 10,),
+                                  ShimmerWidget.rectangular(width: screenWidth * 0.3, height: screenHeight*0.04),
+                                ],
+                              )
+                            ],
+                          ),
+                        );
+                      }),
+          ),
+        ],
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: whiteColor,
@@ -78,16 +128,7 @@ class _MyOrdersState extends State<MyOrders> {
           future: getViewOrder(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(
-                    child: CircularProgressIndicator(
-                      color: cream,
-                    ),
-                  ),
-                ],
-              );
+              return buildShimmer();
             } else if (snapshot.hasError) {
               return Center(
                 child: Text(snapshot.error.toString()),

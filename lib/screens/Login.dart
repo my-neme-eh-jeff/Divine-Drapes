@@ -162,7 +162,7 @@ class _LoginState extends State<Login> {
                     //   ),
                     // ),
                     Container(
-                      height: size.height * 0.065,
+                      height: size.height * 0.08,
                       child: Padding(
                         padding: const EdgeInsets.all(0),
                         child: TextFormField(
@@ -208,7 +208,7 @@ class _LoginState extends State<Login> {
                       ),
                     ),
 
-                    SizedBox(height: size.height * 0.03),
+                    SizedBox(height: size.height * 0.02),
                     Text(
                       'Password',
                       style: GoogleFonts.notoSans(
@@ -219,7 +219,7 @@ class _LoginState extends State<Login> {
                     ),
                     SizedBox(height: size.height * 0.01),
                     Container(
-                      height: size.height * 0.065,
+                      height: size.height * 0.08,
                       child: Padding(
                         padding: const EdgeInsets.all(0),
                         child: TextFormField(
@@ -285,7 +285,6 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 15),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [

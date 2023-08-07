@@ -28,7 +28,8 @@ class ItemDetails extends StatefulWidget {
     required this.desc,
     required this.cost,
     required this.name,
-    required this.category, required List<bool> added,
+    required this.category,
+    required List<bool> added,
   }) : super(key: key);
 
   @override

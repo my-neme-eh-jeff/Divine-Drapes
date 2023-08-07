@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:divine_drapes/admin_screens/UpdateProductPage.dart';
 import 'package:divine_drapes/screens/itemDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -278,7 +279,6 @@ class _AdminItemsState extends State<AdminItems> {
                                               name: productsCategoryWise[index]!.name,
                                               category: productsCategoryWise[index]!.category,
                                               added: isAdded,
-
                                             )));
                                       },
                                       child: Padding(
@@ -382,6 +382,19 @@ class _AdminItemsState extends State<AdminItems> {
                                                               //   //   _saveCartState();
                                                               //   // });
                                                               // }
+                                                              Navigator.of(context)
+                                                                  .push(MaterialPageRoute(
+                                                                  builder: (context) => UpdateProductPage(
+                                                                    id: productsCategoryWise[index]!.id,
+                                                                    image: (productsCategoryWise[index]!.photo .picture.isEmpty)
+                                                                        ? 'assets/Vector.png'
+                                                                        : productsCategoryWise[index]!.photo.picture[0],
+                                                                    desc: productsCategoryWise[index]!.description,
+                                                                    cost: productsCategoryWise[index]!.cost,
+                                                                    name: productsCategoryWise[index]!.name,
+                                                                    category: productsCategoryWise[index]!.category,
+                                                                    quantity: productsCategoryWise[index]!.quantity,
+                                                                  )));
                                                             },
                                                             child:
                                                             Padding(

@@ -265,8 +265,7 @@ class _AdminItemDetailsState extends State<AdminItemDetails> {
                                 image: DecorationImage(
                                     image: (widget.image == "assets/Vector.png")
                                         ? AssetImage(widget.image)
-                                        : NetworkImage(widget.image)
-                                    as ImageProvider),
+                                        : NetworkImage(widget.image) as ImageProvider),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(8),
                                 )),

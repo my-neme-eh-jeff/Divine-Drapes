@@ -16,10 +16,14 @@ import useAuth from "./../Hooks/useAuth";
 import privateAxios from "./../Axios/privateAxios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 export default function Myorders() {
+  
     const navigate = useNavigate();
     const [like,setLike]=useState(0)
     const { auth, setAuth } = useAuth();
+    const isLogin = auth?.accessToken;
+    console.log(isLogin);
     const [favitem,setFavitem]=useState() 
     const delfromfav=(id)=>{
 
@@ -70,8 +74,7 @@ async function makeRequest() {
 makeRequest();
 
     }
-  const isLogin = auth?.accessToken;
-  console.log(isLogin);
+  
     useEffect(() => {
 
       let config = {

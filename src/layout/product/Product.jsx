@@ -25,6 +25,9 @@ function Product() {
 
   // Calculate categoryWise based on flag
   const categoryWise = flag ? catBody?.data : catBody?.data || [];
+    // Calculate categoryWise based on flag
+    // const categoryWise = flag ? catBody?.data : catBody?.data || [];
+    const categoryWise = flag ? catBody?.data :  [];
 
   useEffect(() => {
     // Call the categoryProduct function when the component mounts or when the flag changes

@@ -21,8 +21,9 @@ import axios from "axios";
 import { useEffect } from "react";
 import { FormControl, TextareaAutosize } from "@mui/material";
 import Rating from "@mui/material/Rating";
-
+import { useNavigate } from "react-router-dom";
 export default function Myorders() {
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const [rating, setRating] = React.useState(0);
   const [comment, setComment] = React.useState("");
@@ -59,16 +60,17 @@ export default function Myorders() {
         console.log(response.data);
         setNorders(response.data.data);
         response.data.data.map((order) => {
+          console.log("order:",order.product);
           let config1 = {
             method: "get",
             maxBodyLength: Infinity,
-            url: `https://divine-drapes.onrender.com/product/viewProduct/${order}`,
+            url: 'https://divine-drapes.onrender.com/product/viewProduct/'+order.product,
             headers: {
               "Content-Type": "application/json",
               Authorization: "Bearer " + isLogin,
             },
           };
-
+          console.log(config1.url);
           privateAxios
             .request(config1)
             .then((response) => {
@@ -205,6 +207,7 @@ export default function Myorders() {
                                   border: 2,
                                 },
                               }}
+                              onClick={() => {navigate(`/product/:${order._id}`)}}
                             >
                               View
                             </Button>

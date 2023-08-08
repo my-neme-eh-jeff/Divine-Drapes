@@ -334,15 +334,14 @@ class _LoginState extends State<Login> {
                                     child: CircularProgressIndicator(
                                       color: cream,
                                     ),
-                                  )
-                          );
+                                  ));
                           var result = await AuthProvider().login(
                               emailController.text.trim(),
                               passwordController.text.trim(),
                               context);
                           if (!result) {
-                          Navigator.pop(context);
-                          Fluttertoast.showToast(
+                            Navigator.pop(context);
+                            Fluttertoast.showToast(
                                 msg: "Invalid Credentials!",
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.CENTER,

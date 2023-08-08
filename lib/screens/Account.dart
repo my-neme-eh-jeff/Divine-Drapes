@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:divine_drapes/screens/EditProfile.dart';
 import 'package:divine_drapes/screens/HomePage.dart';
 import 'package:http/http.dart' as http;
 import 'package:divine_drapes/Provider/Auth/profile_API.dart';
@@ -87,7 +88,6 @@ class _MyAccountState extends State<MyAccount> {
   }
 
   Future getProfile() async {
-    print('HELLO');
     _profile = await Profiles().getProfileData();
     print(_profile!.lName);
     // setState(() {
@@ -129,11 +129,14 @@ class _MyAccountState extends State<MyAccount> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               ShimmerWidget.rectangular(
-                          width: screenWidth * 0.23,
-                          height: screenHeight * 0.023),
-              SizedBox(height: screenHeight* 0.025,),
+                  width: screenWidth * 0.23, height: screenHeight * 0.023),
+              SizedBox(
+                height: screenHeight * 0.025,
+              ),
               Transform.translate(
                 offset: Offset(-20, 0),
                 child: Row(
@@ -225,7 +228,7 @@ class _MyAccountState extends State<MyAccount> {
                         children: [
                           Stack(children: [
                             Container(
-                              height: screenHeight * 0.2,
+                              height: screenWidth * 0.33,
                               width: screenWidth * 0.33,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
@@ -266,20 +269,44 @@ class _MyAccountState extends State<MyAccount> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    // "Jenny",
-                                    _profile?.fName ?? '',
-                                    style: GoogleFonts.notoSans(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        _profile?.fName ?? '',
+                                        style: GoogleFonts.notoSans(
+                                            fontSize: 18,
+                                            color: brownColor,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      Text(
+                                        _profile?.lName ?? '',
+                                        style: GoogleFonts.notoSans(
+                                            fontSize: 18,
+                                            color: brownColor,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 10,
                                   ),
                                   IconButton(
                                     icon: const Icon(
                                       Icons.edit_outlined,
                                       color: Colors.black,
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const EditProfile()));
+                                    },
                                   ),
                                 ],
                               ),

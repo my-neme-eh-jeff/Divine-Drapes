@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:divine_drapes/admin_screens/orderInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:divine_drapes/models/AllOrders.dart' as data;
+import 'package:divine_drapes/models/AllOrders.dart' as model;
 import '../Provider/Auth/order_API.dart';
 import '../consts/constants.dart';
 
@@ -68,23 +70,29 @@ class _NewOrdersState extends State<NewOrders> {
   String ItemName = "";
   static const String authTokenKey = 'auth_token';
 
-  List<data.Received?> filteredOrders = [];
+  List<model.Received> filteredOrders = [];
   bool isLoading = true;
 
-  List<data.Received?> allOrders = [];
+  // List<data.Received?> allOrders = [];
+  var allOrders;
 
-  Future<void> AllOrdersData() async {
-
+  Future<List<model.Received>> AllOrdersData() async {
     try {
       print("future orders data: ");
       allOrders = await Order().getAllOrders();
-      print(allOrders.map((e) => e?.id));
-      filteredOrders = List.from(allOrders);
+      log(allOrders.toString());
+      for(Map i in allOrders)
+        {
+          filteredOrders.add(model.AllOrders.fromJson(i) as model.Received);
+        }
       setState(() {
         isLoading = false;
       });
+      print(filteredOrders);
+      return filteredOrders;
     } catch (e) {
       print(e);
+      return filteredOrders;
     }
   }
 

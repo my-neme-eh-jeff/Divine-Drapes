@@ -10,7 +10,7 @@ class AllOrders {
   //   success = json['success'];
   //   received = List.from(json['received']).map((e)=>Received.fromJson(e)).toList();
   // }
-  factory AllOrders.fromJson(Map<String, dynamic> json) {
+  factory AllOrders.fromJson(Map<dynamic, dynamic> json) {
     return AllOrders(
       success: json['success'],
       received: (json['received'] as List)

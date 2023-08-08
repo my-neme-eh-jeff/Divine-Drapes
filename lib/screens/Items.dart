@@ -153,57 +153,79 @@ class _ItemsState extends State<Items> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     Widget buildShimmer() => SingleChildScrollView(
-      child: Column(
-        children: [
-          ShimmerWidget.rectangular(width: screenWidth * 0.9, height: screenHeight * 0.055),
-          SizedBox(height: screenHeight*0.022,),
-          Transform.translate(
-            offset: Offset(-screenWidth * 0.3, 0),
-            child: ShimmerWidget.rectangular(width: 100, height: 20)),
-          Divider(thickness: 2,),
-          Container(
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: BouncingScrollPhysics(),
-                      itemCount: productsCategoryWise.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          
-                          padding: EdgeInsets.all(12),
-                          child: Row(
-                            children: [
-                              ShimmerWidget.rectangular(width: screenWidth * 0.3, height: screenHeight *0.12,),
-                              SizedBox(width: 10,),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      ShimmerWidget.rectangular(width: screenWidth * 0.38, height: 20),
-                                      SizedBox(width: screenWidth * 0.1,),
-                                      ShimmerWidget.rectangular(width: screenWidth * 0.1, height: 18),
-
-                                    ],
-                                  ),
-                                  SizedBox(height: 10,),
-                                  ShimmerWidget.rectangular(width: screenWidth * 0.6, height: 30),
-                                  SizedBox(height: 10,),
-                                  ShimmerWidget.rectangular(width: screenWidth * 0.3, height: screenHeight*0.04),
-                                ],
-                              )
-                            ],
+          child: Column(
+            children: [
+              ShimmerWidget.rectangular(
+                  width: screenWidth * 0.9, height: screenHeight * 0.055),
+              SizedBox(
+                height: screenHeight * 0.022,
+              ),
+              Transform.translate(
+                  offset: Offset(-screenWidth * 0.3, 0),
+                  child: ShimmerWidget.rectangular(width: 100, height: screenHeight*0.023)),
+              Divider(
+                thickness: 2,
+              ),
+              ListView.builder(
+                  shrinkWrap: true,
+                  physics: BouncingScrollPhysics(),
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding: EdgeInsets.all(12),
+                      child: Row(
+                        children: [
+                          ShimmerWidget.rectangular(
+                            width: screenWidth * 0.3,
+                            height: screenHeight * 0.12,
                           ),
-                        );
-                      }),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  ShimmerWidget.rectangular(
+                                      width: screenWidth * 0.38, height: screenHeight*0.022),
+                                  SizedBox(
+                                    width: screenWidth * 0.1,
+                                  ),
+                                  ShimmerWidget.rectangular(
+                                      width: screenWidth * 0.1, height: screenHeight*0.022),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              ShimmerWidget.rectangular(
+                                  width: screenWidth * 0.6, height: 30),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              ShimmerWidget.rectangular(
+                                  width: screenWidth * 0.3,
+                                  height: screenHeight * 0.04),
+                            ],
+                          )
+                        ],
+                      ),
+                    );
+                  }),
+            ],
           ),
-        ],
-      ),
-    );
+        );
 
     return Scaffold(
       backgroundColor: whiteColor,
@@ -237,6 +259,100 @@ class _ItemsState extends State<Items> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return buildShimmer();
+              // SingleChildScrollView(
+              //   child: Column(
+              //     children: [
+              //       Container(
+              //               padding: EdgeInsets.all(12),
+              //               child: Row(
+              //                 children: [
+              //                   ShimmerWidget.rectangular(
+              //                     width: screenWidth * 0.3,
+              //                     height: screenHeight * 0.12,
+              //                   ),
+              //                   SizedBox(
+              //                     width: 10,
+              //                   ),
+              //                   Column(
+              //                     crossAxisAlignment:
+              //                         CrossAxisAlignment.start,
+              //                     children: [
+              //                       Row(
+              //                         children: [
+              //                           ShimmerWidget.rectangular(
+              //                               width: screenWidth * 0.38,
+              //                               height: 20),
+              //                           SizedBox(
+              //                             width: screenWidth * 0.1,
+              //                           ),
+              //                           ShimmerWidget.rectangular(
+              //                               width: screenWidth * 0.1,
+              //                               height: 18),
+              //                         ],
+              //                       ),
+              //                       SizedBox(
+              //                         height: 10,
+              //                       ),
+              //                       ShimmerWidget.rectangular(
+              //                           width: screenWidth * 0.6, height: 30),
+              //                       SizedBox(
+              //                         height: 10,
+              //                       ),
+              //                       ShimmerWidget.rectangular(
+              //                           width: screenWidth * 0.3,
+              //                           height: screenHeight * 0.04),
+              //                     ],
+              //                   )
+              //                 ],
+              //               ),
+              //             ),
+              //             Container(
+              //               padding: EdgeInsets.all(12),
+              //               child: Row(
+              //                 children: [
+              //                   ShimmerWidget.rectangular(
+              //                     width: screenWidth * 0.3,
+              //                     height: screenHeight * 0.12,
+              //                   ),
+              //                   SizedBox(
+              //                     width: 10,
+              //                   ),
+              //                   Column(
+              //                     crossAxisAlignment:
+              //                         CrossAxisAlignment.start,
+              //                     children: [
+              //                       Row(
+              //                         children: [
+              //                           ShimmerWidget.rectangular(
+              //                               width: screenWidth * 0.38,
+              //                               height: 20),
+              //                           SizedBox(
+              //                             width: screenWidth * 0.1,
+              //                           ),
+              //                           ShimmerWidget.rectangular(
+              //                               width: screenWidth * 0.1,
+              //                               height: 18),
+              //                         ],
+              //                       ),
+              //                       SizedBox(
+              //                         height: 10,
+              //                       ),
+              //                       ShimmerWidget.rectangular(
+              //                           width: screenWidth * 0.6, height: 30),
+              //                       SizedBox(
+              //                         height: 10,
+              //                       ),
+              //                       ShimmerWidget.rectangular(
+              //                           width: screenWidth * 0.3,
+              //                           height: screenHeight * 0.04),
+              //                     ],
+              //                   )
+              //                 ],
+              //               ),
+              //             ),
+              //     ],
+              //   ),
+              // );
             } else if (snapshot.hasError) {
               return Center(
                 child: Text(snapshot.error.toString()),

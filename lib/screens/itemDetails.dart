@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Provider/OrderStausProvider.dart';
 import '../consts/constants.dart';
+import '../widgets/shimmer_widget.dart';
 
 class ItemDetails extends StatefulWidget {
   final String id;
@@ -152,6 +153,63 @@ class _ItemDetailsState extends State<ItemDetails> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     final orderStatusProvider = Provider.of<OrderStatusProvider>(context);
+
+    Widget buildShimmer() => SingleChildScrollView(
+          child: Column(
+            children: [
+              
+              ListView.builder(
+                  shrinkWrap: true,
+                  physics: BouncingScrollPhysics(),
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding: EdgeInsets.all(2),
+                      child: Row(
+                        children: [
+                          ShimmerWidget.rectangular(
+                            width: screenWidth * 0.25,
+                            height: screenHeight * 0.118,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  ShimmerWidget.rectangular(
+                                      width: screenWidth * 0.38, height: 20),
+                                  SizedBox(
+                                    width: screenWidth * 0.1,
+                                  ),
+                                  ShimmerWidget.rectangular(
+                                      width: screenWidth * 0.1, height: 18),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              ShimmerWidget.rectangular(
+                                  width: screenWidth * 0.53, height: screenHeight * 0.025),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              ShimmerWidget.rectangular(
+                                  width: screenWidth * 0.3,
+                                  height: screenHeight * 0.033),
+                            ],
+                          )
+                        ],
+                      ),
+                    );
+                  }),
+            ],
+          ),
+        );
+
+
     @override
     void initState() {
       super.initState();
@@ -417,16 +475,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: CircularProgressIndicator(
-                                      color: cream,
-                                    ),
-                                  ),
-                                ],
-                              );
+                              return buildShimmer();
                             } else if (snapshot.hasError) {
                               return Center(
                                 child: Text(snapshot.error.toString()),

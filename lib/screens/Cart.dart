@@ -117,7 +117,7 @@ class _CartState extends State<Cart> {
           ListView.builder(
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),
-                    itemCount: cartProducts.length,
+                    itemCount: 2,
                     itemBuilder: (context, index) {
                       return Container(
                         padding: EdgeInsets.all(12),

@@ -181,7 +181,7 @@ class _LoginState extends State<Login> {
                           textInputAction: TextInputAction.done,
                           decoration: InputDecoration(
                             hintText: 'Enter your email',
-                            hintStyle: TextStyle(fontSize: sizefont * 0.8),
+                            hintStyle: TextStyle(fontSize: sizefont * 0.85),
                             contentPadding: const EdgeInsets.all(10),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -244,7 +244,7 @@ class _LoginState extends State<Login> {
                           textInputAction: TextInputAction.done,
                           decoration: InputDecoration(
                             hintText: 'Enter your password',
-                            hintStyle: TextStyle(fontSize: sizefont * 0.8),
+                            hintStyle: TextStyle(fontSize: sizefont * 0.85),
                             contentPadding: const EdgeInsets.all(10),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -334,12 +334,24 @@ class _LoginState extends State<Login> {
                                     child: CircularProgressIndicator(
                                       color: cream,
                                     ),
-                                  ));
-                          await AuthProvider().login(
+                                  )
+                          );
+                          var result = await AuthProvider().login(
                               emailController.text.trim(),
                               passwordController.text.trim(),
                               context);
-                          //Navigator.pop(context);
+                          if (!result) {
+                          Navigator.pop(context);
+                          Fluttertoast.showToast(
+                                msg: "Invalid Credentials!",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.green,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          }
+                          // Navigator.pop(context);
                           // if (success) {
                           //   Navigator.pushReplacement(
                           //     context,

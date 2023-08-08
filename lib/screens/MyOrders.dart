@@ -80,7 +80,7 @@ class _MyOrdersState extends State<MyOrders> {
             child: ListView.builder(
               shrinkWrap: true,
               physics: BouncingScrollPhysics(),
-                      itemCount: orders.length,
+                      itemCount: 3,
                       itemBuilder: (context, index) {
                         return Container(
                           

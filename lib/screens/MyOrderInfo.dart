@@ -6,6 +6,7 @@ import 'package:divine_drapes/Provider/Auth/profile_API.dart';
 import 'package:divine_drapes/Provider/Auth/order_API.dart';
 
 import '../consts/constants.dart';
+import '../widgets/shimmer_widget.dart';
 
 class MyOrderInfo extends StatefulWidget {
   final String id;
@@ -45,6 +46,69 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
     double sizefont = size.width * 0.044;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
+    Widget buildShimmer() => SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 15,),
+              Transform.translate(
+                offset: Offset(screenWidth * 0.08, 0),
+                child: ShimmerWidget.rectangular(
+                            width: screenWidth * 0.29,
+                            height: screenHeight * 0.025),
+              ),
+              SizedBox(height: screenHeight* 0.025,),
+              Transform.translate(
+                offset: Offset(-5, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ShimmerWidget.rectangular(
+                        width: screenWidth * 0.34, height: screenHeight * 0.14),
+                    Transform.translate(
+                      offset: Offset(-15, 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ShimmerWidget.rectangular(
+                              width: screenWidth * 0.35,
+                              height: screenHeight * 0.025),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          ShimmerWidget.rectangular(
+                              width: screenWidth * 0.38,
+                              height: screenHeight * 0.022),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Transform.translate(
+                offset: Offset(-screenWidth * 0.06, -10),
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    itemCount: 6,
+                    itemBuilder: (context, index) {
+                      return Container(
+                          padding: EdgeInsets.only(top: 40),
+                          child: Column(
+                            children: [
+                              ShimmerWidget.rectangular(
+                                  width: screenWidth * 0.7,
+                                  height: screenHeight * 0.033),
+                              SizedBox(height: 5,)
+
+                            ],
+                          ));
+                    }),
+              ),
+            ],
+          ),
+        );
     // double screenWidth = MediaQuery.of(context).size.width;
     // double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -62,16 +126,7 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
             future: getSpecificOrder(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: CircularProgressIndicator(
-                        color: cream,
-                      ),
-                    ),
-                  ],
-                );
+                return buildShimmer();
               } else if (snapshot.hasError) {
                 return Center(
                   child: Text(snapshot.error.toString()),

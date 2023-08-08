@@ -15,7 +15,7 @@ class ShimmerWidget extends StatelessWidget {
   const ShimmerWidget.circular(
       {required this.height,
       required this.width,
-      this.shapeBorder = const CircleBorder()});
+      this.shapeBorder = const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(100)))});
 
   @override
   Widget build(BuildContext context) {

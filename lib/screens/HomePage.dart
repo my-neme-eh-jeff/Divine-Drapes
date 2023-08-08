@@ -67,9 +67,9 @@ class _HomePageState extends State<HomePage> {
             children: [
               Row(children: [
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.only(left: 10.0,),
                   child: ShimmerWidget.rectangular(
-                      width: width * 0.9, height: height * 0.055),
+                      width: width * 0.85, height: height * 0.051),
                 ),
               ]),
               SizedBox(
@@ -83,24 +83,29 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 15,
               ),
-              GridView.count(
-                physics: BouncingScrollPhysics(),
-                crossAxisCount: 3,
-                shrinkWrap: true,
-                children: List.generate(
-                  filteredProducts.length,
-                  (index) {
-                    return Column(
-                      children: [
-                        ShimmerWidget.rectangular(height: height* 0.1, width: width *0.22,),
-                        SizedBox(height: 5,),
-                        ShimmerWidget.rectangular(height: height* 0.018, width: width *0.15,),
-                        
-                      ],
-                    );
-                  },
+              Container(
+                padding: EdgeInsets.all(8),
+                width: width * 0.95,
+                child: GridView.count(
+                  physics: BouncingScrollPhysics(),
+                  crossAxisCount: 3,
+                  shrinkWrap: true,
+                  children: List.generate(
+                    10,
+                    (index) {
+                      return Column(
+                        children: [
+                          ShimmerWidget.rectangular(height: height* 0.1, width: width *0.22,),
+                          SizedBox(height: 5,),
+                          ShimmerWidget.rectangular(height: height* 0.018, width: width *0.14,),
+                          
+                        ],
+                      );
+                    },
+                  ),
                 ),
               ),
+              
             ],
           ),
         );

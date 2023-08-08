@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:divine_drapes/screens/HomePage.dart';
-import 'package:http/http.dart'as http;
+import 'package:http/http.dart' as http;
 import 'package:divine_drapes/Provider/Auth/profile_API.dart';
 import 'package:divine_drapes/consts/constants.dart';
 import 'package:divine_drapes/models/ProfileModel.dart' as data;
@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Provider/Auth/AuthProvider.dart';
+import '../widgets/shimmer_widget.dart';
 
 class MyAccount extends StatefulWidget {
   MyAccount({Key? key}) : super(key: key);
@@ -33,9 +34,7 @@ class _MyAccountState extends State<MyAccount> {
   String? newURL;
   static const String authTokenKey = 'auth_token';
 
-  Future<void> uploadpfp(File _selectedImage)
-  async
-  {
+  Future<void> uploadpfp(File _selectedImage) async {
     final url = Uri.parse('https://divine-drapes.onrender.com/user/profilePic');
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(authTokenKey);
@@ -51,7 +50,6 @@ class _MyAccountState extends State<MyAccount> {
     var request = http.MultipartRequest('POST', url);
     request.headers.addAll(headers);
 
-
     if (_selectedImage != null) {
       String fileName = _selectedImage.path.split('/').last;
       String extension = fileName.split('.').last;
@@ -66,12 +64,9 @@ class _MyAccountState extends State<MyAccount> {
         newFile.path,
         contentType: MediaType('image', extension),
       ));
-
+    } else {
+      print("Image is null");
     }
-    else
-      {
-        print("Image is null");
-      }
 
     http.StreamedResponse response = await request.send();
     String responseBody = await response.stream.bytesToString();
@@ -91,8 +86,6 @@ class _MyAccountState extends State<MyAccount> {
     }
   }
 
-
-
   Future getProfile() async {
     print('HELLO');
     _profile = await Profiles().getProfileData();
@@ -101,7 +94,6 @@ class _MyAccountState extends State<MyAccount> {
     //   // Trigger a rebuild after fetching the profile data
     // });
   }
-
 
   Future<void> _pickImage(ImageSource source) async {
     try {
@@ -113,11 +105,9 @@ class _MyAccountState extends State<MyAccount> {
         _selectedImage = pickedImageFile;
       });
       uploadpfp(_selectedImage!);
-      if(_selectedImage == null)
-        {
-          print("IsNull");
-        }
-
+      if (_selectedImage == null) {
+        print("IsNull");
+      }
     } catch (e) {
       // Handle error during image picking
       print('Error picking image: $e');
@@ -132,15 +122,72 @@ class _MyAccountState extends State<MyAccount> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    Widget buildShimmer() => SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 10,),
+              ShimmerWidget.rectangular(
+                          width: screenWidth * 0.23,
+                          height: screenHeight * 0.023),
+              SizedBox(height: screenHeight* 0.025,),
+              Transform.translate(
+                offset: Offset(-20, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ShimmerWidget.circular(
+                        width: screenWidth * 0.34, height: screenHeight * 0.15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ShimmerWidget.rectangular(
+                            width: screenWidth * 0.25,
+                            height: screenHeight * 0.023),
+                        SizedBox(
+                          height: 18,
+                        ),
+                        ShimmerWidget.rectangular(
+                            width: screenWidth * 0.38,
+                            height: screenHeight * 0.021),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        ShimmerWidget.rectangular(
+                            width: screenWidth * 0.32,
+                            height: screenHeight * 0.021)
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              Transform.translate(
+                offset: Offset(-10, screenHeight * 0.06),
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    itemCount: 4,
+                    itemBuilder: (context, index) {
+                      return Container(
+                          padding: EdgeInsets.only(top: 40),
+                          child: Column(
+                            children: [
+                              ShimmerWidget.rectangular(
+                                  width: screenWidth * 0.7,
+                                  height: screenHeight * 0.048)
+                            ],
+                          ));
+                    }),
+              ),
+            ],
+          ),
+        );
+
     final logoutProvider = Provider.of<AuthProvider>(context, listen: false);
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-    double screenHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
+
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
@@ -157,16 +204,7 @@ class _MyAccountState extends State<MyAccount> {
               future: getProfile(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: CircularProgressIndicator(
-                          color: cream,
-                        ),
-                      ),
-                    ],
-                  );
+                  return buildShimmer();
                 } else if (snapshot.hasError) {
                   return Center(
                     child: Text(snapshot.error.toString()),
@@ -185,46 +223,42 @@ class _MyAccountState extends State<MyAccount> {
                       ),
                       Row(
                         children: [
-                          Stack(
-                              children: [
-                                Container(
-                                  height: screenHeight * 0.2,
-                                  width: screenWidth * 0.33,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      image: (_profile!.profilePic.isEmpty)
-                                          ? NetworkImage(
-                                          "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/446b1af0-e6ba-4b0f-a9de-6ae6d3ed27a3/dfjhqn3-23d30b9d-16e3-42b6-aa12-e010a3999ef6.png/v1/fill/w_736,h_736,q_80,strp/satoru_gojo_aesthetic_pfp_by_harvester0fs0uls_dfjhqn3-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzM2IiwicGF0aCI6IlwvZlwvNDQ2YjFhZjAtZTZiYS00YjBmLWE5ZGUtNmFlNmQzZWQyN2EzXC9kZmpocW4zLTIzZDMwYjlkLTE2ZTMtNDJiNi1hYTEyLWUwMTBhMzk5OWVmNi5wbmciLCJ3aWR0aCI6Ijw9NzM2In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.F7_Ce5Ih1dhahsCnvFHRZgivj_8AByd9ZYHS3Ju0aws"
-                                      )
-                                          : NetworkImage(
-                                          _profile!.profilePic)
-                                      as ImageProvider,
-                                      fit: BoxFit.cover,
-                                    ),
+                          Stack(children: [
+                            Container(
+                              height: screenHeight * 0.2,
+                              width: screenWidth * 0.33,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: (_profile!.profilePic.isEmpty)
+                                      ? NetworkImage(
+                                          "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/446b1af0-e6ba-4b0f-a9de-6ae6d3ed27a3/dfjhqn3-23d30b9d-16e3-42b6-aa12-e010a3999ef6.png/v1/fill/w_736,h_736,q_80,strp/satoru_gojo_aesthetic_pfp_by_harvester0fs0uls_dfjhqn3-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzM2IiwicGF0aCI6IlwvZlwvNDQ2YjFhZjAtZTZiYS00YjBmLWE5ZGUtNmFlNmQzZWQyN2EzXC9kZmpocW4zLTIzZDMwYjlkLTE2ZTMtNDJiNi1hYTEyLWUwMTBhMzk5OWVmNi5wbmciLCJ3aWR0aCI6Ijw9NzM2In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.F7_Ce5Ih1dhahsCnvFHRZgivj_8AByd9ZYHS3Ju0aws")
+                                      : NetworkImage(_profile!.profilePic)
+                                          as ImageProvider,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 20,
+                              right: 0,
+                              child: GestureDetector(
+                                onTap: () async {
+                                  await _pickImage(ImageSource.gallery);
+                                },
+                                child: CircleAvatar(
+                                  backgroundColor: cream,
+                                  // Customize the background color of the camera icon.
+                                  radius: 18,
+                                  child: Icon(
+                                    Icons.camera_alt,
+                                    color: Colors
+                                        .black, // Customize the color of the camera icon.
                                   ),
                                 ),
-                                Positioned(
-                                  bottom: 20,
-                                  right: 0,
-                                  child: GestureDetector(
-                                    onTap: () async {
-                                      await _pickImage(ImageSource.gallery);
-                                    },
-                                    child: CircleAvatar(
-                                      backgroundColor: cream,
-                                      // Customize the background color of the camera icon.
-                                      radius: 18,
-                                      child: Icon(
-                                        Icons.camera_alt,
-                                        color: Colors
-                                            .black, // Customize the color of the camera icon.
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ]
-                          ),
+                              ),
+                            ),
+                          ]),
                           SizedBox(
                             width: 20,
                           ),
@@ -281,7 +315,7 @@ class _MyAccountState extends State<MyAccount> {
                             decoration: BoxDecoration(
                                 color: whiteColor,
                                 border:
-                                Border.all(width: 2, color: Colors.black),
+                                    Border.all(width: 2, color: Colors.black),
                                 borderRadius: BorderRadius.circular(5),
                                 boxShadow: [
                                   BoxShadow(
@@ -325,7 +359,7 @@ class _MyAccountState extends State<MyAccount> {
                             decoration: BoxDecoration(
                                 color: whiteColor,
                                 border:
-                                Border.all(width: 2, color: Colors.black),
+                                    Border.all(width: 2, color: Colors.black),
                                 borderRadius: BorderRadius.circular(5),
                                 boxShadow: [
                                   BoxShadow(
@@ -369,7 +403,7 @@ class _MyAccountState extends State<MyAccount> {
                             decoration: BoxDecoration(
                                 color: whiteColor,
                                 border:
-                                Border.all(width: 2, color: Colors.black),
+                                    Border.all(width: 2, color: Colors.black),
                                 borderRadius: BorderRadius.circular(5),
                                 boxShadow: [
                                   BoxShadow(
@@ -412,7 +446,7 @@ class _MyAccountState extends State<MyAccount> {
                             decoration: BoxDecoration(
                                 color: whiteColor,
                                 border:
-                                Border.all(width: 2, color: Colors.black),
+                                    Border.all(width: 2, color: Colors.black),
                                 borderRadius: BorderRadius.circular(5),
                                 boxShadow: [
                                   BoxShadow(

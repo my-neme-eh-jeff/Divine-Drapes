@@ -33,6 +33,10 @@ const userRoutes = require("./routes/userRoutes");
 const adminRoutes = require("./routes/adminRoutes.js");
 const authRoutes = require("./routes/authRoutes.js");
 const productRoutes = require("./routes/productRoutes.js");
+const publicRoutes = require("./routes/publicRoutes.js");
+
+//public routes
+app.use("/public", publicRoutes);
 
 // auth routes
 app.use("/auth", authRoutes);

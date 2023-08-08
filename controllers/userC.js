@@ -366,7 +366,7 @@ const viewOrder = async (req, res) => {
 const viewSingleOrder = async(req,res) => {
   try{
     const  orderID  = req.params.orderID;
-    const order = await OrderSchema.findById(orderID)
+    const order = await OrderSchema.findById(orderID).populate("user").populate("product")
     if(!order){
       return res.status(404).json({
         success: false,

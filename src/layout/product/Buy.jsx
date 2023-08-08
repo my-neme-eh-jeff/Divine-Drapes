@@ -1,267 +1,340 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react';
-import { Box, ChakraProvider, Heading, SimpleGrid, Image, Button, Select, Input } from '@chakra-ui/react'
-import './Upload.css'
-import Footer from '../Footer/Footer';
-import Navbar from '../Navbar/Navbar';
+import React, { useEffect } from "react";
+import { useState } from "react";
 import {
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    useDisclosure
-} from '@chakra-ui/react'
-import Address from './Address/Address';
-import publicAxios from '../../Axios/publicAxios'
-import privateAxios from '../../Axios/privateAxios';
-import useAuth from '../../Hooks/useAuth';
-import { useParams } from 'react-router-dom';
-
+  Box,
+  ChakraProvider,
+  Heading,
+  SimpleGrid,
+  Image,
+  Button,
+  Select,
+  Input,
+} from "@chakra-ui/react";
+import "./Upload.css";
+import Footer from "../Footer/Footer";
+import Navbar from "../Navbar/Navbar";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+} from "@chakra-ui/react";
+import Address from "./Address/Address";
+import { useParams } from "react-router-dom";
+import useAxiosPrivate from "../../Hooks/useAxiosPrivate";
 
 function Buy() {
-    const [body, setBody] = useState([])
-    const { productId } = useParams()
-    const prodId = productId.split(':')[1]
-    console.log(prodId)
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [custText, setCustText] = useState('');
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const [pay, setPay] = useState()
+  const [body, setBody] = useState([]);
+  const { productId } = useParams();
+  const prodId = productId.split(":")[1];
+  console.log(prodId);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [custText, setCustText] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [pay, setPay] = useState();
+  const privateAxios = useAxiosPrivate();
 
-    const { auth, setAuth } = useAuth();
-    const isLogin = auth?.accessToken;
-    console.log(isLogin);
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setSelectedImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+    console.log(selectedImage);
+  };
 
-
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setSelectedImage(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-        console.log(selectedImage)
+  const getSingleProd = () => {
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: `https://divine-drapes.onrender.com/product/viewProduct/${prodId}`,
     };
 
-    const getSingleProd = () => {
-        let config = {
-            method: 'get',
-            maxBodyLength: Infinity,
-            url: `https://divine-drapes.onrender.com/product/viewProduct/${prodId}`,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + isLogin
-            },
-        };
+    privateAxios
+      .request(config)
+      .then((response) => {
+        // alert("hitted")
+        console.log(JSON.stringify(response.data));
+        setBody([response.data]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-        privateAxios.request(config)
-            .then((response) => {
-                // alert("hitted")
-                console.log(JSON.stringify(response.data));
-                setBody([response.data]);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+  useEffect(() => {
+    getSingleProd();
+  }, []);
 
-    }
+  const placeOrder = () => {
+    let data = JSON.stringify({
+      pID: prodId,
+      isCustPhoto: body[0]?.data.photo.isCust,
+      isCustText: body[0]?.data.text.isCust,
+      text: custText,
+      isCustColor: body[0]?.data.color.isCust,
+      paymentStatus: "pending",
+      paymentType: pay,
+    });
 
-    useEffect(() => {
-        getSingleProd()
-    }, [])
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "https://divine-drapes.onrender.com/user/order",
+      data: data,
+    };
 
-    const placeOrder = () => {
-        let data = JSON.stringify({
-            "pID": prodId,
-            "isCustPhoto": body[0]?.data.photo.isCust,
-            "isCustText": body[0]?.data.text.isCust,
-            "text": custText,
-            "isCustColor": body[0]?.data.color.isCust,
-            "paymentStatus": "pending",
-            "paymentType": pay
-        });
+    privateAxios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        alert("Placed Successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  return (
+    <div>
+      <ChakraProvider>
+        <Navbar />
+        <Box className="productbody">
+          <br />
+          {/* product name here  */}
+          <Heading className="namehere">{body[0]?.data.category}</Heading>
+          <br />
+          <Box height={"auto"} className="mainpro">
+            <SimpleGrid h="auto" w="auto" columns={{ base: 1, md: 3 }} gap={15}>
+              <Box
+                className="Box"
+                display={"flex"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                alignSelf={"center"}
+              >
+                <Image
+                  boxSize="280px"
+                  objectFit="cover"
+                  src="https://bit.ly/dan-abramov"
+                  alt="Dan Abramov"
+                />
+              </Box>
+              <Box
+                className="Box"
+                display={"flex"}
+                justifyContent={"center"}
+                alignItems={"left"}
+                flexWrap={"center"}
+                flexDirection={"column"}
+              >
+                <p>
+                  <Heading fontSize={28} fontWeight={700}>
+                    {body[0]?.data.name}
+                  </Heading>
+                </p>
+                <p>{body[0]?.data.description}</p>
+                <br />
+                <p>
+                  <Heading fontSize={24} fontWeight={700}>
+                    ₹ {body[0]?.data.cost.value}
+                  </Heading>
+                </p>
+                <br />
+                <div className="image-uploader">
+                  <label htmlFor="upload-input" className="upload-label">
+                    <span className="upload-text">
+                      Upload your customization
+                    </span>
+                    {body[0]?.data.photo.isCust ? (
+                      <input
+                        id="upload-input"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                      />
+                    ) : (
+                      <input
+                        id="upload-input"
+                        disabled="true"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                      />
+                    )}
+                  </label>
+                  {selectedImage && (
+                    <img
+                      src={selectedImage}
+                      alt="Preview"
+                      className="preview-image"
+                    />
+                  )}
+                </div>
+                <br />
+                <Heading fontSize={24} fontWeight={700}>
+                  Text Customization
+                </Heading>
+                {body[0]?.data.text.isCust ? (
+                  <Input
+                    value={custText}
+                    onChange={(e) => {
+                      setCustText(e.target.value);
+                    }}
+                    placeholder="Enter your Text"
+                  />
+                ) : (
+                  <Input placeholder="Enter your Text" disabled="true" />
+                )}
 
-        let config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            url: 'https://divine-drapes.onrender.com/user/order',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + isLogin,
-            },
-            data: data
-        };
+                <br />
+                <Box
+                  display={"flex"}
+                  justifyContent={"space-around"}
+                  width={"auto"}
+                >
+                  <Button onClick={onOpen}>Shipping Address</Button>
+                  <Modal isOpen={isOpen} onClose={onClose}>
+                    <ModalOverlay />
+                    <ModalContent>
+                      <ModalHeader>Shipping Addresses</ModalHeader>
+                      <ModalCloseButton />
+                      <ModalBody>
+                        <Address />
+                      </ModalBody>
 
-        privateAxios.request(config)
-            .then((response) => {
-                console.log(JSON.stringify(response.data));
-                alert("Placed Successfully")
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
-    }
-    return (
-        <div>
-
-            <ChakraProvider>
-                <Navbar />
-                <Box className='productbody' >
-                    <br />
-                    {/* product name here  */}
-                    <Heading className='namehere'>{body[0]?.data.category}</Heading>
-                    <br />
-                    <Box height={'auto'} className='mainpro'>
-                        <SimpleGrid
-                            h='auto'
-                            w='auto'
-                            columns={{ base: 1, md: 3 }}
-                            gap={15}
-
+                      <ModalFooter>
+                        <Button colorScheme="blue" mr={3} onClick={onClose}>
+                          Close
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          backgroundColor={"#F7BC62"}
+                          _hover={{ color: "black" }}
                         >
-                            <Box className='Box'
-                                display={'flex'}
-                                justifyContent={'center'}
-                                alignItems={'center'}
-                                alignSelf={'center'}
-                            >
-                                <Image
-                                    boxSize='280px'
-                                    objectFit='cover'
-                                    src='https://bit.ly/dan-abramov'
-                                    alt='Dan Abramov'
-                                />
-                            </Box>
-                            <Box className='Box'
-                                display={'flex'}
-                                justifyContent={'center'}
-                                alignItems={'left'}
-                                flexWrap={'center'}
-                                flexDirection={'column'}>
-                                <p><Heading fontSize={28} fontWeight={700}>{body[0]?.data.name}</Heading></p>
-                                <p >{body[0]?.data.description}</p>
-                                <br />
-                                <p><Heading fontSize={24} fontWeight={700}>₹ {body[0]?.data.cost.value}</Heading></p>
-                                <br />
-                                <div className="image-uploader">
-                                    <label htmlFor="upload-input" className="upload-label">
-                                        <span className="upload-text">Upload your customization</span>
-                                        {
-                                            body[0]?.data.photo.isCust ? (
-                                                <input id="upload-input" type="file" accept="image/*" onChange={handleImageChange} />
-                                            ) : (
-                                                <input id="upload-input" disabled='true' type="file" accept="image/*" onChange={handleImageChange} />
-                                            )
-                                        }
+                          Save & proceed
+                        </Button>
+                      </ModalFooter>
+                    </ModalContent>
+                  </Modal>
+                  <Select
+                    id="payment"
+                    value={pay}
+                    placeholder="Paymeny method"
+                    width={"12vw"}
+                    onChange={(e) => setPay(e.target.value)}
+                  >
+                    <option value="cod">Cash On Delivery</option>
+                    <option value="card">Credit/Debit Card</option>
+                    <option value="net banking">Net banking</option>
+                    <option value="UPI">UPI (G-pay , paytm , phonePay)</option>
+                  </Select>
+                </Box>
+                {pay == "card" ? (
+                  <div class="modal">
+                    <form class="form">
+                      <div class="separator">
+                        <hr class="line" />
+                        <p>Pay using Credit/Debit card</p>
+                        <hr class="line" />
+                      </div>
+                      <div class="credit-card-info--form">
+                        <div class="input_container">
+                          <label for="password_field" class="input_label">
+                            Card holder full name
+                          </label>
+                          <input
+                            id="password_field"
+                            class="input_field"
+                            type="text"
+                            name="input-name"
+                            title="Inpit title"
+                            placeholder="Enter your full name"
+                          />
+                        </div>
+                        <div class="input_container">
+                          <label for="password_field" class="input_label">
+                            Card Number
+                          </label>
+                          <input
+                            id="password_field"
+                            class="input_field"
+                            type="number"
+                            name="input-name"
+                            title="Inpit title"
+                            placeholder="0000 0000 0000 0000"
+                          />
+                        </div>
+                        <div class="input_container">
+                          <label for="password_field" class="input_label">
+                            Expiry Date / CVV
+                          </label>
+                          <div class="split">
+                            <input
+                              id="password_field"
+                              class="input_field"
+                              type="text"
+                              name="input-name"
+                              title="Expiry Date"
+                              placeholder="01/23"
+                            />
+                            <input
+                              id="password_field"
+                              class="input_field"
+                              type="number"
+                              name="cvv"
+                              title="CVV"
+                              placeholder="CVV"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                ) : pay == "netbanking" ? (
+                  <>
+                    <br />
+                    <Select width={"auto"} placeholder="Select your bank">
+                      <option value="BOB">Bank of Baroda</option>
+                      <option value="AXIS">Axis Bank</option>
+                      <option value="HDFC">HDFC</option>
+                    </Select>
+                  </>
+                ) : (
+                  <p></p>
+                )}
+                <br />
+                <Box
+                  textAlign={"center"}
+                  justifyContent={"center"}
+                  display={"flex"}
+                >
+                  <Button
+                    backgroundColor={"#A01E86"}
+                    color={"white"}
+                    onClick={placeOrder}
+                    _hover={{
+                      backgroundColor: "#A01E86",
+                      color: "black",
+                    }}
+                    display={"flex"}
+                    justifyContent={"center"}
+                  >
+                    Buy Now
+                  </Button>
+                </Box>
 
-                                    </label>
-                                    {selectedImage && <img src={selectedImage} alt="Preview" className="preview-image" />}
-                                </div>
-                                <br />
-                                <Heading fontSize={24} fontWeight={700}>Text Customization</Heading>
-                                {
-                                    body[0]?.data.text.isCust ? (<Input value={custText} onChange={e => { setCustText(e.target.value) }} placeholder='Enter your Text' />) : (<Input placeholder='Enter your Text' disabled='true' />)
-                                }
-
-                                <br />
-                                <Box display={'flex'} justifyContent={'space-around'} width={'auto'} >
-                                    <Button onClick={onOpen}>Shipping Address</Button>
-                                    <Modal isOpen={isOpen} onClose={onClose}>
-                                        <ModalOverlay />
-                                        <ModalContent>
-                                            <ModalHeader>Shipping Addresses</ModalHeader>
-                                            <ModalCloseButton />
-                                            <ModalBody>
-                                                <Address />
-                                            </ModalBody>
-
-                                            <ModalFooter>
-                                                <Button colorScheme='blue' mr={3} onClick={onClose}>
-                                                    Close
-                                                </Button>
-                                                <Button variant='ghost' backgroundColor={'#F7BC62'}
-                                                    _hover={{ color: 'black' }}
-                                                >Save & proceed</Button>
-                                            </ModalFooter>
-                                        </ModalContent>
-                                    </Modal>
-                                    <Select id='payment' value={pay} placeholder='Paymeny method' width={'12vw'}
-                                        onChange={e => setPay(e.target.value)}
-                                    >
-                                        <option value='cod'>Cash On Delivery</option>
-                                        <option value='card'>Credit/Debit Card</option>
-                                        <option value="net banking">Net banking</option>
-                                        <option value="UPI">UPI (G-pay , paytm , phonePay)</option>
-                                    </Select>
-                                </Box>
-                                {
-                                    pay == 'card' ? (
-                                        <div class="modal">
-                                            <form class="form">
-                                                <div class="separator">
-                                                    <hr class="line" />
-                                                    <p>Pay using Credit/Debit card</p>
-                                                    <hr class="line" />
-                                                </div>
-                                                <div class="credit-card-info--form">
-                                                    <div class="input_container">
-                                                        <label for="password_field" class="input_label">Card holder full name</label>
-                                                        <input id="password_field" class="input_field" type="text" name="input-name" title="Inpit title" placeholder="Enter your full name" />
-                                                    </div>
-                                                    <div class="input_container">
-                                                        <label for="password_field" class="input_label">Card Number</label>
-                                                        <input id="password_field" class="input_field" type="number" name="input-name" title="Inpit title" placeholder="0000 0000 0000 0000" />
-                                                    </div>
-                                                    <div class="input_container">
-                                                        <label for="password_field" class="input_label">Expiry Date / CVV</label>
-                                                        <div class="split">
-                                                            <input id="password_field" class="input_field" type="text" name="input-name" title="Expiry Date" placeholder="01/23" />
-                                                            <input id="password_field" class="input_field" type="number" name="cvv" title="CVV" placeholder="CVV" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    ) : (
-                                        pay == "netbanking" ? (
-                                            <>
-                                                <br />
-                                                <Select width={'auto'}
-                                                    placeholder='Select your bank'
-                                                >
-                                                    <option value='BOB'>Bank of Baroda</option>
-                                                    <option value='AXIS'>Axis Bank</option>
-                                                    <option value="HDFC">HDFC</option>
-                                                </Select>
-                                            </>
-                                        ) : (<p></p>)
-                                    )
-                                }
-                                <br />
-                                <Box textAlign={'center'} justifyContent={'center'} display={'flex'}>
-                                    <Button backgroundColor={'#A01E86'} color={'white'}
-                                        onClick={placeOrder}
-                                        _hover={{
-                                            backgroundColor: '#A01E86',
-                                            color: 'black'
-                                        }}
-                                        display={'flex'}
-                                        justifyContent={'center'}
-                                    >Buy Now</Button>
-                                </Box>
-
-                                {/* <Box className='Box'>
+                {/* <Box className='Box'>
 
                                 </Box> */}
-
-                            </Box>
-                            {/* <Box className='Box' id='rating'
+              </Box>
+              {/* <Box className='Box' id='rating'
                                 display={'flex'} alignItems={'left'} fontSize={'18px'} fontWeight={700} >
                                 <div className="content1">
                                     <div className="star" style={{ color: 'yellow' }}>
@@ -270,15 +343,14 @@ function Buy() {
                                     <div className="rating" style={{ marginLeft: '8px' }}>4.5</div>
                                 </div>
                             </Box> */}
-
-                        </SimpleGrid>
-                    </Box>
-                </Box>
-                <br />
-                <Footer />
-            </ChakraProvider>
-        </div >
-    )
+            </SimpleGrid>
+          </Box>
+        </Box>
+        <br />
+        <Footer />
+      </ChakraProvider>
+    </div>
+  );
 }
 
-export default Buy
+export default Buy;

@@ -60,7 +60,7 @@ const router = createBrowserRouter(
           }
         >
           <Route path="/admin/orders" element={<Allorders />} />
-          <Route path="/admin/orders/view" element={<ViewOrders />} />
+          <Route path="/admin/orders/view/:orderId" element={<ViewOrders />} />
         </Route>
 
         <Route path="*" element={<ErrorPage />} />

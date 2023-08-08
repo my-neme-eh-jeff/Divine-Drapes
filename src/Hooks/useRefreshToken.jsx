@@ -1,4 +1,4 @@
-import publicAxios from "../Axios/publicAxios";
+import privateAxios from "../Axios/privateAxios";
 import useAuth from "./useAuth";
 
 export default function useRefreshToken() {
@@ -6,11 +6,11 @@ export default function useRefreshToken() {
   const refresh = async () => {
     try {
       const options = {
-        withCredentials: true,
         url: "auth/refreshToken",
         method: "GET",
+        withCredentials:true,
       };
-      const resp = await publicAxios.request(options);
+      const resp = await privateAxios.request(options);
       setAuth((prev) => {
         console.log(JSON.stringify(prev));
         console.log(resp.data.accessToken);

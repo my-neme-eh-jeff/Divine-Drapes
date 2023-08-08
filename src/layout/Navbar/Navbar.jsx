@@ -27,9 +27,6 @@ const Navbar = () => {
   const logout = useLogout();
   const navigate = useNavigate();
 
-  const isLogin = auth?.accessToken;
-  console.log(isLogin);
-
   const handleLogout = async () => {
     try {
       await logout();
@@ -114,7 +111,7 @@ const Navbar = () => {
             <Link href="/fav">
               <Button bgColor={"#fff"}>Cart</Button>
             </Link>
-            {!isLogin ? (
+            {!auth.accessToken ? (
               <Link href="/login">
                 <Button bgColor={"#f7bc62"}>Login</Button>
               </Link>

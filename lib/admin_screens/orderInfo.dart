@@ -14,6 +14,7 @@ class OrderInfo extends StatefulWidget {
   final String? email;
   final String? paymentStatus;
   final String? paymentMode;
+  var address;
   OrderInfo({
     Key? key,
     this.name,
@@ -23,6 +24,7 @@ class OrderInfo extends StatefulWidget {
     this.email,
     this.paymentMode,
     this.paymentStatus,
+    this.address,
   }) : super(key: key);
 
   @override
@@ -32,6 +34,7 @@ class OrderInfo extends StatefulWidget {
 class _OrderInfoState extends State<OrderInfo> {
   @override
   Widget build(BuildContext context) {
+    print(widget.address);
     var size = MediaQuery.of(context).size;
     double sizefont = size.width * 0.044;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -110,9 +113,7 @@ class _OrderInfoState extends State<OrderInfo> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            (widget.name == null)
-                            ? "--"
-                            : widget.name!,
+                            (widget.name == null) ? "--" : widget.name!,
                             style: GoogleFonts.notoSans(
                                 color: Colors.black,
                                 fontSize: 16,
@@ -143,7 +144,7 @@ class _OrderInfoState extends State<OrderInfo> {
                 ),
               ),
               SizedBox(
-                height: 10,
+                height: 5,
               ),
               Padding(
                 padding: const EdgeInsets.all(18.0),
@@ -157,9 +158,7 @@ class _OrderInfoState extends State<OrderInfo> {
                           fontWeight: FontWeight.w600),
                     ),
                     Text(
-                     (widget.userName == null)
-                            ? "--"
-                            : widget.userName!,
+                      (widget.userName == null) ? "--" : widget.userName!,
                       style: GoogleFonts.notoSans(
                           color: Colors.black,
                           fontSize: 16,
@@ -169,7 +168,7 @@ class _OrderInfoState extends State<OrderInfo> {
                 ),
               ),
               SizedBox(
-                height: 10,
+                height: 0,
               ),
               Padding(
                 padding: const EdgeInsets.all(18.0),
@@ -183,9 +182,7 @@ class _OrderInfoState extends State<OrderInfo> {
                           fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      (widget.contatct == null)
-                            ? "--"
-                            : widget.contatct!,
+                      (widget.contatct == null) ? "--" : widget.contatct!,
                       style: GoogleFonts.notoSans(
                           color: Colors.black,
                           fontSize: 16,
@@ -194,9 +191,7 @@ class _OrderInfoState extends State<OrderInfo> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
+
               Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: Row(
@@ -209,9 +204,7 @@ class _OrderInfoState extends State<OrderInfo> {
                           fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      (widget.email == null)
-                            ? "--"
-                            : widget.email!,
+                      (widget.email == null) ? "--" : widget.email!,
                       style: GoogleFonts.notoSans(
                           color: Colors.black,
                           fontSize: 16,
@@ -220,9 +213,7 @@ class _OrderInfoState extends State<OrderInfo> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
+
               Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: Row(
@@ -235,9 +226,7 @@ class _OrderInfoState extends State<OrderInfo> {
                           fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      (widget.paymentMode == null)
-                            ? "--"
-                            : widget.paymentMode!,
+                      (widget.paymentMode == null) ? "--" : widget.paymentMode!,
                       style: GoogleFonts.notoSans(
                           color: Colors.black,
                           fontSize: 16,
@@ -246,9 +235,7 @@ class _OrderInfoState extends State<OrderInfo> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
+
               Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: Row(
@@ -262,8 +249,8 @@ class _OrderInfoState extends State<OrderInfo> {
                     ),
                     Text(
                       (widget.paymentStatus == null)
-                            ? "--"
-                            : widget.paymentStatus!,
+                          ? "--"
+                          : widget.paymentStatus!,
                       style: GoogleFonts.notoSans(
                           color: Colors.black,
                           fontSize: 16,
@@ -272,27 +259,56 @@ class _OrderInfoState extends State<OrderInfo> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
               Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Row(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Address: ",
-                      style: GoogleFonts.notoSans(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    Text(
-                      "address",
-                      style: GoogleFonts.notoSans(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600),
-                    ),
+                    SizedBox(height: 25),
+                    Card(
+                      elevation: 4,
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                (widget.address == null)
+                                    ? " "
+                                    : (widget.address[0]['addressOf'] ??
+                                        "Address"),
+                                style: GoogleFonts.notoSans(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600)),
+                            Divider(
+                              color: Colors.grey,
+                              thickness: 1,
+                            ),
+                            Text(
+                              widget.userName ?? 'No name',
+                              style: GoogleFonts.notoSans(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            (widget.address == null) 
+                            ? Text("NA")
+                            : Text( widget.address[0]['houseNumber'] + ' , ' + widget.address[0]['building'] + ' , ' + widget.address[0]['street'],style: TextStyle(fontSize: 20),),
+                            (widget.address == null) 
+                            ? Text( "NA")
+                            : Text( widget.address[0]['city'] + ' , ' + widget.address[0]['state'] + ' , ' + widget.address[0]['country'],style: TextStyle(fontSize: 20),),
+                            SizedBox(
+                              height: 15,
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),

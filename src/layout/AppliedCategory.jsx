@@ -8,7 +8,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useLocation, useNavigate } from 'react-router-dom';
 import privateAxios from '../Axios/privateAxios';
 import useAuth from "./../Hooks/useAuth";
-
+import { Link } from 'react-router-dom';
 const AppliedCategory = () => {
     
     const [products, setProducts] = useState([]);
@@ -81,6 +81,7 @@ makeRequest();
         <Flex justifyContent={'space-around'} m='3% 0'>
         <SimpleGrid columns={{sm: 1, md: 4}} rowGap={10} columnGap={20}>
         {products.map((prod,index) => (
+            <Link to={`/product/:${prod._id}`}>
             <GridItem width={'250px'} key={index}>
                 <Image
                     src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
@@ -108,6 +109,7 @@ makeRequest();
                         </Button>
                     </Flex>
             </GridItem>
+            </Link>
         ))}
         </SimpleGrid>                   
         </Flex>

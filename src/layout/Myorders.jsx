@@ -60,16 +60,17 @@ export default function Myorders() {
         console.log(response.data);
         setNorders(response.data.data);
         response.data.data.map((order) => {
+          console.log("order:",order.product);
           let config1 = {
             method: "get",
             maxBodyLength: Infinity,
-            url: `https://divine-drapes.onrender.com/product/viewProduct/${order}`,
+            url: 'https://divine-drapes.onrender.com/product/viewProduct/'+order.product,
             headers: {
               "Content-Type": "application/json",
               Authorization: "Bearer " + isLogin,
             },
           };
-
+          console.log(config1.url);
           privateAxios
             .request(config1)
             .then((response) => {

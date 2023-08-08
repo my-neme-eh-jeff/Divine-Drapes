@@ -2,7 +2,9 @@ import 'package:divine_drapes/admin_screens/orderInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:divine_drapes/models/AllOrders.dart' as data;
+import '../Provider/Auth/order_API.dart';
 import '../consts/constants.dart';
 
 class NewOrders extends StatefulWidget {
@@ -64,6 +66,33 @@ class _NewOrdersState extends State<NewOrders> {
 
   String? value1;
   String ItemName = "";
+  static const String authTokenKey = 'auth_token';
+
+  List<data.Received?> filteredOrders = [];
+  bool isLoading = true;
+
+  List<data.Received?> allOrders = [];
+
+  Future<void> AllOrdersData() async {
+
+    try {
+      print("future orders data: ");
+      allOrders = await Order().getAllOrders();
+      print(allOrders.map((e) => e?.id));
+      filteredOrders = List.from(allOrders);
+      setState(() {
+        isLoading = false;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    AllOrdersData();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -108,7 +137,7 @@ class _NewOrdersState extends State<NewOrders> {
               child: ListView.builder(
                 shrinkWrap: true,
                 physics: BouncingScrollPhysics(),
-                itemCount: 20,
+                itemCount: filteredOrders.length,
                 itemBuilder: (context, position) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),

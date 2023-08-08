@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../../Hooks/useAxiosPrivate";
+import publicAxios from "../../Axios/publicAxios";
 
 const responsive = {
   superLargeDesktop: {
@@ -35,15 +36,13 @@ const responsive = {
 const Personalised = () => {
   const [topSelling, setTopSelling] = useState([]);
   const navigate = useNavigate();
-  const privateAxios = useAxiosPrivate();
 
   let config = {
     method: "GET",
     url: "product/allProducts",
   };
 
-  privateAxios
-    .request(config)
+    publicAxios.request(config)
     .then((response) => {
       const product = response.data;
       setTopSelling(product.data);

@@ -23,14 +23,20 @@ class MyOrders extends StatefulWidget {
 }
 
 class _MyOrdersState extends State<MyOrders> {
+  bool isLoading = false;
   TextEditingController search = TextEditingController();
   List<data.Data?> orders = [];
+  List<data.Data?> filteredOrders = [];
+
   String? searchData;
   List<String> productName = [];
   List<String> productDesc = [];
   List<String> productCost = [];
 
-  Future getViewOrder() async {
+  Future<void> getViewOrder() async {
+    setState(() {
+      isLoading = true;
+    });
     productCost = [];
     productDesc = [];
     productName = [];
@@ -40,25 +46,37 @@ class _MyOrdersState extends State<MyOrders> {
       // print("product....");
       // var product = await Products().getSpecificProduct(orders[0]!.product);
       // print(product['name']);
-
+      filteredOrders = List.from(orders);
       for (int i = 0; i < orders.length; i++) {
         var product = await Products().getSpecificProduct(orders[i]!.product);
         productName.add(product['name']);
         productDesc.add(product['description']);
         productCost.add(product['cost']['value'].toString());
-        
       }
 
+      setState(() {
+        isLoading = false;
+      });
     } catch (e) {
       print(e);
     }
+
     // print("future products category wise:");
     // print(orders.length);
   }
+  // void _performSearch(String query) {
+  //   setState(() {
+  //     filteredOrders = orders
+  //         .where((product) =>
+  //             product?.toLowerCase().contains(query.toLowerCase()) ??
+  //             false)
+  //         .toList();
+  //   });
+  // }
 
-@override
+  @override
   void initState() {
-
+    getViewOrder();
     super.initState();
   }
 
@@ -68,73 +86,86 @@ class _MyOrdersState extends State<MyOrders> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     Widget buildShimmer() => SingleChildScrollView(
-      child: Column(
-        children: [
-          ShimmerWidget.rectangular(width: screenWidth * 0.9, height: screenHeight * 0.055),
-          SizedBox(height: screenHeight*0.022,),
-          Transform.translate(
-            offset: Offset(-screenWidth * 0.3, 0),
-            child: ShimmerWidget.rectangular(width: 100, height: 20)),
-          Divider(thickness: 2,),
-          Container(
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: BouncingScrollPhysics(),
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          
-                          padding: EdgeInsets.all(12),
-                          child: Row(
-                            children: [
-                              ShimmerWidget.rectangular(width: screenWidth * 0.3, height: screenHeight *0.12,),
-                              SizedBox(width: 10,),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      ShimmerWidget.rectangular(width: screenWidth * 0.38, height: 20),
-                                      SizedBox(width: screenWidth * 0.1,),
-                                      ShimmerWidget.rectangular(width: screenWidth * 0.1, height: 18),
-
-                                    ],
-                                  ),
-                                  SizedBox(height: 10,),
-                                  ShimmerWidget.rectangular(width: screenWidth * 0.6, height: 30),
-                                  SizedBox(height: 10,),
-                                  ShimmerWidget.rectangular(width: screenWidth * 0.3, height: screenHeight*0.04),
-                                ],
-                              )
-                            ],
-                          ),
-                        );
-                      }),
+          child: Column(
+            children: [
+              ShimmerWidget.rectangular(
+                  width: screenWidth * 0.9, height: screenHeight * 0.055),
+              SizedBox(
+                height: screenHeight * 0.022,
+              ),
+              Transform.translate(
+                  offset: Offset(-screenWidth * 0.3, 0),
+                  child: ShimmerWidget.rectangular(width: 100, height: 20)),
+              Divider(
+                thickness: 2,
+              ),
+              Container(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: EdgeInsets.all(12),
+                        child: Row(
+                          children: [
+                            ShimmerWidget.rectangular(
+                              width: screenWidth * 0.3,
+                              height: screenHeight * 0.12,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    ShimmerWidget.rectangular(
+                                        width: screenWidth * 0.38, height: 20),
+                                    SizedBox(
+                                      width: screenWidth * 0.1,
+                                    ),
+                                    ShimmerWidget.rectangular(
+                                        width: screenWidth * 0.1, height: 18),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                ShimmerWidget.rectangular(
+                                    width: screenWidth * 0.6, height: 30),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                ShimmerWidget.rectangular(
+                                    width: screenWidth * 0.3,
+                                    height: screenHeight * 0.04),
+                              ],
+                            )
+                          ],
+                        ),
+                      );
+                    }),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        );
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: whiteColor,
-        automaticallyImplyLeading: false,
-        title: Text("Divine Drapes",
-            style: GoogleFonts.notoSans(
-                color: darkPurple, fontSize: 28, fontWeight: FontWeight.w700)),
-        elevation: 0.0,
-      ),
-      body: FutureBuilder(
-          future: getViewOrder(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return buildShimmer();
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text(snapshot.error.toString()),
-              );
-            } else {
-              return SingleChildScrollView(
+        appBar: AppBar(
+          backgroundColor: whiteColor,
+          automaticallyImplyLeading: false,
+          title: Text("Divine Drapes",
+              style: GoogleFonts.notoSans(
+                  color: darkPurple,
+                  fontSize: 28,
+                  fontWeight: FontWeight.w700)),
+          elevation: 0.0,
+        ),
+        body: isLoading
+            ? buildShimmer()
+            : SingleChildScrollView(
                 physics: NeverScrollableScrollPhysics(),
                 child: Padding(
                     padding: const EdgeInsets.only(right: 4, bottom: 10),
@@ -225,9 +256,10 @@ class _MyOrdersState extends State<MyOrders> {
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
                                             builder: (context) => MyOrderInfo(
-                                              id: orders[index]!.id,
-                                              name: productName[index],
-                                              date: orders[index]!.createdAt,
+                                                  id: orders[index]!.id,
+                                                  name: productName[index],
+                                                  date:
+                                                      orders[index]!.createdAt,
                                                 )));
                                   },
                                   child: Padding(
@@ -282,7 +314,7 @@ class _MyOrdersState extends State<MyOrders> {
                                                   ),
                                                   Spacer(),
                                                   Text(
-                                                    productCost[index]+" Rs",
+                                                    productCost[index] + " Rs",
                                                     style: GoogleFonts.notoSans(
                                                         color: Colors.black,
                                                         fontSize:
@@ -345,9 +377,6 @@ class _MyOrdersState extends State<MyOrders> {
                         ],
                       );
                     })),
-              );
-            }
-          }),
-    );
+              ));
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:divine_drapes/screens/EditProfile.dart';
 import 'package:divine_drapes/screens/HomePage.dart';
+import 'package:divine_drapes/screens/YourAddress.dart';
 import 'package:http/http.dart' as http;
 import 'package:divine_drapes/Provider/Auth/profile_API.dart';
 import 'package:divine_drapes/consts/constants.dart';
@@ -329,7 +330,7 @@ class _MyAccountState extends State<MyAccount> {
                         ],
                       ),
                       SizedBox(
-                        height: 45,
+                        height: 20,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(20.0),
@@ -465,6 +466,51 @@ class _MyAccountState extends State<MyAccount> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(20.0),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const address()));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: whiteColor,
+                                border:
+                                    Border.all(width: 2, color: Colors.black),
+                                borderRadius: BorderRadius.circular(5),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    blurRadius: 0.5,
+                                    spreadRadius: 0.5,
+                                    offset: Offset(2, 2),
+                                  )
+                                ]),
+                            height: screenHeight * 0.05,
+                            width: screenWidth * 0.7,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Manage Address",
+                                    style: GoogleFonts.notoSans(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  Spacer(),
+                                  Icon(
+                                    Icons.arrow_right_alt_outlined,
+                                    color: Colors.black,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: 20, left: 20, right: 20),
                         child: InkWell(
                           onTap: () {
                             logoutProvider.Logout(context: context);

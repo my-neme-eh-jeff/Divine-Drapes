@@ -51,14 +51,17 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 15,),
+              SizedBox(
+                height: 15,
+              ),
               Transform.translate(
                 offset: Offset(screenWidth * 0.08, 0),
                 child: ShimmerWidget.rectangular(
-                            width: screenWidth * 0.29,
-                            height: screenHeight * 0.025),
+                    width: screenWidth * 0.29, height: screenHeight * 0.025),
               ),
-              SizedBox(height: screenHeight* 0.025,),
+              SizedBox(
+                height: screenHeight * 0.025,
+              ),
               Transform.translate(
                 offset: Offset(-5, 0),
                 child: Row(
@@ -100,8 +103,9 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                               ShimmerWidget.rectangular(
                                   width: screenWidth * 0.7,
                                   height: screenHeight * 0.033),
-                              SizedBox(height: 5,)
-
+                              SizedBox(
+                                height: 5,
+                              )
                             ],
                           ));
                     }),
@@ -238,7 +242,7 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                                   fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              _profile!.fName + " "+ _profile!.lName,
+                              _profile!.fName + " " + _profile!.lName,
                               style: GoogleFonts.notoSans(
                                   color: Colors.black,
                                   fontSize: 16,

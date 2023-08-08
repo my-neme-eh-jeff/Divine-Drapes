@@ -1,5 +1,6 @@
 import 'package:divine_drapes/Provider/Auth/profile_API.dart';
 import 'package:divine_drapes/models/ProfileModel.dart';
+import 'package:divine_drapes/screens/EditAddress.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:divine_drapes/models/ProfileModel.dart' as data;
@@ -113,10 +114,10 @@ class _addressState extends State<address> {
                             height: 15,
                           ),
                           GestureDetector(
-                            //        onTap: () {
-                            //   Navigator.of(context).push(MaterialPageRoute(
-                            //       builder: (context) => const ()));
-                            // },
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const EditAddress()));
+                            },
                             child: Container(
                               width: 50,
                               height: 25,

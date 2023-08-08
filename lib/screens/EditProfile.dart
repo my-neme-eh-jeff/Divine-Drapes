@@ -31,9 +31,9 @@ class _EditProfileState extends State<EditProfile> {
   final _formkey = GlobalKey<FormState>();
   TextEditingController fnamecontroller = TextEditingController();
   TextEditingController lnamecontroller = TextEditingController();
-  TextEditingController flatcontroller = TextEditingController();
   TextEditingController dobcontroller = TextEditingController();
   TextEditingController numbercontroller = TextEditingController();
+  TextEditingController flatcontroller = TextEditingController();
   TextEditingController bldgcontroller = TextEditingController();
   TextEditingController streetcontroller = TextEditingController();
   TextEditingController citycontroller = TextEditingController();
@@ -141,6 +141,35 @@ class _EditProfileState extends State<EditProfile> {
                       children: [
                         Expanded(
                           flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 5, bottom: 5),
+                            child: Text(
+                              'First name',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 5, bottom: 5),
+                            child: Text(
+                              'Last name',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
                           child: TextFormField(
                             keyboardType: TextInputType.emailAddress,
                             controller: fnamecontroller,
@@ -222,6 +251,14 @@ class _EditProfileState extends State<EditProfile> {
                     const SizedBox(
                       height: 30,
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5, bottom: 5),
+                      child: Text(
+                        'Contact number',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    ),
                     Row(
                       children: [
                         Expanded(
@@ -265,9 +302,21 @@ class _EditProfileState extends State<EditProfile> {
                                     errorText: 'Enter a valid number'),
                               ])),
                         ),
-                        SizedBox(
-                          width: 15,
-                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5, bottom: 5),
+                      child: Text(
+                        'Date of Birth',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    ),
+                    Row(
+                      children: [
                         Expanded(
                           flex: 1,
                           child: TextFormField(
@@ -327,252 +376,9 @@ class _EditProfileState extends State<EditProfile> {
                       height: 30,
                     ),
                     Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: TextFormField(
-                            keyboardType: TextInputType.emailAddress,
-                            controller: flatcontroller,
-                            decoration: InputDecoration(
-                              hintText: 'Enter your house number',
-                              hintStyle: TextStyle(fontSize: sizefont * 0.8),
-                              contentPadding: const EdgeInsets.all(10),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                      const BorderSide(color: Colors.black)),
-                              enabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              focusedBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              prefixIcon: const Icon(Icons.home_outlined),
-                              // suffixIcon: Icon(Icons.edit),
-                              isDense: true,
-                            ),
-                            validator: MultiValidator([
-                              RequiredValidator(errorText: "    " '*Required')
-                            ]),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: TextFormField(
-                            keyboardType: TextInputType.emailAddress,
-                            controller: bldgcontroller,
-                            decoration: InputDecoration(
-                              hintText: 'Enter your building name ',
-                              hintStyle: TextStyle(fontSize: sizefont * 0.8),
-                              contentPadding: const EdgeInsets.all(10),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                      const BorderSide(color: Colors.black)),
-                              enabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              focusedBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              prefixIcon: const Icon(Icons.home_work_outlined),
-                              // suffixIcon: Icon(Icons.edit),
-                              isDense: true,
-                            ),
-                            validator: MultiValidator([
-                              RequiredValidator(errorText: "    " '*Required')
-                            ]),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: TextFormField(
-                            keyboardType: TextInputType.emailAddress,
-                            controller: streetcontroller,
-                            decoration: InputDecoration(
-                              hintText: 'Enter your street name',
-                              hintStyle: TextStyle(fontSize: sizefont * 0.8),
-                              contentPadding: const EdgeInsets.all(10),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                      const BorderSide(color: Colors.black)),
-                              enabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              focusedBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              // prefixIcon: const Icon(Icons.home_outlined),
-                              // suffixIcon: Icon(Icons.edit),
-                              isDense: true,
-                            ),
-                            validator: MultiValidator([
-                              RequiredValidator(errorText: "    " '*Required')
-                            ]),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: TextFormField(
-                            keyboardType: TextInputType.emailAddress,
-                            controller: citycontroller,
-                            decoration: InputDecoration(
-                              hintText: 'Enter your city name',
-                              hintStyle: TextStyle(fontSize: sizefont * 0.8),
-                              contentPadding: const EdgeInsets.all(10),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                      const BorderSide(color: Colors.black)),
-                              enabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              focusedBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              // prefixIcon: const Icon(Icons.home_outlined),
-                              // suffixIcon: Icon(Icons.edit),
-                              isDense: true,
-                            ),
-                            validator: MultiValidator([
-                              RequiredValidator(errorText: "    " '*Required')
-                            ]),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: TextFormField(
-                            keyboardType: TextInputType.emailAddress,
-                            controller: statecontroller,
-                            decoration: InputDecoration(
-                              hintText: 'Enter your state  ',
-                              hintStyle: TextStyle(fontSize: sizefont * 0.8),
-                              contentPadding: const EdgeInsets.all(10),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                      const BorderSide(color: Colors.black)),
-                              enabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              focusedBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              // prefixIcon: const Icon(Icons.home_outlined),
-                              // suffixIcon: Icon(Icons.edit),
-                              isDense: true,
-                            ),
-                            validator: MultiValidator([
-                              RequiredValidator(errorText: "    " '*Required')
-                            ]),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          flex: 1,
-                          child: TextFormField(
-                            keyboardType: TextInputType.emailAddress,
-                            controller: countrycontroller,
-                            decoration: InputDecoration(
-                              hintText: 'Enter your country ',
-                              hintStyle: TextStyle(fontSize: sizefont * 0.8),
-                              contentPadding: const EdgeInsets.all(10),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                      const BorderSide(color: Colors.black)),
-                              enabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              focusedBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 2,
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              // prefixIcon: const Icon(Icons.home_work_outlined),
-                              // suffixIcon: Icon(Icons.edit),
-                              isDense: true,
-                            ),
-                            validator: MultiValidator([
-                              RequiredValidator(errorText: "    " '*Required')
-                            ]),
-                          ),
-                        ),
                         Expanded(
                           flex: 1,
                           child: Align(

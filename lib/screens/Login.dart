@@ -339,7 +339,8 @@ class _LoginState extends State<Login> {
                           await AuthProvider().login(
                               emailController.text.trim(),
                               passwordController.text.trim(),
-                              context);
+                              context
+                              );
                           //Navigator.pop(context);
                           // if (success) {
                           //   Navigator.pushReplacement(

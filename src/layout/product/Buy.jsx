@@ -53,28 +53,24 @@ function Buy() {
         console.log(fileInputRef)
     };
 
-    const getSingleProd = () => {
-        let config = {
-            method: 'get',
-            maxBodyLength: Infinity,
-            url: `https://divine-drapes.onrender.com/product/viewProduct/${prodId}`,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + isLogin
-            },
-        };
+  const getSingleProd = () => {
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: `https://divine-drapes.onrender.com/product/viewProduct/${prodId}`,
+    };
 
-        privateAxios.request(config)
-            .then((response) => {
-                // alert("hitted")
-                console.log(JSON.stringify(response.data));
-                setBody([response.data]);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
-    }
+    privateAxios
+      .request(config)
+      .then((response) => {
+        // alert("hitted")
+        console.log(JSON.stringify(response.data));
+        setBody([response.data]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
     useEffect(() => {
         getSingleProd()
@@ -127,27 +123,23 @@ function Buy() {
 
 
 
-    const placeOrder = () => {
-        let data = JSON.stringify({
-            "pID": prodId,
-            "isCustPhoto": body[0]?.data.photo.isCust,
-            "isCustText": body[0]?.data.text.isCust,
-            "text": custText,
-            "isCustColor": body[0]?.data.color.isCust,
-            "paymentStatus": "pending",
-            "paymentType": pay
-        });
+  const placeOrder = () => {
+    let data = JSON.stringify({
+      pID: prodId,
+      isCustPhoto: body[0]?.data.photo.isCust,
+      isCustText: body[0]?.data.text.isCust,
+      text: custText,
+      isCustColor: body[0]?.data.color.isCust,
+      paymentStatus: "pending",
+      paymentType: pay,
+    });
 
-        let config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            url: 'https://divine-drapes.onrender.com/user/order',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + isLogin,
-            },
-            data: data
-        };
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "https://divine-drapes.onrender.com/user/order",
+      data: data,
+    };
 
         privateAxios.request(config)
             .then((response) => {
@@ -222,99 +214,148 @@ function Buy() {
                                     body[0]?.data.text.isCust ? (<Input value={custText} onChange={e => { setCustText(e.target.value) }} placeholder='Enter your Text' />) : (<Input placeholder='Enter your Text' disabled='true' />)
                                 }
 
-                                <br />
-                                <Box display={'flex'} justifyContent={'space-around'} width={'auto'} >
-                                    <Button onClick={onOpen}>Shipping Address</Button>
-                                    <Modal isOpen={isOpen} onClose={onClose}>
-                                        <ModalOverlay />
-                                        <ModalContent>
-                                            <ModalHeader>Shipping Addresses</ModalHeader>
-                                            <ModalCloseButton />
-                                            <ModalBody>
-                                                <Address />
-                                            </ModalBody>
+                <br />
+                <Box
+                  display={"flex"}
+                  justifyContent={"space-around"}
+                  width={"auto"}
+                >
+                  <Button onClick={onOpen}>Shipping Address</Button>
+                  <Modal isOpen={isOpen} onClose={onClose}>
+                    <ModalOverlay />
+                    <ModalContent>
+                      <ModalHeader>Shipping Addresses</ModalHeader>
+                      <ModalCloseButton />
+                      <ModalBody>
+                        <Address />
+                      </ModalBody>
 
-                                            <ModalFooter>
-                                                <Button colorScheme='blue' mr={3} onClick={onClose}>
-                                                    Close
-                                                </Button>
-                                                <Button variant='ghost' backgroundColor={'#F7BC62'}
-                                                    _hover={{ color: 'black' }}
-                                                >Save & proceed</Button>
-                                            </ModalFooter>
-                                        </ModalContent>
-                                    </Modal>
-                                    <Select id='payment' value={pay} placeholder='Paymeny method' width={'12vw'}
-                                        onChange={e => setPay(e.target.value)}
-                                    >
-                                        <option value='cod'>Cash On Delivery</option>
-                                        <option value='card'>Credit/Debit Card</option>
-                                        <option value="net banking">Net banking</option>
-                                        <option value="UPI">UPI (G-pay , paytm , phonePay)</option>
-                                    </Select>
-                                </Box>
-                                {
-                                    pay == 'card' ? (
-                                        <div class="modal">
-                                            <form class="form">
-                                                <div class="separator">
-                                                    <hr class="line" />
-                                                    <p>Pay using Credit/Debit card</p>
-                                                    <hr class="line" />
-                                                </div>
-                                                <div class="credit-card-info--form">
-                                                    <div class="input_container">
-                                                        <label for="password_field" class="input_label">Card holder full name</label>
-                                                        <input id="password_field" class="input_field" type="text" name="input-name" title="Inpit title" placeholder="Enter your full name" />
-                                                    </div>
-                                                    <div class="input_container">
-                                                        <label for="password_field" class="input_label">Card Number</label>
-                                                        <input id="password_field" class="input_field" type="number" name="input-name" title="Inpit title" placeholder="0000 0000 0000 0000" />
-                                                    </div>
-                                                    <div class="input_container">
-                                                        <label for="password_field" class="input_label">Expiry Date / CVV</label>
-                                                        <div class="split">
-                                                            <input id="password_field" class="input_field" type="text" name="input-name" title="Expiry Date" placeholder="01/23" />
-                                                            <input id="password_field" class="input_field" type="number" name="cvv" title="CVV" placeholder="CVV" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    ) : (
-                                        pay == "netbanking" ? (
-                                            <>
-                                                <br />
-                                                <Select width={'auto'}
-                                                    placeholder='Select your bank'
-                                                >
-                                                    <option value='BOB'>Bank of Baroda</option>
-                                                    <option value='AXIS'>Axis Bank</option>
-                                                    <option value="HDFC">HDFC</option>
-                                                </Select>
-                                            </>
-                                        ) : (<p></p>)
-                                    )
-                                }
-                                <br />
-                                <Box textAlign={'center'} justifyContent={'center'} display={'flex'}>
-                                    <Button backgroundColor={'#A01E86'} color={'white'}
-                                        onClick={placeOrder}
-                                        _hover={{
-                                            backgroundColor: '#A01E86',
-                                            color: 'black'
-                                        }}
-                                        display={'flex'}
-                                        justifyContent={'center'}
-                                    >Buy Now</Button>
-                                </Box>
+                      <ModalFooter>
+                        <Button colorScheme="blue" mr={3} onClick={onClose}>
+                          Close
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          backgroundColor={"#F7BC62"}
+                          _hover={{ color: "black" }}
+                        >
+                          Save & proceed
+                        </Button>
+                      </ModalFooter>
+                    </ModalContent>
+                  </Modal>
+                  <Select
+                    id="payment"
+                    value={pay}
+                    placeholder="Paymeny method"
+                    width={"12vw"}
+                    onChange={(e) => setPay(e.target.value)}
+                  >
+                    <option value="cod">Cash On Delivery</option>
+                    <option value="card">Credit/Debit Card</option>
+                    <option value="net banking">Net banking</option>
+                    <option value="UPI">UPI (G-pay , paytm , phonePay)</option>
+                  </Select>
+                </Box>
+                {pay == "card" ? (
+                  <div class="modal">
+                    <form class="form">
+                      <div class="separator">
+                        <hr class="line" />
+                        <p>Pay using Credit/Debit card</p>
+                        <hr class="line" />
+                      </div>
+                      <div class="credit-card-info--form">
+                        <div class="input_container">
+                          <label for="password_field" class="input_label">
+                            Card holder full name
+                          </label>
+                          <input
+                            id="password_field"
+                            class="input_field"
+                            type="text"
+                            name="input-name"
+                            title="Inpit title"
+                            placeholder="Enter your full name"
+                          />
+                        </div>
+                        <div class="input_container">
+                          <label for="password_field" class="input_label">
+                            Card Number
+                          </label>
+                          <input
+                            id="password_field"
+                            class="input_field"
+                            type="number"
+                            name="input-name"
+                            title="Inpit title"
+                            placeholder="0000 0000 0000 0000"
+                          />
+                        </div>
+                        <div class="input_container">
+                          <label for="password_field" class="input_label">
+                            Expiry Date / CVV
+                          </label>
+                          <div class="split">
+                            <input
+                              id="password_field"
+                              class="input_field"
+                              type="text"
+                              name="input-name"
+                              title="Expiry Date"
+                              placeholder="01/23"
+                            />
+                            <input
+                              id="password_field"
+                              class="input_field"
+                              type="number"
+                              name="cvv"
+                              title="CVV"
+                              placeholder="CVV"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                ) : pay == "netbanking" ? (
+                  <>
+                    <br />
+                    <Select width={"auto"} placeholder="Select your bank">
+                      <option value="BOB">Bank of Baroda</option>
+                      <option value="AXIS">Axis Bank</option>
+                      <option value="HDFC">HDFC</option>
+                    </Select>
+                  </>
+                ) : (
+                  <p></p>
+                )}
+                <br />
+                <Box
+                  textAlign={"center"}
+                  justifyContent={"center"}
+                  display={"flex"}
+                >
+                  <Button
+                    backgroundColor={"#A01E86"}
+                    color={"white"}
+                    onClick={placeOrder}
+                    _hover={{
+                      backgroundColor: "#A01E86",
+                      color: "black",
+                    }}
+                    display={"flex"}
+                    justifyContent={"center"}
+                  >
+                    Buy Now
+                  </Button>
+                </Box>
 
-                                {/* <Box className='Box'>
+                {/* <Box className='Box'>
 
                                 </Box> */}
-
-                            </Box>
-                            {/* <Box className='Box' id='rating'
+              </Box>
+              {/* <Box className='Box' id='rating'
                                 display={'flex'} alignItems={'left'} fontSize={'18px'} fontWeight={700} >
                                 <div className="content1">
                                     <div className="star" style={{ color: 'yellow' }}>
@@ -323,15 +364,14 @@ function Buy() {
                                     <div className="rating" style={{ marginLeft: '8px' }}>4.5</div>
                                 </div>
                             </Box> */}
-
-                        </SimpleGrid>
-                    </Box>
-                </Box>
-                <br />
-                <Footer />
-            </ChakraProvider>
-        </div >
-    )
+            </SimpleGrid>
+          </Box>
+        </Box>
+        <br />
+        <Footer />
+      </ChakraProvider>
+    </div>
+  );
 }
 
-export default Buy
+export default Buy;

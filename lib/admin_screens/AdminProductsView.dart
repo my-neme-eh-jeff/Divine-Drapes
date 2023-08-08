@@ -7,6 +7,7 @@ import '../consts/constants.dart';
 import 'package:divine_drapes/models/ProductModel.dart' as data;
 
 import '../screens/Items.dart';
+import '../widgets/shimmer_widget.dart';
 import 'AdminItems.dart';
 
 
@@ -61,6 +62,60 @@ class _AdminProductsViewState extends State<AdminProductsView> {
     double height = MediaQuery.of(context).size.height;
     TextEditingController search = TextEditingController();
     String? searchData;
+
+    Widget builShimmer() => SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0,),
+                  child: ShimmerWidget.rectangular(
+                      width: width * 0.85, height: height * 0.051),
+                ),
+              ]),
+              SizedBox(
+                height: 2,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 12,left: 18),
+                child: ShimmerWidget.rectangular(
+                    width: width * 0.6, height: height * 0.023),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8,left: 18),
+                child: ShimmerWidget.rectangular(
+                    width: width * 0.3, height: height * 0.023),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Container(
+                padding: EdgeInsets.all(12),
+                width: width * 0.95,
+                child: GridView.count(
+                  physics: BouncingScrollPhysics(),
+                  crossAxisCount: 3,
+                  shrinkWrap: true,
+                  children: List.generate(
+                    10,
+                    (index) {
+                      return Column(
+                        children: [
+                          ShimmerWidget.rectangular(height: height* 0.09, width: width *0.21,),
+                          SizedBox(height: 5,),
+                          ShimmerWidget.rectangular(height: height* 0.015, width: width *0.14,),
+                          
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ),
+              
+            ],
+          ),
+        );
 
 
     return Scaffold(
@@ -128,11 +183,9 @@ class _AdminProductsViewState extends State<AdminProductsView> {
                   fontWeight: FontWeight.w700)),
           elevation: 0.0,
         ),
-      body:  isLoading
-          ? Center(
-          child: CircularProgressIndicator(
-            color: cream,
-          ))
+      body:  
+      isLoading
+          ? builShimmer()
           : Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -281,164 +281,166 @@ class _AdminItemsState extends State<AdminItems> {
                                               added: isAdded,
                                             )));
                                       },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 10, bottom: 10),
-                                        child: Container(
-                                          height: screenHeight * 0.14,
-                                          width: screenWidth,
-                                          child: ListTile(
-                                            leading: FractionallySizedBox(
-                                              //widthFactor: 0.25,
-                                              //heightFactor: 1.6,// Adjust the width factor as needed
-                                              heightFactor: screenHeight * 0.0024,
-                                              child: AspectRatio(
-                                                aspectRatio: 1,
-                                                child: (productsCategoryWise[index]!
-                                                    .photo
-                                                    .picture
-                                                    .isEmpty)
-                                                    ? Image.asset(
-                                                  'assets/Vector.png',
-                                                  // height: screenHeight*0.05,
-                                                  fit: BoxFit.fill,
-                                                )
-                                                    : Image.network(
-                                                  productsCategoryWise[index]!
+                                      child: FittedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 10, bottom: 10),
+                                          child: Container(
+                                            height: screenHeight * 0.14,
+                                            width: screenWidth,
+                                            child: ListTile(
+                                              leading: FractionallySizedBox(
+                                                //widthFactor: 0.25,
+                                                //heightFactor: 1.6,// Adjust the width factor as needed
+                                                heightFactor: screenHeight * 0.0024,
+                                                child: AspectRatio(
+                                                  aspectRatio: 1,
+                                                  child: (productsCategoryWise[index]!
                                                       .photo
-                                                      .picture[0],
-                                                  fit: BoxFit.fill,
+                                                      .picture
+                                                      .isEmpty)
+                                                      ? Image.asset(
+                                                    'assets/Vector.png',
+                                                    // height: screenHeight*0.05,
+                                                    fit: BoxFit.fill,
+                                                  )
+                                                      : Image.network(
+                                                    productsCategoryWise[index]!
+                                                        .photo
+                                                        .picture[0],
+                                                    fit: BoxFit.fill,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            title: Transform.translate(
-                                              offset:
-                                              Offset(0.0, -screenWidth * 0.04),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Text(
+                                              title: Transform.translate(
+                                                offset:
+                                                Offset(0.0, -screenWidth * 0.04),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          productsCategoryWise[index]!
+                                                              .name,
+                                                          style: GoogleFonts.notoSans(
+                                                              color: Colors.black,
+                                                              fontSize:
+                                                              screenWidth * 0.036,
+                                                              fontWeight:
+                                                              FontWeight.w700),
+                                                        ),
+                                                        Spacer(),
+                                                        Text(
+                                                          productsCategoryWise[index]!
+                                                              .cost
+                                                              .currency +
+                                                              " " +
+                                                              productsCategoryWise[
+                                                              index]!
+                                                                  .cost
+                                                                  .value
+                                                                  .toString(),
+                                                          style: GoogleFonts.notoSans(
+                                                              color: Colors.black,
+                                                              fontSize:
+                                                              screenWidth * 0.036,
+                                                              fontWeight:
+                                                              FontWeight.w700),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Text(
                                                         productsCategoryWise[index]!
-                                                            .name,
+                                                            .description,
                                                         style: GoogleFonts.notoSans(
                                                             color: Colors.black,
                                                             fontSize:
-                                                            screenWidth * 0.04,
+                                                            screenWidth * 0.035,
                                                             fontWeight:
-                                                            FontWeight.w700),
-                                                      ),
-                                                      Spacer(),
-                                                      Text(
-                                                        productsCategoryWise[index]!
-                                                            .cost
-                                                            .currency +
-                                                            " " +
-                                                            productsCategoryWise[
-                                                            index]!
-                                                                .cost
-                                                                .value
-                                                                .toString(),
-                                                        style: GoogleFonts.notoSans(
-                                                            color: Colors.black,
-                                                            fontSize:
-                                                            screenWidth * 0.039,
-                                                            fontWeight:
-                                                            FontWeight.w700),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Text(
-                                                      productsCategoryWise[index]!
-                                                          .description,
-                                                      style: GoogleFonts.notoSans(
-                                                          color: Colors.black,
-                                                          fontSize:
-                                                          screenWidth * 0.035,
-                                                          fontWeight:
-                                                          FontWeight.w500)),
-                                                  SizedBox(
-                                                    height: screenHeight * 0.0078,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Container(
-                                                          decoration: BoxDecoration(
-                                                              color: cream,
-                                                              borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5)),
-                                                          child: GestureDetector(
-                                                            onTap: () async {
-                                                              // bool success = await addToCart(productsCategoryWise[index]!.id, context, index);
-                                                              // if (success) {
-                                                              //   // setState(() {
-                                                              //   //   isAdded[index] = !isAdded[index];
-                                                              //   //   print(isAdded);
-                                                              //   //   _saveCartState();
-                                                              //   // });
-                                                              // }
-                                                              Navigator.of(context)
-                                                                  .push(MaterialPageRoute(
-                                                                  builder: (context) => UpdateProductPage(
-                                                                    id: productsCategoryWise[index]!.id,
-                                                                    image: (productsCategoryWise[index]!.photo .picture.isEmpty)
-                                                                        ? 'assets/Vector.png'
-                                                                        : productsCategoryWise[index]!.photo.picture[0],
-                                                                    desc: productsCategoryWise[index]!.description,
-                                                                    cost: productsCategoryWise[index]!.cost,
-                                                                    name: productsCategoryWise[index]!.name,
-                                                                    category: productsCategoryWise[index]!.category,
-                                                                    quantity: productsCategoryWise[index]!.quantity,
-                                                                  )));
-                                                            },
-                                                            child:
-                                                            Padding(
-                                                              padding: const EdgeInsets.all(6.0),
-                                                              child: Text(
-                                                                "Update" ,
-                                                                style: GoogleFonts.notoSans(
-                                                                  color: Colors.black,
-                                                                  fontSize: 16,
-                                                                  fontWeight: FontWeight.w600,
-                                                                ),
-                                                              ),
-                                                            )
-                                                          )
-                                                      ),
-                                                      Spacer(),
-                                                      Container(
-                                                          decoration: BoxDecoration(
-                                                              color: Colors.red,
-                                                              borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5)),
-                                                          child: GestureDetector(
+                                                            FontWeight.w500)),
+                                                    SizedBox(
+                                                      height: screenHeight * 0.0078,
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                            decoration: BoxDecoration(
+                                                                color: cream,
+                                                                borderRadius:
+                                                                BorderRadius
+                                                                    .circular(5)),
+                                                            child: GestureDetector(
                                                               onTap: () async {
-                                                                 bool success = await deleteProduct(productsCategoryWise[index]!.id);
-                                                                if (success) {
-                                                                  Navigator.of(
-                                                                      context)
-                                                                      .pushReplacement(MaterialPageRoute(
-                                                                      builder: (context) =>
-                                                                          AdminItems(category: widget.category)));
-                                                                }
+                                                                // bool success = await addToCart(productsCategoryWise[index]!.id, context, index);
+                                                                // if (success) {
+                                                                //   // setState(() {
+                                                                //   //   isAdded[index] = !isAdded[index];
+                                                                //   //   print(isAdded);
+                                                                //   //   _saveCartState();
+                                                                //   // });
+                                                                // }
+                                                                Navigator.of(context)
+                                                                    .push(MaterialPageRoute(
+                                                                    builder: (context) => UpdateProductPage(
+                                                                      id: productsCategoryWise[index]!.id,
+                                                                      image: (productsCategoryWise[index]!.photo .picture.isEmpty)
+                                                                          ? 'assets/Vector.png'
+                                                                          : productsCategoryWise[index]!.photo.picture[0],
+                                                                      desc: productsCategoryWise[index]!.description,
+                                                                      cost: productsCategoryWise[index]!.cost,
+                                                                      name: productsCategoryWise[index]!.name,
+                                                                      category: productsCategoryWise[index]!.category,
+                                                                      quantity: productsCategoryWise[index]!.quantity,
+                                                                    )));
                                                               },
                                                               child:
                                                               Padding(
                                                                 padding: const EdgeInsets.all(6.0),
-                                                                child: 
-                                                                Icon(Icons.delete_outline,color: Colors.white,)
+                                                                child: Text(
+                                                                  "Update" ,
+                                                                  style: GoogleFonts.notoSans(
+                                                                    color: Colors.black,
+                                                                    fontSize: 16,
+                                                                    fontWeight: FontWeight.w600,
+                                                                  ),
+                                                                ),
                                                               )
-                                                          )
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
+                                                            )
+                                                        ),
+                                                        Spacer(),
+                                                        Container(
+                                                            decoration: BoxDecoration(
+                                                                color: Colors.red,
+                                                                borderRadius:
+                                                                BorderRadius
+                                                                    .circular(5)),
+                                                            child: GestureDetector(
+                                                                onTap: () async {
+                                                                   bool success = await deleteProduct(productsCategoryWise[index]!.id);
+                                                                  if (success) {
+                                                                    Navigator.of(
+                                                                        context)
+                                                                        .pushReplacement(MaterialPageRoute(
+                                                                        builder: (context) =>
+                                                                            AdminItems(category: widget.category)));
+                                                                  }
+                                                                },
+                                                                child:
+                                                                Padding(
+                                                                  padding: const EdgeInsets.all(6.0),
+                                                                  child: 
+                                                                  Icon(Icons.delete_outline,color: Colors.white,)
+                                                                )
+                                                            )
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),

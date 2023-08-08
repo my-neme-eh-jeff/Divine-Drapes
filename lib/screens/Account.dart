@@ -140,7 +140,7 @@ class _MyAccountState extends State<MyAccount> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ShimmerWidget.circular(
-                        width: screenWidth * 0.34, height: screenHeight * 0.15),
+                        width: screenWidth * 0.34, height: screenWidth * 0.34),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

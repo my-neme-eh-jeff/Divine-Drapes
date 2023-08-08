@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../Provider/Auth/AuthProvider.dart';
 import '../admin_screens/AdminBottomNav.dart';
-import '../admin_screens/AdminHome.dart';
+import '../admin_screens/AdminOrders.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
 class Login extends StatefulWidget {
@@ -162,7 +162,7 @@ class _LoginState extends State<Login> {
                     //   ),
                     // ),
                     Container(
-                      height: size.height * 0.065,
+                      height: size.height * 0.08,
                       child: Padding(
                         padding: const EdgeInsets.all(0),
                         child: TextFormField(
@@ -181,7 +181,7 @@ class _LoginState extends State<Login> {
                           textInputAction: TextInputAction.done,
                           decoration: InputDecoration(
                             hintText: 'Enter your email',
-                            hintStyle: TextStyle(fontSize: sizefont * 0.8),
+                            hintStyle: TextStyle(fontSize: sizefont * 0.85),
                             contentPadding: const EdgeInsets.all(10),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -208,7 +208,7 @@ class _LoginState extends State<Login> {
                       ),
                     ),
 
-                    SizedBox(height: size.height * 0.03),
+                    SizedBox(height: size.height * 0.02),
                     Text(
                       'Password',
                       style: GoogleFonts.notoSans(
@@ -219,7 +219,7 @@ class _LoginState extends State<Login> {
                     ),
                     SizedBox(height: size.height * 0.01),
                     Container(
-                      height: size.height * 0.065,
+                      height: size.height * 0.08,
                       child: Padding(
                         padding: const EdgeInsets.all(0),
                         child: TextFormField(
@@ -244,7 +244,7 @@ class _LoginState extends State<Login> {
                           textInputAction: TextInputAction.done,
                           decoration: InputDecoration(
                             hintText: 'Enter your password',
-                            hintStyle: TextStyle(fontSize: sizefont * 0.8),
+                            hintStyle: TextStyle(fontSize: sizefont * 0.85),
                             contentPadding: const EdgeInsets.all(10),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -285,7 +285,6 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 15),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -336,12 +335,22 @@ class _LoginState extends State<Login> {
                                       color: cream,
                                     ),
                                   ));
-                          await AuthProvider().login(
+                          var result = await AuthProvider().login(
                               emailController.text.trim(),
                               passwordController.text.trim(),
-                              context
-                              );
-                          //Navigator.pop(context);
+                              context);
+                          if (!result) {
+                            Navigator.pop(context);
+                            Fluttertoast.showToast(
+                                msg: "Invalid Credentials!",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.green,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          }
+                          // Navigator.pop(context);
                           // if (success) {
                           //   Navigator.pushReplacement(
                           //     context,

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:divine_drapes/screens/Items.dart';
+import 'package:divine_drapes/widgets/shimmer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:divine_drapes/consts/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -59,6 +60,56 @@ class _HomePageState extends State<HomePage> {
     var size = MediaQuery.of(context).size;
     var height = size.height;
     var width = size.width;
+
+    Widget builShimmer() => SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0,),
+                  child: ShimmerWidget.rectangular(
+                      width: width * 0.85, height: height * 0.051),
+                ),
+              ]),
+              SizedBox(
+                height: 2,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: ShimmerWidget.rectangular(
+                    width: width * 0.85, height: height * 0.018),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Container(
+                padding: EdgeInsets.all(8),
+                width: width * 0.95,
+                child: GridView.count(
+                  physics: BouncingScrollPhysics(),
+                  crossAxisCount: 3,
+                  shrinkWrap: true,
+                  children: List.generate(
+                    10,
+                    (index) {
+                      return Column(
+                        children: [
+                          ShimmerWidget.rectangular(height: height* 0.1, width: width *0.22,),
+                          SizedBox(height: 5,),
+                          ShimmerWidget.rectangular(height: height* 0.018, width: width *0.14,),
+                          
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ),
+              
+            ],
+          ),
+        );
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: whiteColor,
@@ -70,11 +121,9 @@ class _HomePageState extends State<HomePage> {
                   fontWeight: FontWeight.w700)),
           elevation: 0.0,
         ),
-        body: isLoading
-            ? Center(
-                child: CircularProgressIndicator(
-                color: cream,
-              ))
+        body: 
+        isLoading
+            ? builShimmer()
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -252,7 +301,10 @@ class _HomePageState extends State<HomePage> {
                                       onTap: () {
                                         Navigator.of(context)
                                             .push(MaterialPageRoute(
-                                                builder: (context) => Items(category: products[index]!.category,)));
+                                                builder: (context) => Items(
+                                                      category: products[index]!
+                                                          .category,
+                                                    )));
                                       },
                                       child: Container(
                                         height: width * 0.213,

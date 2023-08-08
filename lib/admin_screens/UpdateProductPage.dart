@@ -1,6 +1,9 @@
 import 'dart:io';
 import 'dart:math';
-
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,12 +18,29 @@ import 'dart:convert';
 import '../Provider/Auth/AuthProvider.dart';
 import '../consts/constants.dart';
 
-class AddProductPage extends StatefulWidget {
+class UpdateProductPage extends StatefulWidget {
+  final String id;
+  final String image;
+  final String desc;
+  var cost;
+  final String name;
+  final String category;
+  final int quantity;
+  UpdateProductPage({
+    Key? key,
+    required this.id,
+    required this.image,
+    required this.desc,
+    required this.cost,
+    required this.name,
+    required this.category,
+    required this.quantity,
+  }) : super(key: key);
   @override
-  _AddProductPageState createState() => _AddProductPageState();
+  _UpdateProductPageState createState() => _UpdateProductPageState();
 }
 
-class _AddProductPageState extends State<AddProductPage> {
+class _UpdateProductPageState extends State<UpdateProductPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
@@ -32,11 +52,20 @@ class _AddProductPageState extends State<AddProductPage> {
 
   static const String authTokenKey = 'auth_token';
 
+  @override
+  void initState() {
+    super.initState();
+    nameController.text = widget.name;
+    descriptionController.text = widget.desc;
+    categoryController.text = widget.category;
+    quantityController.text = widget.quantity.toString();
+    currencyController.text = 'INR';
+    valueController.text  = widget.cost.value.toString();
+  }
 
 
-
-  Future<void> addProduct() async {
-    final url = Uri.parse('https://divine-drapes.onrender.com/admin/addProduct');
+  Future<void> updateProduct() async {
+    final url = Uri.parse('https://divine-drapes.onrender.com/admin/updateProduct');
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(authTokenKey);
     print(token);
@@ -54,28 +83,29 @@ class _AddProductPageState extends State<AddProductPage> {
       ),
     );
 
-    final response = await http.post(
+    final response = await http.patch(
       url,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       },
-        body: jsonEncode({
-                "name": nameController.text,
-                "description": descriptionController.text,
-                "category": categoryController.text,
-                "quantity": int.parse(quantityController.text),
-                "cost": {
-                  "currency": currencyController.text,
-                  "value": int.parse(valueController.text),
-                },
-                "photo": {"isCust": true},
-                "text": {"isCust": true},
-                "color": {
-                  "isCust": true,
-                  "color": ["red", "blue", "green"],
-                },
-              }),
+      body: jsonEncode({
+        "id":widget.id,
+        "name": nameController.text,
+        "description": descriptionController.text,
+        "category": categoryController.text,
+        "quantity": int.parse(quantityController.text),
+        "cost": {
+          "currency": currencyController.text,
+          "value": int.parse(valueController.text),
+        },
+        "photo": {"isCust": true},
+        "text": {"isCust": true},
+        "color": {
+          "isCust": true,
+          "color": ["red", "blue", "green"],
+        },
+      }),
     );
 
     // Hide the circular progress indicator
@@ -84,15 +114,15 @@ class _AddProductPageState extends State<AddProductPage> {
     if (response.statusCode == 200 || response.statusCode == 201) {
       // Product added successfully
       // Handle the response or show a success message
-      print('Product added successfully');
+      print('Product updated successfully');
       print('Response: ${response.body}');
-      Map<String, dynamic> responseMap = jsonDecode(response.body);
-      String productId = responseMap['product']['_id'];
-      print(productId);
-
+      // Map<String, dynamic> responseMap = jsonDecode(response.body);
+      // String productId = responseMap['product']['_id'];
+      // print(productId);
+       updateImage(widget.id);
       // Show a success message
       Fluttertoast.showToast(
-        msg: "Product added successfully!",
+        msg: "Product updated successfully!",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 3,
@@ -100,7 +130,7 @@ class _AddProductPageState extends State<AddProductPage> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-      uploadImages(productId);
+
       setState(() {
         nameController.clear();
         descriptionController.clear();
@@ -113,7 +143,7 @@ class _AddProductPageState extends State<AddProductPage> {
       // Product addition failed
       // Handle the error or show an error message
       Fluttertoast.showToast(
-        msg: "Failed to add product!",
+        msg: "Failed to update product!",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 3,
@@ -125,9 +155,114 @@ class _AddProductPageState extends State<AddProductPage> {
       print('Response: ${response.body}');
     }
   }
+  // Future<void> updateProduct() async {
+  //   final url = Uri.parse('https://divine-drapes.onrender.com/admin/updateProduct');
+  //   final prefs = await SharedPreferences.getInstance();
+  //   final token = prefs.getString(authTokenKey);
+  //   print(token);
+  //   if (token == null) {
+  //     print('Authentication token is missing');
+  //     return;
+  //   }
+  //
+  //   // Show the circular progress indicator
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: false, // Prevent closing the dialog by tapping outside
+  //     builder: (context) => Center(
+  //       child: CircularProgressIndicator(),
+  //     ),
+  //   );
+  //
+  //   // Create a new http.MultipartRequest
+  //   var request = http.MultipartRequest('PATCH', url);
+  //
+  //   // Add the authorization header
+  //   request.headers['Authorization'] = 'Bearer $token';
+  //
+  //   // Add the product data
+  //   request.fields['id'] = widget.id;
+  //   request.fields['name'] = nameController.text;
+  //   request.fields['description'] = descriptionController.text;
+  //   request.fields['category'] = categoryController.text;
+  //   request.fields['quantity'] = int.parse(quantityController.text).toString();
+  //   request.fields['cost[currency]'] = currencyController.text;
+  //   request.fields['cost[value]'] = int.parse(valueController.text).toString();
+  //   request.fields['photo[isCust]'] = 'true';
+  //   request.fields['text[isCust]'] = 'true';
+  //   request.fields['color[isCust]'] = 'true';
+  //   request.fields['color[color]'] = '["red", "blue", "green"]';
+  //
+  //   // Handle the selected image, if available
+  //   if (_selectedImage != null) {
+  //     String fileName = _selectedImage!.path.split('/').last;
+  //     String extension = fileName.split('.').last;
+  //
+  //     Directory tempDir = await getTemporaryDirectory();
+  //     File newFile = File('${tempDir.path}/$fileName');
+  //
+  //     await _selectedImage!.copy(newFile.path);
+  //
+  //     request.files.add(await http.MultipartFile.fromPath(
+  //       'files',
+  //       newFile.path,
+  //       contentType: MediaType('image', extension),
+  //     ));
+  //   }
+  //   else
+  //     {
+  //       print("Image is null");
+  //     }
+  //
+  //   // Send the request and get the response
+  //   final response = await request.send();
+  //
+  //   // Hide the circular progress indicator
+  //   Navigator.pop(context);
+  //
+  //   if (response.statusCode == 200 || response.statusCode == 201) {
+  //     print('Product updated successfully');
+  //     print('Response: ${await response.stream.bytesToString()}');
+  //
+  //     // Show a success message
+  //     Fluttertoast.showToast(
+  //       msg: "Product updated successfully!",
+  //       toastLength: Toast.LENGTH_SHORT,
+  //       gravity: ToastGravity.BOTTOM,
+  //       timeInSecForIosWeb: 3,
+  //       backgroundColor: Colors.green,
+  //       textColor: Colors.white,
+  //       fontSize: 16.0,
+  //     );
+  //
+  //     setState(() {
+  //       nameController.clear();
+  //       descriptionController.clear();
+  //       categoryController.clear();
+  //       quantityController.clear();
+  //       currencyController.clear();
+  //       valueController.clear();
+  //     });
+  //   } else {
+  //     // Product update failed
+  //     // Handle the error or show an error message
+  //     Fluttertoast.showToast(
+  //       msg: "Failed to update product!",
+  //       toastLength: Toast.LENGTH_SHORT,
+  //       gravity: ToastGravity.BOTTOM,
+  //       timeInSecForIosWeb: 3,
+  //       backgroundColor: Colors.red,
+  //       textColor: Colors.white,
+  //       fontSize: 16.0,
+  //     );
+  //     print('Response status: ${response.statusCode}');
+  //     print('Response: ${await response.stream.bytesToString()}');
+  //   }
+  // }
 
 
-  Future<void> uploadImages(String productId) async {
+
+  Future<void> updateImage(String productId) async {
     final url = Uri.parse('https://divine-drapes.onrender.com/admin/addImages');
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(authTokenKey);
@@ -171,7 +306,7 @@ class _AddProductPageState extends State<AddProductPage> {
     print('Response: $responseBody');
 
     if (response.statusCode == 200) {
-      print('Image added successfully!');
+      print('Image added successfully!!!!!!!!!!!!!!!!!!!!!!!!!!');
     } else {
       print("Image was not added!");
       print(response.reasonPhrase);
@@ -273,19 +408,7 @@ class _AddProductPageState extends State<AddProductPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  InkWell(
-                      onTap: (){
-                        // Navigator.of(context).push(MaterialPageRoute(
-                        //     builder: (context) => const Home()));
-                        Navigator.of(context).pop();
-                      },
-                      child: Icon(Icons.arrow_back)),
-                  SizedBox(width: 10,),
-                  Text("Add Products",style: GoogleFonts.notoSans(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w700),
-                  ),
-                ],
+              Text("Update Product",style: GoogleFonts.notoSans(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w700),
               ),
               SizedBox(height: size.height * 0.03),
               Text(
@@ -336,7 +459,7 @@ class _AddProductPageState extends State<AddProductPage> {
                           vertical: size.width * 0.005,
                           horizontal: size.width * 0.03),
                       isDense: true,
-                      hintText: 'Enter the name of the product',
+                      hintText: "Enter product name",
                       hintStyle: TextStyle(fontSize: sizefont * 0.8),
                       enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
@@ -412,7 +535,7 @@ class _AddProductPageState extends State<AddProductPage> {
                           vertical: size.width * 0.005,
                           horizontal: size.width * 0.03),
                       isDense: true,
-                      hintText: 'Enter the description of the product',
+                      hintText: "Enter product desc.",
                       hintStyle: TextStyle(fontSize: sizefont * 0.8),
                       enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
@@ -486,7 +609,7 @@ class _AddProductPageState extends State<AddProductPage> {
                           vertical: size.width * 0.005,
                           horizontal: size.width * 0.03),
                       isDense: true,
-                      hintText: 'Enter the Category',
+                      hintText: "Product category",
                       hintStyle: TextStyle(fontSize: sizefont * 0.8),
                       enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
@@ -560,7 +683,7 @@ class _AddProductPageState extends State<AddProductPage> {
                           vertical: size.width * 0.005,
                           horizontal: size.width * 0.03),
                       isDense: true,
-                      hintText: 'Enter the quantity',
+                      hintText: "Enter quantity",
                       hintStyle: TextStyle(fontSize: sizefont * 0.8),
                       enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
@@ -634,7 +757,7 @@ class _AddProductPageState extends State<AddProductPage> {
                           vertical: size.width * 0.005,
                           horizontal: size.width * 0.03),
                       isDense: true,
-                      hintText: 'Enter the currency',
+                      hintText: 'INR',
                       hintStyle: TextStyle(fontSize: sizefont * 0.8),
                       enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
@@ -708,7 +831,7 @@ class _AddProductPageState extends State<AddProductPage> {
                           vertical: size.width * 0.005,
                           horizontal: size.width * 0.03),
                       isDense: true,
-                      hintText: 'Enter the product cost',
+                      hintText: "Enter product price",
                       hintStyle: TextStyle(fontSize: sizefont * 0.8),
                       enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
@@ -759,16 +882,9 @@ class _AddProductPageState extends State<AddProductPage> {
                   ),
                   padding: const EdgeInsets.all(10.0),
                   child: _selectedImage == null
-                      ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.file_upload_outlined, size: 40),
-                      SizedBox(height: 10.0),
-                      Text(
-                        'Add Photo',
-                      ),
-                    ],
-                  )
+                      ? Image(image: (widget.image == "assets/Vector.png")
+                      ? AssetImage(widget.image)
+                      : NetworkImage(widget.image) as ImageProvider)
                       : Image.file(
                     File(_selectedImage!.path),
                     fit: BoxFit.cover,
@@ -782,7 +898,7 @@ class _AddProductPageState extends State<AddProductPage> {
               SizedBox(height: size.height * 0.02),
               InkWell(
                 onTap: (){
-                  addProduct();
+                  updateProduct();
                 },
                 child: Container(
                   width: double.infinity,
@@ -800,7 +916,7 @@ class _AddProductPageState extends State<AddProductPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        'Add Product',
+                        'Update Product',
                         style: GoogleFonts.notoSans(
                           fontSize: sizefont * 0.7,
                           color: Colors.white,

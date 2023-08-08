@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:divine_drapes/admin_screens/orderInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:divine_drapes/models/AllOrders.dart' as model;
+import '../Provider/Auth/order_API.dart';
 import '../consts/constants.dart';
 
 class NewOrders extends StatefulWidget {
@@ -13,24 +17,90 @@ class NewOrders extends StatefulWidget {
 }
 
 class _NewOrdersState extends State<NewOrders> {
-  DropdownMenuItem<String> buildMenuItem(String item) =>
-      DropdownMenuItem(
-          value: item,
-          child: Text(
-            item,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-          ));
+  DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
+      value: item,
+      child: Text(
+        item,
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+      ));
 
   final list1 = [
     "Mugs",
-    "KeyChains",
-    "Lockets",
-    "WaterBottles",
-    "Frames"
+    "Paper Weight",
+    "Coasters",
+    "Hair Comb",
+    "Envelop",
+    "Diary",
+    "Folders",
+    "Study Desk",
+    "Sequence Bag",
+    "Sash",
+    "T-Shirts",
+    "Greetings Card",
+    "Puzzles",
+    "Luggage Tags",
+    "Steel Crockery",
+    "Locket & Keychain",
+    "Magnet",
+    "Photo Frames",
+    "Pen & Pencil",
+    "Bottles",
+    "Cube",
+    "Badges",
+    "Play Card",
+    "Calendars",
+    "Writing Pads",
+    "Crayons",
+    "Sequence Pouch",
+    "Pillows",
+    "Cap",
+    "Surprise Box",
+    "Clock",
+    "Passport Covers",
+    "Pen Drive",
+    "Smiley Table",
+    "Key Chains",
+    "Mobile Covers",
+    "Pen Stand",
+    "Wallets",
+    "Office Products",
   ];
 
   String? value1;
   String ItemName = "";
+  static const String authTokenKey = 'auth_token';
+
+  List<model.Received> filteredOrders = [];
+  bool isLoading = true;
+
+  // List<data.Received?> allOrders = [];
+  var allOrders;
+
+  Future<List<model.Received>> AllOrdersData() async {
+    try {
+      print("future orders data: ");
+      allOrders = await Order().getAllOrders();
+      log(allOrders.toString());
+      for(Map i in allOrders)
+        {
+          filteredOrders.add(model.AllOrders.fromJson(i) as model.Received);
+        }
+      setState(() {
+        isLoading = false;
+      });
+      print(filteredOrders);
+      return filteredOrders;
+    } catch (e) {
+      print(e);
+      return filteredOrders;
+    }
+  }
+
+  @override
+  void initState() {
+    AllOrdersData();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -47,7 +117,7 @@ class _NewOrdersState extends State<NewOrders> {
                 SizedBox(),
                 Spacer(),
                 Container(
-                  width: screenWidth*0.36,
+                  width: screenWidth * 0.36,
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black, width: 2),
@@ -75,13 +145,12 @@ class _NewOrdersState extends State<NewOrders> {
               child: ListView.builder(
                 shrinkWrap: true,
                 physics: BouncingScrollPhysics(),
-                itemCount: 20,
+                itemCount: filteredOrders.length,
                 itemBuilder: (context, position) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: GestureDetector(
-                      onTap: ()
-                      {
+                      onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const OrderInfo()));
                       },
@@ -92,12 +161,15 @@ class _NewOrdersState extends State<NewOrders> {
                         //   //child: Image.network("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/446b1af0-e6ba-4b0f-a9de-6ae6d3ed27a3/dfjhqn3-23d30b9d-16e3-42b6-aa12-e010a3999ef6.png/v1/fill/w_736,h_736,q_80,strp/satoru_gojo_aesthetic_pfp_by_harvester0fs0uls_dfjhqn3-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzM2IiwicGF0aCI6IlwvZlwvNDQ2YjFhZjAtZTZiYS00YjBmLWE5ZGUtNmFlNmQzZWQyN2EzXC9kZmpocW4zLTIzZDMwYjlkLTE2ZTMtNDJiNi1hYTEyLWUwMTBhMzk5OWVmNi5wbmciLCJ3aWR0aCI6Ijw9NzM2In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.F7_Ce5Ih1dhahsCnvFHRZgivj_8AByd9ZYHS3Ju0aws",height: 180,),
                         // ),
                         leading: FractionallySizedBox(
-                          //widthFactor: 0.25,
+                          widthFactor: 0.27,
                           //heightFactor: 1.6,// Adjust the width factor as needed
-                          heightFactor: screenHeight*0.0019,
+                          heightFactor: screenHeight * 0.0019,
                           child: AspectRatio(
                             aspectRatio: 1,
-                            child: Image.asset('assets/mug.png',fit: BoxFit.cover,),
+                            child: Image.asset(
+                              'assets/mug.png',
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                         title: Column(
@@ -106,21 +178,43 @@ class _NewOrdersState extends State<NewOrders> {
                           children: [
                             Row(
                               children: [
-                                Text("M1 White Mug",style:  GoogleFonts.notoSans(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w700),),
+                                Text(
+                                  "M1 White Mug",
+                                  style: GoogleFonts.notoSans(
+                                      color: Colors.black,
+                                      fontSize: screenWidth * 0.036,
+                                      fontWeight: FontWeight.w700),
+                                ),
                                 Spacer(),
-                                Text("21/05/2023",style:  GoogleFonts.notoSans(color: Colors.black,fontSize: 12,fontWeight: FontWeight.w500),),
+                                Text(
+                                  "21/05/2023",
+                                  style: GoogleFonts.notoSans(
+                                      color: Colors.black,
+                                      fontSize: screenWidth * 0.031,
+                                      fontWeight: FontWeight.w500),
+                                ),
                               ],
                             ),
-                            Text("photo attached",style:  GoogleFonts.notoSans(color: Colors.black,fontSize: 14,fontWeight: FontWeight.w500)),
-                            SizedBox(height: 7,),
+                            Text("photo attached",
+                                style: GoogleFonts.notoSans(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500)),
+                            SizedBox(
+                              height: 7,
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(6.0),
-                              child: Text("Payment: mode",style:  GoogleFonts.notoSans(color: Colors.black,fontSize: 14,fontWeight: FontWeight.w600),),
+                              child: Text(
+                                "Payment: mode",
+                                style: GoogleFonts.notoSans(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600),
+                              ),
                             )
                           ],
                         ),
-
-
                       ),
                     ),
                   );
@@ -168,12 +262,8 @@ class _NewOrdersState extends State<NewOrders> {
                   //
                   // );
                 },
-
-
-
               ),
             )
-
           ],
         ),
       ),

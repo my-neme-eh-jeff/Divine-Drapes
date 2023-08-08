@@ -67,7 +67,7 @@ class User {
   late final bool success;
   late final Data data;
 
-  User.fromJson(Map<String, dynamic> json) {
+  User.fromJson(Map<String, dynamic> json){
     success = json['success'];
     data = Data.fromJson(json['data']);
   }
@@ -100,7 +100,7 @@ class Data {
   late final bool isVerified;
   late final List<AddressList> addressList;
 
-  Data.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json){
     fName = json['fName'];
     lName = json['lName'];
     DOB = json['DOB'];

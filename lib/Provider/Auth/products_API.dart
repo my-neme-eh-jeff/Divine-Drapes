@@ -5,10 +5,10 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../models/ProductModel.dart';
+import '../../models/ProductModel.dart' as multiple;
 
 class Products {
-  List<Data> _productsData = [];
+  List<multiple.Data> _productsData = [];
   var product;
   static const String authTokenKey = 'auth_token';
 
@@ -27,7 +27,8 @@ class Products {
       var data = jsonDecode(streamResponse.body);
       //print(token);
       // print(data);
-      var getProducts = AllProducts.fromJson(data);
+      var getProducts = multiple.AllProducts.fromJson(data);
+
       _productsData = getProducts.data;
       return _productsData;
     } else {
@@ -51,8 +52,8 @@ class Products {
 
     if (response.statusCode == 200) {
       var data = jsonDecode(streamResponse.body);
-      
-      var getProducts = AllProducts.fromJson(data);
+
+      var getProducts = multiple.AllProducts.fromJson(data);
       _productsData = getProducts.data;
       return _productsData;
     } else {
@@ -65,27 +66,21 @@ class Products {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(authTokenKey);
     var headers = {'Authorization': 'Bearer $token'};
-    var request = http.Request('Get',
-        Uri.parse('https://divine-drapes.onrender.com/product/viewProduct'));
-    request.body = await json.encode({"productID": id});
+    var request = http.Request(
+        'GET',
+        Uri.parse('https://divine-drapes.onrender.com/product/viewProduct/' +
+            id));
+    request.body = '''''';
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     http.Response streamResponse = await http.Response.fromStream(response);
 
-    print(id);
-    print(jsonDecode(streamResponse.body));
-
     if (response.statusCode == 200) {
       var data = jsonDecode(streamResponse.body);
-      print(response.statusCode);
-      //print(token);
-      log("get specific product api");
-      print(data);
-      log(response.statusCode.toString());
-      var getProducts = AllProducts.fromJson(data);
-      product = getProducts.data;
-      return product;
+      log("view product");
+      return data['data'];
     } else {
+      print(token);
       print(response.statusCode);
     }
   }
@@ -94,8 +89,8 @@ class Products {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(authTokenKey);
     var headers = {'Authorization': 'Bearer $token'};
-    var request = http.Request('GET',
-        Uri.parse('https://divine-drapes.onrender.com/user/viewMyCart'));
+    var request = http.Request(
+        'GET', Uri.parse('https://divine-drapes.onrender.com/user/viewMyCart'));
     request.body = '''''';
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
@@ -107,7 +102,7 @@ class Products {
       var data = jsonDecode(streamResponse.body);
       //print(token);
       // print(data);
-      var getProducts = AllProducts.fromJson(data);
+      var getProducts = multiple.AllProducts.fromJson(data);
       _productsData = getProducts.data;
       return _productsData;
     } else {
@@ -115,4 +110,10 @@ class Products {
       print(response.statusCode);
     }
   }
+
+
 }
+
+
+
+

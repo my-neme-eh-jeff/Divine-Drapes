@@ -3,11 +3,15 @@ import 'package:divine_drapes/screens/itemDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../Provider/CartProvider.dart';
 import '../consts/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:divine_drapes/models/ProductModel.dart' as data;
 import 'package:divine_drapes/Provider/Auth/products_API.dart';
+
+import '../widgets/shimmer_widget.dart';
 
 class Cart extends StatefulWidget {
   const Cart({Key? key}) : super(key: key);
@@ -28,6 +32,7 @@ class _CartState extends State<Cart> {
   List<data.Data?> cartProducts = [];
 
   Future<void> CartData() async {
+
     try {
       cartProducts = await Products().getCartData();
       print("future cart data: ");
@@ -76,6 +81,9 @@ class _CartState extends State<Cart> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+      CartProvider cartProvider =
+          Provider.of<CartProvider>(context, listen: false);
+      cartProvider.removeFromCart(productId);
       return true;
     } else {
       print(response.reasonPhrase);
@@ -102,6 +110,46 @@ class _CartState extends State<Cart> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
+    Widget buildShimmer() => SingleChildScrollView(
+      child: Column(
+        children: [
+
+          ListView.builder(
+            shrinkWrap: true,
+            physics: BouncingScrollPhysics(),
+                    itemCount: 2,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: EdgeInsets.all(12),
+                        child: Row(
+                          children: [
+                            ShimmerWidget.rectangular(width: screenWidth * 0.3, height: screenHeight *0.135,),
+                            SizedBox(width: 10,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    ShimmerWidget.rectangular(width: screenWidth * 0.35, height: 20),
+                                    SizedBox(width: screenWidth * 0.1,),
+                                    ShimmerWidget.rectangular(width: screenWidth * 0.1, height: 18),
+                                  ],
+                                ),
+                                SizedBox(height: 10,),
+                                ShimmerWidget.rectangular(width: screenWidth * 0.55, height: 30),
+                                SizedBox(height: 10,),
+                                ShimmerWidget.rectangular(width: screenWidth * 0.3, height: screenHeight*0.04),
+                              ],
+                            )
+                          ],
+                        ),
+                      );
+                    }),
+        ],
+      ),
+    );
+
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
@@ -112,7 +160,10 @@ class _CartState extends State<Cart> {
                 color: darkPurple, fontSize: 28, fontWeight: FontWeight.w700)),
         elevation: 0.0,
       ),
-      body: SingleChildScrollView(
+      body:
+      isLoading
+          ? buildShimmer()
+          :SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -160,83 +211,77 @@ class _CartState extends State<Cart> {
                   ),
                 ],
               ),
-              isLoading
-                  ? Center(
-                      child: CircularProgressIndicator(
-                      color: cream,
-                    ))
-                  : Container(
-                      height: screenHeight,
-                      child: SingleChildScrollView(
-                        physics: NeverScrollableScrollPhysics(),
-                        child: Padding(
-                            padding:
-                                const EdgeInsets.only(right: 4, bottom: 10),
-                            child: StatefulBuilder(builder:
-                                (BuildContext context, StateSetter setState) {
-                              return Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Divider(
-                                    thickness: 2,
-                                  ),
-                                  Container(
-                                    height: screenHeight * 0.75,
-                                    child: ListView.builder(
-                                      padding: EdgeInsets.only(
-                                        top: 5,
-                                      ),
-                                      shrinkWrap: true,
-                                      physics: BouncingScrollPhysics(),
-                                      itemCount: filteredProducts.length,
-                                      itemBuilder: (context, index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ItemDetails(
-                                                          id: filteredProducts[
-                                                                  index]!
-                                                              .id,
-                                                          image: (filteredProducts[
-                                                                      index]!
-                                                                  .photo
-                                                                  .picture
-                                                                  .isEmpty)
-                                                              ? 'assets/Vector.png'
-                                                              : filteredProducts[
-                                                                      index]!
-                                                                  .photo
-                                                                  .picture[0],
-                                                          desc:
-                                                              filteredProducts[
-                                                                      index]!
-                                                                  .description,
-                                                          cost:
-                                                              filteredProducts[
-                                                                      index]!
-                                                                  .cost,
-                                                          name:
-                                                              filteredProducts[
-                                                                      index]!
-                                                                  .name,
-                                                          category:
-                                                              filteredProducts[
-                                                                      index]!
-                                                                  .category,
-                                                          added: [],
-                                                        )));
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 10, bottom: 10),
+               Container(
+                      height: screenHeight ,
+                      child: Padding(
+                          padding:
+                              const EdgeInsets.only(right: 4, bottom: 10),
+                          child: StatefulBuilder(builder:
+                              (BuildContext context, StateSetter setState) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Divider(
+                                  thickness: 2,
+                                ),
+                                Container(
+                                  height: screenHeight * 0.7,
+                                  child: ListView.builder(
+                                    padding: EdgeInsets.only(
+                                      top: 5,
+                                    ),
+                                    shrinkWrap: true,
+                                    physics: BouncingScrollPhysics(),
+                                    itemCount: filteredProducts.length,
+                                    itemBuilder: (context, index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ItemDetails(
+                                                        id: filteredProducts[
+                                                                index]!
+                                                            .id,
+                                                        image: (filteredProducts[
+                                                                    index]!
+                                                                .photo
+                                                                .picture
+                                                                .isEmpty)
+                                                            ? 'assets/Vector.png'
+                                                            : filteredProducts[
+                                                                    index]!
+                                                                .photo
+                                                                .picture[0],
+                                                        desc:
+                                                            filteredProducts[
+                                                                    index]!
+                                                                .description,
+                                                        cost:
+                                                            filteredProducts[
+                                                                    index]!
+                                                                .cost,
+                                                        name:
+                                                            filteredProducts[
+                                                                    index]!
+                                                                .name,
+                                                        category:
+                                                            filteredProducts[
+                                                                    index]!
+                                                                .category,
+                                                        added: [],
+                                                      )));
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 10, bottom: 10),
+                                          child: FittedBox(
                                             child: Container(
-                                              height: screenHeight * 0.14,
+                                              height: screenHeight * 0.15,
                                               width: screenWidth,
                                               child: ListTile(
                                                 leading: FractionallySizedBox(
@@ -372,7 +417,7 @@ class _CartState extends State<Cart> {
                                                                       color: Colors
                                                                           .black,
                                                                       fontSize:
-                                                                          16,
+                                                                          screenWidth * 0.04,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w600,
@@ -439,14 +484,14 @@ class _CartState extends State<Cart> {
                                               ),
                                             ),
                                           ),
-                                        );
-                                      },
-                                    ),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                ],
-                              );
-                            })),
-                      )),
+                                ),
+                              ],
+                            );
+                          }))),
             ],
           ),
         ),

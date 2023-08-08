@@ -1,4 +1,5 @@
 import 'package:divine_drapes/screens/Cart.dart';
+import 'package:divine_drapes/screens/EditProfile.dart';
 import 'package:divine_drapes/screens/HomePage.dart';
 import 'package:divine_drapes/consts/constants.dart';
 import 'package:flutter/material.dart';
@@ -19,11 +20,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    _widgetOptions = <Widget>[
-      HomePage(),
-      Cart(),
-      MyAccount(),
-    ];
+    _widgetOptions = <Widget>[HomePage(), Cart(), MyAccount(), EditProfile()];
   }
 
   void _onItemTapped(int index) {

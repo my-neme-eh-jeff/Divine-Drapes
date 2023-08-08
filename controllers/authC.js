@@ -16,15 +16,13 @@ let mailTransporter = nodemailer.createTransport({
 
 const createUser = async (req, res) => {
   try {
-    console.log(req.body);
     let userData = new UserSchema(req.body);
     let savedUserData = await userData.save();
     let id = savedUserData._id;
     let userMail = savedUserData.email;
 
     let pass = await UserSchema.findById({ _id: id }, { password: 0 }); //to hide hashed pswd
-    const roles = Object.values(savedUserData.roles).filter(Boolean)
-    console.log(roles)
+    const roles = Object.values(savedUserData.roles).filter(Boolean);
 
     const accessToken = jwt.sign(
       {
@@ -35,14 +33,12 @@ const createUser = async (req, res) => {
       },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "1y" }
-    )
+    );
 
-    console.log(await bcrypt.compare(req.body.password, savedUserData.password))
-    console.log(pass);
     res.status(201).json({
       success: true,
-      token: accessToken
-  });
+      token: accessToken,
+    });
     mailTransporter.sendMail({
       from: process.env.EMAIL,
       to: userMail,
@@ -50,7 +46,6 @@ const createUser = async (req, res) => {
         "Thank you for creating an account with us " + savedUserData.fName,
       text: "We hope you have a good time using our app.",
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -61,13 +56,13 @@ const createUser = async (req, res) => {
 
 const handleRefreshToken = async (req, res) => {
   const cookies = req.cookies;
+  console.log(cookies);
   if (!cookies?.jwt) return res.sendStatus(401);
   const refreshToken = cookies.jwt;
   res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
 
   const foundUser = await UserSchema.findOne({ refreshToken }).exec();
   // Detected refresh token reuse!
-  console.log(foundUser);
   if (!foundUser) {
     jwt.verify(
       refreshToken,
@@ -80,7 +75,6 @@ const handleRefreshToken = async (req, res) => {
         }).exec();
         hackedUser.refreshToken = [];
         const result = await hackedUser.save();
-        console.log(result);
       }
     );
     return res.sendStatus(403); //Forbidden
@@ -95,9 +89,7 @@ const handleRefreshToken = async (req, res) => {
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET,
     async (err, decoded) => {
-      console.log(decoded);
       if (err) {
-        console.log("expired refresh token");
         foundUser.refreshToken = [...newRefreshTokenArray];
         const result = await foundUser.save();
         console.log(result);
@@ -114,13 +106,13 @@ const handleRefreshToken = async (req, res) => {
           },
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "1y" }     //1h
+        { expiresIn: "1y" } //1h
       );
 
       const newRefreshToken = jwt.sign(
         { email: foundUser.email },
         process.env.REFRESH_TOKEN_SECRET,
-        { expiresIn: "1y" }      //30d
+        { expiresIn: "1y" } //30d
       );
       // Saving refreshToken with current user
       foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
@@ -134,7 +126,7 @@ const handleRefreshToken = async (req, res) => {
         maxAge: 24 * 60 * 60 * 1000,
       });
 
-      res.json({ accessToken,success:true });
+      res.json({ accessToken, success: true });
     }
   );
 };
@@ -166,21 +158,21 @@ const handleLogout = async (req, res) => {
 
 const handleLogin = async (req, res) => {
   const cookies = req.cookies;
-  console.log(req.body)
+  console.log(req.body);
   const email = req.body.email;
   const password = req.body.password;
-  console.log(password)
+  console.log(password);
   if (!email || !password)
     return res
       .status(400)
       .json({ message: "email and password are required." });
   const foundUser = await UserSchema.findOne({ email: email });
-  console.log(foundUser)
+  console.log(foundUser);
   if (!foundUser) return res.sendStatus(401); //Unauthorized
   // evaluate password
   const match = await bcrypt.compare(password, foundUser.password);
   // const match = password === foundUser.password
-  console.log(match)
+  console.log(match);
   if (match) {
     console.log(foundUser);
     const roles = Object.values(foundUser.roles).filter(Boolean);
@@ -193,12 +185,12 @@ const handleLogin = async (req, res) => {
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "1y" }        //10m
+      { expiresIn: "1y" } //10m
     );
     const newRefreshToken = jwt.sign(
       { email: foundUser.email },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "1y" }    //10d
+      { expiresIn: "1y" } //10d
     );
 
     let newRefreshTokenArray = !cookies?.jwt
@@ -243,9 +235,9 @@ const handleLogin = async (req, res) => {
     });
 
     // Send authorization roles and access token to user
-    res.json({ accessToken,success:true });
+    res.json({ accessToken, success: true });
   } else {
-    console.log('23912039qsidbdak')
+    console.log("23912039qsidbdak");
     res.sendStatus(401);
   }
 };
@@ -267,9 +259,12 @@ const forgotPSWD = async (req, res) => {
       upperCaseAlphabets: false,
       specialChars: false,
     });
-    const User = await UserSchema.findOneAndUpdate({ email: email },{ OTP: otp });
+    const User = await UserSchema.findOneAndUpdate(
+      { email: email },
+      { OTP: otp }
+    );
     await User.save();
-    console.log(User)
+    console.log(User);
     mailTransporter.sendMail({
       from: process.env.EMAIL,
       to: user.email,

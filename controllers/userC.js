@@ -363,11 +363,11 @@ const viewOrder = async (req, res) => {
 };
 
 //view single Order
-const viewSingleOrder = async (req, res) => {
-  try {
-    const orderID = req.params.orderID;
-    const order = await OrderSchema.findById(orderID);
-    if (!order) {
+const viewSingleOrder = async(req,res) => {
+  try{
+    const  orderID  = req.params.orderID;
+    const order = await OrderSchema.findById(orderID).populate("user").populate("product")
+    if(!order){
       return res.status(404).json({
         success: false,
         message: "No order with this id",

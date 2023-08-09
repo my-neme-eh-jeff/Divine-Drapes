@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:divine_drapes/screens/CustomiseOrder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart'as http;
 import 'package:flutter/material.dart';
@@ -380,7 +381,10 @@ class _ItemDetailsState extends State<ItemDetails> {
                             padding: EdgeInsets.only(top: 8),
                             child: GestureDetector(
                               onTap: (){
-                                orderStatusProvider.placeOrder(widget.id);
+                                // orderStatusProvider.placeOrder(widget.id);
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> CustomiseOrder(
+                                  productName: widget.name,
+                                )));
                               },
                               child: Container(
                                 width: screenWidth * 0.85,
@@ -406,7 +410,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                     ),
                                   ):
                                       Text(
-                                        'Buy Now',
+                                        'Customise',
                                         style: GoogleFonts.notoSans(
                                           fontSize: screenWidth * 0.04,
                                           color: Colors.white,

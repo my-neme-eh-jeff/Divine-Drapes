@@ -10,7 +10,6 @@ import {
   CardBody,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import useAxiosPrivate from "../../Hooks/useAxiosPrivate";
 import publicAxios from "../../Axios/publicAxios";
 
 const responsive = {

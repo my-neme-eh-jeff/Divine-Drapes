@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
 import useAxiosPrivate from "../../Hooks/useAxiosPrivate";
+import Loader from "../Loader/Loader";
 
 function Product() {
   const [body, setBody] = useState([]);
@@ -22,6 +23,7 @@ function Product() {
   const privateAxios = useAxiosPrivate();
   const prodId = productId.split(":")[1];
   const nav = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   // Calculate categoryWise based on flag
   const categoryWise = flag ? catBody?.data : catBody?.data || [];
@@ -68,22 +70,31 @@ function Product() {
     //     console.log(err)
     // }
   };
-  const getSingleProduct = () => {
+  const getSingleProduct = async () => {
+    setLoading(true)
     let config = {
       method: "GET",
       url: `product/viewProduct/${prodId}`,
     };
-
-    privateAxios
-      .request(config)
-      .then((response) => {
-        // alert("hitted")
-        console.log(JSON.stringify(response.data));
+    try {
+      const response = await privateAxios.request(config);
+      console.log(JSON.stringify(response.data));
         setBody([response.data]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+    // privateAxios
+    //   .request(config)
+    //   .then((response) => {
+    //     // alert("hitted")
+    //     console.log(JSON.stringify(response.data));
+    //     setBody([response.data]);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   };
   useEffect(() => {
     if (flag == false) {
@@ -113,6 +124,11 @@ function Product() {
   return (
     <div>
       <Navbar />
+      {loading ? 
+      <div>
+        <Loader />
+      </div> 
+      :  
       <ChakraProvider>
         <Box className="productbody">
           <br />
@@ -192,7 +208,7 @@ function Product() {
                     <svg
                       stroke="currentColor"
                       fill="currentColor"
-                      stroke-width="0"
+                      strokeWidth="0"
                       version="1.1"
                       viewBox="0 0 16 16"
                       height="1em"
@@ -224,6 +240,7 @@ function Product() {
             {categoryWise.map((map) => {
               return (
                 <Content
+                  key={map}
                   title={map.name}
                   price={map.cost.value}
                   desc={map.description}
@@ -234,6 +251,7 @@ function Product() {
         </Box>
         <Footer />
       </ChakraProvider>
+}
     </div>
   );
 }

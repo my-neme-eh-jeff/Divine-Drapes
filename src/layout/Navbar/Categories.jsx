@@ -141,7 +141,11 @@ const Categories = () => {
               </SimpleGrid>
             </AlertDialogBody>
             <AlertDialogFooter>
-              <Button bgColor={"#f7bc62"} onClick={handleApply} width={"120px"}>
+              <Button 
+                bgColor={"#f7bc62"} 
+                _hover={{ bgColor: "#e0a24e" }}
+                onClick={handleApply} 
+                width={"120px"}>
                 Apply
               </Button>
             </AlertDialogFooter>

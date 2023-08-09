@@ -21,7 +21,7 @@ import useAuth from '../../Hooks/useAuth';
 import { useParams } from 'react-router-dom';
 import { Toast } from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react'
-
+import Loader from '../Loader/Loader'
 
 function Buy() {
     const [body, setBody] = useState([])
@@ -34,6 +34,7 @@ function Buy() {
     const [custText, setCustText] = useState('');
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [pay, setPay] = useState()
+    const [loading, setLoading] = useState(false);
 
     const { auth, setAuth } = useAuth();
     const isLogin = auth?.accessToken;
@@ -53,23 +54,22 @@ function Buy() {
         console.log(fileInputRef)
     };
 
-  const getSingleProd = () => {
+  const getSingleProd = async () => {
+    setLoading(true);
     let config = {
       method: "get",
       maxBodyLength: Infinity,
       url: `https://divine-drapes.onrender.com/product/viewProduct/${prodId}`,
     };
-
-    privateAxios
-      .request(config)
-      .then((response) => {
-        // alert("hitted")
-        console.log(JSON.stringify(response.data));
+    try {
+      const response = await privateAxios.request(config);
+      console.log(JSON.stringify(response.data));
         setBody([response.data]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
     useEffect(() => {
@@ -157,6 +157,11 @@ function Buy() {
 
             <ChakraProvider>
                 <Navbar />
+                {/* {loading ?
+                <div>
+                <Loader /> 
+                </div> 
+                : */}
                 <Box className='productbody' >
                     <br />
                     {/* product name here  */}
@@ -258,48 +263,48 @@ function Buy() {
                   </Select>
                 </Box>
                 {pay == "card" ? (
-                  <div class="modal">
-                    <form class="form">
-                      <div class="separator">
-                        <hr class="line" />
+                  <div className="modal">
+                    <form className="form">
+                      <div className="separator">
+                        <hr className="line" />
                         <p>Pay using Credit/Debit card</p>
-                        <hr class="line" />
+                        <hr className="line" />
                       </div>
-                      <div class="credit-card-info--form">
-                        <div class="input_container">
-                          <label for="password_field" class="input_label">
+                      <div className="credit-card-info--form">
+                        <div className="input_container">
+                          <label htmlFor="password_field" className="input_label">
                             Card holder full name
                           </label>
                           <input
                             id="password_field"
-                            class="input_field"
+                            className="input_field"
                             type="text"
                             name="input-name"
                             title="Inpit title"
                             placeholder="Enter your full name"
                           />
                         </div>
-                        <div class="input_container">
-                          <label for="password_field" class="input_label">
+                        <div className="input_container">
+                          <label htmlFor="password_field" className="input_label">
                             Card Number
                           </label>
                           <input
                             id="password_field"
-                            class="input_field"
+                            className="input_field"
                             type="number"
                             name="input-name"
                             title="Inpit title"
                             placeholder="0000 0000 0000 0000"
                           />
                         </div>
-                        <div class="input_container">
-                          <label for="password_field" class="input_label">
+                        <div className="input_container">
+                          <label htmlFor="password_field" className="input_label">
                             Expiry Date / CVV
                           </label>
-                          <div class="split">
+                          <div className="split">
                             <input
                               id="password_field"
-                              class="input_field"
+                              className="input_field"
                               type="text"
                               name="input-name"
                               title="Expiry Date"
@@ -307,7 +312,7 @@ function Buy() {
                             />
                             <input
                               id="password_field"
-                              class="input_field"
+                              className="input_field"
                               type="number"
                               name="cvv"
                               title="CVV"
@@ -367,6 +372,7 @@ function Buy() {
             </SimpleGrid>
           </Box>
         </Box>
+                {/* } */}
         <br />
         <Footer />
       </ChakraProvider>

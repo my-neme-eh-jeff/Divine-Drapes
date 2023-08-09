@@ -106,7 +106,14 @@ const BulkOrder = () => {
                         </GridItem>
                         <GridItem colSpan={2} m='5% 0'>
                             <FormControl>
-                                <Button bgColor='#f7bc62' width='100%' onClick={handleSubmit}>Submit</Button>
+                                <Button 
+                                bgColor='#f7bc62' 
+                                width='100%' 
+                                onClick={handleSubmit} 
+                                _hover={{ bgColor: "#e0a24e" }}
+                                >
+                                    Submit
+                                </Button>
                             </FormControl>
                         </GridItem>
                     </SimpleGrid>

@@ -169,11 +169,11 @@ class _MyAccountState extends State<MyAccount> {
                 ),
               ),
               Transform.translate(
-                offset: Offset(-10, screenHeight * 0.06),
+                offset: Offset(-10, 0),
                 child: ListView.builder(
                     shrinkWrap: true,
                     physics: BouncingScrollPhysics(),
-                    itemCount: 4,
+                    itemCount: 5,
                     itemBuilder: (context, index) {
                       return Container(
                           padding: EdgeInsets.only(top: 40),
@@ -225,6 +225,7 @@ class _MyAccountState extends State<MyAccount> {
                             fontSize: 16,
                             fontWeight: FontWeight.w700),
                       ),
+                      SizedBox(height: 15,),
                       Row(
                         children: [
                           Stack(children: [

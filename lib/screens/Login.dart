@@ -329,12 +329,14 @@ class _LoginState extends State<Login> {
                       onTap: () async {
                         if (_formKey.currentState!.validate()) {
                           showDialog(
+                            barrierDismissible: false,
                               context: context,
                               builder: (context) => Center(
                                     child: CircularProgressIndicator(
                                       color: cream,
                                     ),
-                                  ));
+                                  )
+                                );
                           var result = await AuthProvider().login(
                               emailController.text.trim(),
                               passwordController.text.trim(),
@@ -364,6 +366,15 @@ class _LoginState extends State<Login> {
                           //     ),
                           //   );
                           // }
+                        } else {
+                          Fluttertoast.showToast(
+                                msg: "Enter Credentials!",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.green,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
                         }
                       },
                       child: Container(

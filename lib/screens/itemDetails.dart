@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:divine_drapes/screens/CustomiseOrder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart'as http;
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:divine_drapes/models/ProductModel.dart' as data;
@@ -10,6 +10,7 @@ import 'package:divine_drapes/Provider/Auth/products_API.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Provider/CartProvider.dart';
 import '../Provider/OrderStausProvider.dart';
 import '../consts/constants.dart';
 import '../widgets/shimmer_widget.dart';
@@ -44,9 +45,6 @@ class _ItemDetailsState extends State<ItemDetails> {
   bool placed = false;
   static const String authTokenKey = 'auth_token';
 
-
-
-
   var product;
   Future SpecificProduct() async {
     try {
@@ -64,7 +62,7 @@ class _ItemDetailsState extends State<ItemDetails> {
     try {
       productsCategoryWise =
           await Products().getProductsDataCategorywise(widget.category);
-          log(productsCategoryWise.length);
+      log(productsCategoryWise.length);
       // print(productsCategoryWise.map((e) => e?.id));
       // print((products[13]!.photo.picture.isEmpty) ? "asset": "network");
     } catch (e) {
@@ -74,6 +72,76 @@ class _ItemDetailsState extends State<ItemDetails> {
     print(productsCategoryWise.length);
   }
 
+  Future<bool> addToCart(
+      String productId, BuildContext context) async {
+    final url =
+        Uri.parse('https://divine-drapes.onrender.com/user/addCart/$productId');
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(authTokenKey);
+    print(token);
+    if (token == null) {
+      print('Authentication token is missing');
+      return false;
+    }
+
+    // Show the circular progress indicator
+    showDialog(
+      context: context,
+      barrierDismissible:
+          false, // Prevent closing the dialog by tapping outside
+      builder: (context) => Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    // Hide the circular progress indicator
+    Navigator.pop(context);
+
+    if (response.statusCode == 200) {
+      // Item added to cart successfully
+      // Handle the response or show a success message
+      print('Item added to cart successfully');
+      print('Response: ${response.body}');
+
+      // Show a success message
+      Fluttertoast.showToast(
+        msg: "Item added to cart successfully!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      CartProvider cartProvider =
+          Provider.of<CartProvider>(context, listen: false);
+      cartProvider.addToCart(productId);
+      return true;
+    } else {
+      // Failed to add item to cart
+      // Handle the error or show an error message
+      Fluttertoast.showToast(
+        msg: "Failed to add item to cart!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      print(response.statusCode);
+      print('Response: ${response.body}');
+      return false;
+    }
+  }
 
   // Future<void> placeOrder(String pID) async {
   //   final prefs = await SharedPreferences.getInstance();
@@ -142,7 +210,6 @@ class _ItemDetailsState extends State<ItemDetails> {
   //   }
   // }
 
-
   @override
   void initState() {
     SpecificProduct();
@@ -158,7 +225,6 @@ class _ItemDetailsState extends State<ItemDetails> {
     Widget buildShimmer() => SingleChildScrollView(
           child: Column(
             children: [
-              
               ListView.builder(
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
@@ -193,7 +259,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                 height: 10,
                               ),
                               ShimmerWidget.rectangular(
-                                  width: screenWidth * 0.53, height: screenHeight * 0.025),
+                                  width: screenWidth * 0.53,
+                                  height: screenHeight * 0.025),
                               SizedBox(
                                 height: 10,
                               ),
@@ -210,7 +277,6 @@ class _ItemDetailsState extends State<ItemDetails> {
           ),
         );
 
-
     @override
     void initState() {
       super.initState();
@@ -218,6 +284,7 @@ class _ItemDetailsState extends State<ItemDetails> {
       // to initialize the order status and retain it on refreshing the page
       orderStatusProvider.checkOrderStatus(widget.id);
     }
+
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
@@ -264,8 +331,11 @@ class _ItemDetailsState extends State<ItemDetails> {
                 child: Text(snapshot.error.toString()),
               );
             } else {
+              String productId = widget.id;
+              CartProvider cartProvider = Provider.of<CartProvider>(context);
               return Padding(
-                padding: EdgeInsets.only(top: screenHeight * 0.008, left: screenWidth*0.02),
+                padding: EdgeInsets.only(
+                    top: screenHeight * 0.008, left: screenWidth * 0.02),
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -324,10 +394,11 @@ class _ItemDetailsState extends State<ItemDetails> {
                               width: screenWidth * 0.416,
                               decoration: BoxDecoration(
                                   image: DecorationImage(
-                                      image: (widget.image == "assets/Vector.png")
-                                          ? AssetImage(widget.image)
-                                          : NetworkImage(widget.image)
-                                              as ImageProvider),
+                                      image:
+                                          (widget.image == "assets/Vector.png")
+                                              ? AssetImage(widget.image)
+                                              : NetworkImage(widget.image)
+                                                  as ImageProvider),
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(8),
                                   )),
@@ -380,11 +451,13 @@ class _ItemDetailsState extends State<ItemDetails> {
                           Padding(
                             padding: EdgeInsets.only(top: 8),
                             child: GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 // orderStatusProvider.placeOrder(widget.id);
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> CustomiseOrder(
-                                  productName: widget.name, productId: widget.id,
-                                )));
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => CustomiseOrder(
+                                          productName: widget.name,
+                                          productId: widget.id,
+                                        )));
                               },
                               child: Container(
                                 width: screenWidth * 0.85,
@@ -398,26 +471,25 @@ class _ItemDetailsState extends State<ItemDetails> {
                                   ),
                                 ),
                                 child: Center(
-                
-                                  child:
-                                  orderStatusProvider.placedProducts[widget.id] ?? false?
-                                  Text(
-                                    'Order Placed',
-                                    style: GoogleFonts.notoSans(
-                                      fontSize: screenWidth * 0.04,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ):
-                                      Text(
-                                        'Customise',
-                                        style: GoogleFonts.notoSans(
-                                          fontSize: screenWidth * 0.04,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      )
-                                ),
+                                    child: orderStatusProvider
+                                                .placedProducts[widget.id] ??
+                                            false
+                                        ? Text(
+                                            'Order Placed',
+                                            style: GoogleFonts.notoSans(
+                                              fontSize: screenWidth * 0.04,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          )
+                                        : Text(
+                                            'Customise',
+                                            style: GoogleFonts.notoSans(
+                                              fontSize: screenWidth * 0.04,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          )),
                               ),
                             ),
                           ),
@@ -431,8 +503,11 @@ class _ItemDetailsState extends State<ItemDetails> {
                               top: 10,
                             ),
                             child: GestureDetector(
-                              onTap: (){
-                                print(widget.id);
+                              onTap: () async {
+                                bool success = await addToCart(
+                                    widget.id,
+                                    context,
+                                    );
                               },
                               child: Container(
                                 width: screenWidth * 0.85,
@@ -446,15 +521,40 @@ class _ItemDetailsState extends State<ItemDetails> {
                                   ),
                                 ),
                                 child: Center(
-                                  child: Text(
-                                    isAdded?'Added': 'Add to cart',
-                                    style: GoogleFonts.notoSans(
-                                      fontSize: screenWidth * 0.04,
-                                      color:
-                                          const Color.fromRGBO(160, 30, 134, 1),
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
+                                  child: cartProvider.addedProductsIds
+                                          .contains(productId)
+                                      ? Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Added to Cart",
+                                              style: GoogleFonts.notoSans(
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 2,
+                                            ),
+                                            Container(
+                                                width: 25,
+                                                height: 20,
+                                                color: Colors.transparent,
+                                                child: Image.asset(
+                                                  'assets/tickmark.png',
+                                                ))
+                                          ],
+                                        )
+                                      : Text(
+                                          "Add To Cart",
+                                          style: GoogleFonts.notoSans(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
                                 ),
                               ),
                             ),
@@ -472,8 +572,10 @@ class _ItemDetailsState extends State<ItemDetails> {
                               fontWeight: FontWeight.w700),
                         ),
                       ),
-                      Divider(thickness: 2,),
-                
+                      Divider(
+                        thickness: 2,
+                      ),
+
                       FutureBuilder(
                           future: getProductsCategory(),
                           builder: (context, snapshot) {
@@ -486,7 +588,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                               );
                             } else {
                               return Container(
-                                height: screenHeight*0.342,
+                                height: screenHeight * 0.342,
                                 child: Transform.translate(
                                   offset: Offset(-18, 0),
                                   child: ListView.builder(
@@ -498,8 +600,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                     itemCount: productsCategoryWise.length,
                                     itemBuilder: (context, index) {
                                       return Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 10),
+                                        padding: const EdgeInsets.only(top: 10),
                                         child: Container(
                                           // height: screenHeight * 0.15,
                                           width: screenWidth,
@@ -521,7 +622,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                                       id: productsCategoryWise[
                                                                               index]!
                                                                           .id,
-                                                                      image: (productsCategoryWise[index]!                                                   
+                                                                      image: (productsCategoryWise[index]!
                                                                               .photo
                                                                               .picture
                                                                               .isEmpty)
@@ -544,21 +645,23 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                                       added: [],
                                                                     )));
                                                   },
-                                                  child: (productsCategoryWise[index]!
-                                                      .photo
-                                                      .picture
-                                                      .isEmpty)
-                                                  ? Image.asset(
-                                                      'assets/mug.png',
-                                                      // height: screenHeight*0.05,
-                                                      fit: BoxFit.fill,
-                                                    )
-                                                  : Image.network(
-                                                      productsCategoryWise[index]!
+                                                  child: (productsCategoryWise[
+                                                              index]!
                                                           .photo
-                                                          .picture[0],
-                                                      fit: BoxFit.fill,
-                                                    ),
+                                                          .picture
+                                                          .isEmpty)
+                                                      ? Image.asset(
+                                                          'assets/mug.png',
+                                                          // height: screenHeight*0.05,
+                                                          fit: BoxFit.fill,
+                                                        )
+                                                      : Image.network(
+                                                          productsCategoryWise[
+                                                                  index]!
+                                                              .photo
+                                                              .picture[0],
+                                                          fit: BoxFit.fill,
+                                                        ),
                                                 ),
                                               ),
                                             ),
@@ -580,7 +683,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                             .notoSans(
                                                                 color: Colors
                                                                     .black,
-                                                                fontSize: screenWidth*0.036,
+                                                                fontSize:
+                                                                    screenWidth *
+                                                                        0.036,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w700),
@@ -601,7 +706,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                             .notoSans(
                                                                 color: Colors
                                                                     .black,
-                                                                fontSize: screenWidth*0.033,
+                                                                fontSize:
+                                                                    screenWidth *
+                                                                        0.033,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w700),
@@ -616,7 +723,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                           GoogleFonts.notoSans(
                                                               color:
                                                                   Colors.black,
-                                                              fontSize: screenWidth*0.031,
+                                                              fontSize:
+                                                                  screenWidth *
+                                                                      0.031,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500)),

@@ -7,20 +7,22 @@ import 'package:flutter/material.dart';
 import 'Account.dart';
 
 class Home extends StatefulWidget {
-  Home({Key? key}) : super(key: key);
+  final int? initial;
+  Home({this.initial, Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
   late List<Widget> _widgetOptions;
 
   @override
   void initState() {
+    _selectedIndex = widget.initial ?? 0;
     super.initState();
-    _widgetOptions = <Widget>[HomePage(), Cart(), MyAccount(), EditProfile()];
+    _widgetOptions = <Widget>[HomePage(), Cart(), MyAccount()];
   }
 
   void _onItemTapped(int index) {
@@ -35,9 +37,6 @@ class _HomeState extends State<Home> {
     var height = size.height;
     var width = size.width;
     return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
       bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -69,6 +68,9 @@ class _HomeState extends State<Home> {
           // iconSize: 30,
           onTap: _onItemTapped,
           elevation: 5),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
     );
   }
 }

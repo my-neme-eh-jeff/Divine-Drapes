@@ -5,14 +5,14 @@ import './Upload.css'
 import Footer from '../Footer/Footer';
 import Navbar from '../Navbar/Navbar';
 import {
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    useDisclosure
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure
 } from '@chakra-ui/react'
 import Address from './Address/Address';
 import publicAxios from '../../Axios/publicAxios'
@@ -24,200 +24,210 @@ import { useToast } from '@chakra-ui/react'
 import Loader from '../Loader/Loader'
 
 function Buy() {
-    const [body, setBody] = useState([])
-    const toast = useToast()
-    const { productId } = useParams()
-    const prodId = productId.split(':')[1]
-    console.log(prodId)
-    const [selectedImage, setSelectedImage] = useState(null);
-    const fileInputRef = useRef(null);
-    const [custText, setCustText] = useState('');
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const [pay, setPay] = useState()
-    const [loading, setLoading] = useState(false);
+  const [body, setBody] = useState([])
+  const toast = useToast()
+  const { productId } = useParams()
+  const prodId = productId.split(':')[1]
+  console.log(prodId)
+  const [selectedImage, setSelectedImage] = useState(null);
+  const fileInputRef = useRef(null);
+  const [custText, setCustText] = useState('');
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [pay, setPay] = useState()
+  const [loading, setLoading] = useState(false);
 
-    const { auth, setAuth } = useAuth();
-    const isLogin = auth?.accessToken;
-    console.log(isLogin);
+  const { auth, setAuth } = useAuth();
+  const isLogin = auth?.accessToken;
+  console.log(isLogin);
 
 
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setSelectedImage(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-        console.log(selectedImage)
-        console.log(fileInputRef)
-    };
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setSelectedImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+    console.log(selectedImage)
+    console.log(fileInputRef)
+  };
 
   const getSingleProd = async () => {
     setLoading(true);
     let config = {
-      method: "get",
+      method: 'get',
       maxBodyLength: Infinity,
       url: `https://divine-drapes.onrender.com/product/viewProduct/${prodId}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + isLogin
+      },
     };
-    try {
-      const response = await privateAxios.request(config);
-      console.log(JSON.stringify(response.data));
+
+    privateAxios.request(config)
+      .then((response) => {
+        // alert("hitted")
+        console.log(JSON.stringify(response.data));
         setBody([response.data]);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
   };
 
-    useEffect(() => {
-        getSingleProd()
-    }, [])
+  useEffect(() => {
+    getSingleProd()
+  }, [])
 
-    const imageUploader = (id) => {
-        if (body[0]?.data.photo.isCust) {
-            let data = new FormData();
-            // data.append('files', fileInputRef.current.files[0]);
-              data.append('files', selectedImage);
-            data.append('id', id);//here the order id is passed
+  const imageUploader = (id) => {
+    if (body[0]?.data.photo.isCust) {
+      let data = new FormData();
+      data.append('files', fileInputRef.current.files[0]);
+      // data.append('files', selectedImage);
+      data.append('id', id);//here the order id is passed
 
-            let config = {
-                method: 'post',
-                maxBodyLength: Infinity,
-                url: 'https://divine-drapes.onrender.com/user/orderPicture',
-                headers: {
-                    'Authorization': `Bearer ` + isLogin,
-                },
-                data: data
-            };
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'https://divine-drapes.onrender.com/user/orderPicture',
+        headers: {
+          'Authorization': `Bearer ` + isLogin,
+        },
+        data: data
+      };
 
 
-            privateAxios.request(config)
-                .then((response) => {
-                    console.log(JSON.stringify(response.data));
-                    toast({
-                        title: 'Your Post is uploaded',
-                        description: JSON.stringify(response.data.message),
-                        status: 'success',
-                        duration: 2500,
-                        isClosable: true,
-                    })
-                })
-                .catch((error) => {
-                    console.log(error);
-                    toast({
-                        title: 'Image cannot be posted',
-                        description: error.message,
-                        status: 'error',
-                        duration: 2500,
-                        isClosable: true,
-                    })
-                });
-        }
-        else {
-            alert("No imaage required")
-        }
+      privateAxios.request(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+          toast({
+            title: 'Your Post is uploaded',
+            description: JSON.stringify(response.data.message),
+            status: 'success',
+            duration: 2500,
+            isClosable: true,
+          })
+        })
+        .catch((error) => {
+          console.log(error);
+          toast({
+            title: 'Image cannot be posted',
+            description: error.message,
+            status: 'error',
+            duration: 2500,
+            isClosable: true,
+          })
+        });
     }
+    else {
+      alert("No imaage required")
+    }
+  }
 
 
 
   const placeOrder = () => {
     let data = JSON.stringify({
-      pID: prodId,
-      isCustPhoto: body[0]?.data.photo.isCust,
-      isCustText: body[0]?.data.text.isCust,
-      text: custText,
-      isCustColor: body[0]?.data.color.isCust,
-      paymentStatus: "pending",
-      paymentType: pay,
+      "pID": prodId,
+      "isCustPhoto": body[0]?.data.photo.isCust,
+      "isCustText": body[0]?.data.text.isCust,
+      "text": custText,
+      "isCustColor": body[0]?.data.color.isCust,
+      "paymentStatus": "pending",
+      "paymentType": pay
     });
 
     let config = {
-      method: "post",
+      method: 'post',
       maxBodyLength: Infinity,
-      url: "https://divine-drapes.onrender.com/user/order",
-      data: data,
+      url: 'https://divine-drapes.onrender.com/user/order',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + isLogin,
+      },
+      data: data
     };
 
-        privateAxios.request(config)
-            .then((response) => {
-                console.log(JSON.stringify(response.data));
-                imageUploader(body[0]?.data._id)
-                alert("Placed Successfully")
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+    privateAxios.request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        imageUploader(body[0]?.data._id)
+        alert("Placed Successfully")
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
-    }
-    return (
-        <div>
+  }
+  return (
+    <div>
 
-            <ChakraProvider>
-                <Navbar />
-                {/* {loading ?
+      <ChakraProvider>
+        <Navbar />
+        {/* {loading ?
                 <div>
                 <Loader /> 
                 </div> 
                 : */}
-                <Box className='productbody' >
-                    <br />
-                    {/* product name here  */}
-                    <Heading className='namehere'>{body[0]?.data.category}</Heading>
-                    <br />
-                    <Box height={'auto'} className='mainpro'>
-                        <SimpleGrid
-                            h='auto'
-                            w='auto'
-                            columns={{ base: 1, md: 3 }}
-                            gap={15}
+        <Box className='productbody' >
+          <br />
+          {/* product name here  */}
+          <Heading className='namehere'>{body[0]?.data.category}</Heading>
+          <br />
+          <Box height={'auto'} className='mainpro'>
+            <SimpleGrid
+              h='auto'
+              w='auto'
+              columns={{ base: 1, md: 3 }}
+              gap={15}
 
-                        >
-                            <Box className='Box'
-                                display={'flex'}
-                                justifyContent={'center'}
-                                alignItems={'center'}
-                                alignSelf={'center'}
-                            >
-                                <Image
-                                    boxSize='280px'
-                                    objectFit='cover'
-                                    src='https://bit.ly/dan-abramov'
-                                    alt='Dan Abramov'
-                                />
-                            </Box>
-                            <Box className='Box'
-                                display={'flex'}
-                                justifyContent={'center'}
-                                alignItems={'left'}
-                                flexWrap={'center'}
-                                flexDirection={'column'}>
-                                <p><Heading fontSize={28} fontWeight={700}>{body[0]?.data.name}</Heading></p>
-                                <p >{body[0]?.data.description}</p>
-                                <br />
-                                <p><Heading fontSize={24} fontWeight={700}>₹ {body[0]?.data.cost.value}</Heading></p>
-                                <br />
-                                <div className="image-uploader">
-                                    <label htmlFor="upload-input" className="upload-label">
-                                        <span className="upload-text">Upload your customization</span>
-                                        {
-                                            body[0]?.data.photo.isCust ? (
-                                                <input id="upload-input" ref={fileInputRef} type="file" accept="image/*" onChange={handleImageChange} />
-                                            ) : (
-                                                <input id="upload-input" ref={fileInputRef} disabled='true' type="file" accept="image/*" onChange={handleImageChange} />
-                                            )
-                                        }
+            >
+              <Box className='Box'
+                display={'flex'}
+                justifyContent={'center'}
+                alignItems={'center'}
+                alignSelf={'center'}
+              >
+                <Image
+                  boxSize='280px'
+                  objectFit='cover'
+                  src='https://bit.ly/dan-abramov'
+                  alt='Dan Abramov'
+                />
+              </Box>
+              <Box className='Box'
+                display={'flex'}
+                justifyContent={'center'}
+                alignItems={'left'}
+                flexWrap={'center'}
+                flexDirection={'column'}>
+                <p><Heading fontSize={28} fontWeight={700}>{body[0]?.data.name}</Heading></p>
+                <p >{body[0]?.data.description}</p>
+                <br />
+                <p><Heading fontSize={24} fontWeight={700}>₹ {body[0]?.data.cost.value}</Heading></p>
+                <br />
+                <div className="image-uploader">
+                  <label htmlFor="upload-input" className="upload-label">
+                    <span className="upload-text">Upload your customization</span>
+                    {
+                      body[0]?.data.photo.isCust ? (
+                        <input id="upload-input" ref={fileInputRef} type="file" accept="image/*" onChange={handleImageChange} />
+                      ) : (
+                        <input id="upload-input" ref={fileInputRef} disabled='true' type="file" accept="image/*" onChange={handleImageChange} />
+                      )
+                    }
 
-                                    </label>
-                                    {selectedImage && <img src={selectedImage} alt="Preview" className="preview-image" />}
-                                </div>
-                                <br />
-                                <Heading fontSize={24} fontWeight={700}>Text Customization</Heading>
-                                {
-                                    body[0]?.data.text.isCust ? (<Input value={custText} onChange={e => { setCustText(e.target.value) }} placeholder='Enter your Text' />) : (<Input placeholder='Enter your Text' disabled='true' />)
-                                }
+                  </label>
+                  {selectedImage && <img src={selectedImage} alt="Preview" className="preview-image" />}
+                </div>
+                <br />
+                <Heading fontSize={24} fontWeight={700}>Text Customization</Heading>
+                {
+                  body[0]?.data.text.isCust ? (<Input value={custText} onChange={e => { setCustText(e.target.value) }} placeholder='Enter your Text' />) : (<Input placeholder='Enter your Text' disabled='true' />)
+                }
 
                 <br />
                 <Box
@@ -323,7 +333,7 @@ function Buy() {
                       </div>
                     </form>
                   </div>
-                ) : pay == "netbanking" ? (
+                ) : pay == "net banking" ? (
                   <>
                     <br />
                     <Select width={"auto"} placeholder="Select your bank">
@@ -372,7 +382,7 @@ function Buy() {
             </SimpleGrid>
           </Box>
         </Box>
-                {/* } */}
+        {/* } */}
         <br />
         <Footer />
       </ChakraProvider>

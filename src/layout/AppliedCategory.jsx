@@ -9,7 +9,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import privateAxios from '../Axios/privateAxios';
 import useAuth from "./../Hooks/useAuth";
 import { Link } from 'react-router-dom';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const AppliedCategory = () => {
     
     const [products, setProducts] = useState([]);
@@ -24,6 +25,13 @@ const AppliedCategory = () => {
     const { auth, setAuth } = useAuth();
     const isLogin = auth?.accessToken;
     console.log(isLogin);
+    const addedssuccesully = () => {
+        toast.success("Added succesfulyy", { containerId: "bottom-left" });
+      };
+    const existed = () => {
+        toast.error("Already Exists", { containerId: "bottom-left" });
+      };
+    
     useEffect(() => {
         let config = {
         method: 'get',
@@ -40,6 +48,8 @@ const AppliedCategory = () => {
             const response = await privateAxios.request(config);
             console.log((response.data));
             setProducts(response.data.data);
+
+
         }
         catch (error) {
             console.log(error);
@@ -66,11 +76,12 @@ const AppliedCategory = () => {
         try {
             const response = await axios.request(config);
             console.log((response.data));
+            addedssuccesully();
         }
         catch (error) {
             console.log(error);
             if(error.response.data){
-                alert(error.response.data.message);
+                existed()
             }
         }
         }
@@ -129,6 +140,7 @@ makeRequest();
             ))}
             </SimpleGrid>                   
             </Flex>
+            <ToastContainer position="bottom-left" />
     </ChakraProvider>
   )
 }

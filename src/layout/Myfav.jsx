@@ -16,6 +16,8 @@ import useAuth from "./../Hooks/useAuth";
 import privateAxios from "./../Axios/privateAxios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Myorders() {
   
@@ -25,6 +27,13 @@ export default function Myorders() {
     const isLogin = auth?.accessToken;
     console.log(isLogin);
     const [favitem,setFavitem]=useState() 
+    const addedssuccesully = () => {
+      toast.success("Added succesfulyy", { containerId: "bottom-left" });
+    };
+  const removedsuccessfully = () => {
+      toast.success("Removed", { containerId: "bottom-left" });
+    };
+  
     const delfromfav=(id)=>{
 
       let config = {
@@ -41,6 +50,7 @@ export default function Myorders() {
           try {
             const response = await privateAxios.request(config);
             console.log((response.data));
+            removedsuccessfully();
           }
           catch (error) {
             console.log(error);
@@ -65,6 +75,7 @@ async function makeRequest() {
   try {
     const response = await privateAxios.request(config);
     console.log((response.data));
+    addedssuccesully();
   }
   catch (error) {
     console.log(error);
@@ -189,6 +200,7 @@ makeRequest();
           </Grid>
         </Grid>
       </Grid>
+      <ToastContainer position="bottom-left" />
     </>
   );
 }

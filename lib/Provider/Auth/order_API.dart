@@ -18,7 +18,7 @@ class Order {
     final token = prefs.getString(authTokenKey);
     var headers = {
       'Authorization':
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6InNhaGlsa2FtYXRoMDEwOEBnbWFpbC5jb20iLCJyb2xlcyI6WzIwMDEsNTE1MF19LCJpYXQiOjE2OTAzOTU2MDQsImV4cCI6MTcyMTk1MzIwNH0.c7DiBEAGKavFwFa3fhkpddhjjdHxslYzj71pjrsFG3E'
+          'Bearer $token'
     };
     var request = http.Request(
         'GET', Uri.parse('https://divine-drapes.onrender.com/user/viewOrder'));
@@ -44,8 +44,7 @@ class Order {
     final token = prefs.getString(authTokenKey);
     var headers = {
       'Authorization':
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6eyJlbWFpbCI6InRoZWRpdmluZWRyYXBlc0BnbWFpbC5jb20iLCJyb2xlcyI6WzIwMDEsNTE1MF19LCJpYXQiOjE2OTEzMDAzODEsImV4cCI6MTcyMjg1Nzk4MX0.OFJXelfcoUyuL8yoJNByVZBlU3qofZPIsiGPL3Hyoa0'
-    };
+      'Bearer $token'    };
     var request = http.Request('GET',
         Uri.parse('https://divine-drapes.onrender.com/user/singleOrder/'+ id));
     request.headers.addAll(headers);

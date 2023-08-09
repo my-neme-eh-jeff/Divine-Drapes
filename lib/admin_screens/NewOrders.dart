@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 // import 'package:http/http.dart' as http;
 // import 'package:divine_drapes/models/AllOrders.dart' as model;
 import '../Provider/Auth/order_API.dart';
+import '../widgets/shimmer_widget.dart';
 
 class NewOrders extends StatefulWidget {
   const NewOrders({Key? key}) : super(key: key);
@@ -73,20 +74,12 @@ class _NewOrdersState extends State<NewOrders> {
   var allOrders;
 
   Future AllOrdersData() async {
+    var PastOrders = [];
     var i;
     try {
       print("future orders data: ");
       allOrders = await Order().getAllOrders();
       log(allOrders.length.toString());
-
-      // for(i=0 ; i< allOrders.length; i++){
-      //   print(
-      //     (allOrders[0]['product'].isEmpty)
-      //     ? "No"
-      //     : "Yes"
-      //     );
-
-      // }
 
       // setState(() {
       //   isLoading = false;
@@ -108,12 +101,76 @@ class _NewOrdersState extends State<NewOrders> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
+    Widget buildShimmer() => SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 10,),
+              Transform.translate(
+                offset: Offset(screenWidth * 0.27, 0),
+                child: ShimmerWidget.rectangular(
+                    width: screenWidth * 0.35, height: screenHeight * 0.069),
+              ),
+              Container(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: EdgeInsets.all(12),
+                        child: Row(
+                          children: [
+                            ShimmerWidget.rectangular(
+                              width: screenWidth * 0.3,
+                              height: screenHeight * 0.12,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    ShimmerWidget.rectangular(
+                                        width: screenWidth * 0.34, height: 12),
+                                    SizedBox(
+                                      width: 30,
+                                    ),
+                                    ShimmerWidget.rectangular(
+                                        width: screenWidth * 0.07, height: 12),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                ShimmerWidget.rectangular(
+                                    width: screenWidth * 0.45, height: 15),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                ShimmerWidget.rectangular(
+                                    width: screenWidth * 0.3,
+                                    height: 15),
+                              ],
+                            )
+                          ],
+                        ),
+                      );
+                    }),
+              ),
+            ],
+          ),
+        );
+
     return Scaffold(
       body: FutureBuilder(
           future: AllOrdersData(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator(),);
+              return buildShimmer();
             } else if (snapshot.hasError) {
               return Center(
                 child: Text(snapshot.error.toString()),
@@ -181,6 +238,7 @@ class _NewOrdersState extends State<NewOrders> {
                                       email: allOrders[position]!['user']['email'],
                                       paymentMode: allOrders[position]!['paymentType'],
                                       paymentStatus: allOrders[position]!['paymentStatus'],
+                                      address: allOrders[position]!['user']['addressList'],
                                     )));
                               },
                               child: ListTile(

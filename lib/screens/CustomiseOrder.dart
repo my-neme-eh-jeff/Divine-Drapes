@@ -13,14 +13,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import '../Provider/Auth/AuthProvider.dart';
+import '../Provider/OrderStausProvider.dart';
 import '../consts/constants.dart';
 
 class CustomiseOrder extends StatefulWidget {
   final String productName;
+  final String productId;
 
   CustomiseOrder({
     Key? key,
     required this.productName,
+    required this.productId,
   }) : super(key: key);
 
   @override
@@ -28,9 +31,9 @@ class CustomiseOrder extends StatefulWidget {
 }
 
 class _CustomiseOrderState extends State<CustomiseOrder> {
-  TextEditingController nameController = TextEditingController();
+  TextEditingController textController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController categoryController = TextEditingController();
+  TextEditingController colorController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
   TextEditingController currencyController = TextEditingController();
   TextEditingController valueController = TextEditingController();
@@ -42,100 +45,93 @@ class _CustomiseOrderState extends State<CustomiseOrder> {
 
 
 
-  Future<void> addProduct() async {
-    final url = Uri.parse('https://divine-drapes.onrender.com/admin/addProduct');
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString(authTokenKey);
-    print(token);
-    if (token == null) {
-      print('Authentication token is missing');
-      return;
-    }
+  // Future<void> addProduct() async {
+  //   final url = Uri.parse('https://divine-drapes.onrender.com/admin/addProduct');
+  //   final prefs = await SharedPreferences.getInstance();
+  //   final token = prefs.getString(authTokenKey);
+  //   print(token);
+  //   if (token == null) {
+  //     print('Authentication token is missing');
+  //     return;
+  //   }
+  //
+  //   // Show the circular progress indicator
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: false, // Prevent closing the dialog by tapping outside
+  //     builder: (context) => Center(
+  //       child: CircularProgressIndicator(),
+  //     ),
+  //   );
+  //
+  //   final response = await http.post(
+  //     url,
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Bearer $token',
+  //     },
+  //       body: jsonEncode({
+  //               "name": nameController.text,
+  //               "description": descriptionController.text,
+  //               "category": categoryController.text,
+  //               "quantity": int.parse(quantityController.text),
+  //               "cost": {
+  //                 "currency": currencyController.text,
+  //                 "value": int.parse(valueController.text),
+  //               },
+  //               "photo": {"isCust": true},
+  //               "text": {"isCust": true},
+  //               "color": {
+  //                 "isCust": true,
+  //                 "color": ["red", "blue", "green"],
+  //               },
+  //             }),
+  //   );
+  //
+  //   // Hide the circular progress indicator
+  //   Navigator.pop(context);
+  //
+  //   if (response.statusCode == 200 || response.statusCode == 201) {
+  //     // Product added successfully
+  //     // Handle the response or show a success message
+  //     print('Product added successfully');
+  //     print('Response: ${response.body}');
+  //     Map<String, dynamic> responseMap = jsonDecode(response.body);
+  //     String productId = responseMap['product']['_id'];
+  //     print(productId);
+  //
+  //     // Show a success message
+  //     Fluttertoast.showToast(
+  //       msg: "Product added successfully!",
+  //       toastLength: Toast.LENGTH_SHORT,
+  //       gravity: ToastGravity.BOTTOM,
+  //       timeInSecForIosWeb: 3,
+  //       backgroundColor: Colors.green,
+  //       textColor: Colors.white,
+  //       fontSize: 16.0,
+  //     );
+  //     uploadImages(productId);
 
-    // Show the circular progress indicator
-    showDialog(
-      context: context,
-      barrierDismissible: false, // Prevent closing the dialog by tapping outside
-      builder: (context) => Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
-
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-        body: jsonEncode({
-                "name": nameController.text,
-                "description": descriptionController.text,
-                "category": categoryController.text,
-                "quantity": int.parse(quantityController.text),
-                "cost": {
-                  "currency": currencyController.text,
-                  "value": int.parse(valueController.text),
-                },
-                "photo": {"isCust": true},
-                "text": {"isCust": true},
-                "color": {
-                  "isCust": true,
-                  "color": ["red", "blue", "green"],
-                },
-              }),
-    );
-
-    // Hide the circular progress indicator
-    Navigator.pop(context);
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      // Product added successfully
-      // Handle the response or show a success message
-      print('Product added successfully');
-      print('Response: ${response.body}');
-      Map<String, dynamic> responseMap = jsonDecode(response.body);
-      String productId = responseMap['product']['_id'];
-      print(productId);
-
-      // Show a success message
-      Fluttertoast.showToast(
-        msg: "Product added successfully!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-      uploadImages(productId);
-      setState(() {
-        nameController.clear();
-        descriptionController.clear();
-        categoryController.clear();
-        quantityController.clear();
-        currencyController.clear();
-        valueController.clear();
-      });
-    } else {
-      // Product addition failed
-      // Handle the error or show an error message
-      Fluttertoast.showToast(
-        msg: "Failed to add product!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-      print(response.statusCode);
-      print('Response: ${response.body}');
-    }
-  }
+  //   } else {
+  //     // Product addition failed
+  //     // Handle the error or show an error message
+  //     Fluttertoast.showToast(
+  //       msg: "Failed to add product!",
+  //       toastLength: Toast.LENGTH_SHORT,
+  //       gravity: ToastGravity.BOTTOM,
+  //       timeInSecForIosWeb: 3,
+  //       backgroundColor: Colors.red,
+  //       textColor: Colors.white,
+  //       fontSize: 16.0,
+  //     );
+  //     print(response.statusCode);
+  //     print('Response: ${response.body}');
+  //   }
+  // }
 
 
-  Future<void> uploadImages(String productId) async {
-    final url = Uri.parse('https://divine-drapes.onrender.com/admin/addImages');
+  Future<void> uploadCustImages(String orderId) async {
+    final url = Uri.parse('https://divine-drapes.onrender.com/user/orderPicture');
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(authTokenKey);
 
@@ -150,14 +146,14 @@ class _CustomiseOrderState extends State<CustomiseOrder> {
     var request = http.MultipartRequest('POST', url);
     request.headers.addAll(headers);
 
-    request.fields.addAll({'id': productId!});
+    request.fields.addAll({'id': orderId!});
 
     if (_selectedImage != null) {
       String fileName = _selectedImage!.path.split('/').last;
       String extension = fileName.split('.').last;
 
       Directory tempDir = await getTemporaryDirectory();
-      File newFile = File('${tempDir.path}/$productId.$extension');
+      File newFile = File('${tempDir.path}/$orderId.$extension');
 
       await _selectedImage!.copy(newFile.path);
 
@@ -179,6 +175,10 @@ class _CustomiseOrderState extends State<CustomiseOrder> {
 
     if (response.statusCode == 200) {
       print('Image added successfully!');
+          setState(() {
+            textController.clear();
+            colorController.clear();
+          });
     } else {
       print("Image was not added!");
       print(response.reasonPhrase);
@@ -207,7 +207,7 @@ class _CustomiseOrderState extends State<CustomiseOrder> {
 
   @override
   Widget build(BuildContext context) {
-
+    final orderStatusProvider = Provider.of<OrderStatusProvider>(context);
     var size = MediaQuery.of(context).size;
     double sizefont = size.width * 0.044;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -277,7 +277,7 @@ class _CustomiseOrderState extends State<CustomiseOrder> {
                     keyboardType: TextInputType.name,
                     style: TextStyle(fontSize: sizefont),
                     autofocus: false,
-                    controller: nameController,
+                    controller: textController,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return ("Please enter the text!");
@@ -289,11 +289,11 @@ class _CustomiseOrderState extends State<CustomiseOrder> {
                       return null;
                     },
                     onSaved: (value) {
-                      nameController.text = value!;
+                      textController.text = value!;
                     },
                     textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
-                      suffixIcon: nameController.text.isEmpty
+                      suffixIcon: textController.text.isEmpty
                           ? Container(
                         width: 0,
                       )
@@ -302,7 +302,7 @@ class _CustomiseOrderState extends State<CustomiseOrder> {
                           Icons.close,
                           size: sizefont,
                         ),
-                        onPressed: () => nameController.clear(),
+                        onPressed: () => textController.clear(),
                       ),
                       contentPadding: EdgeInsets.symmetric(
                           vertical: size.width * 0.005,
@@ -351,7 +351,7 @@ class _CustomiseOrderState extends State<CustomiseOrder> {
                     keyboardType: TextInputType.name,
                     style: TextStyle(fontSize: sizefont),
                     autofocus: false,
-                    controller: categoryController,
+                    controller: colorController,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return ("Please enter product color");
@@ -363,11 +363,11 @@ class _CustomiseOrderState extends State<CustomiseOrder> {
                       return null;
                     },
                     onSaved: (value) {
-                      categoryController.text = value!;
+                      colorController.text = value!;
                     },
                     textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
-                      suffixIcon: categoryController.text.isEmpty
+                      suffixIcon: colorController.text.isEmpty
                           ? Container(
                         width: 0,
                       )
@@ -376,7 +376,7 @@ class _CustomiseOrderState extends State<CustomiseOrder> {
                           Icons.close,
                           size: sizefont,
                         ),
-                        onPressed: () => categoryController.clear(),
+                        onPressed: () => colorController.clear(),
                       ),
                       contentPadding: EdgeInsets.symmetric(
                           vertical: size.width * 0.005,
@@ -455,8 +455,12 @@ class _CustomiseOrderState extends State<CustomiseOrder> {
               SizedBox(height: 16),
               SizedBox(height: size.height * 0.02),
               InkWell(
-                onTap: (){
-                  // addProduct();
+                onTap: () async {
+                  print(textController.text);
+                  print(colorController.text);
+                  var orderId;
+                  orderId = await orderStatusProvider.placeOrder(widget.productId,textController.text.trim(),colorController.text.trim());
+                  uploadCustImages(orderId);
                 },
                 child: Container(
                   width: double.infinity,

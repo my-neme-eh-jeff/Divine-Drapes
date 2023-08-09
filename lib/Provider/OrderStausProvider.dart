@@ -14,7 +14,7 @@ class OrderStatusProvider extends ChangeNotifier {
 
 
 
-  Future<void> placeOrder(String pID) async {
+  Future<String> placeOrder(String pID,String Custtext,String CustColor) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(authTokenKey);
     var headers = {
@@ -26,8 +26,9 @@ class OrderStatusProvider extends ChangeNotifier {
       "pID": pID,
       "isCustPhoto": true,
       "isCustText": true,
-      "text": "ABC",
+      "text": Custtext,
       "isCustColor": false,
+      "color":[CustColor],
       "paymentStatus": "pending",
       "paymentType": "cod"
     };
@@ -54,7 +55,11 @@ class OrderStatusProvider extends ChangeNotifier {
    // Navigator.of(context).pop();
 
     if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
+      String jsonResponse = await response.stream.bytesToString();
+      Map<String, dynamic> jsonMap = json.decode(jsonResponse);
+      String id = jsonMap['data']['_id']; // Access the _id from the response
+      print("Order ID: $id");
+
       Fluttertoast.showToast(
         msg: "Order Placed Successfully",
         toastLength: Toast.LENGTH_SHORT,
@@ -69,9 +74,11 @@ class OrderStatusProvider extends ChangeNotifier {
       // Save the 'placed' status in SharedPreferences
       final prefs = await SharedPreferences.getInstance();
       prefs.setBool(pID, true);
+      return id;
     } else
     {
       print(response.reasonPhrase);
+
       Fluttertoast.showToast(
         msg: "Failed to place the order",
         toastLength: Toast.LENGTH_SHORT,
@@ -81,6 +88,7 @@ class OrderStatusProvider extends ChangeNotifier {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+      return response.reasonPhrase.toString();
     }
   }
 

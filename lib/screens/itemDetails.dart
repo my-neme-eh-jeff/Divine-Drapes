@@ -383,7 +383,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                               onTap: (){
                                 // orderStatusProvider.placeOrder(widget.id);
                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> CustomiseOrder(
-                                  productName: widget.name,
+                                  productName: widget.name, productId: widget.id,
                                 )));
                               },
                               child: Container(

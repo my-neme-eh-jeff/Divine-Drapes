@@ -23,48 +23,8 @@ class _NewOrdersState extends State<NewOrders> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
       ));
 
-  final list1 = [
-    "Mugs",
-    "Paper Weight",
-    "Coasters",
-    "Hair Comb",
-    "Envelop",
-    "Diary",
-    "Folders",
-    "Study Desk",
-    "Sequence Bag",
-    "Sash",
-    "T-Shirts",
-    "Greetings Card",
-    "Puzzles",
-    "Luggage Tags",
-    "Steel Crockery",
-    "Locket & Keychain",
-    "Magnet",
-    "Photo Frames",
-    "Pen & Pencil",
-    "Bottles",
-    "Cube",
-    "Badges",
-    "Play Card",
-    "Calendars",
-    "Writing Pads",
-    "Crayons",
-    "Sequence Pouch",
-    "Pillows",
-    "Cap",
-    "Surprise Box",
-    "Clock",
-    "Passport Covers",
-    "Pen Drive",
-    "Smiley Table",
-    "Key Chains",
-    "Mobile Covers",
-    "Pen Stand",
-    "Wallets",
-    "Office Products",
-  ];
-
+  
+  List<String> list1 = [];
   String? value1;
   String ItemName = "";
 
@@ -78,7 +38,9 @@ class _NewOrdersState extends State<NewOrders> {
     try {
       print("future orders data: ");
       allOrders = await Order().getAllOrders();
-      log(allOrders.length.toString());
+      list1 = allOrders.map((e) => e['product']['category'].toString()).toList();
+      list1 = list1.toSet().toList();
+      print(list1);
 
       return allOrders;
     } catch (e) {
@@ -174,7 +136,7 @@ class _NewOrdersState extends State<NewOrders> {
               );
             } else {
               return SingleChildScrollView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: AlwaysScrollableScrollPhysics(),
                 child: Column(
                   // mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -216,9 +178,9 @@ class _NewOrdersState extends State<NewOrders> {
                                     if (ItemName.isNotEmpty) {
                                       isFiltering = true;
                                       filteredOrders = allOrders
-                                          .where((item) =>
-                                              item['product']['name'] ==
-                                              ItemName)
+                                          .where((item) => item['product']['category'] ==
+                                              ItemName
+                                              )
                                           .toList();
                                     } else {
                                       isFiltering = false;
@@ -232,7 +194,7 @@ class _NewOrdersState extends State<NewOrders> {
                       ),
                     ),
                     Container(
-                      height: screenHeight,
+                      height: screenHeight * 0.65,
                       child: isFiltering
                           ? ListView.builder(
                               shrinkWrap: true,

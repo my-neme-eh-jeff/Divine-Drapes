@@ -12,12 +12,16 @@ const errorHandler = require("./middleware/errorHandler.js");
 const ROLES_LIST = require("./config/rolesList.js");
 const verifyJWT = require("./middleware/verifyJWT.js");
 const verifyRoles = require("./middleware/verifyRoles.js");
+const session = require("express-session");
 
 require("./db.js");
 const app = express();
 
-app.use(morgan(":method :url :req[header] :status\n"));
-app.use(logger);
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan(":method :url :req[header] :status\n"));
+} else if (process.env.NODE_ENV === "production") {
+  app.use(logger);
+}
 
 app.use(credentials);
 app.use(cors(corsOptions));
@@ -34,11 +38,24 @@ const adminRoutes = require("./routes/adminRoutes.js");
 const authRoutes = require("./routes/authRoutes.js");
 const productRoutes = require("./routes/productRoutes.js");
 const publicRoutes = require("./routes/publicRoutes.js");
+const passport = require("passport");
+require("./utils/passport.js");
 
 //public routes
 app.use("/public", publicRoutes);
 
 // auth routes
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: false,
+    // store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use("/auth", authRoutes);
 
 // user

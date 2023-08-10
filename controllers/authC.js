@@ -4,6 +4,7 @@ const otpGenerator = require("otp-generator");
 const jwt = require("jsonwebtoken");
 const UserSchema = require("../models/userSchema");
 require("dotenv").config();
+const GoogleStratergy = require("passport-google-oauth20").Strategy;
 
 let mailTransporter = nodemailer.createTransport({
   service: "gmail",
@@ -133,7 +134,6 @@ const handleRefreshToken = async (req, res) => {
 
 const handleLogout = async (req, res) => {
   // On client, also delete the accessToken
-
   const cookies = req.cookies;
   if (!cookies?.jwt) return res.sendStatus(204); //No content
   const refreshToken = cookies.jwt;
@@ -240,6 +240,19 @@ const handleLogin = async (req, res) => {
     console.log("23912039qsidbdak");
     res.sendStatus(401);
   }
+};
+
+const loginWithGoogleFailed = async (req, res) => {
+  res.status(401).json({ success: false });
+};
+
+const loginWithGoogleSucess = async (req, res) => {
+  if (req.user) {
+    console.log(req.user);
+    res.status(200).json({ success: true, user: req.user });
+  }
+  res.status(401).json({ success: false });
+  //send cookies and token
 };
 
 const forgotPSWD = async (req, res) => {
@@ -375,7 +388,9 @@ module.exports = {
   loginUser,
   handleRefreshToken,
   handleLogout,
+  loginWithGoogleFailed,
   handleLogin,
   forgotPSWD,
   verifyOTP,
+  loginWithGoogleSucess,
 };

@@ -130,8 +130,8 @@ class _HomePageState extends State<HomePage> {
                   fontWeight: FontWeight.w700)),
           elevation: 0.0,
         ),
-        body: isLoading 
-        ? builShimmer()
+        body: isLoading
+            ? builShimmer()
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -212,7 +212,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           GridView.count(
                             // childAspectRatio: 0.82,
-                            childAspectRatio: 0.82,
+                            childAspectRatio: 0.75,
                             padding: EdgeInsets.symmetric(
                                 horizontal: width * 0.094,
                                 vertical: height * 0.033),
@@ -267,13 +267,15 @@ class _HomePageState extends State<HomePage> {
                                             )),
                                       ),
                                     ),
-                                    Text(
-                                        filteredProducts[index]?.category ??
-                                            "Mugs",
-                                        style: GoogleFonts.notoSans(
-                                            color: Colors.black,
-                                            fontSize: width * 0.03,
-                                            fontWeight: FontWeight.w600)),
+                                    Expanded(
+                                      child: Text(
+                                          filteredProducts[index]?.category ??
+                                              "Mugs",
+                                          style: GoogleFonts.notoSans(
+                                              color: Colors.black,
+                                              fontSize: width * 0.03,
+                                              fontWeight: FontWeight.w600)),
+                                    ),
                                   ],
                                 );
                               },
@@ -416,59 +418,59 @@ class _HomePageState extends State<HomePage> {
                 height: height * 0.575,
                 width: width * 0.82,
 
-                // child: ListView.builder(
-                //   physics: ScrollPhysics(),
-                //   itemCount: products.length,
-                //   itemBuilder: (context, index) => Padding(
-                //     padding: EdgeInsets.only(left: width * 0.1, top: 10),
-                //     child: GestureDetector(
-                //       onTap: () {
-                //         Navigator.of(context).push(MaterialPageRoute(
-                //             builder: (context) => Items(
-                //                   category: products[index]!.category,
-                //                 )));
-                //       },
-                //       child: Text(products[index]!.category,
-                //           style: GoogleFonts.notoSans(
-                //               color: Colors.black,
-                //               fontSize: width * 0.042,
-                //               fontWeight: FontWeight.w500)),
-                //     ),
-                //   ),
-                // ),
-
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  child: GridView.builder(
-                    physics: ScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2, // Two items in a single row
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 4),
-                    itemCount: products.length,
-                    itemBuilder: (context, index) => GestureDetector(
+                child: ListView.builder(
+                  physics: ScrollPhysics(),
+                  itemCount: products.length,
+                  itemBuilder: (context, index) => Padding(
+                    padding: EdgeInsets.only(left: width * 0.1, top: 10),
+                    child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => Items(
-                            category: products[index]!.category,
-                          ),
-                        ));
+                            builder: (context) => Items(
+                                  category: products[index]!.category,
+                                )));
                       },
-                      child: Padding(
-                        padding: EdgeInsets.only(left: width * 0.1),
-                        child: Text(
-                          products[index]!.category,
+                      child: Text(products[index]!.category,
                           style: GoogleFonts.notoSans(
-                            color: Colors.black,
-                            fontSize: width * 0.042,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
+                              color: Colors.black,
+                              fontSize: width * 0.042,
+                              fontWeight: FontWeight.w500)),
                     ),
                   ),
                 ),
+
+                // child: Padding(
+                //   padding: EdgeInsets.symmetric(vertical: 15),
+                //   child: GridView.builder(
+                //     physics: ScrollPhysics(),
+                //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                //         crossAxisCount: 2, // Two items in a single row
+                //         crossAxisSpacing: 10,
+                //         mainAxisSpacing: 10,
+                //         childAspectRatio: 4),
+                //     itemCount: products.length,
+                //     itemBuilder: (context, index) => GestureDetector(
+                //       onTap: () {
+                //         Navigator.of(context).push(MaterialPageRoute(
+                //           builder: (context) => Items(
+                //             category: products[index]!.category,
+                //           ),
+                //         ));
+                //       },
+                //       child: Padding(
+                //         padding: EdgeInsets.only(left: width * 0.1),
+                //         child: Text(
+                //           products[index]!.category,
+                //           style: GoogleFonts.notoSans(
+                //             color: Colors.black,
+                //             fontSize: width * 0.042,
+                //             fontWeight: FontWeight.w500,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ),
             ),
           );

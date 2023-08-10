@@ -49,15 +49,15 @@ class _MyOrdersState extends State<MyOrders> {
     // print("future products category wise:");
     // print(orders.length);
   }
-  // void _performSearch(String query) {
-  //   setState(() {
-  //     filteredOrders = orders
-  //         .where((product) =>
-  //             product?.toLowerCase().contains(query.toLowerCase()) ??
-  //             false)
-  //         .toList();
-  //   });
-  // }
+
+  void _performSearch(String query) {
+    setState(() {
+      filteredOrders = orders
+          .where((product) =>
+              product?.toLowerCase().contains(query.toLowerCase()) ?? false)
+          .toList();
+    });
+  }
 
   @override
   void initState() {
@@ -109,12 +109,14 @@ class _MyOrdersState extends State<MyOrders> {
                                     Row(
                                       children: [
                                         ShimmerWidget.rectangular(
-                                            width: screenWidth * 0.38, height: 20),
+                                            width: screenWidth * 0.38,
+                                            height: 20),
                                         SizedBox(
                                           width: screenWidth * 0.1,
                                         ),
                                         ShimmerWidget.rectangular(
-                                            width: screenWidth * 0.1, height: 18),
+                                            width: screenWidth * 0.1,
+                                            height: 18),
                                       ],
                                     ),
                                     SizedBox(
@@ -141,12 +143,12 @@ class _MyOrdersState extends State<MyOrders> {
                             ),
                           ),
                           Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 0),
-                                  child: Divider(
-                                    thickness: 1,
-                                  ),
-                                ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 0),
+                            child: Divider(
+                              thickness: 1,
+                            ),
+                          ),
                         ],
                       );
                     }),

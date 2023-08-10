@@ -64,6 +64,7 @@ class _EditAddressState extends State<EditAddress> {
     double height = MediaQuery.of(context).size.height;
     double sizefont = width * 0.05;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: whiteColor,
         automaticallyImplyLeading: false,

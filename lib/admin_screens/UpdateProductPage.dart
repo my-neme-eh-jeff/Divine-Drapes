@@ -60,12 +60,12 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
     categoryController.text = widget.category;
     quantityController.text = widget.quantity.toString();
     currencyController.text = 'INR';
-    valueController.text  = widget.cost.value.toString();
+    valueController.text = widget.cost.value.toString();
   }
 
-
   Future<void> updateProduct() async {
-    final url = Uri.parse('https://divine-drapes.onrender.com/admin/updateProduct');
+    final url =
+        Uri.parse('https://divine-drapes.onrender.com/admin/updateProduct');
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(authTokenKey);
     print(token);
@@ -77,7 +77,8 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
     // Show the circular progress indicator
     showDialog(
       context: context,
-      barrierDismissible: false, // Prevent closing the dialog by tapping outside
+      barrierDismissible:
+          false, // Prevent closing the dialog by tapping outside
       builder: (context) => Center(
         child: CircularProgressIndicator(),
       ),
@@ -90,7 +91,7 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
         'Authorization': 'Bearer $token',
       },
       body: jsonEncode({
-        "id":widget.id,
+        "id": widget.id,
         "name": nameController.text,
         "description": descriptionController.text,
         "category": categoryController.text,
@@ -119,7 +120,7 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
       // Map<String, dynamic> responseMap = jsonDecode(response.body);
       // String productId = responseMap['product']['_id'];
       // print(productId);
-       updateImage(widget.id);
+      updateImage(widget.id);
       // Show a success message
       Fluttertoast.showToast(
         msg: "Product updated successfully!",
@@ -260,8 +261,6 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
   //   }
   // }
 
-
-
   Future<void> updateImage(String productId) async {
     final url = Uri.parse('https://divine-drapes.onrender.com/admin/addImages');
     final prefs = await SharedPreferences.getInstance();
@@ -313,7 +312,6 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
     }
   }
 
-
   String? value1;
   String ItemName = "";
   File? _selectedImage;
@@ -343,7 +341,7 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       drawer: Drawer(
-        child :Padding(
+        child: Padding(
           padding: const EdgeInsets.only(top: 80.0),
           child: Column(
             children: [
@@ -393,12 +391,13 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
             ],
           ),
         ),
-
       ),
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: whiteColor,
-        title: Text("Divine Drapes",style: GoogleFonts.notoSans(color: darkPurple,fontSize: 28,fontWeight: FontWeight.w700)),
+        title: Text("Divine Drapes",
+            style: GoogleFonts.notoSans(
+                color: darkPurple, fontSize: 28, fontWeight: FontWeight.w700)),
         elevation: 0.0,
       ),
       body: SingleChildScrollView(
@@ -408,7 +407,24 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Update Product",style: GoogleFonts.notoSans(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w700),
+              Row(
+                children: [
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(Icons.arrow_back)),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Update Product",
+                    style: GoogleFonts.notoSans(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ],
               ),
               SizedBox(height: size.height * 0.03),
               Text(
@@ -446,15 +462,15 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                     decoration: InputDecoration(
                       suffixIcon: nameController.text.isEmpty
                           ? Container(
-                        width: 0,
-                      )
+                              width: 0,
+                            )
                           : IconButton(
-                        icon: Icon(
-                          Icons.close,
-                          size: sizefont,
-                        ),
-                        onPressed: () => nameController.clear(),
-                      ),
+                              icon: Icon(
+                                Icons.close,
+                                size: sizefont,
+                              ),
+                              onPressed: () => nameController.clear(),
+                            ),
                       contentPadding: EdgeInsets.symmetric(
                           vertical: size.width * 0.005,
                           horizontal: size.width * 0.03),
@@ -466,25 +482,23 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            width: 1, color: Colors.red,strokeAlign: BorderSide.strokeAlignInside),
+                            width: 1,
+                            color: Colors.red,
+                            strokeAlign: BorderSide.strokeAlignInside),
                       ),
-
                     ),
                   ),
                 ),
               ),
-
               SizedBox(height: size.height * 0.01),
               Text(
                 'Product Description',
@@ -522,15 +536,15 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                     decoration: InputDecoration(
                       suffixIcon: descriptionController.text.isEmpty
                           ? Container(
-                        width: 0,
-                      )
+                              width: 0,
+                            )
                           : IconButton(
-                        icon: Icon(
-                          Icons.close,
-                          size: sizefont,
-                        ),
-                        onPressed: () => descriptionController.clear(),
-                      ),
+                              icon: Icon(
+                                Icons.close,
+                                size: sizefont,
+                              ),
+                              onPressed: () => descriptionController.clear(),
+                            ),
                       contentPadding: EdgeInsets.symmetric(
                           vertical: size.width * 0.005,
                           horizontal: size.width * 0.03),
@@ -542,20 +556,19 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            width: 1, color: Colors.red,strokeAlign: BorderSide.strokeAlignInside),
+                            width: 1,
+                            color: Colors.red,
+                            strokeAlign: BorderSide.strokeAlignInside),
                       ),
-
                     ),
                   ),
                 ),
@@ -596,15 +609,15 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                     decoration: InputDecoration(
                       suffixIcon: categoryController.text.isEmpty
                           ? Container(
-                        width: 0,
-                      )
+                              width: 0,
+                            )
                           : IconButton(
-                        icon: Icon(
-                          Icons.close,
-                          size: sizefont,
-                        ),
-                        onPressed: () => categoryController.clear(),
-                      ),
+                              icon: Icon(
+                                Icons.close,
+                                size: sizefont,
+                              ),
+                              onPressed: () => categoryController.clear(),
+                            ),
                       contentPadding: EdgeInsets.symmetric(
                           vertical: size.width * 0.005,
                           horizontal: size.width * 0.03),
@@ -616,20 +629,19 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            width: 1, color: Colors.red,strokeAlign: BorderSide.strokeAlignInside),
+                            width: 1,
+                            color: Colors.red,
+                            strokeAlign: BorderSide.strokeAlignInside),
                       ),
-
                     ),
                   ),
                 ),
@@ -670,15 +682,15 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                     decoration: InputDecoration(
                       suffixIcon: quantityController.text.isEmpty
                           ? Container(
-                        width: 0,
-                      )
+                              width: 0,
+                            )
                           : IconButton(
-                        icon: Icon(
-                          Icons.close,
-                          size: sizefont,
-                        ),
-                        onPressed: () => quantityController.clear(),
-                      ),
+                              icon: Icon(
+                                Icons.close,
+                                size: sizefont,
+                              ),
+                              onPressed: () => quantityController.clear(),
+                            ),
                       contentPadding: EdgeInsets.symmetric(
                           vertical: size.width * 0.005,
                           horizontal: size.width * 0.03),
@@ -690,20 +702,19 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            width: 1, color: Colors.red,strokeAlign: BorderSide.strokeAlignInside),
+                            width: 1,
+                            color: Colors.red,
+                            strokeAlign: BorderSide.strokeAlignInside),
                       ),
-
                     ),
                   ),
                 ),
@@ -744,15 +755,15 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                     decoration: InputDecoration(
                       suffixIcon: currencyController.text.isEmpty
                           ? Container(
-                        width: 0,
-                      )
+                              width: 0,
+                            )
                           : IconButton(
-                        icon: Icon(
-                          Icons.close,
-                          size: sizefont,
-                        ),
-                        onPressed: () => currencyController.clear(),
-                      ),
+                              icon: Icon(
+                                Icons.close,
+                                size: sizefont,
+                              ),
+                              onPressed: () => currencyController.clear(),
+                            ),
                       contentPadding: EdgeInsets.symmetric(
                           vertical: size.width * 0.005,
                           horizontal: size.width * 0.03),
@@ -764,20 +775,19 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            width: 1, color: Colors.red,strokeAlign: BorderSide.strokeAlignInside),
+                            width: 1,
+                            color: Colors.red,
+                            strokeAlign: BorderSide.strokeAlignInside),
                       ),
-
                     ),
                   ),
                 ),
@@ -818,15 +828,15 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                     decoration: InputDecoration(
                       suffixIcon: valueController.text.isEmpty
                           ? Container(
-                        width: 0,
-                      )
+                              width: 0,
+                            )
                           : IconButton(
-                        icon: Icon(
-                          Icons.close,
-                          size: sizefont,
-                        ),
-                        onPressed: () => valueController.clear(),
-                      ),
+                              icon: Icon(
+                                Icons.close,
+                                size: sizefont,
+                              ),
+                              onPressed: () => valueController.clear(),
+                            ),
                       contentPadding: EdgeInsets.symmetric(
                           vertical: size.width * 0.005,
                           horizontal: size.width * 0.03),
@@ -838,20 +848,19 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            width: 1, color: Colors.red,strokeAlign: BorderSide.strokeAlignInside),
+                            width: 1,
+                            color: Colors.red,
+                            strokeAlign: BorderSide.strokeAlignInside),
                       ),
-
                     ),
                   ),
                 ),
@@ -871,33 +880,33 @@ class _UpdateProductPageState extends State<UpdateProductPage> {
                   _pickImage(ImageSource.gallery);
                 },
                 child: Container(
-                  height: screenHeight*0.12,
-                  width: screenWidth*0.9,
+                  height: screenHeight * 0.12,
+                  width: screenWidth * 0.9,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.black ,
+                      color: Colors.black,
                       width: 2,
                     ),
                     borderRadius: BorderRadius.circular(15.0),
                   ),
                   padding: const EdgeInsets.all(10.0),
                   child: _selectedImage == null
-                      ? Image(image: (widget.image == "assets/Vector.png")
-                      ? AssetImage(widget.image)
-                      : NetworkImage(widget.image) as ImageProvider)
+                      ? Image(
+                          image: (widget.image == "assets/Vector.png")
+                              ? AssetImage(widget.image)
+                              : NetworkImage(widget.image) as ImageProvider)
                       : Image.file(
-                    File(_selectedImage!.path),
-                    fit: BoxFit.cover,
-                    height: 300.0,
-                    width: 300.0,
-                  ),
+                          File(_selectedImage!.path),
+                          fit: BoxFit.cover,
+                          height: 300.0,
+                          width: 300.0,
+                        ),
                 ),
               ),
-
               SizedBox(height: 16),
               SizedBox(height: size.height * 0.02),
               InkWell(
-                onTap: (){
+                onTap: () {
                   updateProduct();
                 },
                 child: Container(

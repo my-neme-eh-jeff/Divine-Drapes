@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Provider/OrderStausProvider.dart';
 import '../consts/constants.dart';
+import '../widgets/shimmer_widget.dart';
 
 class AdminItemDetails extends StatefulWidget {
   final String id;
@@ -158,6 +159,79 @@ class _AdminItemDetailsState extends State<AdminItemDetails> {
       // to initialize the order status and retain it on refreshing the page
       orderStatusProvider.checkOrderStatus(widget.id);
     }
+
+  Widget buildShimmer() => SingleChildScrollView(
+          child: Column(
+            children: [
+              ListView.builder(
+                  shrinkWrap: true,
+                  physics: BouncingScrollPhysics(),
+                  itemCount: 2,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(5),
+                          child: Row(
+                            children: [
+                              ShimmerWidget.rectangular(
+                                width: screenWidth * 0.28,
+                                height: screenHeight * 0.115,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      ShimmerWidget.rectangular(
+                                          width: screenWidth * 0.38,
+                                          height: screenHeight * 0.02),
+                                      SizedBox(
+                                        width: screenWidth * 0.12,
+                                      ),
+                                      ShimmerWidget.rectangular(
+                                          width: screenWidth * 0.1,
+                                          height: screenHeight * 0.02),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  ShimmerWidget.rectangular(
+                                      width: screenWidth * 0.6, height: 22),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      ShimmerWidget.rectangular(
+                                          width: screenWidth * 0.25,
+                                          height: screenHeight * 0.04),
+                                      SizedBox(
+                                        width: screenWidth * 0.25,
+                                      ),
+                                      ShimmerWidget.rectangular(
+                                          width: screenWidth * 0.1,
+                                          height: screenHeight * 0.04),
+                                    ],
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        
+                      ],
+                    );
+                  }),
+            ],
+          ),
+        );
+
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
@@ -401,18 +475,8 @@ class _AdminItemDetailsState extends State<AdminItemDetails> {
                     FutureBuilder(
                         future: getProductsCategory(),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Center(
-                                  child: CircularProgressIndicator(
-                                    color: cream,
-                                  ),
-                                ),
-                              ],
-                            );
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return buildShimmer();
                           } else if (snapshot.hasError) {
                             return Center(
                               child: Text(snapshot.error.toString()),
@@ -420,7 +484,7 @@ class _AdminItemDetailsState extends State<AdminItemDetails> {
                           } else {
                             return SingleChildScrollView(
                               child: Container(
-                                height: screenHeight*0.342,
+                                height: screenHeight*0.315,
                                 child: Transform.translate(
                                   offset: Offset(-18, 0),
                                   child: ListView.builder(

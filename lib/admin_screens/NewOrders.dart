@@ -120,7 +120,7 @@ class _NewOrdersState extends State<NewOrders> {
                         child: Row(
                           children: [
                             ShimmerWidget.rectangular(
-                              width: screenWidth * 0.3,
+                              width: screenWidth * 0.25,
                               height: screenHeight * 0.12,
                             ),
                             SizedBox(

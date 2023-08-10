@@ -29,7 +29,7 @@ class OrderStatusProvider extends ChangeNotifier {
       "text": Custtext,
       "isCustColor": false,
       "color":[CustColor],
-      "paymentStatus": "pending",
+      "paymentStatus": "completed",
       "paymentType": "cod"
     };
 

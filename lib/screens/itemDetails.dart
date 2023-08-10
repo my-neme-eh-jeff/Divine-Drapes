@@ -227,54 +227,69 @@ class _ItemDetailsState extends State<ItemDetails> {
               ListView.builder(
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
-                  itemCount: 4,
+                  itemCount: 3,
                   itemBuilder: (context, index) {
-                    return Container(
-                      padding: EdgeInsets.all(2),
-                      child: Row(
-                        children: [
-                          ShimmerWidget.rectangular(
-                            width: screenWidth * 0.25,
-                            height: screenHeight * 0.118,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    return Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(2),
+                          child: Row(
                             children: [
-                              Row(
+                              ShimmerWidget.rectangular(
+                                width: screenWidth * 0.25,
+                                height: screenHeight * 0.1,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ShimmerWidget.rectangular(
-                                      width: screenWidth * 0.38, height: 20),
+                                  Row(
+                                    children: [
+                                      ShimmerWidget.rectangular(
+                                          width: screenWidth * 0.38,
+                                          height: 18),
+                                      SizedBox(
+                                        width: screenWidth * 0.1,
+                                      ),
+                                      ShimmerWidget.rectangular(
+                                          width: screenWidth * 0.1, height: 18),
+                                    ],
+                                  ),
                                   SizedBox(
-                                    width: screenWidth * 0.1,
+                                    height: 5,
                                   ),
                                   ShimmerWidget.rectangular(
-                                      width: screenWidth * 0.1, height: 18),
+                                      width: screenWidth * 0.53,
+                                      height: screenHeight * 0.022),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      SizedBox(
+                                        width: screenWidth * 0.25,
+                                      ),
+                                      ShimmerWidget.rectangular(
+                                          width: screenWidth * 0.33,
+                                          height: screenHeight * 0.044),
+                                    ],
+                                  ),
                                 ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              ShimmerWidget.rectangular(
-                                  width: screenWidth * 0.53,
-                                  height: screenHeight * 0.025),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  ShimmerWidget.rectangular(
-                                      width: screenWidth * 0.3,
-                                      height: screenHeight * 0.033),
-                                ],
-                              ),
+                              )
                             ],
-                          )
-                        ],
-                      ),
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                          child: Divider(
+                            thickness: 1,
+                          ),
+                        ),
+                      ],
                     );
                   }),
             ],

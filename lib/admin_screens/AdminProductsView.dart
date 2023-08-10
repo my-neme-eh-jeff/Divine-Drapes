@@ -80,35 +80,47 @@ class _AdminProductsViewState extends State<AdminProductsView> {
               Padding(
                 padding: const EdgeInsets.only(top: 12,left: 18),
                 child: ShimmerWidget.rectangular(
-                    width: width * 0.6, height: height * 0.023),
+                    width: width * 0.6, height: height * 0.025),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8,left: 18),
                 child: ShimmerWidget.rectangular(
-                    width: width * 0.3, height: height * 0.023),
+                    width: width * 0.3, height: height * 0.025),
               ),
               SizedBox(
                 height: 15,
               ),
-              Container(
-                padding: EdgeInsets.all(12),
-                width: width * 0.95,
-                child: GridView.count(
-                  physics: BouncingScrollPhysics(),
-                  crossAxisCount: 3,
-                  shrinkWrap: true,
-                  children: List.generate(
-                    10,
-                    (index) {
-                      return Column(
-                        children: [
-                          ShimmerWidget.rectangular(height: height* 0.09, width: width *0.21,),
-                          SizedBox(height: 5,),
-                          ShimmerWidget.rectangular(height: height* 0.015, width: width *0.14,),
-                          
-                        ],
-                      );
-                    },
+              Transform.translate(
+                offset: Offset(0, 10),
+                child: Container(
+                  padding: EdgeInsets.only(left: 20, right: 8),
+                  width: width * 0.95,
+                  child: GridView.count(
+                    physics: BouncingScrollPhysics(),
+                    crossAxisCount: 3,
+                    // crossAxisSpacing: width * 0.068,
+                    mainAxisSpacing: 10.0,
+                    shrinkWrap: true,
+                    children: List.generate(
+                      10,
+                      (index) {
+                        return Column(
+                          children: [
+                            ShimmerWidget.rectangular(
+                              height: height * 0.095,
+                              width: width * 0.22,
+                            ),
+                            SizedBox(
+                              height: 3,
+                            ),
+                            ShimmerWidget.rectangular(
+                              height: height * 0.017,
+                              width: width * 0.13,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),

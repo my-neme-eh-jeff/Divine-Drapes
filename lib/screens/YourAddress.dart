@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 // import 'package:divine_drapes/models/ProfileModel.dart' as data;
 
 import '../consts/constants.dart';
+import '../widgets/shimmer_widget.dart';
 
 class address extends StatefulWidget {
   const address({super.key});
@@ -44,6 +45,18 @@ class _addressState extends State<address> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    Widget buildShimmer() => SingleChildScrollView(
+          child: Transform.translate(
+            offset: Offset(screenWidth * 0.07, screenWidth * 0.15),
+            child: ShimmerWidget.rectangular(
+                width: screenWidth * 0.86,
+                 height: screenHeight * 0.17),
+          ),
+        );
     return Scaffold(
       appBar: AppBar(
         backgroundColor: whiteColor,
@@ -63,11 +76,7 @@ class _addressState extends State<address> {
             )),
       ),
       body: isLoading
-          ? Center(
-              child: CircularProgressIndicator(
-                color: cream,
-              ),
-            )
+          ? buildShimmer()
           : Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Column(

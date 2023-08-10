@@ -23,48 +23,8 @@ class _NewOrdersState extends State<NewOrders> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
       ));
 
-  final list1 = [
-    "Mugs",
-    "Paper Weight",
-    "Coasters",
-    "Hair Comb",
-    "Envelop",
-    "Diary",
-    "Folders",
-    "Study Desk",
-    "Sequence Bag",
-    "Sash",
-    "T-Shirts",
-    "Greetings Card",
-    "Puzzles",
-    "Luggage Tags",
-    "Steel Crockery",
-    "Locket & Keychain",
-    "Magnet",
-    "Photo Frames",
-    "Pen & Pencil",
-    "Bottles",
-    "Cube",
-    "Badges",
-    "Play Card",
-    "Calendars",
-    "Writing Pads",
-    "Crayons",
-    "Sequence Pouch",
-    "Pillows",
-    "Cap",
-    "Surprise Box",
-    "Clock",
-    "Passport Covers",
-    "Pen Drive",
-    "Smiley Table",
-    "Key Chains",
-    "Mobile Covers",
-    "Pen Stand",
-    "Wallets",
-    "Office Products",
-  ];
-
+  
+  List<String> list1 = [];
   String? value1;
   String ItemName = "";
 
@@ -78,7 +38,9 @@ class _NewOrdersState extends State<NewOrders> {
     try {
       print("future orders data: ");
       allOrders = await Order().getAllOrders();
-      log(allOrders.length.toString());
+      list1 = allOrders.map((e) => e['product']['category'].toString()).toList();
+      list1 = list1.toSet().toList();
+      print(list1);
 
       return allOrders;
     } catch (e) {
@@ -107,7 +69,7 @@ class _NewOrdersState extends State<NewOrders> {
               Transform.translate(
                 offset: Offset(screenWidth * 0.27, 0),
                 child: ShimmerWidget.rectangular(
-                    width: screenWidth * 0.35, height: screenHeight * 0.069),
+                    width: screenWidth * 0.35, height: screenHeight * 0.032),
               ),
               Container(
                 child: ListView.builder(
@@ -120,7 +82,7 @@ class _NewOrdersState extends State<NewOrders> {
                         child: Row(
                           children: [
                             ShimmerWidget.rectangular(
-                              width: screenWidth * 0.3,
+                              width: screenWidth * 0.25,
                               height: screenHeight * 0.12,
                             ),
                             SizedBox(
@@ -174,7 +136,7 @@ class _NewOrdersState extends State<NewOrders> {
               );
             } else {
               return SingleChildScrollView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: AlwaysScrollableScrollPhysics(),
                 child: Column(
                   // mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -216,9 +178,9 @@ class _NewOrdersState extends State<NewOrders> {
                                     if (ItemName.isNotEmpty) {
                                       isFiltering = true;
                                       filteredOrders = allOrders
-                                          .where((item) =>
-                                              item['product']['name'] ==
-                                              ItemName)
+                                          .where((item) => item['product']['category'] ==
+                                              ItemName
+                                              )
                                           .toList();
                                     } else {
                                       isFiltering = false;
@@ -232,7 +194,7 @@ class _NewOrdersState extends State<NewOrders> {
                       ),
                     ),
                     Container(
-                      height: screenHeight,
+                      height: screenHeight * 0.65,
                       child: isFiltering
                           ? ListView.builder(
                               shrinkWrap: true,
@@ -249,57 +211,60 @@ class _NewOrdersState extends State<NewOrders> {
                                             const EdgeInsets.only(bottom: 8.0),
                                         child: GestureDetector(
                                           onTap: () {
-                                            Navigator.of(context)
-                                                .push(MaterialPageRoute(
-                                                    builder:
-                                                        (context) => OrderInfo(
-                                                              name: (filteredOrders[
-                                                                              position]![
-                                                                          'product'] ==
-                                                                      null)
-                                                                  ? "---"
-                                                                  : filteredOrders[
-                                                                              position]![
-                                                                          'product']
-                                                                      ['name'],
-                                                              image: (filteredOrders[
-                                                                              position]![
-                                                                          'product'] ==
-                                                                      null)
-                                                                  ? 'assets/Vector.png'
-                                                                  : (filteredOrders[position]!['product']['photo']
-                                                                              [
-                                                                              'picture']
-                                                                          .isEmpty)
-                                                                      ? 'assets/Vector.png'
-                                                                      : filteredOrders[
-                                                                              position]!['product']['photo']
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        OrderInfo(
+                                                          name: (filteredOrders[
+                                                                          position][
+                                                                      'product'] ==
+                                                                  null)
+                                                              ? "---"
+                                                              : filteredOrders[
+                                                                          position][
+                                                                      'product']
+                                                                  ['name'],
+                                                          image: (filteredOrders[
+                                                                          position]
+                                                                      [
+                                                                      'product'] ==
+                                                                  null)
+                                                              ? 'assets/Vector.png'
+                                                              : (filteredOrders[position]['product']
+                                                                              ['photo']
                                                                           [
-                                                                          'picture'][0],
-                                                              userName: filteredOrders[
-                                                                      position]![
-                                                                  'user']['fname'],
-                                                              contatct: filteredOrders[
-                                                                              position]![
-                                                                          'user']
-                                                                      ['number']
-                                                                  .toString(),
-                                                              email: filteredOrders[
-                                                                      position]![
-                                                                  'user']['email'],
-                                                              paymentMode:
-                                                                  filteredOrders[
-                                                                          position]![
-                                                                      'paymentType'],
-                                                              paymentStatus:
-                                                                  filteredOrders[
-                                                                          position]![
-                                                                      'paymentStatus'],
-                                                              address: filteredOrders[
-                                                                          position]![
-                                                                      'user'][
-                                                                  'addressList'],
-                                                            )));
+                                                                          'picture']
+                                                                      .isEmpty)
+                                                                  ? 'assets/Vector.png'
+                                                                  : filteredOrders[
+                                                                              position]
+                                                                          ['product']['photo']
+                                                                      ['picture'][0],
+                                                          userName: filteredOrders[
+                                                                  position]
+                                                              ['user']['fname'],
+                                                          contatct: filteredOrders[
+                                                                          position]
+                                                                      ['user']
+                                                                  ['number']
+                                                              .toString(),
+                                                          email: filteredOrders[
+                                                                  position]
+                                                              ['user']['email'],
+                                                          paymentMode:
+                                                              filteredOrders[
+                                                                      position][
+                                                                  'paymentType'],
+                                                          paymentStatus:
+                                                              filteredOrders[
+                                                                      position][
+                                                                  'paymentStatus'],
+                                                          address: filteredOrders[
+                                                                      position]
+                                                                  ['user']
+                                                              ['addressList'],
+                                                              // date: ,
+                                                        )));
                                           },
                                           child: ListTile(
                                             leading: FractionallySizedBox(
@@ -309,7 +274,7 @@ class _NewOrdersState extends State<NewOrders> {
                                               child: AspectRatio(
                                                 aspectRatio: 1,
                                                 child: (filteredOrders[
-                                                                position]![
+                                                                position][
                                                             'product'] ==
                                                         null)
                                                     ? Image.asset(
@@ -317,7 +282,7 @@ class _NewOrdersState extends State<NewOrders> {
                                                         // height: screenHeight*0.05,
                                                         fit: BoxFit.fill,
                                                       )
-                                                    : (filteredOrders[position]![
+                                                    : (filteredOrders[position][
                                                                         'product']
                                                                     ['photo']
                                                                 ['picture']
@@ -328,7 +293,7 @@ class _NewOrdersState extends State<NewOrders> {
                                                             fit: BoxFit.fill,
                                                           )
                                                         : Image.network(
-                                                            filteredOrders[position]![
+                                                            filteredOrders[position][
                                                                         'product']
                                                                     ['photo']
                                                                 ['picture'][0],
@@ -345,12 +310,12 @@ class _NewOrdersState extends State<NewOrders> {
                                                 Row(
                                                   children: [
                                                     Text(
-                                                      (filteredOrders[position]![
+                                                      (filteredOrders[position][
                                                                   'product'] ==
                                                               null)
                                                           ? "---"
                                                           : filteredOrders[
-                                                                  position]![
+                                                                  position][
                                                               'product']['name'],
                                                       style:
                                                           GoogleFonts.notoSans(
@@ -365,7 +330,9 @@ class _NewOrdersState extends State<NewOrders> {
                                                     ),
                                                     Spacer(),
                                                     Text(
-                                                      "21/05/2023",
+                                                      (filteredOrders[position]['product']== null)
+                                                ? "--"
+                                                : (filteredOrders[position]['product']['cost']['value']*filteredOrders[position]['product']['quantity']).toString() + " Rs",
                                                       style:
                                                           GoogleFonts.notoSans(
                                                               color:
@@ -394,7 +361,7 @@ class _NewOrdersState extends State<NewOrders> {
                                                   child: Text(
                                                     "Payment: " +
                                                         filteredOrders[
-                                                                position]![
+                                                                position][
                                                             'paymentType'],
                                                     style: GoogleFonts.notoSans(
                                                         color: Colors.black,
@@ -422,46 +389,46 @@ class _NewOrdersState extends State<NewOrders> {
                                       Navigator.of(context)
                                           .push(MaterialPageRoute(
                                               builder: (context) => OrderInfo(
-                                                    name: (allOrders[position]![
+                                                    name: (allOrders[position][
                                                                 'product'] ==
                                                             null)
                                                         ? "---"
-                                                        : allOrders[position]![
+                                                        : allOrders[position][
                                                             'product']['name'],
                                                     image: (allOrders[
-                                                                    position]![
+                                                                    position][
                                                                 'product'] ==
                                                             null)
                                                         ? 'assets/Vector.png'
-                                                        : (allOrders[position]![
+                                                        : (allOrders[position][
                                                                             'product']
                                                                         [
                                                                         'photo']
                                                                     ['picture']
                                                                 .isEmpty)
                                                             ? 'assets/Vector.png'
-                                                            : allOrders[position]![
+                                                            : allOrders[position][
                                                                         'product']
                                                                     ['photo']
                                                                 ['picture'][0],
                                                     userName: allOrders[
-                                                            position]!['user']
+                                                            position]['user']
                                                         ['fname'],
                                                     contatct:
-                                                        allOrders[position]![
+                                                        allOrders[position][
                                                                     'user']
                                                                 ['number']
                                                             .toString(),
-                                                    email: allOrders[position]![
+                                                    email: allOrders[position][
                                                         'user']['email'],
                                                     paymentMode:
-                                                        allOrders[position]![
+                                                        allOrders[position][
                                                             'paymentType'],
                                                     paymentStatus:
-                                                        allOrders[position]![
+                                                        allOrders[position][
                                                             'paymentStatus'],
                                                     address: allOrders[
-                                                            position]!['user']
+                                                            position]['user']
                                                         ['addressList'],
                                                   )));
                                     },
@@ -477,7 +444,7 @@ class _NewOrdersState extends State<NewOrders> {
                                         heightFactor: screenHeight * 0.0019,
                                         child: AspectRatio(
                                           aspectRatio: 1,
-                                          child: (allOrders[position]![
+                                          child: (allOrders[position][
                                                       'product'] ==
                                                   null)
                                               ? Image.asset(
@@ -485,7 +452,7 @@ class _NewOrdersState extends State<NewOrders> {
                                                   // height: screenHeight*0.05,
                                                   fit: BoxFit.fill,
                                                 )
-                                              : (allOrders[position]!['product']
+                                              : (allOrders[position]['product']
                                                           ['photo']['picture']
                                                       .isEmpty)
                                                   ? Image.asset(
@@ -494,7 +461,7 @@ class _NewOrdersState extends State<NewOrders> {
                                                       fit: BoxFit.fill,
                                                     )
                                                   : Image.network(
-                                                      allOrders[position]![
+                                                      allOrders[position][
                                                                   'product']
                                                               ['photo']
                                                           ['picture'][0],
@@ -511,11 +478,11 @@ class _NewOrdersState extends State<NewOrders> {
                                           Row(
                                             children: [
                                               Text(
-                                                (allOrders[position]![
+                                                (allOrders[position][
                                                             'product'] ==
                                                         null)
                                                     ? "---"
-                                                    : allOrders[position]![
+                                                    : allOrders[position][
                                                         'product']['name'],
                                                 style: GoogleFonts.notoSans(
                                                     color: Colors.black,
@@ -526,11 +493,13 @@ class _NewOrdersState extends State<NewOrders> {
                                               ),
                                               Spacer(),
                                               Text(
-                                                "21/05/2023",
+                                                (allOrders[position]['product']== null)
+                                                ? "--"
+                                                : (allOrders[position]['product']['cost']['value']*allOrders[position]['product']['quantity']).toString() + " Rs",
                                                 style: GoogleFonts.notoSans(
                                                     color: Colors.black,
                                                     fontSize:
-                                                        screenWidth * 0.031,
+                                                        12,
                                                     fontWeight:
                                                         FontWeight.w500),
                                               ),

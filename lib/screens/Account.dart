@@ -131,7 +131,7 @@ class _MyAccountState extends State<MyAccount> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 10,
+                height: 2,
               ),
               ShimmerWidget.rectangular(
                   width: screenWidth * 0.23, height: screenHeight * 0.023),
@@ -139,7 +139,7 @@ class _MyAccountState extends State<MyAccount> {
                 height: screenHeight * 0.025,
               ),
               Transform.translate(
-                offset: Offset(-20, 0),
+                offset: Offset(-18, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -149,13 +149,13 @@ class _MyAccountState extends State<MyAccount> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ShimmerWidget.rectangular(
-                            width: screenWidth * 0.25,
-                            height: screenHeight * 0.023),
+                            width: screenWidth * 0.28,
+                            height: screenHeight * 0.068),
                         SizedBox(
-                          height: 18,
+                          height: 7,
                         ),
                         ShimmerWidget.rectangular(
-                            width: screenWidth * 0.38,
+                            width: screenWidth * 0.4,
                             height: screenHeight * 0.021),
                         SizedBox(
                           height: 4,
@@ -173,7 +173,7 @@ class _MyAccountState extends State<MyAccount> {
                 child: ListView.builder(
                     shrinkWrap: true,
                     physics: BouncingScrollPhysics(),
-                    itemCount: 5,
+                    itemCount: 3,
                     itemBuilder: (context, index) {
                       return Container(
                           padding: EdgeInsets.only(top: 40),

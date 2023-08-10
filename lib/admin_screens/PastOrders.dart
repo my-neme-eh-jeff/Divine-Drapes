@@ -22,53 +22,15 @@ class _PastOrdersState extends State<PastOrders> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
       ));
 
-  final list1 = [
-    "Mugs",
-    "Paper Weight",
-    "Coasters",
-    "Hair Comb",
-    "Envelop",
-    "Diary",
-    "Folders",
-    "Study Desk",
-    "Sequence Bag",
-    "Sash",
-    "T-Shirts",
-    "Greetings Card",
-    "Puzzles",
-    "Luggage Tags",
-    "Steel Crockery",
-    "Locket & Keychain",
-    "Magnet",
-    "Photo Frames",
-    "Pen & Pencil",
-    "Bottles",
-    "Cube",
-    "Badges",
-    "Play Card",
-    "Calendars",
-    "Writing Pads",
-    "Crayons",
-    "Sequence Pouch",
-    "Pillows",
-    "Cap",
-    "Surprise Box",
-    "Clock",
-    "Passport Covers",
-    "Pen Drive",
-    "Smiley Table",
-    "Key Chains",
-    "Mobile Covers",
-    "Pen Stand",
-    "Wallets",
-    "Office Products",
-  ];
+  
 
   String? value1;
   String ItemName = "";
 
   bool isLoading = true;
   bool isFiltering = false;
+  List<String> list1 = [];
+
 
   // List<data.Received?> allOrders = [];
   // var allOrders;
@@ -81,6 +43,8 @@ class _PastOrdersState extends State<PastOrders> {
     try {
       print("future orders data: ");
       allOrders = await Order().getPastOrders();
+      list1 = allOrders.map((e) => e['product']['category'].toString()).toList();
+      list1 = list1.toSet().toList();
       log(allOrders.length.toString());
 
       // setState(() {
@@ -113,7 +77,7 @@ class _PastOrdersState extends State<PastOrders> {
               Transform.translate(
                 offset: Offset(screenWidth * 0.27, 0),
                 child: ShimmerWidget.rectangular(
-                    width: screenWidth * 0.35, height: screenHeight * 0.069),
+                    width: screenWidth * 0.35, height: screenHeight * 0.032),
               ),
               Container(
                 child: ListView.builder(
@@ -126,7 +90,7 @@ class _PastOrdersState extends State<PastOrders> {
                         child: Row(
                           children: [
                             ShimmerWidget.rectangular(
-                              width: screenWidth * 0.3,
+                              width: screenWidth * 0.25,
                               height: screenHeight * 0.12,
                             ),
                             SizedBox(
@@ -220,7 +184,7 @@ class _PastOrdersState extends State<PastOrders> {
                                       isFiltering = true;
                                       filteredOrders = allOrders
                                           .where((item) =>
-                                              item['product']['name'] ==
+                                              item['product']['category'] ==
                                               ItemName)
                                           .toList();
                                     } else {
@@ -235,7 +199,7 @@ class _PastOrdersState extends State<PastOrders> {
                       ),
                     ),
                     Container(
-                      height: screenHeight,
+                      height: screenHeight * 0.65,
                       child: isFiltering
                           ? ListView.builder(
                               shrinkWrap: true,
@@ -256,49 +220,49 @@ class _PastOrdersState extends State<PastOrders> {
                                                     builder:
                                                         (context) => OrderInfo(
                                                               name: (filteredOrders[
-                                                                              position]![
+                                                                              position][
                                                                           'product'] ==
                                                                       null)
                                                                   ? "---"
                                                                   : filteredOrders[
-                                                                              position]![
+                                                                              position][
                                                                           'product']
                                                                       ['name'],
                                                               image: (filteredOrders[
-                                                                              position]![
+                                                                              position][
                                                                           'product'] ==
                                                                       null)
                                                                   ? 'assets/Vector.png'
-                                                                  : (filteredOrders[position]!['product']['photo']
+                                                                  : (filteredOrders[position]['product']['photo']
                                                                               [
                                                                               'picture']
                                                                           .isEmpty)
                                                                       ? 'assets/Vector.png'
                                                                       : filteredOrders[
-                                                                              position]!['product']['photo']
+                                                                              position]['product']['photo']
                                                                           [
                                                                           'picture'][0],
                                                               userName: filteredOrders[
-                                                                      position]![
+                                                                      position][
                                                                   'user']['fname'],
                                                               contatct: filteredOrders[
-                                                                              position]![
+                                                                              position][
                                                                           'user']
                                                                       ['number']
                                                                   .toString(),
                                                               email: filteredOrders[
-                                                                      position]![
+                                                                      position][
                                                                   'user']['email'],
                                                               paymentMode:
                                                                   filteredOrders[
-                                                                          position]![
+                                                                          position][
                                                                       'paymentType'],
                                                               paymentStatus:
                                                                   filteredOrders[
-                                                                          position]![
+                                                                          position][
                                                                       'paymentStatus'],
                                                               address: filteredOrders[
-                                                                          position]![
+                                                                          position][
                                                                       'user'][
                                                                   'addressList'],
                                                             )));
@@ -367,7 +331,9 @@ class _PastOrdersState extends State<PastOrders> {
                                                     ),
                                                     Spacer(),
                                                     Text(
-                                                      "21/05/2023",
+                                                      (filteredOrders[position]['product']== null)
+                                                ? "--"
+                                                : (filteredOrders[position]['product']['cost']['value']*filteredOrders[position]['product']['quantity']).toString() + " Rs",
                                                       style:
                                                           GoogleFonts.notoSans(
                                                               color:
@@ -507,11 +473,11 @@ class _PastOrdersState extends State<PastOrders> {
                                           Row(
                                             children: [
                                               Text(
-                                                (allOrders[position]![
+                                                (allOrders[position][
                                                             'product'] ==
                                                         null)
                                                     ? "---"
-                                                    : allOrders[position]![
+                                                    : allOrders[position][
                                                         'product']['name'],
                                                 style: GoogleFonts.notoSans(
                                                     color: Colors.black,
@@ -522,7 +488,9 @@ class _PastOrdersState extends State<PastOrders> {
                                               ),
                                               Spacer(),
                                               Text(
-                                                "21/05/2023",
+                                               (allOrders[position]['product']== null)
+                                                ? "--"
+                                                : (allOrders[position]['product']['cost']['value']*allOrders[position]['product']['quantity']).toString() + " Rs",
                                                 style: GoogleFonts.notoSans(
                                                     color: Colors.black,
                                                     fontSize:

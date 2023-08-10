@@ -1,6 +1,8 @@
 import { Center, ChakraProvider, Container, Heading, Stack, VStack, Input, Box, HStack, SimpleGrid, Button, TableContainer, Table, Tbody, Tr, Td, InputGroup, InputRightAddon, Textarea, GridItem, FormControl } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 
+import useAuth from "../../Hooks/useAuth";
+import privateAxios from "../../Axios/privateAxios";
 function AddProduct() {
     const [selectedImage, setSelectedImage] = useState(null);
     const [productName, setProductName] = useState()
@@ -8,15 +10,18 @@ function AddProduct() {
     const [quantity, setQuantity] = useState()
     const [cost, setCost] = useState()
     const [cust, setCust] = useState()
-    const [imageCust, setImageCust] = useState()
-    const [colorCust, setColorCust] = useState()
-    const [textCust, setTextCust] = useState()
+    const [imageCust, setImageCust] = useState(false)
+    const [colorCust, setColorCust] = useState(false)
+    const [textCust, setTextCust] = useState(false)
     const fileInputRef = useRef(null);
     const [colorInp, setColorInp] = useState()
     const [colors, setColors] = useState([]);
-
+    const [category, setCategory] = useState()
+    const { auth, setAuth } = useAuth();
+    const isLogin = auth?.accessToken;
     const handleImageChange = (event) => {
         const file = event.target.files[0];
+        console.log(file)
         if (file) {
             const reader = new FileReader();
             reader.onload = () => {
@@ -29,6 +34,7 @@ function AddProduct() {
     };
     const handleColorAdd = (newColor) => {
         setColors([...colors, newColor]);
+        console.log(colors);
     };
 
     const handleColorEdit = (index, updatedColor) => {
@@ -41,7 +47,89 @@ function AddProduct() {
         const newColors = colors.filter((_, i) => i !== index);
         setColors(newColors);
     };
-    console.log(cust)
+    // console.log(cust)
+    const addnewprod=()=>{
+let data = JSON.stringify({
+  "name": productName,
+  "description": description,
+  "category": category,
+  "quantity": quantity,
+  "cost": {
+    "currency": "INR",
+    "value": cost
+  },
+  "photo": {
+    "isCust": imageCust
+  },
+  "text": {
+    "isCust": textCust
+  },
+  "color": {
+    "isCust": colorCust,
+    "color": colors
+  }
+});
+
+let config = {
+  method: 'post',
+  maxBodyLength: Infinity,
+  url: 'https://divine-drapes.onrender.com/admin/addProduct',
+  headers: { 
+    'Content-Type': 'application/json', 
+    'Authorization': 'Bearer '+isLogin
+  },
+  data : data
+};
+
+async function makeRequest() {
+  try {
+    const response = await privateAxios.request(config);
+    console.log((response.data));
+    if(response.data.product.photo.isCust==true)
+    {
+        console.log(response.data.product._id);
+        addimagetonewprod(response.data.product._id)
+    }
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+makeRequest();
+
+    }
+    const addimagetonewprod=(id)=>{
+        console.log("adding photos");
+// const FormData = require('form-data');
+// const fs = require('fs');
+let data = new FormData();
+data.append('id', id);
+data.append('files',file);
+
+let config = {
+  method: 'post',
+  maxBodyLength: Infinity,
+  url: 'https://divine-drapes.onrender.com/admin/addImages',
+  headers: { 
+    'Authorization': 'Bearer '+isLogin, 
+  },
+  data : data
+};
+
+async function makeRequest() {
+  try {
+    const response = await privateAxios.request(config);
+    console.log((response.data));
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+makeRequest();
+
+    }
     return (
         <div>
             <ChakraProvider>
@@ -61,12 +149,13 @@ function AddProduct() {
                             {selectedImage && <img src={selectedImage} alt="Preview" className="preview-image" />}
                         </div>
                         <Heading fontSize={24} fontWeight={700}>Product Name</Heading>
-                        <Input value={productName} onChange={e => { setProductName(e.target.value) }} placeholder='Enter your Product Name' />
-                        <Textarea placeholder='Enter description' value={description} onChange={e => { setDescription(e.target.value) }} />
+                        <Input value={productName} onChange={e => { setProductName(e.target.value);console.log(productName) }} placeholder='Enter your Product Name' />
+                        <Input value={category} onChange={e => { setCategory(e.target.value);console.log(category) }} placeholder='Enter the Category' />
+                        <Textarea placeholder='Enter description' value={description} onChange={e => { setDescription(e.target.value);console.log(description) }} />
                         <SimpleGrid columns={2} columnGap={3} rowGap={2}>
                             <GridItem colSpan={[2, null, 1]}>
                                 <FormControl>
-                                    <Input placeholder="Enter Quantity" type='number' value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
+                                    <Input placeholder="Enter Quantity" type='number' value={quantity} onChange={(e) => {setQuantity(e.target.value);console.log(quantity)}}/>
                                 </FormControl>
                             </GridItem>
                             <GridItem colSpan={[2, null, 1]}>
@@ -152,7 +241,10 @@ function AddProduct() {
                     <Center>
                         <Button width={'400px'} background={'#F7BC62'} _hover={{
                          background:'#F7BC62'
-                        }}>
+                        }}
+                        onClick={addnewprod}
+                        >
+
                             Add Product 
                         </Button>
                     </Center>

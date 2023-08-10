@@ -23,48 +23,8 @@ class _NewOrdersState extends State<NewOrders> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
       ));
 
-  final list1 = [
-    "Mugs",
-    "Paper Weight",
-    "Coasters",
-    "Hair Comb",
-    "Envelop",
-    "Diary",
-    "Folders",
-    "Study Desk",
-    "Sequence Bag",
-    "Sash",
-    "T-Shirts",
-    "Greetings Card",
-    "Puzzles",
-    "Luggage Tags",
-    "Steel Crockery",
-    "Locket & Keychain",
-    "Magnet",
-    "Photo Frames",
-    "Pen & Pencil",
-    "Bottles",
-    "Cube",
-    "Badges",
-    "Play Card",
-    "Calendars",
-    "Writing Pads",
-    "Crayons",
-    "Sequence Pouch",
-    "Pillows",
-    "Cap",
-    "Surprise Box",
-    "Clock",
-    "Passport Covers",
-    "Pen Drive",
-    "Smiley Table",
-    "Key Chains",
-    "Mobile Covers",
-    "Pen Stand",
-    "Wallets",
-    "Office Products",
-  ];
-
+  
+  List<String> list1 = [];
   String? value1;
   String ItemName = "";
 
@@ -78,7 +38,9 @@ class _NewOrdersState extends State<NewOrders> {
     try {
       print("future orders data: ");
       allOrders = await Order().getAllOrders();
-      log(allOrders.length.toString());
+      list1 = allOrders.map((e) => e['product']['category'].toString()).toList();
+      list1 = list1.toSet().toList();
+      print(list1);
 
       return allOrders;
     } catch (e) {
@@ -173,66 +135,65 @@ class _NewOrdersState extends State<NewOrders> {
                 child: Text(snapshot.error.toString()),
               );
             } else {
-              return SingleChildScrollView(
-                physics: NeverScrollableScrollPhysics(),
-                child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    // SizedBox(
-                    //   height: 10,
-                    // ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 10),
-                      child: Row(
-                        children: [
-                          Spacer(),
-                          Container(
-                            width: screenWidth * 0.36,
-                            height: 30,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black, width: 2),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                hint: const Text("Select Item:"),
-                                value: value1,
-                                isExpanded: true,
-                                items: list1.map(buildMenuItem).toList(),
-                                // onChanged: (value) {
-                                //   setState(() {
-                                //     this.value1 = value;
-                                //     ItemName = value!;
-                                //   });
-                                // },
-                                onChanged: (value) {
-                                  setState(() {
-                                    this.value1 = value;
-                                    ItemName = value!;
+              return Column(
+                // mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    child: Row(
+                      children: [
+                        Spacer(),
+                        Container(
+                          width: screenWidth * 0.36,
+                          height: 30,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 2),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              hint: const Text("Select Item:"),
+                              value: value1,
+                              isExpanded: true,
+                              items: list1.map(buildMenuItem).toList(),
+                              // onChanged: (value) {
+                              //   setState(() {
+                              //     this.value1 = value;
+                              //     ItemName = value!;
+                              //   });
+                              // },
+                              onChanged: (value) {
+                                setState(() {
+                                  this.value1 = value;
+                                  ItemName = value!;
 
-                                    // Update the flag and filter the received items if a value is selected
-                                    if (ItemName.isNotEmpty) {
-                                      isFiltering = true;
-                                      filteredOrders = allOrders
-                                          .where((item) =>
-                                              item['product']['name'] ==
-                                              ItemName)
-                                          .toList();
-                                    } else {
-                                      isFiltering = false;
-                                    }
-                                  });
-                                },
-                              ),
+                                  // Update the flag and filter the received items if a value is selected
+                                  if (ItemName.isNotEmpty) {
+                                    isFiltering = true;
+                                    filteredOrders = allOrders
+                                        .where((item) => item['product']['category'] ==
+                                            ItemName
+                                            )
+                                        .toList();
+                                  } else {
+                                    isFiltering = false;
+                                  }
+                                });
+                              },
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Container(
-                      height: screenHeight,
+                  ),
+                  Expanded(
+                    child: Container(
+                      // height: screenHeight * 0.65,
                       child: isFiltering
                           ? ListView.builder(
                               shrinkWrap: true,
@@ -637,9 +598,9 @@ class _NewOrdersState extends State<NewOrders> {
                                 // );
                               },
                             ),
-                    )
-                  ],
-                ),
+                    ),
+                  )
+                ],
               );
             }
           }),

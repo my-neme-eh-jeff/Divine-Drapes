@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:divine_drapes/admin_screens/AdminBottomNav.dart';
 import 'package:divine_drapes/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:divine_drapes/consts/constants.dart';
@@ -17,16 +20,19 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   String? username;
   String? password;
+  int? role;
 
   Future<String?> retrieveData() async {
     final prefs = await SharedPreferences.getInstance();
 
     username = prefs.getString('username');
     password = prefs.getString('password');
+    role = prefs.getInt('role');
+
     print(username);
     print(password);
     if (username == null) {
-      // print('KUCH NHI HUA BHAI');
+      print(role);
     }
   }
 
@@ -34,7 +40,10 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     retrieveData().then((_) {
-      if (username != null) {
+      if (role == 5150) {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => AdminBottomNav()));
+      } else if (username != null || role == 2001) {
         Navigator.of(context)
             .pushReplacement(MaterialPageRoute(builder: (_) => Home()));
       }

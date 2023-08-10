@@ -72,8 +72,7 @@ class _ItemDetailsState extends State<ItemDetails> {
     print(productsCategoryWise.length);
   }
 
-  Future<bool> addToCart(
-      String productId, BuildContext context) async {
+  Future<bool> addToCart(String productId, BuildContext context) async {
     final url =
         Uri.parse('https://divine-drapes.onrender.com/user/addCart/$productId');
     final prefs = await SharedPreferences.getInstance();
@@ -264,9 +263,14 @@ class _ItemDetailsState extends State<ItemDetails> {
                               SizedBox(
                                 height: 10,
                               ),
-                              ShimmerWidget.rectangular(
-                                  width: screenWidth * 0.3,
-                                  height: screenHeight * 0.033),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  ShimmerWidget.rectangular(
+                                      width: screenWidth * 0.3,
+                                      height: screenHeight * 0.033),
+                                ],
+                              ),
                             ],
                           )
                         ],
@@ -404,22 +408,22 @@ class _ItemDetailsState extends State<ItemDetails> {
                                   )),
                             ),
                           ),
-                          Spacer(),
-                          InkWell(
-                              onTap: () {
-                                setState(() {
-                                  liked = !liked;
-                                });
-                              },
-                              child: liked
-                                  ? Icon(
-                                      Icons.favorite,
-                                      color: Colors.red,
-                                    )
-                                  : Icon(Icons.favorite_border_outlined)),
-                          SizedBox(
-                            width: screenWidth * 0.07,
-                          ),
+                          // Spacer(),
+                          // InkWell(
+                          //     onTap: () {
+                          //       setState(() {
+                          //         liked = !liked;
+                          //       });
+                          //     },
+                          //     child: liked
+                          //         ? Icon(
+                          //             Icons.favorite,
+                          //             color: Colors.red,
+                          //           )
+                          //         : Icon(Icons.favorite_border_outlined)),
+                          // SizedBox(
+                          //   width: screenWidth * 0.07,
+                          // ),
                         ],
                       ),
                       //SizedBox(height: screenHeight*0.02,),
@@ -505,9 +509,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                             child: GestureDetector(
                               onTap: () async {
                                 bool success = await addToCart(
-                                    widget.id,
-                                    context,
-                                    );
+                                  widget.id,
+                                  context,
+                                );
                               },
                               child: Container(
                                 width: screenWidth * 0.85,
@@ -599,111 +603,106 @@ class _ItemDetailsState extends State<ItemDetails> {
                                     physics: BouncingScrollPhysics(),
                                     itemCount: productsCategoryWise.length,
                                     itemBuilder: (context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.only(top: 10),
-                                        child: Container(
-                                          // height: screenHeight * 0.15,
-                                          width: screenWidth,
-                                          child: ListTile(
-                                            leading: FractionallySizedBox(
-                                              //widthFactor: 0.25,
-                                              //heightFactor: 1.6,// Adjust the width factor as needed
-                                              heightFactor:
-                                                  screenHeight * 0.0021,
-                                              child: AspectRatio(
-                                                aspectRatio: 1,
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    Navigator.of(context)
-                                                        .push(MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    ItemDetails(
-                                                                      id: productsCategoryWise[
-                                                                              index]!
-                                                                          .id,
-                                                                      image: (productsCategoryWise[index]!
-                                                                              .photo
-                                                                              .picture
-                                                                              .isEmpty)
-                                                                          ? 'assets/mug.png'
-                                                                          : productsCategoryWise[index]!
-                                                                              .photo
-                                                                              .picture[0],
-                                                                      desc: productsCategoryWise[
-                                                                              index]!
-                                                                          .description,
-                                                                      cost: productsCategoryWise[
-                                                                              index]!
-                                                                          .cost,
-                                                                      name: productsCategoryWise[
-                                                                              index]!
-                                                                          .name,
-                                                                      category:
-                                                                          productsCategoryWise[index]!
-                                                                              .category,
-                                                                      added: [],
-                                                                    )));
-                                                  },
-                                                  child: (productsCategoryWise[
-                                                              index]!
-                                                          .photo
-                                                          .picture
-                                                          .isEmpty)
-                                                      ? Image.asset(
-                                                          'assets/mug.png',
-                                                          // height: screenHeight*0.05,
-                                                          fit: BoxFit.fill,
-                                                        )
-                                                      : Image.network(
-                                                          productsCategoryWise[
-                                                                  index]!
-                                                              .photo
-                                                              .picture[0],
-                                                          fit: BoxFit.fill,
-                                                        ),
+                                      return Column(
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 10),
+                                            child: Container(
+                                              // height: screenHeight * 0.15,
+                                              width: screenWidth,
+                                              child: ListTile(
+                                                leading: FractionallySizedBox(
+                                                  //widthFactor: 0.25,
+                                                  //heightFactor: 1.6,// Adjust the width factor as needed
+                                                  heightFactor:
+                                                      screenHeight * 0.0021,
+                                                  child: AspectRatio(
+                                                    aspectRatio: 1,
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        ItemDetails(
+                                                                          id: productsCategoryWise[index]!
+                                                                              .id,
+                                                                          image: (productsCategoryWise[index]!.photo.picture.isEmpty)
+                                                                              ? 'assets/mug.png'
+                                                                              : productsCategoryWise[index]!.photo.picture[0],
+                                                                          desc:
+                                                                              productsCategoryWise[index]!.description,
+                                                                          cost:
+                                                                              productsCategoryWise[index]!.cost,
+                                                                          name:
+                                                                              productsCategoryWise[index]!.name,
+                                                                          category:
+                                                                              productsCategoryWise[index]!.category,
+                                                                          added: [],
+                                                                        )));
+                                                      },
+                                                      child:
+                                                          (productsCategoryWise[
+                                                                      index]!
+                                                                  .photo
+                                                                  .picture
+                                                                  .isEmpty)
+                                                              ? Image.asset(
+                                                                  'assets/mug.png',
+                                                                  // height: screenHeight*0.05,
+                                                                  fit: BoxFit
+                                                                      .fill,
+                                                                )
+                                                              : Image.network(
+                                                                  productsCategoryWise[
+                                                                          index]!
+                                                                      .photo
+                                                                      .picture[0],
+                                                                  fit: BoxFit
+                                                                      .fill,
+                                                                ),
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                            title: Transform.translate(
-                                              offset: Offset(0, -10),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
+                                                title: Transform.translate(
+                                                  offset: Offset(0, -10),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
-                                                      Text(
-                                                        productsCategoryWise[
-                                                                index]!
-                                                            .name,
-                                                        style: GoogleFonts
-                                                            .notoSans(
+                                                      Row(
+                                                        children: [
+                                                          Text(
+                                                            productsCategoryWise[
+                                                                    index]!
+                                                                .name,
+                                                            style: GoogleFonts.notoSans(
                                                                 color: Colors
                                                                     .black,
                                                                 fontSize:
                                                                     screenWidth *
-                                                                        0.036,
+                                                                        0.034,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w700),
-                                                      ),
-                                                      Spacer(),
-                                                      Text(
-                                                        productsCategoryWise[
-                                                                    index]!
-                                                                .cost
-                                                                .currency +
-                                                            " " +
+                                                          ),
+                                                          Spacer(),
+                                                          Text(
                                                             productsCategoryWise[
-                                                                    index]!
-                                                                .cost
-                                                                .value
-                                                                .toString(),
-                                                        style: GoogleFonts
-                                                            .notoSans(
+                                                                        index]!
+                                                                    .cost
+                                                                    .currency +
+                                                                " " +
+                                                                productsCategoryWise[
+                                                                        index]!
+                                                                    .cost
+                                                                    .value
+                                                                    .toString(),
+                                                            style: GoogleFonts.notoSans(
                                                                 color: Colors
                                                                     .black,
                                                                 fontSize:
@@ -712,113 +711,116 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w700),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
-                                                  ),
-                                                  Text(
-                                                      productsCategoryWise[
-                                                              index]!
-                                                          .description,
-                                                      style:
-                                                          GoogleFonts.notoSans(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize:
-                                                                  screenWidth *
-                                                                      0.031,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500)),
-                                                  SizedBox(
-                                                    height:
-                                                        screenHeight * 0.0078,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Container(
-                                                          decoration: BoxDecoration(
-                                                              color: cream,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          5)),
-                                                          child:
-                                                              GestureDetector(
-                                                            onTap: () {
-                                                              setState(() {
-                                                                isAdded =
-                                                                    !isAdded;
-                                                              });
-                                                            },
-                                                            child: Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
+                                                      Text(
+                                                          productsCategoryWise[
+                                                                  index]!
+                                                              .description,
+                                                          style: GoogleFonts
+                                                              .notoSans(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize:
+                                                                      screenWidth *
+                                                                          0.031,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400)),
+                                                      SizedBox(
+                                                        height: screenHeight *
+                                                            0.0078,
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          // Spacer(),
+                                                          Container(
+                                                              decoration: BoxDecoration(
+                                                                  color: cream,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5)),
+                                                              child:
+                                                                  GestureDetector(
+                                                                onTap: () {
+                                                                  setState(() {
+                                                                    isAdded =
+                                                                        !isAdded;
+                                                                  });
+                                                                },
+                                                                child: Padding(
+                                                                  padding: EdgeInsets.symmetric(
                                                                       horizontal:
                                                                           screenWidth *
                                                                               0.028,
                                                                       vertical:
                                                                           5),
-                                                              child: isAdded
-                                                                  ? Row(
-                                                                      children: [
-                                                                        Text(
-                                                                          "Added",
+                                                                  child: isAdded
+                                                                      ? Row(
+                                                                          children: [
+                                                                            Text(
+                                                                              "Added",
+                                                                              style: GoogleFonts.notoSans(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
+                                                                            ),
+                                                                            SizedBox(
+                                                                              width: 2,
+                                                                            ),
+                                                                            Container(
+                                                                                width: 30,
+                                                                                height: 20,
+                                                                                color: Colors.transparent,
+                                                                                child: Image.asset(
+                                                                                  'assets/tickmark.png',
+                                                                                ))
+                                                                          ],
+                                                                        )
+                                                                      : Text(
+                                                                          "Add to cart",
                                                                           style: GoogleFonts.notoSans(
                                                                               color: Colors.black,
                                                                               fontSize: 16,
                                                                               fontWeight: FontWeight.w600),
                                                                         ),
-                                                                        SizedBox(
-                                                                          width:
-                                                                              2,
-                                                                        ),
-                                                                        Container(
-                                                                            width:
-                                                                                30,
-                                                                            height:
-                                                                                20,
-                                                                            color:
-                                                                                Colors.transparent,
-                                                                            child: Image.asset(
-                                                                              'assets/tickmark.png',
-                                                                            ))
-                                                                      ],
-                                                                    )
-                                                                  : Text(
-                                                                      "Add to cart",
-                                                                      style: GoogleFonts.notoSans(
-                                                                          color: Colors
-                                                                              .black,
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontWeight:
-                                                                              FontWeight.w600),
-                                                                    ),
-                                                            ),
-                                                          )),
-                                                      Spacer(),
-                                                      InkWell(
-                                                          onTap: () {
-                                                            setState(() {
-                                                              liked = !liked;
-                                                            });
-                                                          },
-                                                          child: liked
-                                                              ? Icon(
-                                                                  Icons
-                                                                      .favorite,
-                                                                  color: Colors
-                                                                      .red,
-                                                                )
-                                                              : Icon(Icons
-                                                                  .favorite_border_outlined))
+                                                                ),
+                                                              )),
+                                                          // Spacer(),
+                                                          // InkWell(
+                                                          //     onTap: () {
+                                                          //       setState(() {
+                                                          //         liked =
+                                                          //             !liked;
+                                                          //       });
+                                                          //     },
+                                                          //     child: liked
+                                                          //         ? Icon(
+                                                          //             Icons
+                                                          //                 .favorite,
+                                                          //             color: Colors
+                                                          //                 .red,
+                                                          //           )
+                                                          //         : Icon(Icons
+                                                          //             .favorite_border_outlined))
+                                                        ],
+                                                      )
                                                     ],
-                                                  )
-                                                ],
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 0),
+                                            child: Divider(
+                                              thickness: 1,
+                                            ),
+                                          )
+                                        ],
                                       );
                                     },
                                   ),

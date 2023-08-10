@@ -54,9 +54,7 @@ class _MyOrdersState extends State<MyOrders> {
         productCost.add(product['cost']['value'].toString());
       }
 
-
       filteredOrders = List.from(orders);
-
 
       setState(() {
         isLoading = false;
@@ -221,6 +219,7 @@ class _MyOrdersState extends State<MyOrders> {
                             children: [
                               Row(
                                 children: [
+                                  SizedBox(width: 10),
                                   InkWell(
                                       onTap: () {
                                         // Navigator.of(context).push(MaterialPageRoute(
@@ -255,125 +254,172 @@ class _MyOrdersState extends State<MyOrders> {
                               physics: BouncingScrollPhysics(),
                               itemCount: orders.length,
                               itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (context) => MyOrderInfo(
-                                                  id: orders[index]!.id,
-                                                  name: productName[index],
-                                                  date:
-                                                      orders[index]!.createdAt,
-                                                )));
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 10, bottom: 10),
-                                    child: Container(
-                                      height: screenHeight * 0.14,
-                                      width: screenWidth,
-                                      child: ListTile(
-                                        leading: FractionallySizedBox(
-                                          //widthFactor: 0.25,
-                                          //heightFactor: 1.6,// Adjust the width factor as needed
-                                          heightFactor: screenHeight * 0.0024,
-                                          child: AspectRatio(
-                                            aspectRatio: 1,
-                                            child: (orders[index]!
-                                                    .photo
-                                                    .picture
-                                                    .isEmpty)
-                                                ? Image.asset(
-                                                    'assets/Vector.png',
-                                                    // height: screenHeight*0.05,
-                                                    fit: BoxFit.fill,
-                                                  )
-                                                : Image.network(
-                                                    orders[index]!
+                                return Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MyOrderInfo(
+                                                      id: orders[index]!.id,
+                                                      name: productName[index],
+                                                      date: orders[index]!
+                                                          .createdAt,
+                                                    )));
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10, bottom: 0),
+                                        child: Container(
+                                          height: screenHeight * 0.14,
+                                          width: screenWidth,
+                                          child: ListTile(
+                                            leading: FractionallySizedBox(
+                                              //widthFactor: 0.25,
+                                              //heightFactor: 1.6,// Adjust the width factor as needed
+                                              heightFactor:
+                                                  screenHeight * 0.0024,
+                                              child: AspectRatio(
+                                                aspectRatio: 1,
+                                                child: (orders[index]!
                                                         .photo
-                                                        .picture[0],
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                          ),
-                                        ),
-                                        title: Transform.translate(
-                                          offset:
-                                              Offset(0.0, -screenWidth * 0.05),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    productName[index],
-                                                    style: GoogleFonts.notoSans(
-                                                        color: Colors.black,
-                                                        fontSize:
-                                                            screenWidth * 0.04,
-                                                        fontWeight:
-                                                            FontWeight.w700),
-                                                  ),
-                                                  Spacer(),
-                                                  Text(
-                                                    productCost[index] + " Rs",
-                                                    style: GoogleFonts.notoSans(
-                                                        color: Colors.black,
-                                                        fontSize:
-                                                            screenWidth * 0.039,
-                                                        fontWeight:
-                                                            FontWeight.w700),
-                                                  ),
-                                                ],
+                                                        .picture
+                                                        .isEmpty)
+                                                    ? Image.asset(
+                                                        'assets/Vector.png',
+                                                        // height: screenHeight*0.05,
+                                                        fit: BoxFit.fill,
+                                                      )
+                                                    : Image.network(
+                                                        orders[index]!
+                                                            .photo
+                                                            .picture[0],
+                                                        fit: BoxFit.fill,
+                                                      ),
                                               ),
-                                              Text(productDesc[index],
-                                                  style: GoogleFonts.notoSans(
-                                                      color: Colors.black,
-                                                      fontSize:
-                                                          screenWidth * 0.035,
-                                                      fontWeight:
-                                                          FontWeight.w500)),
-                                              SizedBox(
-                                                height: screenHeight * 0.0078,
-                                              ),
-                                              Row(
+                                            ),
+                                            title: Transform.translate(
+                                              offset: Offset(
+                                                  0.0, -screenWidth * 0.05),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
-                                                  Container(
-                                                      decoration: BoxDecoration(
-                                                          color: cream,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5)),
-                                                      child: GestureDetector(
-                                                        onTap: () async {},
-                                                        child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Text(
-                                                              "Add Comments",
-                                                              style: GoogleFonts
-                                                                  .notoSans(
+                                                  Expanded(
+                                                    flex: 3,
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          productName[index],
+                                                          style: GoogleFonts
+                                                              .notoSans(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize:
+                                                                      screenWidth *
+                                                                          0.04,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700),
+                                                        ),
+                                                        Spacer(),
+                                                        Text(
+                                                          productCost[index] +
+                                                              " Rs",
+                                                          style: GoogleFonts
+                                                              .notoSans(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize:
+                                                                      screenWidth *
+                                                                          0.035,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 4,
+                                                    child: Text(
+                                                        productDesc[index],
+                                                        style: GoogleFonts
+                                                            .notoSans(
                                                                 color: Colors
                                                                     .black,
-                                                                fontSize: 16,
+                                                                fontSize:
+                                                                    screenWidth *
+                                                                        0.036,
                                                                 fontWeight:
                                                                     FontWeight
-                                                                        .w600,
-                                                              ),
+                                                                        .w400)),
+                                                  ),
+                                                  // SizedBox(
+                                                  //   height: screenHeight * 0.0078,
+                                                  // ),
+                                                  Expanded(
+                                                    flex: 3,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Spacer(),
+                                                        Container(
+                                                            decoration: BoxDecoration(
+                                                                color: cream,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5)),
+                                                            child:
+                                                                GestureDetector(
+                                                              onTap:
+                                                                  () async {},
+                                                              child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(5),
+                                                                  child: Text(
+                                                                    "Add Comments",
+                                                                    style: GoogleFonts
+                                                                        .notoSans(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          screenWidth *
+                                                                              0.038,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                    ),
+                                                                  )),
                                                             )),
-                                                      )),
-                                                  Spacer(),
+                                                      ],
+                                                    ),
+                                                  )
                                                 ],
-                                              )
-                                            ],
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 0),
+                                      child: Divider(
+                                        thickness: 1,
+                                      ),
+                                    )
+                                  ],
                                 );
                               },
                             ),

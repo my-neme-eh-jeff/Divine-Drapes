@@ -424,6 +424,10 @@ class _EditAddressState extends State<EditAddress> {
                                   fontWeight: FontWeight.w700,
                                   color: brownColor)),
                           onTap: () async {
+                            setState(() {
+                              isLoading = true;
+                            });
+
                             await Profiles().manageAddress(
                                 addresses?[0].addressOf,
                                 flatcontroller.text.trim(),
@@ -433,9 +437,16 @@ class _EditAddressState extends State<EditAddress> {
                                 statecontroller.text.trim(),
                                 countrycontroller.text.trim());
 
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => MyAccount()));
+                            setState(() {
+                              isLoading = false;
+                            });
+
+                            // Navigator.of(context).pushReplacement(
+                            //     MaterialPageRoute(
+                            //         builder: (context) => MyAccount()));
+
+                            Navigator.pop(context);
+                            Navigator.pop(context);
                           },
                         ),
                       ),

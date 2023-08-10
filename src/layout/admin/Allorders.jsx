@@ -29,6 +29,7 @@ export default function Allorders() {
   };
 
   const getAllOrder = async () => {
+
     setLoading(true);
     const options = {
       url: "admin/allOrders",

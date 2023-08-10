@@ -38,6 +38,10 @@ const validationschema = yup.object({
 });
 
 const Login = () => {
+  const loginWithGoogle = () => {
+    // window.open(`${import.meta.env.VITE_API_ENDPOINT}/auth/google`, "_self");
+  };
+
   const { setAuth, auth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -54,12 +58,9 @@ const Login = () => {
     },
     onSubmit: async (values) => {
       const options = {
-        url: `https://divine-drapes.onrender.com/auth/login`,
+        url: `auth/login`,
         method: "POST",
         data: { ...values },
-        headers: {
-          "Content-Type": "application/json",
-        },
         withCredentials: true,
       };
       try {
@@ -70,7 +71,6 @@ const Login = () => {
           email: email,
           accessToken: accessToken,
         };
-        console.log(a);
         setAuth({ email, accessToken });
         //toast.success("Logged in successfully");
         navigate(from, { replace: true });
@@ -271,6 +271,7 @@ const Login = () => {
     return (
       <React.Fragment>
         <Button
+          onClick={loginWithGoogle}
           variant="outlined"
           href="#"
           sx={{
@@ -333,7 +334,7 @@ const Login = () => {
             display: resp2 ? "flex" : "",
             justifyContent: "center",
             alignItems: "center",
-            height:"100%",
+            height: "100%",
             // overflowY: "hidden",
           }}
         >
@@ -386,9 +387,12 @@ const Login = () => {
                     marginLeft: resp ? "0rem" : "5.5rem",
                   }}
                 >
-                  <span style={{ fontWeight: 600, 
-                    // margin: "0.6rem 0" 
-                    }}>
+                  <span
+                    style={{
+                      fontWeight: 600,
+                      // margin: "0.6rem 0"
+                    }}
+                  >
                     Don&apos;t have an account?
                   </span>
                   <Link

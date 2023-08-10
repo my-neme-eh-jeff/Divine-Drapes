@@ -25,9 +25,9 @@ function Product() {
 
   // Calculate categoryWise based on flag
   const categoryWise = flag ? catBody?.data : catBody?.data || [];
-    // Calculate categoryWise based on flag
-    // const categoryWise = flag ? catBody?.data : catBody?.data || [];
-    // const categoryWise = flag ? catBody?.data :  [];
+  // Calculate categoryWise based on flag
+  // const categoryWise = flag ? catBody?.data : catBody?.data || [];
+  // const categoryWise = flag ? catBody?.data :  [];
 
   useEffect(() => {
     // Call the categoryProduct function when the component mounts or when the flag changes
@@ -192,7 +192,7 @@ function Product() {
                     <svg
                       stroke="currentColor"
                       fill="currentColor"
-                      stroke-width="0"
+                      strokeWidth="0"
                       version="1.1"
                       viewBox="0 0 16 16"
                       height="1em"
@@ -221,9 +221,10 @@ function Product() {
             overflowX={"auto"}
             className="recom"
           >
-            {categoryWise.map((map) => {
+            {categoryWise.map((map, index) => {
               return (
                 <Content
+                  key={index}
                   title={map.name}
                   price={map.cost.value}
                   desc={map.description}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import {
@@ -10,7 +10,7 @@ import {
   CardBody,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import useAxiosPrivate from "../../Hooks/useAxiosPrivate";
+import publicAxios from "../../Axios/publicAxios";
 
 const responsive = {
   superLargeDesktop: {
@@ -35,22 +35,23 @@ const responsive = {
 const Personalised = () => {
   const [topSelling, setTopSelling] = useState([]);
   const navigate = useNavigate();
-  const privateAxios = useAxiosPrivate();
 
-  let config = {
-    method: "GET",
-    url: "product/allProducts",
+  const getAllProducts = async () => {
+    const options = {
+      method: "GET",
+      url: "public/allProducts",
+    };
+    try {
+      const resp = await publicAxios.request(options);
+      setTopSelling(resp.data.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  privateAxios
-    .request(config)
-    .then((response) => {
-      const product = response.data;
-      setTopSelling(product.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  useEffect(() => {
+    getAllProducts();
+  }, []);
 
   const handleItem = (id) => {
     console.log(id);

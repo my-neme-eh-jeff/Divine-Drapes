@@ -1,218 +1,191 @@
-import React, { useEffect, useRef } from 'react'
-import { useState } from 'react';
-import { Box, ChakraProvider, Heading, SimpleGrid, Image, Button, Select, Input } from '@chakra-ui/react'
-import './Upload.css'
-import Footer from '../Footer/Footer';
-import Navbar from '../Navbar/Navbar';
+import React, { useEffect, useRef } from "react";
+import { useState } from "react";
 import {
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    useDisclosure
-} from '@chakra-ui/react'
-import Address from './Address/Address';
-import publicAxios from '../../Axios/publicAxios'
-import privateAxios from '../../Axios/privateAxios';
-import useAuth from '../../Hooks/useAuth';
-import { useParams } from 'react-router-dom';
-import { Toast } from '@chakra-ui/react';
-import { useToast } from '@chakra-ui/react'
-
+  Box,
+  ChakraProvider,
+  Heading,
+  SimpleGrid,
+  Image,
+  Button,
+  Select,
+  Input,
+} from "@chakra-ui/react";
+import "./Upload.css";
+import Footer from "../Footer/Footer";
+import Navbar from "../Navbar/Navbar";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+} from "@chakra-ui/react";
+import Address from "./Address/Address";
+import { useParams } from "react-router-dom";
+import { Toast } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
+import useAxiosPrivate from "../../Hooks/useAxiosPrivate";
 
 function Buy() {
-    const [body, setBody] = useState([])
-    const toast = useToast()
-    const { productId } = useParams()
-    const prodId = productId.split(':')[1]
-    console.log(prodId)
-    const [selectedImage, setSelectedImage] = useState(null);
-    const fileInputRef = useRef(null);
-    const [custText, setCustText] = useState('');
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const [pay, setPay] = useState()
+  const [body, setBody] = useState([]);
+  const toast = useToast();
+  const { productId } = useParams();
+  const prodId = productId.split(":")[1];
+  const [selectedImage, setSelectedImage] = useState(null);
+  const fileInputRef = useRef(null);
+  const [custText, setCustText] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [pay, setPay] = useState();
+  const privateAxios = useAxiosPrivate();
 
-    const { auth, setAuth } = useAuth();
-    const isLogin = auth?.accessToken;
-    console.log(isLogin);
-
-
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setSelectedImage(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
-        console.log(selectedImage)
-        console.log(fileInputRef)
-    };
-
-  const getSingleProd = () => {
-    let config = {
-      method: "get",
-      maxBodyLength: Infinity,
-      url: `https://divine-drapes.onrender.com/product/viewProduct/${prodId}`,
-    };
-
-    privateAxios
-      .request(config)
-      .then((response) => {
-        // alert("hitted")
-        console.log(JSON.stringify(response.data));
-        setBody([response.data]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const handleImageChange = (event) => {
+    console.log(file);
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setSelectedImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
-    useEffect(() => {
-        getSingleProd()
-    }, [])
-
-    const imageUploader = (id) => {
-        if (body[0]?.data.photo.isCust) {
-            let data = new FormData();
-            // data.append('files', fileInputRef.current.files[0]);
-              data.append('files', selectedImage);
-            data.append('id', id);//here the order id is passed
-
-            let config = {
-                method: 'post',
-                maxBodyLength: Infinity,
-                url: 'https://divine-drapes.onrender.com/user/orderPicture',
-                headers: {
-                    'Authorization': `Bearer ` + isLogin,
-                },
-                data: data
-            };
-
-
-            privateAxios.request(config)
-                .then((response) => {
-                    console.log(JSON.stringify(response.data));
-                    toast({
-                        title: 'Your Post is uploaded',
-                        description: JSON.stringify(response.data.message),
-                        status: 'success',
-                        duration: 2500,
-                        isClosable: true,
-                    })
-                })
-                .catch((error) => {
-                    console.log(error);
-                    toast({
-                        title: 'Image cannot be posted',
-                        description: error.message,
-                        status: 'error',
-                        duration: 2500,
-                        isClosable: true,
-                    })
-                });
-        }
-        else {
-            alert("No imaage required")
-        }
+  const getSingleProd = async () => {
+    let config = {
+      method: "GET",
+      url: `product/viewProduct/${prodId}`,
+    };
+    try{
+      const resp = await privateAxios(config)
+      setBody(resp.data.data)
+      console.log(body)
+    }catch(err){
+      console.log(err)
     }
+  };
 
+  useEffect(() => {
+    getSingleProd();
+  }, []);
 
-
-  const placeOrder = () => {
-    let data = JSON.stringify({
+  const placeOrder = async () => {
+    const data = {
       pID: prodId,
-      isCustPhoto: body[0]?.data.photo.isCust,
-      isCustText: body[0]?.data.text.isCust,
+      isCustPhoto: body.photo.isCust,
+      isCustText: body.text.isCust,
       text: custText,
-      isCustColor: body[0]?.data.color.isCust,
+      isCustColor: body.color.isCust,
       paymentStatus: "pending",
       paymentType: pay,
-    });
-
-    let config = {
-      method: "post",
-      maxBodyLength: Infinity,
-      url: "https://divine-drapes.onrender.com/user/order",
+    };
+    const config = {
+      method: "POST",
+      url: "user/orderWithImages",
       data: data,
     };
-
-        privateAxios.request(config)
-            .then((response) => {
-                console.log(JSON.stringify(response.data));
-                imageUploader(body[0]?.data._id)
-                alert("Placed Successfully")
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
+    try {
+      await privateAxios.request(config);
+      alert("wow ordered");
+    } catch (err) {
+      console.log(err);
     }
-    return (
-        <div>
+  };
 
-            <ChakraProvider>
-                <Navbar />
-                <Box className='productbody' >
-                    <br />
-                    {/* product name here  */}
-                    <Heading className='namehere'>{body[0]?.data.category}</Heading>
-                    <br />
-                    <Box height={'auto'} className='mainpro'>
-                        <SimpleGrid
-                            h='auto'
-                            w='auto'
-                            columns={{ base: 1, md: 3 }}
-                            gap={15}
-
-                        >
-                            <Box className='Box'
-                                display={'flex'}
-                                justifyContent={'center'}
-                                alignItems={'center'}
-                                alignSelf={'center'}
-                            >
-                                <Image
-                                    boxSize='280px'
-                                    objectFit='cover'
-                                    src='https://bit.ly/dan-abramov'
-                                    alt='Dan Abramov'
-                                />
-                            </Box>
-                            <Box className='Box'
-                                display={'flex'}
-                                justifyContent={'center'}
-                                alignItems={'left'}
-                                flexWrap={'center'}
-                                flexDirection={'column'}>
-                                <p><Heading fontSize={28} fontWeight={700}>{body[0]?.data.name}</Heading></p>
-                                <p >{body[0]?.data.description}</p>
-                                <br />
-                                <p><Heading fontSize={24} fontWeight={700}>₹ {body[0]?.data.cost.value}</Heading></p>
-                                <br />
-                                <div className="image-uploader">
-                                    <label htmlFor="upload-input" className="upload-label">
-                                        <span className="upload-text">Upload your customization</span>
-                                        {
-                                            body[0]?.data.photo.isCust ? (
-                                                <input id="upload-input" ref={fileInputRef} type="file" accept="image/*" onChange={handleImageChange} />
-                                            ) : (
-                                                <input id="upload-input" ref={fileInputRef} disabled='true' type="file" accept="image/*" onChange={handleImageChange} />
-                                            )
-                                        }
-
-                                    </label>
-                                    {selectedImage && <img src={selectedImage} alt="Preview" className="preview-image" />}
-                                </div>
-                                <br />
-                                <Heading fontSize={24} fontWeight={700}>Text Customization</Heading>
-                                {
-                                    body[0]?.data.text.isCust ? (<Input value={custText} onChange={e => { setCustText(e.target.value) }} placeholder='Enter your Text' />) : (<Input placeholder='Enter your Text' disabled='true' />)
-                                }
+  return (
+    <div>
+      <ChakraProvider>
+        <Navbar />
+        <Box className="productbody">
+          <br />
+          <Heading className="namehere">{body.category}</Heading>
+          <br />
+          <Box height={"auto"} className="mainpro">
+            <SimpleGrid h="auto" w="auto" columns={{ base: 1, md: 3 }} gap={15}>
+              <Box
+                className="Box"
+                display={"flex"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                alignSelf={"center"}
+              >
+                <Image
+                  boxSize="280px"
+                  objectFit="cover"
+                  src="https://bit.ly/dan-abramov"
+                  alt="Dan Abramov"
+                />
+              </Box>
+              <Box
+                className="Box"
+                display={"flex"}
+                justifyContent={"center"}
+                alignItems={"left"}
+                flexWrap={"center"}
+                flexDirection={"column"}
+              >
+                <p>
+                  <Heading fontSize={28} fontWeight={700}>
+                    {body.name}
+                  </Heading>
+                </p>
+                <p>{body.description}</p>
+                <br />
+                <p>
+                  <Heading fontSize={24} fontWeight={700}>
+                    ₹ {body.cost.value}
+                  </Heading>
+                </p>
+                <br />
+                <div className="image-uploader">
+                  <label htmlFor="upload-input" className="upload-label">
+                    <span className="upload-text">
+                      Upload your customization
+                    </span>
+                    {body.photo.isCust ? (
+                      <input
+                        id="upload-input"
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                      />
+                    ) : (
+                      <input
+                        id="upload-input"
+                        ref={fileInputRef}
+                        disabled="true"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                      />
+                    )}
+                  </label>
+                  {selectedImage && (
+                    <img
+                      src={selectedImage}
+                      alt="Preview"
+                      className="preview-image"
+                    />
+                  )}
+                </div>
+                <br />
+                <Heading fontSize={24} fontWeight={700}>
+                  Text Customization
+                </Heading>
+                {body.text.isCust ? (
+                  <Input
+                    value={custText}
+                    onChange={(e) => {
+                      setCustText(e.target.value);
+                    }}
+                    placeholder="Enter your Text"
+                  />
+                ) : (
+                  <Input placeholder="Enter your Text" disabled="true" />
+                )}
 
                 <br />
                 <Box
@@ -221,6 +194,7 @@ function Buy() {
                   width={"auto"}
                 >
                   <Button onClick={onOpen}>Shipping Address</Button>
+
                   <Modal isOpen={isOpen} onClose={onClose}>
                     <ModalOverlay />
                     <ModalContent>
@@ -244,6 +218,7 @@ function Buy() {
                       </ModalFooter>
                     </ModalContent>
                   </Modal>
+
                   <Select
                     id="payment"
                     value={pay}
@@ -258,48 +233,57 @@ function Buy() {
                   </Select>
                 </Box>
                 {pay == "card" ? (
-                  <div class="modal">
-                    <form class="form">
-                      <div class="separator">
-                        <hr class="line" />
+                  <div className="modal">
+                    <form className="form">
+                      <div className="separator">
+                        <hr className="line" />
                         <p>Pay using Credit/Debit card</p>
-                        <hr class="line" />
+                        <hr className="line" />
                       </div>
-                      <div class="credit-card-info--form">
-                        <div class="input_container">
-                          <label for="password_field" class="input_label">
+                      <div className="credit-card-info--form">
+                        <div className="input_container">
+                          <label
+                            htmlFor="password_field"
+                            className="input_label"
+                          >
                             Card holder full name
                           </label>
                           <input
                             id="password_field"
-                            class="input_field"
+                            className="input_field"
                             type="text"
                             name="input-name"
                             title="Inpit title"
                             placeholder="Enter your full name"
                           />
                         </div>
-                        <div class="input_container">
-                          <label for="password_field" class="input_label">
+                        <div className="input_container">
+                          <label
+                            htmlFor="password_field"
+                            className="input_label"
+                          >
                             Card Number
                           </label>
                           <input
                             id="password_field"
-                            class="input_field"
+                            className="input_field"
                             type="number"
                             name="input-name"
                             title="Inpit title"
                             placeholder="0000 0000 0000 0000"
                           />
                         </div>
-                        <div class="input_container">
-                          <label for="password_field" class="input_label">
+                        <div className="input_container">
+                          <label
+                            htmlFor="password_field"
+                            className="input_label"
+                          >
                             Expiry Date / CVV
                           </label>
-                          <div class="split">
+                          <div className="split">
                             <input
                               id="password_field"
-                              class="input_field"
+                              className="input_field"
                               type="text"
                               name="input-name"
                               title="Expiry Date"
@@ -307,7 +291,7 @@ function Buy() {
                             />
                             <input
                               id="password_field"
-                              class="input_field"
+                              className="input_field"
                               type="number"
                               name="cvv"
                               title="CVV"
@@ -351,7 +335,7 @@ function Buy() {
                   </Button>
                 </Box>
 
-                {/* <Box className='Box'>
+                {/* <Box classNameName='Box'>
 
                                 </Box> */}
               </Box>

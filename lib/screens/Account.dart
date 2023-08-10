@@ -513,7 +513,8 @@ class _MyAccountState extends State<MyAccount> {
                             const EdgeInsets.only(top: 20, left: 20, right: 20),
                         child: InkWell(
                           onTap: () {
-                            logoutProvider.Logout(context: context);
+                            // logoutProvider.Logout(context: context);
+                            _showLogoutConfirmationDialog(context);
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -556,6 +557,71 @@ class _MyAccountState extends State<MyAccount> {
                   );
                 }
               })),
+    );
+  }
+
+  void _showLogoutConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
+          child: AlertDialog(
+            title: Text("Log Out"),
+            content: Text(
+              "Are you sure you want to log out?",
+              style: TextStyle(
+                color: brownColor,
+              ),
+            ),
+            actions: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context); // Close the dialog
+                },
+                child: Container(
+                  width: 70,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: cream,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  // Navigator.pop(context);
+
+                  Provider.of<AuthProvider>(context, listen: false)
+                      .Logout(context: context);
+                },
+                child: Container(
+                  width: 70,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: cream,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Log Out',
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

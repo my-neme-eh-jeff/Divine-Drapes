@@ -84,7 +84,8 @@ class AuthProvider extends ChangeNotifier {
   static const String authTokenKey = 'auth_token';
   user.Login? currentUser;
 
-  Future<bool> login(String email, String password,BuildContext context,) async {
+  Future<bool> login(String email, String password, BuildContext context,
+      bool? rememberMe) async {
     final url = Uri.parse('https://divine-drapes.onrender.com/auth/applogin');
     final response = await http.post(
       url,
@@ -97,53 +98,64 @@ class AuthProvider extends ChangeNotifier {
       await saveAuthToken(token);
       print(response.statusCode);
       getAuthToken();
+      if (rememberMe == true) {
+        _saveCredentials(email, password);
+      }
       var json1 = response.body;
 
       Map<String, dynamic> parsedResponse = json.decode(json1);
       int? adminData = parsedResponse['data']['roles']['Admin'];
       print('Admin data: $adminData');
-      if(adminData == 5150)
-        {
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            '/admin_bottom_nav', // Replace this with the actual name of the AdminBottomNav route.
-                (route) => false, // Remove all the previous routes from the stack.
-          );
+      if (adminData == 5150) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/admin_bottom_nav', // Replace this with the actual name of the AdminBottomNav route.
+          (route) => false, // Remove all the previous routes from the stack.
+        );
 
-          Fluttertoast.showToast(
-              msg: "Logged in as Admin!",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.green,
-              textColor: Colors.white,
-              fontSize: 16.0);
-
-        }
-      else
-        {
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            '/home', // Replace this with the actual name of the AdminBottomNav route.
-                (route) => false, // Remove all the previous routes from the stack.
-          );
-          Fluttertoast.showToast(
-              msg: "Logged in as user!",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.green,
-              textColor: Colors.white,
-              fontSize: 16.0);
-        }
+        Fluttertoast.showToast(
+            msg: "Logged in as Admin!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/home', // Replace this with the actual name of the AdminBottomNav route.
+          (route) => false, // Remove all the previous routes from the stack.
+        );
+        Fluttertoast.showToast(
+            msg: "Logged in as user!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
 
       return true;
-    }
-    else
-    {
+    } else {
       print(response.statusCode);
       return false;
     }
+  }
+
+  Future<void> _saveCredentials(String email, String password) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', email);
+    await prefs.setString('password', password);
+    print('SAVED CREDENTIALS');
+  }
+
+  Future<void> _clearCredentials() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('username');
+    await prefs.remove('password');
+    print('CLEARED CREDENTIALS');
   }
 
   Future<String> getAuthToken() async {
@@ -184,6 +196,8 @@ class AuthProvider extends ChangeNotifier {
       print(await response.stream.bytesToString());
       print("Logged out succesfully");
       print(response.statusCode);
+
+      _clearCredentials();
 
       Fluttertoast.showToast(
           msg: "Logged out successfully!",

@@ -8,11 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Provider/Auth/AuthProvider.dart';
 import '../admin_screens/AdminBottomNav.dart';
 import '../admin_screens/AdminOrders.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -26,7 +28,37 @@ class _LoginState extends State<Login> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   bool isChecked = false;
+  final storage = FlutterSecureStorage();
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCredentials();
+  }
+
+  Future<void> _loadCredentials() async {
+    final username = await storage.read(key: 'username');
+    final password = await storage.read(key: 'password');
+    if (username != null && password != null) {
+      setState(() {
+        isChecked = true;
+        emailController.text = username;
+        passwordController.text = password;
+      });
+    }
+  }
+
+  Future<void> _saveCredentials() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', emailController.text);
+    await prefs.setString('password', passwordController.text);
+  }
+
+  Future<void> _clearCredentials() async {
+    await storage.delete(key: 'username');
+    await storage.delete(key: 'password');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -338,7 +370,8 @@ class _LoginState extends State<Login> {
                           var result = await AuthProvider().login(
                               emailController.text.trim(),
                               passwordController.text.trim(),
-                              context);
+                              context,
+                              isChecked);
                           if (!result) {
                             Navigator.pop(context);
                             Fluttertoast.showToast(
@@ -349,21 +382,29 @@ class _LoginState extends State<Login> {
                                 backgroundColor: Colors.green,
                                 textColor: Colors.white,
                                 fontSize: 16.0);
+                          } else {
+                            // Clear saved credentials if "Remember Me" is not checked
+                            // if (result || isChecked) {
+                            //   _saveCredentials();
+                            // } else if (!isChecked) {
+                            //   _clearCredentials();
+                            // }
+
+                            // Navigator.pop(context);
+                            // if (success) {
+                            //   Navigator.pushReplacement(
+                            //     context,
+                            //     MaterialPageRoute(builder: (context) => Home()),
+                            //   );
+                            // } else {
+                            //   ScaffoldMessenger.of(context).showSnackBar(
+                            //     const SnackBar(
+                            //       content: Text('There seems to be an issue'),
+                            //       duration: Duration(seconds: 3),
+                            //     ),
+                            //   );
+                            // }
                           }
-                          // Navigator.pop(context);
-                          // if (success) {
-                          //   Navigator.pushReplacement(
-                          //     context,
-                          //     MaterialPageRoute(builder: (context) => Home()),
-                          //   );
-                          // } else {
-                          //   ScaffoldMessenger.of(context).showSnackBar(
-                          //     const SnackBar(
-                          //       content: Text('There seems to be an issue'),
-                          //       duration: Duration(seconds: 3),
-                          //     ),
-                          //   );
-                          // }
                         }
                       },
                       child: Container(

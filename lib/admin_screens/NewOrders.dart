@@ -72,7 +72,6 @@ class _NewOrdersState extends State<NewOrders> {
 
   // List<data.Received?> allOrders = [];
   var allOrders;
-
   Future AllOrdersData() async {
     var PastOrders = [];
     var i;
@@ -105,7 +104,9 @@ class _NewOrdersState extends State<NewOrders> {
     Widget buildShimmer() => SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Transform.translate(
                 offset: Offset(screenWidth * 0.27, 0),
                 child: ShimmerWidget.rectangular(
@@ -152,8 +153,7 @@ class _NewOrdersState extends State<NewOrders> {
                                   height: 10,
                                 ),
                                 ShimmerWidget.rectangular(
-                                    width: screenWidth * 0.3,
-                                    height: 15),
+                                    width: screenWidth * 0.3, height: 15),
                               ],
                             )
                           ],
@@ -187,11 +187,12 @@ class _NewOrdersState extends State<NewOrders> {
                         Spacer(),
                         Container(
                           width: screenWidth * 0.36,
+                          height: 30,
                           padding:
                               EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black, width: 2),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(5),
                           ),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
@@ -223,23 +224,37 @@ class _NewOrdersState extends State<NewOrders> {
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => OrderInfo(
-                                      name: (allOrders[position]!['product'] == null)
-                                          ? "---"
-                                          : allOrders[position]!['product']['name'],
-                                      image: (allOrders[position]!
-                                                    ['product'] == null
-                                                    )
-                                                    ? 'assets/Vector.png'
-                                                    : (allOrders[position]!['product']['photo']['picture'].isEmpty)
-                                                      ? 'assets/Vector.png'
-                                                      : allOrders[position]!['product']['photo']['picture'][0],
-                                      userName: allOrders[position]!['user']['fname'],
-                                      contatct: allOrders[position]!['user']['number'].toString(),
-                                      email: allOrders[position]!['user']['email'],
-                                      paymentMode: allOrders[position]!['paymentType'],
-                                      paymentStatus: allOrders[position]!['paymentStatus'],
-                                      address: allOrders[position]!['user']['addressList'],
-                                    )));
+                                          name: (allOrders[position]![
+                                                      'product'] ==
+                                                  null)
+                                              ? "---"
+                                              : allOrders[position]!['product']
+                                                  ['name'],
+                                          image: (allOrders[position]![
+                                                      'product'] ==
+                                                  null)
+                                              ? 'assets/Vector.png'
+                                              : (allOrders[position]!['product']
+                                                          ['photo']['picture']
+                                                      .isEmpty)
+                                                  ? 'assets/Vector.png'
+                                                  : allOrders[position]![
+                                                          'product']['photo']
+                                                      ['picture'][0],
+                                          userName: allOrders[position]!['user']
+                                              ['fname'],
+                                          contatct: allOrders[position]!['user']
+                                                  ['number']
+                                              .toString(),
+                                          email: allOrders[position]!['user']
+                                              ['email'],
+                                          paymentMode: allOrders[position]![
+                                              'paymentType'],
+                                          paymentStatus: allOrders[position]![
+                                              'paymentStatus'],
+                                          address: allOrders[position]!['user']
+                                              ['addressList'],
+                                        )));
                               },
                               child: ListTile(
                                 // leading: Container(
@@ -252,26 +267,28 @@ class _NewOrdersState extends State<NewOrders> {
                                   //heightFactor: 1.6,// Adjust the width factor as needed
                                   heightFactor: screenHeight * 0.0019,
                                   child: AspectRatio(
-                                            aspectRatio: 1,
-                                            child: (allOrders[position]!
-                                                    ['product'] == null
-                                                    )
-                                                ? Image.asset(
-                                                    'assets/Vector.png',
-                                                    // height: screenHeight*0.05,
-                                                    fit: BoxFit.fill,
-                                                  )
-                                                : (allOrders[position]!['product']['photo']['picture'].isEmpty)
-                                                   ? Image.asset(
-                                                    'assets/Vector.png',
-                                                    // height: screenHeight*0.05,
-                                                    fit: BoxFit.fill,
-                                                  )
-                                                   : Image.network(
-                                                    allOrders[position]!['product']['photo']['picture'][0],
-                                                    fit: BoxFit.fill,
-                                                  ),
-                                          ),
+                                    aspectRatio: 1,
+                                    child: (allOrders[position]!['product'] ==
+                                            null)
+                                        ? Image.asset(
+                                            'assets/Vector.png',
+                                            // height: screenHeight*0.05,
+                                            fit: BoxFit.fill,
+                                          )
+                                        : (allOrders[position]!['product']
+                                                    ['photo']['picture']
+                                                .isEmpty)
+                                            ? Image.asset(
+                                                'assets/Vector.png',
+                                                // height: screenHeight*0.05,
+                                                fit: BoxFit.fill,
+                                              )
+                                            : Image.network(
+                                                allOrders[position]!['product']
+                                                    ['photo']['picture'][0],
+                                                fit: BoxFit.fill,
+                                              ),
+                                  ),
                                 ),
                                 title: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -280,9 +297,11 @@ class _NewOrdersState extends State<NewOrders> {
                                     Row(
                                       children: [
                                         Text(
-                                          (allOrders[position]!['product'] == null)
-                                          ? "---"
-                                          : allOrders[position]!['product']['name'],
+                                          (allOrders[position]!['product'] ==
+                                                  null)
+                                              ? "---"
+                                              : allOrders[position]!['product']
+                                                  ['name'],
                                           style: GoogleFonts.notoSans(
                                               color: Colors.black,
                                               fontSize: screenWidth * 0.036,
@@ -309,7 +328,8 @@ class _NewOrdersState extends State<NewOrders> {
                                     Padding(
                                       padding: const EdgeInsets.all(6.0),
                                       child: Text(
-                                        "Payment: " + allOrders[position]!['paymentType'],
+                                        "Payment: " +
+                                            allOrders[position]!['paymentType'],
                                         style: GoogleFonts.notoSans(
                                             color: Colors.black,
                                             fontSize: 14,

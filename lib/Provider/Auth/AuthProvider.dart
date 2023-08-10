@@ -98,14 +98,15 @@ class AuthProvider extends ChangeNotifier {
       await saveAuthToken(token);
       print(response.statusCode);
       getAuthToken();
-      if (rememberMe == true) {
-        _saveCredentials(email, password);
-      }
       var json1 = response.body;
 
       Map<String, dynamic> parsedResponse = json.decode(json1);
       int? adminData = parsedResponse['data']['roles']['Admin'];
       print('Admin data: $adminData');
+
+      if (rememberMe == true) {
+        _saveCredentials(email, password, adminData ?? 2001);
+      }
       if (adminData == 5150) {
         Navigator.pushNamedAndRemoveUntil(
           context,
@@ -144,10 +145,11 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> _saveCredentials(String email, String password) async {
+  Future<void> _saveCredentials(String email, String password, int role) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('username', email);
     await prefs.setString('password', password);
+    await prefs.setInt('role', role);
     print('SAVED CREDENTIALS');
   }
 
@@ -155,6 +157,7 @@ class AuthProvider extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('username');
     await prefs.remove('password');
+    await prefs.remove('role');
     print('CLEARED CREDENTIALS');
   }
 

@@ -418,213 +418,215 @@ class _AdminItemDetailsState extends State<AdminItemDetails> {
                               child: Text(snapshot.error.toString()),
                             );
                           } else {
-                            return Container(
-                              height: screenHeight*0.342,
-                              child: Transform.translate(
-                                offset: Offset(-18, 0),
-                                child: ListView.builder(
-                                  padding: EdgeInsets.only(
-                                    top: 5,
-                                  ),
-                                  shrinkWrap: true,
-                                  physics: BouncingScrollPhysics(),
-                                  itemCount: productsCategoryWise.length,
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 10),
-                                      child: Container(
-                                        // height: screenHeight * 0.15,
-                                        width: screenWidth,
-                                        child: ListTile(
-                                          leading: FractionallySizedBox(
-                                            //widthFactor: 0.25,
-                                            //heightFactor: 1.6,// Adjust the width factor as needed
-                                            heightFactor:
-                                            screenHeight * 0.0021,
-                                            child: AspectRatio(
-                                              aspectRatio: 1,
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  Navigator.of(context)
-                                                      .push(MaterialPageRoute(
-                                                      builder:
-                                                          (context) =>
-                                                          AdminItemDetails(
-                                                            id: productsCategoryWise[
-                                                            index]!
-                                                                .id,
-                                                            image: (productsCategoryWise[index]!
-                                                                .photo
-                                                                .picture
-                                                                .isEmpty)
-                                                                ? 'assets/mug.png'
-                                                                : productsCategoryWise[index]!
-                                                                .photo
-                                                                .picture[0],
-                                                            desc: productsCategoryWise[
-                                                            index]!
-                                                                .description,
-                                                            cost: productsCategoryWise[
-                                                            index]!
-                                                                .cost,
-                                                            name: productsCategoryWise[
-                                                            index]!
-                                                                .name,
-                                                            category:
-                                                            productsCategoryWise[index]!
-                                                                .category,
-                                                            added: [],
-                                                          )));
-                                                },
-                                                child: (productsCategoryWise[index]!
-                                                    .photo
-                                                    .picture
-                                                    .isEmpty)
-                                                    ? Image.asset(
-                                                  'assets/mug.png',
-                                                  // height: screenHeight*0.05,
-                                                  fit: BoxFit.fill,
-                                                )
-                                                    : Image.network(
-                                                  productsCategoryWise[index]!
+                            return SingleChildScrollView(
+                              child: Container(
+                                height: screenHeight*0.342,
+                                child: Transform.translate(
+                                  offset: Offset(-18, 0),
+                                  child: ListView.builder(
+                                    padding: EdgeInsets.only(
+                                      top: 5,
+                                    ),
+                                    shrinkWrap: true,
+                                    physics: BouncingScrollPhysics(),
+                                    itemCount: productsCategoryWise.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10),
+                                        child: Container(
+                                          // height: screenHeight * 0.15,
+                                          width: screenWidth,
+                                          child: ListTile(
+                                            leading: FractionallySizedBox(
+                                              //widthFactor: 0.25,
+                                              //heightFactor: 1.6,// Adjust the width factor as needed
+                                              heightFactor:
+                                              screenHeight * 0.0021,
+                                              child: AspectRatio(
+                                                aspectRatio: 1,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.of(context)
+                                                        .push(MaterialPageRoute(
+                                                        builder:
+                                                            (context) =>
+                                                            AdminItemDetails(
+                                                              id: productsCategoryWise[
+                                                              index]!
+                                                                  .id,
+                                                              image: (productsCategoryWise[index]!
+                                                                  .photo
+                                                                  .picture
+                                                                  .isEmpty)
+                                                                  ? 'assets/mug.png'
+                                                                  : productsCategoryWise[index]!
+                                                                  .photo
+                                                                  .picture[0],
+                                                              desc: productsCategoryWise[
+                                                              index]!
+                                                                  .description,
+                                                              cost: productsCategoryWise[
+                                                              index]!
+                                                                  .cost,
+                                                              name: productsCategoryWise[
+                                                              index]!
+                                                                  .name,
+                                                              category:
+                                                              productsCategoryWise[index]!
+                                                                  .category,
+                                                              added: [],
+                                                            )));
+                                                  },
+                                                  child: (productsCategoryWise[index]!
                                                       .photo
-                                                      .picture[0],
-                                                  fit: BoxFit.fill,
+                                                      .picture
+                                                      .isEmpty)
+                                                      ? Image.asset(
+                                                    'assets/mug.png',
+                                                    // height: screenHeight*0.05,
+                                                    fit: BoxFit.fill,
+                                                  )
+                                                      : Image.network(
+                                                    productsCategoryWise[index]!
+                                                        .photo
+                                                        .picture[0],
+                                                    fit: BoxFit.fill,
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          title: Transform.translate(
-                                            offset: Offset(0, -10),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
+                                            title: Transform.translate(
+                                              offset: Offset(0, -10),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        productsCategoryWise[
+                                                        index]!
+                                                            .name,
+                                                        style: GoogleFonts
+                                                            .notoSans(
+                                                            color: Colors
+                                                                .black,
+                                                            fontSize: screenWidth*0.036,
+                                                            fontWeight:
+                                                            FontWeight
+                                                                .w700),
+                                                      ),
+                                                      Spacer(),
+                                                      Text(
+                                                        productsCategoryWise[
+                                                        index]!
+                                                            .cost
+                                                            .currency +
+                                                            " " +
+                                                            productsCategoryWise[
+                                                            index]!
+                                                                .cost
+                                                                .value
+                                                                .toString(),
+                                                        style: GoogleFonts
+                                                            .notoSans(
+                                                            color: Colors
+                                                                .black,
+                                                            fontSize: screenWidth*0.033,
+                                                            fontWeight:
+                                                            FontWeight
+                                                                .w700),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Text(
                                                       productsCategoryWise[
                                                       index]!
-                                                          .name,
-                                                      style: GoogleFonts
-                                                          .notoSans(
-                                                          color: Colors
-                                                              .black,
-                                                          fontSize: screenWidth*0.036,
+                                                          .description,
+                                                      style:
+                                                      GoogleFonts.notoSans(
+                                                          color:
+                                                          Colors.black,
+                                                          fontSize: screenWidth*0.031,
                                                           fontWeight:
                                                           FontWeight
-                                                              .w700),
-                                                    ),
-                                                    Spacer(),
-                                                    Text(
-                                                      productsCategoryWise[
-                                                      index]!
-                                                          .cost
-                                                          .currency +
-                                                          " " +
-                                                          productsCategoryWise[
-                                                          index]!
-                                                              .cost
-                                                              .value
-                                                              .toString(),
-                                                      style: GoogleFonts
-                                                          .notoSans(
-                                                          color: Colors
-                                                              .black,
-                                                          fontSize: screenWidth*0.033,
-                                                          fontWeight:
-                                                          FontWeight
-                                                              .w700),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Text(
-                                                    productsCategoryWise[
-                                                    index]!
-                                                        .description,
-                                                    style:
-                                                    GoogleFonts.notoSans(
-                                                        color:
-                                                        Colors.black,
-                                                        fontSize: screenWidth*0.031,
-                                                        fontWeight:
-                                                        FontWeight
-                                                            .w500)),
-                                                SizedBox(
-                                                  height:
-                                                  screenHeight * 0.0078,
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                        decoration: BoxDecoration(
-                                                            color: cream,
-                                                            borderRadius:
-                                                            BorderRadius
-                                                                .circular(5)),
-                                                        child: GestureDetector(
-                                                            onTap: () async {
-                                                              // bool success = await addToCart(productsCategoryWise[index]!.id, context, index);
-                                                              // if (success) {
-                                                              //   // setState(() {
-                                                              //   //   isAdded[index] = !isAdded[index];
-                                                              //   //   print(isAdded);
-                                                              //   //   _saveCartState();
-                                                              //   // });
-                                                              // }
-                                                            },
-                                                            child:
-                                                            Padding(
-                                                              padding: const EdgeInsets.all(6.0),
-                                                              child: Text(
-                                                                "Update" ,
-                                                                style: GoogleFonts.notoSans(
-                                                                  color: Colors.black,
-                                                                  fontSize: 16,
-                                                                  fontWeight: FontWeight.w600,
-                                                                ),
-                                                              ),
-                                                            )
-                                                        )
-                                                    ),
-                                                    Spacer(),
-                                                    Container(
-                                                        decoration: BoxDecoration(
-                                                            color: Colors.red,
-                                                            borderRadius:
-                                                            BorderRadius
-                                                                .circular(5)),
-                                                        child: GestureDetector(
-                                                            onTap: () async {
-                                                              // bool success = await addToCart(productsCategoryWise[index]!.id, context, index);
-                                                              // if (success) {
-                                                              //   // setState(() {
-                                                              //   //   isAdded[index] = !isAdded[index];
-                                                              //   //   print(isAdded);
-                                                              //   //   _saveCartState();
-                                                              //   // });
-                                                              // }
-                                                            },
-                                                            child:
-                                                            Padding(
+                                                              .w500)),
+                                                  SizedBox(
+                                                    height:
+                                                    screenHeight * 0.0078,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                          decoration: BoxDecoration(
+                                                              color: cream,
+                                                              borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5)),
+                                                          child: GestureDetector(
+                                                              onTap: () async {
+                                                                // bool success = await addToCart(productsCategoryWise[index]!.id, context, index);
+                                                                // if (success) {
+                                                                //   // setState(() {
+                                                                //   //   isAdded[index] = !isAdded[index];
+                                                                //   //   print(isAdded);
+                                                                //   //   _saveCartState();
+                                                                //   // });
+                                                                // }
+                                                              },
+                                                              child:
+                                                              Padding(
                                                                 padding: const EdgeInsets.all(6.0),
-                                                                child:
-                                                                Icon(Icons.delete_outline,color: Colors.white,)
-                                                            )
-                                                        )
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
+                                                                child: Text(
+                                                                  "Update" ,
+                                                                  style: GoogleFonts.notoSans(
+                                                                    color: Colors.black,
+                                                                    fontSize: 16,
+                                                                    fontWeight: FontWeight.w600,
+                                                                  ),
+                                                                ),
+                                                              )
+                                                          )
+                                                      ),
+                                                      Spacer(),
+                                                      Container(
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.red,
+                                                              borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5)),
+                                                          child: GestureDetector(
+                                                              onTap: () async {
+                                                                // bool success = await addToCart(productsCategoryWise[index]!.id, context, index);
+                                                                // if (success) {
+                                                                //   // setState(() {
+                                                                //   //   isAdded[index] = !isAdded[index];
+                                                                //   //   print(isAdded);
+                                                                //   //   _saveCartState();
+                                                                //   // });
+                                                                // }
+                                                              },
+                                                              child:
+                                                              Padding(
+                                                                  padding: const EdgeInsets.all(6.0),
+                                                                  child:
+                                                                  Icon(Icons.delete_outline,color: Colors.white,)
+                                                              )
+                                                          )
+                                                      ),
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    );
-                                  },
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                             );

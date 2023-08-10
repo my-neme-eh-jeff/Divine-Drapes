@@ -43,16 +43,20 @@ class _MyOrdersState extends State<MyOrders> {
     try {
       orders = await Order().getOrdersData();
       // print(orders.map((e) => e?.product));
-      // print("product....");
+      log("hi");
+      print(orders[0]);
       // var product = await Products().getSpecificProduct(orders[0]!.product);
       // print(product['name']);
-      filteredOrders = List.from(orders);
       for (int i = 0; i < orders.length; i++) {
         var product = await Products().getSpecificProduct(orders[i]!.product);
         productName.add(product['name']);
         productDesc.add(product['description']);
         productCost.add(product['cost']['value'].toString());
       }
+
+
+      filteredOrders = List.from(orders);
+
 
       setState(() {
         isLoading = false;

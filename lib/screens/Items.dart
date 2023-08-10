@@ -172,7 +172,8 @@ class _ItemsState extends State<Items> {
               ),
               Transform.translate(
                   offset: Offset(-screenWidth * 0.3, 0),
-                  child: ShimmerWidget.rectangular(width: 100, height: screenHeight*0.023)),
+                  child: ShimmerWidget.rectangular(
+                      width: 100, height: screenHeight * 0.023)),
               Divider(
                 thickness: 2,
               ),
@@ -198,12 +199,14 @@ class _ItemsState extends State<Items> {
                               Row(
                                 children: [
                                   ShimmerWidget.rectangular(
-                                      width: screenWidth * 0.38, height: screenHeight*0.022),
+                                      width: screenWidth * 0.38,
+                                      height: screenHeight * 0.022),
                                   SizedBox(
                                     width: screenWidth * 0.1,
                                   ),
                                   ShimmerWidget.rectangular(
-                                      width: screenWidth * 0.1, height: screenHeight*0.022),
+                                      width: screenWidth * 0.1,
+                                      height: screenHeight * 0.022),
                                 ],
                               ),
                               SizedBox(
@@ -616,7 +619,7 @@ class _ItemsState extends State<Items> {
                                                                   ? Row(
                                                                       children: [
                                                                         Text(
-                                                                          "Added",
+                                                                          "In Cart",
                                                                           style:
                                                                               GoogleFonts.notoSans(
                                                                             color:

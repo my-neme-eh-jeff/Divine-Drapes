@@ -422,7 +422,7 @@ class _CustomiseOrderState extends State<CustomiseOrder> {
                   _pickImage(ImageSource.gallery);
                 },
                 child: Container(
-                  height: screenHeight*0.12,
+                  height: screenHeight*0.3,
                   width: screenWidth*0.9,
                   decoration: BoxDecoration(
                     border: Border.all(

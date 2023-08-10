@@ -30,8 +30,7 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
   Future getSpecificOrder() async {
     try {
       order = await Order().getSingleOrderData(widget.id);
-      print('HELLO');
-      _profile = await Profiles().getProfileData();
+      // _profile = await Profiles().getProfileData();
       // print(order['photo']['picture']);
     } catch (e) {
       print(e);
@@ -94,14 +93,14 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                 child: ListView.builder(
                     shrinkWrap: true,
                     physics: BouncingScrollPhysics(),
-                    itemCount: 6,
+                    itemCount: 5,
                     itemBuilder: (context, index) {
                       return Container(
                           padding: EdgeInsets.only(top: 40),
                           child: Column(
                             children: [
                               ShimmerWidget.rectangular(
-                                  width: screenWidth * 0.7,
+                                  width: screenWidth * 0.65,
                                   height: screenHeight * 0.033),
                               SizedBox(
                                 height: 5,
@@ -110,6 +109,12 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                           ));
                     }),
               ),
+              Transform.translate(
+                      offset: Offset(screenWidth * 0.14, 25),
+                      child: ShimmerWidget.rectangular(
+                          width: screenWidth * 0.7,
+                          height: screenHeight * 0.125),
+                    )
             ],
           ),
         );
@@ -136,242 +141,306 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                   child: Text(snapshot.error.toString()),
                 );
               } else {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          children: [
-                            InkWell(
-                                onTap: () {
-                                  // Navigator.of(context).push(MaterialPageRoute(
-                                  //     builder: (context) => const Home()));
-                                  Navigator.of(context).pop();
-                                },
-                                child: Icon(Icons.arrow_back)),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "My Orders",
-                              style: GoogleFonts.notoSans(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: Container(
-                          height: screenHeight * 0.08,
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
                           child: Row(
                             children: [
-                              FractionallySizedBox(
-                                heightFactor: screenHeight * 0.0022,
-                                child: AspectRatio(
-                                  aspectRatio: 1,
-                                  child: (order!['photo']['picture'].isEmpty)
-                                      ? Image.asset(
-                                          'assets/Vector.png',
-                                          // height: screenHeight*0.05,
-                                          fit: BoxFit.fill,
-                                        )
-                                      : Image.network(
-                                          order!['photo']['picture'][0],
-                                          fit: BoxFit.fill,
-                                        ),
-                                ),
-                              ),
+                              InkWell(
+                                  onTap: () {
+                                    // Navigator.of(context).push(MaterialPageRoute(
+                                    //     builder: (context) => const Home()));
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Icon(Icons.arrow_back)),
                               SizedBox(
-                                width: screenWidth * 0.04,
+                                width: 10,
                               ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    widget.name,
-                                    style: GoogleFonts.notoSans(
-                                        color: Colors.black,
-                                        fontSize: screenWidth * 0.045,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Date: ",
-                                        style: GoogleFonts.notoSans(
-                                            color: Colors.black,
-                                            fontSize: screenWidth * 0.039,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      Text(
-                                        widget.date.split("T")[0],
-                                        style: GoogleFonts.notoSans(
-                                            color: Colors.black,
-                                            fontSize: screenWidth * 0.039,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              )
+                              Text(
+                                "My Orders",
+                                style: GoogleFonts.notoSans(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700),
+                              ),
                             ],
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Name: ",
-                              style: GoogleFonts.notoSans(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              _profile!.fName + " " + _profile!.lName,
-                              style: GoogleFonts.notoSans(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
+                        SizedBox(
+                          height: 10,
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Contact No. : ",
-                              style: GoogleFonts.notoSans(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
+                        Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Container(
+                            height: screenHeight * 0.08,
+                            child: Row(
+                              children: [
+                                FractionallySizedBox(
+                                  heightFactor: screenHeight * 0.0022,
+                                  child: AspectRatio(
+                                    aspectRatio: 1,
+                                    child: (order!['photo']['picture'].isEmpty)
+                                        ? Image.asset(
+                                            'assets/Vector.png',
+                                            // height: screenHeight*0.05,
+                                            fit: BoxFit.fill,
+                                          )
+                                        : Image.network(
+                                            order!['photo']['picture'][0],
+                                            fit: BoxFit.fill,
+                                          ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: screenWidth * 0.04,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      widget.name,
+                                      style: GoogleFonts.notoSans(
+                                          color: Colors.black,
+                                          fontSize: screenWidth * 0.045,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "Date: ",
+                                          style: GoogleFonts.notoSans(
+                                              color: Colors.black,
+                                              fontSize: screenWidth * 0.039,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        Text(
+                                          widget.date.split("T")[0],
+                                          style: GoogleFonts.notoSans(
+                                              color: Colors.black,
+                                              fontSize: screenWidth * 0.039,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )
+                              ],
                             ),
-                            Text(
-                              _profile!.number.toString(),
-                              style: GoogleFonts.notoSans(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Email id: ",
-                              style: GoogleFonts.notoSans(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              _profile!.email,
-                              style: GoogleFonts.notoSans(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
+                        SizedBox(
+                          height: 10,
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Payment: ",
-                              style: GoogleFonts.notoSans(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              order['paymentType'],
-                              style: GoogleFonts.notoSans(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Name: ",
+                                style: GoogleFonts.notoSans(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Text(
+                                order['user']['fName'] +
+                                    " " +
+                                    order['user']['lName'],
+                                style: GoogleFonts.notoSans(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Order Status: ",
-                              style: GoogleFonts.notoSans(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              order['orderStatus'],
-                              style: GoogleFonts.notoSans(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
+                        SizedBox(
+                          height: 10,
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Address: ",
-                              style: GoogleFonts.notoSans(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              "address",
-                              style: GoogleFonts.notoSans(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Contact No. : ",
+                                style: GoogleFonts.notoSans(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Text(
+                                order['user']['number'].toString(),
+                                style: GoogleFonts.notoSans(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Email id: ",
+                                style: GoogleFonts.notoSans(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Text(
+                                order['user']['email'],
+                                style: GoogleFonts.notoSans(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Payment: ",
+                                style: GoogleFonts.notoSans(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Text(
+                                order['paymentType'],
+                                style: GoogleFonts.notoSans(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Order Status: ",
+                                style: GoogleFonts.notoSans(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Text(
+                                order['orderStatus'],
+                                style: GoogleFonts.notoSans(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                        ),
+                        
+                        Transform.translate(
+                          offset: Offset(0, -20),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 25),
+                                  Card(
+                                    elevation: 4,
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 5),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                              (order['user']['addressList'] ==
+                                                      null)
+                                                  ? " "
+                                                  : (order['user']
+                                                              ['addressList'][0]
+                                                          ['addressOf'] ??
+                                                      "Address"),
+                                              style: GoogleFonts.notoSans(
+                                                  color: Colors.black,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600)),
+                                          Divider(
+                                            color: Colors.grey,
+                                            thickness: 1,
+                                          ),
+                                          (order['user']['addressList'] == null)
+                                              ? Text("NA")
+                                              : Text(
+                                                  order['user']['addressList']
+                                                          [0]['houseNumber'] +
+                                                      ' , ' +
+                                                      order['user']
+                                                              ['addressList'][0]
+                                                          ['building'] +
+                                                      ' , ' +
+                                                      order['user']
+                                                              ['addressList'][0]
+                                                          ['street'],
+                                                  style:
+                                                      TextStyle(fontSize: 20),
+                                                ),
+                                          (order['user']['addressList'] == null)
+                                              ? Text("NA")
+                                              : Text(
+                                                  order['user']['addressList']
+                                                          [0]['city'] +
+                                                      ' , ' +
+                                                      order['user']
+                                                              ['addressList'][0]
+                                                          ['state'] +
+                                                      ' , ' +
+                                                      order['user']
+                                                              ['addressList'][0]
+                                                          ['country'],
+                                                  style:
+                                                      TextStyle(fontSize: 20),
+                                                ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               }

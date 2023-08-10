@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> getProducts() async {
     try {
       products = await Products().getProductsData();
+      
       filteredProducts = List.from(products);
       setState(() {
         isLoading = false;

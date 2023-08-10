@@ -361,6 +361,7 @@ class _LoginState extends State<Login> {
                       onTap: () async {
                         if (_formKey.currentState!.validate()) {
                           showDialog(
+                              barrierDismissible: false,
                               context: context,
                               builder: (context) => Center(
                                     child: CircularProgressIndicator(
@@ -382,29 +383,30 @@ class _LoginState extends State<Login> {
                                 backgroundColor: Colors.green,
                                 textColor: Colors.white,
                                 fontSize: 16.0);
-                          } else {
-                            // Clear saved credentials if "Remember Me" is not checked
-                            // if (result || isChecked) {
-                            //   _saveCredentials();
-                            // } else if (!isChecked) {
-                            //   _clearCredentials();
-                            // }
-
-                            // Navigator.pop(context);
-                            // if (success) {
-                            //   Navigator.pushReplacement(
-                            //     context,
-                            //     MaterialPageRoute(builder: (context) => Home()),
-                            //   );
-                            // } else {
-                            //   ScaffoldMessenger.of(context).showSnackBar(
-                            //     const SnackBar(
-                            //       content: Text('There seems to be an issue'),
-                            //       duration: Duration(seconds: 3),
-                            //     ),
-                            //   );
-                            // }
                           }
+                          // Navigator.pop(context);
+                          // if (success) {
+                          //   Navigator.pushReplacement(
+                          //     context,
+                          //     MaterialPageRoute(builder: (context) => Home()),
+                          //   );
+                          // } else {
+                          //   ScaffoldMessenger.of(context).showSnackBar(
+                          //     const SnackBar(
+                          //       content: Text('There seems to be an issue'),
+                          //       duration: Duration(seconds: 3),
+                          //     ),
+                          //   );
+                          // }
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "Enter Credentials!",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.green,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
                         }
                       },
                       child: Container(

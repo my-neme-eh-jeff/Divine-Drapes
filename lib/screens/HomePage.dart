@@ -66,52 +66,52 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 10.0,
-                  ),
-                  child: ShimmerWidget.rectangular(
-                      width: width * 0.85, height: height * 0.051),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 10.0,
                 ),
-              ]),
-              SizedBox(
-                height: 2,
+                child: ShimmerWidget.rectangular(
+                    width: width * 0.86, height: height * 0.051),
               ),
               Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.only(left: 18.0, top: 15, bottom: 18),
                 child: ShimmerWidget.rectangular(
-                    width: width * 0.85, height: height * 0.018),
+                    width: width * 0.86, height: height * 0.025),
               ),
               SizedBox(
                 height: 15,
               ),
-              Container(
-                padding: EdgeInsets.all(8),
-                width: width * 0.95,
-                child: GridView.count(
-                  physics: BouncingScrollPhysics(),
-                  crossAxisCount: 3,
-                  shrinkWrap: true,
-                  children: List.generate(
-                    10,
-                    (index) {
-                      return Column(
-                        children: [
-                          ShimmerWidget.rectangular(
-                            height: height * 0.1,
-                            width: width * 0.22,
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          ShimmerWidget.rectangular(
-                            height: height * 0.018,
-                            width: width * 0.14,
-                          ),
-                        ],
-                      );
-                    },
+              Transform.translate(
+                offset: Offset(0, -12),
+                child: Container(
+                  padding: EdgeInsets.only(left: 20, right: 8),
+                  width: width * 0.95,
+                  child: GridView.count(
+                    physics: BouncingScrollPhysics(),
+                    crossAxisCount: 3,
+                    // crossAxisSpacing: width * 0.068,
+                    mainAxisSpacing: 10.0,
+                    shrinkWrap: true,
+                    children: List.generate(
+                      10,
+                      (index) {
+                        return Column(
+                          children: [
+                            ShimmerWidget.rectangular(
+                              height: height * 0.095,
+                              width: width * 0.22,
+                            ),
+                            SizedBox(
+                              height: 3,
+                            ),
+                            ShimmerWidget.rectangular(
+                              height: height * 0.017,
+                              width: width * 0.13,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -130,8 +130,8 @@ class _HomePageState extends State<HomePage> {
                   fontWeight: FontWeight.w700)),
           elevation: 0.0,
         ),
-        body: isLoading
-            ? builShimmer()
+        body: isLoading 
+        ? builShimmer()
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -26,10 +26,12 @@ class Order {
 
     if (response.statusCode == 200) {
       var data = jsonDecode(streamResponse.body);
-      var getOrders = OrderModel.fromJson(data);
-
-      _ordersData = getOrders.data;
-      return _ordersData;
+      log("view order");
+      // print(data);
+      // var getOrders = ViewOrder.fromJson(data);
+      // _ordersData = getOrders.data!;
+      // log(_ordersData.toString());
+      return data;
     } else {
       print(token);
       print(response.statusCode);
@@ -51,7 +53,7 @@ class Order {
       // var getOrders = OrderModel.fromJson(data);
       log("single order");
       // _ordersData = getOrders.data;
-      return data['data'];
+      return data;
     } else {
       // print(token);
       print(response.statusCode);

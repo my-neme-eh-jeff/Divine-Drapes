@@ -107,7 +107,7 @@ class _NewOrdersState extends State<NewOrders> {
               Transform.translate(
                 offset: Offset(screenWidth * 0.27, 0),
                 child: ShimmerWidget.rectangular(
-                    width: screenWidth * 0.35, height: screenHeight * 0.069),
+                    width: screenWidth * 0.35, height: screenHeight * 0.032),
               ),
               Container(
                 child: ListView.builder(
@@ -120,7 +120,7 @@ class _NewOrdersState extends State<NewOrders> {
                         child: Row(
                           children: [
                             ShimmerWidget.rectangular(
-                              width: screenWidth * 0.3,
+                              width: screenWidth * 0.25,
                               height: screenHeight * 0.12,
                             ),
                             SizedBox(

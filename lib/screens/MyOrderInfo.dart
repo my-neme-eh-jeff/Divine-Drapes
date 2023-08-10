@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,13 +12,10 @@ import '../widgets/shimmer_widget.dart';
 
 class MyOrderInfo extends StatefulWidget {
   final String id;
-  final String name;
-  final String date;
+
   MyOrderInfo({
     Key? key,
     required this.id,
-    required this.name,
-    required this.date,
   }) : super(key: key);
 
   @override
@@ -25,13 +24,10 @@ class MyOrderInfo extends StatefulWidget {
 
 class _MyOrderInfoState extends State<MyOrderInfo> {
   var order;
-  data.Data? _profile;
 
   Future getSpecificOrder() async {
     try {
       order = await Order().getSingleOrderData(widget.id);
-      // _profile = await Profiles().getProfileData();
-      // print(order['photo']['picture']);
     } catch (e) {
       print(e);
     }
@@ -41,6 +37,8 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.id);
+
     var size = MediaQuery.of(context).size;
     double sizefont = size.width * 0.044;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -110,11 +108,10 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                     }),
               ),
               Transform.translate(
-                      offset: Offset(screenWidth * 0.14, 25),
-                      child: ShimmerWidget.rectangular(
-                          width: screenWidth * 0.7,
-                          height: screenHeight * 0.125),
-                    )
+                offset: Offset(screenWidth * 0.14, 25),
+                child: ShimmerWidget.rectangular(
+                    width: screenWidth * 0.73, height: screenHeight * 0.17),
+              )
             ],
           ),
         );
@@ -183,14 +180,23 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                                   heightFactor: screenHeight * 0.0022,
                                   child: AspectRatio(
                                     aspectRatio: 1,
-                                    child: (order!['photo']['picture'].isEmpty)
+                                    child: (order['data']['photo']['picture']
+                                                .isEmpty &&
+                                            order['data']['product']['photo']
+                                                    ['picture']
+                                                .isEmpty)
                                         ? Image.asset(
                                             'assets/Vector.png',
                                             // height: screenHeight*0.05,
                                             fit: BoxFit.fill,
                                           )
                                         : Image.network(
-                                            order!['photo']['picture'][0],
+                                            (order['data']['photo']['picture']
+                                                    .isEmpty)
+                                                ? order['data']['product']
+                                                    ['photo']['picture'][0]
+                                                : order['data']['photo']
+                                                    ['picture'][0],
                                             fit: BoxFit.fill,
                                           ),
                                   ),
@@ -203,7 +209,7 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      widget.name,
+                                      order['data']['product']['name'] ?? "NA",
                                       style: GoogleFonts.notoSans(
                                           color: Colors.black,
                                           fontSize: screenWidth * 0.045,
@@ -219,7 +225,10 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                                               fontWeight: FontWeight.w500),
                                         ),
                                         Text(
-                                          widget.date.split("T")[0],
+                                          (order['data']['createdAt'] == Null)
+                                              ? "NA"
+                                              : order['data']['createdAt']
+                                                  .split("T")[0],
                                           style: GoogleFonts.notoSans(
                                               color: Colors.black,
                                               fontSize: screenWidth * 0.039,
@@ -248,9 +257,9 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                                     fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                order['user']['fName'] +
+                                order['data']['user']['fName'] +
                                     " " +
-                                    order['user']['lName'],
+                                    order['data']['user']['lName'],
                                 style: GoogleFonts.notoSans(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -274,7 +283,7 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                                     fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                order['user']['number'].toString(),
+                                order['data']['user']['number'].toString(),
                                 style: GoogleFonts.notoSans(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -298,7 +307,7 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                                     fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                order['user']['email'],
+                                order['data']['user']['email'],
                                 style: GoogleFonts.notoSans(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -322,7 +331,7 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                                     fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                order['paymentType'],
+                                order['data']['paymentType'] ?? "NA",
                                 style: GoogleFonts.notoSans(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -346,7 +355,7 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                                     fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                order['orderStatus'],
+                                order['data']['orderStatus'] ?? "NA",
                                 style: GoogleFonts.notoSans(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -355,7 +364,6 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                             ],
                           ),
                         ),
-                        
                         Transform.translate(
                           offset: Offset(0, -20),
                           child: Padding(
@@ -380,10 +388,11 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                              (order['user']['addressList'] ==
+                                              (order['data']['user']
+                                                          ['addressList'] ==
                                                       null)
                                                   ? " "
-                                                  : (order['user']
+                                                  : (order['data']['user']
                                                               ['addressList'][0]
                                                           ['addressOf'] ??
                                                       "Address"),
@@ -395,33 +404,39 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                                             color: Colors.grey,
                                             thickness: 1,
                                           ),
-                                          (order['user']['addressList'] == null)
+                                          (order['data']['user']
+                                                      ['addressList'] ==
+                                                  null)
                                               ? Text("NA")
                                               : Text(
-                                                  order['user']['addressList']
-                                                          [0]['houseNumber'] +
+                                                  order['data']['user']
+                                                              ['addressList'][0]
+                                                          ['houseNumber'] +
                                                       ' , ' +
-                                                      order['user']
+                                                      order['data']['user']
                                                               ['addressList'][0]
                                                           ['building'] +
                                                       ' , ' +
-                                                      order['user']
+                                                      order['data']['user']
                                                               ['addressList'][0]
                                                           ['street'],
                                                   style:
                                                       TextStyle(fontSize: 20),
                                                 ),
-                                          (order['user']['addressList'] == null)
+                                          (order['data']['user']
+                                                      ['addressList'] ==
+                                                  null)
                                               ? Text("NA")
                                               : Text(
-                                                  order['user']['addressList']
-                                                          [0]['city'] +
+                                                  order['data']['user']
+                                                              ['addressList'][0]
+                                                          ['city'] +
                                                       ' , ' +
-                                                      order['user']
+                                                      order['data']['user']
                                                               ['addressList'][0]
                                                           ['state'] +
                                                       ' , ' +
-                                                      order['user']
+                                                      order['data']['user']
                                                               ['addressList'][0]
                                                           ['country'],
                                                   style:

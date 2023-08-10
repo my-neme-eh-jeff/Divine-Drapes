@@ -25,36 +25,19 @@ class MyOrders extends StatefulWidget {
 class _MyOrdersState extends State<MyOrders> {
   bool isLoading = false;
   TextEditingController search = TextEditingController();
-  List<data.Data?> orders = [];
+  var orders;
   List<data.Data?> filteredOrders = [];
 
   String? searchData;
-  List<String> productName = [];
-  List<String> productDesc = [];
-  List<String> productCost = [];
 
   Future<void> getViewOrder() async {
     setState(() {
       isLoading = true;
     });
-    productCost = [];
-    productDesc = [];
-    productName = [];
+
     try {
       orders = await Order().getOrdersData();
-      // print(orders.map((e) => e?.product));
-      log("hi");
-      print(orders[0]);
-      // var product = await Products().getSpecificProduct(orders[0]!.product);
-      // print(product['name']);
-      for (int i = 0; i < orders.length; i++) {
-        var product = await Products().getSpecificProduct(orders[i]!.product);
-        productName.add(product['name']);
-        productDesc.add(product['description']);
-        productCost.add(product['cost']['value'].toString());
-      }
-
-      filteredOrders = List.from(orders);
+      // filteredOrders = List.from(orders);
 
       setState(() {
         isLoading = false;
@@ -97,7 +80,7 @@ class _MyOrdersState extends State<MyOrders> {
               ),
               Transform.translate(
                   offset: Offset(-screenWidth * 0.3, 0),
-                  child: ShimmerWidget.rectangular(width: 100, height: 20)),
+                  child: ShimmerWidget.rectangular(width: 100, height: 30)),
               Divider(
                 thickness: 2,
               ),
@@ -105,48 +88,66 @@ class _MyOrdersState extends State<MyOrders> {
                 child: ListView.builder(
                     shrinkWrap: true,
                     physics: BouncingScrollPhysics(),
-                    itemCount: 3,
+                    itemCount: 5,
                     itemBuilder: (context, index) {
-                      return Container(
-                        padding: EdgeInsets.all(12),
-                        child: Row(
-                          children: [
-                            ShimmerWidget.rectangular(
-                              width: screenWidth * 0.3,
-                              height: screenHeight * 0.12,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                      return Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(12),
+                            child: Row(
                               children: [
-                                Row(
+                                ShimmerWidget.rectangular(
+                                  width: screenWidth * 0.3,
+                                  height: screenHeight * 0.12,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    ShimmerWidget.rectangular(
-                                        width: screenWidth * 0.38, height: 20),
+                                    Row(
+                                      children: [
+                                        ShimmerWidget.rectangular(
+                                            width: screenWidth * 0.38, height: 20),
+                                        SizedBox(
+                                          width: screenWidth * 0.1,
+                                        ),
+                                        ShimmerWidget.rectangular(
+                                            width: screenWidth * 0.1, height: 18),
+                                      ],
+                                    ),
                                     SizedBox(
-                                      width: screenWidth * 0.1,
+                                      height: 10,
                                     ),
                                     ShimmerWidget.rectangular(
-                                        width: screenWidth * 0.1, height: 18),
+                                        width: screenWidth * 0.6, height: 30),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: screenWidth * 0.24,
+                                        ),
+                                        ShimmerWidget.rectangular(
+                                            width: screenWidth * 0.35,
+                                            height: screenHeight * 0.04),
+                                      ],
+                                    ),
                                   ],
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                ShimmerWidget.rectangular(
-                                    width: screenWidth * 0.6, height: 30),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                ShimmerWidget.rectangular(
-                                    width: screenWidth * 0.3,
-                                    height: screenHeight * 0.04),
+                                )
                               ],
-                            )
-                          ],
-                        ),
+                            ),
+                          ),
+                          Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 0),
+                                  child: Divider(
+                                    thickness: 1,
+                                  ),
+                                ),
+                        ],
                       );
                     }),
               ),
@@ -252,7 +253,7 @@ class _MyOrdersState extends State<MyOrders> {
                               ),
                               shrinkWrap: true,
                               physics: BouncingScrollPhysics(),
-                              itemCount: orders.length,
+                              itemCount: orders['data'].length,
                               itemBuilder: (context, index) {
                                 return Column(
                                   children: [
@@ -262,10 +263,8 @@ class _MyOrdersState extends State<MyOrders> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     MyOrderInfo(
-                                                      id: orders[index]!.id,
-                                                      name: productName[index],
-                                                      date: orders[index]!
-                                                          .createdAt,
+                                                      id: orders['data'][index]
+                                                          ['_id'],
                                                     )));
                                       },
                                       child: Padding(
@@ -282,19 +281,33 @@ class _MyOrdersState extends State<MyOrders> {
                                                   screenHeight * 0.0024,
                                               child: AspectRatio(
                                                 aspectRatio: 1,
-                                                child: (orders[index]!
-                                                        .photo
-                                                        .picture
-                                                        .isEmpty)
+                                                child: (orders['data'][index]
+                                                                    ['photo']
+                                                                ['picture']
+                                                            .isEmpty &&
+                                                        orders['ProductDetails']
+                                                                        [index]
+                                                                    ['photo']
+                                                                ['picture']
+                                                            .isEmpty)
                                                     ? Image.asset(
                                                         'assets/Vector.png',
                                                         // height: screenHeight*0.05,
                                                         fit: BoxFit.fill,
                                                       )
                                                     : Image.network(
-                                                        orders[index]!
-                                                            .photo
-                                                            .picture[0],
+                                                        (orders['data'][index][
+                                                                        'photo']
+                                                                    ['picture']
+                                                                .isEmpty)
+                                                            ? orders['ProductDetails']
+                                                                        [index]
+                                                                    ['photo']
+                                                                ['picture'][0]
+                                                            : orders['data']
+                                                                        [index]
+                                                                    ['photo']
+                                                                ['picture'][0],
                                                         fit: BoxFit.fill,
                                                       ),
                                               ),
@@ -313,7 +326,8 @@ class _MyOrdersState extends State<MyOrders> {
                                                     child: Row(
                                                       children: [
                                                         Text(
-                                                          productName[index],
+                                                          orders['ProductDetails']
+                                                              [index]['name'],
                                                           style: GoogleFonts
                                                               .notoSans(
                                                                   color: Colors
@@ -327,7 +341,13 @@ class _MyOrdersState extends State<MyOrders> {
                                                         ),
                                                         Spacer(),
                                                         Text(
-                                                          productCost[index] +
+                                                          orders['ProductDetails']
+                                                                              [
+                                                                              index]
+                                                                          [
+                                                                          'cost']
+                                                                      ['value']
+                                                                  .toString() +
                                                               " Rs",
                                                           style: GoogleFonts
                                                               .notoSans(
@@ -346,11 +366,14 @@ class _MyOrdersState extends State<MyOrders> {
                                                   Expanded(
                                                     flex: 4,
                                                     child: Text(
-                                                        productDesc[index],
+                                                        orders['ProductDetails']
+                                                                [index]
+                                                            ['description'],
                                                         style: GoogleFonts
                                                             .notoSans(
-                                                                color: Colors
-                                                                    .black,
+                                                                color:
+                                                                    Colors
+                                                                        .black,
                                                                 fontSize:
                                                                     screenWidth *
                                                                         0.036,

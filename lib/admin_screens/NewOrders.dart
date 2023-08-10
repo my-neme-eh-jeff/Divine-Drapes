@@ -322,7 +322,7 @@ class _NewOrdersState extends State<NewOrders> {
                                                                   Colors.black,
                                                               fontSize:
                                                                   screenWidth *
-                                                                      0.036,
+                                                                      0.03495,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w700),
@@ -338,7 +338,7 @@ class _NewOrdersState extends State<NewOrders> {
                                                                   Colors.black,
                                                               fontSize:
                                                                   screenWidth *
-                                                                      0.031,
+                                                                      0.03,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500),

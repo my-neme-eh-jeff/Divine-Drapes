@@ -73,8 +73,8 @@ class _MyOrdersState extends State<MyOrders> {
     Widget buildShimmer() => SingleChildScrollView(
           child: Column(
             children: [
-              ShimmerWidget.rectangular(
-                  width: screenWidth * 0.9, height: screenHeight * 0.055),
+              // ShimmerWidget.rectangular(
+              //     width: screenWidth * 0.9, height: screenHeight * 0.055),
               SizedBox(
                 height: screenHeight * 0.022,
               ),
@@ -130,9 +130,9 @@ class _MyOrdersState extends State<MyOrders> {
                                         SizedBox(
                                           width: screenWidth * 0.24,
                                         ),
-                                        ShimmerWidget.rectangular(
-                                            width: screenWidth * 0.35,
-                                            height: screenHeight * 0.04),
+                                        // ShimmerWidget.rectangular(
+                                        //     width: screenWidth * 0.35,
+                                        //     height: screenHeight * 0.04),
                                       ],
                                     ),
                                   ],
@@ -168,164 +168,164 @@ class _MyOrdersState extends State<MyOrders> {
         ),
         body: isLoading
             ? buildShimmer()
-            : SingleChildScrollView(
-                physics: NeverScrollableScrollPhysics(),
-                child: Padding(
-                    padding: const EdgeInsets.only(right: 4, bottom: 10),
-                    child: StatefulBuilder(
-                        builder: (BuildContext context, StateSetter setState) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+            : Padding(
+                padding: const EdgeInsets.only(right: 4, bottom: 10),
+                child: StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Container(
+                          //   // margin: EdgeInsets.all(5),
+                          //   width: screenWidth * 0.9,
+                          //   height: screenHeight * 0.06,
+                          //   decoration: BoxDecoration(
+                          //     border:
+                          //         Border.all(width: 2, color: Colors.black),
+                          //     borderRadius: BorderRadius.circular(5),
+                          //   ),
+                          //   child: TextField(
+                          //     cursorColor: Colors.grey,
+                          //     decoration: InputDecoration(
+                          //       fillColor: Colors.white,
+                          //       filled: true,
+                          //       border: OutlineInputBorder(
+                          //           borderRadius: BorderRadius.circular(10),
+                          //           borderSide: BorderSide.none),
+                          //       hintText: 'Search',
+                          //       contentPadding: EdgeInsets.zero,
+                          //       hintStyle: TextStyle(
+                          //           color: Colors.grey,
+                          //           fontSize: screenWidth * 0.05),
+                          //       prefixIcon: Icon(
+                          //         Icons.search,
+                          //         color: darkPurple,
+                          //       ),
+                          //     ),
+                          //     textAlignVertical: TextAlignVertical.center,
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Column(
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
-                                // margin: EdgeInsets.all(5),
-                                width: screenWidth * 0.9,
-                                height: screenHeight * 0.06,
-                                decoration: BoxDecoration(
-                                  border:
-                                      Border.all(width: 2, color: Colors.black),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: TextField(
-                                  cursorColor: Colors.grey,
-                                  decoration: InputDecoration(
-                                    fillColor: Colors.white,
-                                    filled: true,
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none),
-                                    hintText: 'Search',
-                                    contentPadding: EdgeInsets.zero,
-                                    hintStyle: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: screenWidth * 0.05),
-                                    prefixIcon: Icon(
-                                      Icons.search,
-                                      color: darkPurple,
-                                    ),
-                                  ),
-                                  textAlignVertical: TextAlignVertical.center,
-                                ),
+                              SizedBox(width: 10),
+                              InkWell(
+                                  onTap: () {
+                                    // Navigator.of(context).push(MaterialPageRoute(
+                                    //     builder: (context) => const Home()));
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Icon(Icons.arrow_back)),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                "My Orders",
+                                style: GoogleFonts.notoSans(
+                                    color: Colors.black,
+                                    fontSize: screenWidth * 0.044,
+                                    fontWeight: FontWeight.w700),
                               ),
                             ],
                           ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Column(
-                            children: [
-                              Row(
+                          Divider(
+                            thickness: 2,
+                          )
+                        ],
+                      ),
+                      Expanded(
+                        child: Container(
+                          height: screenHeight,
+                          child: ListView.builder(
+                            padding: EdgeInsets.only(
+                              top: 5,
+                            ),
+                            shrinkWrap: true,
+                            physics: BouncingScrollPhysics(),
+                            itemCount: orders['data'].length,
+                            itemBuilder: (context, index) {
+                              return Column(
                                 children: [
-                                  SizedBox(width: 10),
-                                  InkWell(
-                                      onTap: () {
-                                        // Navigator.of(context).push(MaterialPageRoute(
-                                        //     builder: (context) => const Home()));
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Icon(Icons.arrow_back)),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    "My Orders",
-                                    style: GoogleFonts.notoSans(
-                                        color: Colors.black,
-                                        fontSize: screenWidth * 0.044,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                ],
-                              ),
-                              Divider(
-                                thickness: 2,
-                              )
-                            ],
-                          ),
-                          Container(
-                            height: screenHeight * 0.75,
-                            child: ListView.builder(
-                              padding: EdgeInsets.only(
-                                top: 5,
-                              ),
-                              shrinkWrap: true,
-                              physics: BouncingScrollPhysics(),
-                              itemCount: orders['data'].length,
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    MyOrderInfo(
-                                                      id: orders['data'][index]
-                                                          ['_id'],
-                                                    )));
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 10, bottom: 0),
-                                        child: Container(
-                                          height: screenHeight * 0.14,
-                                          width: screenWidth,
-                                          child: ListTile(
-                                            leading: FractionallySizedBox(
-                                              //widthFactor: 0.25,
-                                              //heightFactor: 1.6,// Adjust the width factor as needed
-                                              heightFactor:
-                                                  screenHeight * 0.0024,
-                                              child: AspectRatio(
-                                                aspectRatio: 1,
-                                                child: (orders['data'][index]
-                                                                    ['photo']
-                                                                ['picture']
-                                                            .isEmpty &&
-                                                        orders['ProductDetails']
-                                                                        [index]
-                                                                    ['photo']
-                                                                ['picture']
-                                                            .isEmpty)
-                                                    ? Image.asset(
-                                                        'assets/Vector.png',
-                                                        // height: screenHeight*0.05,
-                                                        fit: BoxFit.fill,
-                                                      )
-                                                    : Image.network(
-                                                        (orders['data'][index][
-                                                                        'photo']
-                                                                    ['picture']
-                                                                .isEmpty)
-                                                            ? orders['ProductDetails']
-                                                                        [index]
-                                                                    ['photo']
-                                                                ['picture'][0]
-                                                            : orders['data']
-                                                                        [index]
-                                                                    ['photo']
-                                                                ['picture'][0],
-                                                        fit: BoxFit.fill,
-                                                      ),
-                                              ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MyOrderInfo(
+                                                    id: orders['data'][index]
+                                                        ['_id'],
+                                                  )));
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 10, bottom: 0),
+                                      child: Container(
+                                        height: screenHeight * 0.14,
+                                        width: screenWidth,
+                                        child: ListTile(
+                                          leading: FractionallySizedBox(
+                                            //widthFactor: 0.25,
+                                            //heightFactor: 1.6,// Adjust the width factor as needed
+                                            heightFactor:
+                                                screenHeight * 0.0024,
+                                            child: AspectRatio(
+                                              aspectRatio: 1,
+                                              child: (orders['data'][index]
+                                                                  ['photo']
+                                                              ['picture']
+                                                          .isEmpty &&
+                                                      orders['ProductDetails']
+                                                                      [index]
+                                                                  ['photo']
+                                                              ['picture']
+                                                          .isEmpty)
+                                                  ? Image.asset(
+                                                      'assets/Vector.png',
+                                                      // height: screenHeight*0.05,
+                                                      fit: BoxFit.fill,
+                                                    )
+                                                  : Image.network(
+                                                      (orders['data'][index][
+                                                                      'photo']
+                                                                  ['picture']
+                                                              .isEmpty)
+                                                          ? orders['ProductDetails']
+                                                                      [index]
+                                                                  ['photo']
+                                                              ['picture'][0]
+                                                          : orders['data']
+                                                                      [index]
+                                                                  ['photo']
+                                                              ['picture'][0],
+                                                      fit: BoxFit.fill,
+                                                    ),
                                             ),
-                                            title: Transform.translate(
-                                              offset: Offset(
-                                                  0.0, -screenWidth * 0.05),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Expanded(
-                                                    flex: 3,
-                                                    child: Row(
-                                                      children: [
-                                                        Text(
+                                          ),
+                                          title: Transform.translate(
+                                            offset: Offset(
+                                                0.0, -screenWidth * 0.05),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Expanded(
+                                                  flex: 5,
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: Text(
                                                           orders['ProductDetails']
                                                               [index]['name'],
                                                           style: GoogleFonts
@@ -339,117 +339,118 @@ class _MyOrdersState extends State<MyOrders> {
                                                                       FontWeight
                                                                           .w700),
                                                         ),
-                                                        Spacer(),
-                                                        Text(
-                                                          orders['ProductDetails']
-                                                                              [
-                                                                              index]
-                                                                          [
-                                                                          'cost']
-                                                                      ['value']
-                                                                  .toString() +
-                                                              " Rs",
-                                                          style: GoogleFonts
-                                                              .notoSans(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize:
-                                                                      screenWidth *
-                                                                          0.035,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 4,
-                                                    child: Text(
+                                                      ),
+                                                      Spacer(),
+                                                      Text(
                                                         orders['ProductDetails']
-                                                                [index]
-                                                            ['description'],
+                                                                            [
+                                                                            index]
+                                                                        [
+                                                                        'cost']
+                                                                    ['value']
+                                                                .toString() +
+                                                            " Rs",
                                                         style: GoogleFonts
                                                             .notoSans(
-                                                                color:
-                                                                    Colors
-                                                                        .black,
+                                                                color: Colors
+                                                                    .black,
                                                                 fontSize:
                                                                     screenWidth *
-                                                                        0.036,
+                                                                        0.035,
                                                                 fontWeight:
                                                                     FontWeight
-                                                                        .w400)),
+                                                                        .w700),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  // SizedBox(
-                                                  //   height: screenHeight * 0.0078,
-                                                  // ),
-                                                  Expanded(
-                                                    flex: 3,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      children: [
-                                                        Spacer(),
-                                                        Container(
-                                                            decoration: BoxDecoration(
-                                                                color: cream,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5)),
-                                                            child:
-                                                                GestureDetector(
-                                                              onTap:
-                                                                  () async {},
-                                                              child: Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .all(5),
-                                                                  child: Text(
-                                                                    "Add Comments",
-                                                                    style: GoogleFonts
-                                                                        .notoSans(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          screenWidth *
-                                                                              0.038,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                    ),
-                                                                  )),
-                                                            )),
-                                                      ],
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
+                                                ),
+                                                Expanded(
+                                                  flex: 4,
+                                                  child: Text(
+                                                      orders['ProductDetails']
+                                                              [index]
+                                                          ['description'],
+                                                      style: GoogleFonts
+                                                          .notoSans(
+                                                              color:
+                                                                  Colors
+                                                                      .black,
+                                                              fontSize:
+                                                                  screenWidth *
+                                                                      0.036,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400)),
+                                                ),
+                                                // SizedBox(
+                                                //   height: screenHeight * 0.0078,
+                                                // ),
+                                                Expanded(
+                                                  flex: 3,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .end,
+                                                    children: [
+                                                      Spacer(),
+                                                      // Container(
+                                                      //     decoration: BoxDecoration(
+                                                      //         color: cream,
+                                                      //         borderRadius:
+                                                      //             BorderRadius
+                                                      //                 .circular(
+                                                      //                     5)),
+                                                      //     child:
+                                                      //         GestureDetector(
+                                                      //       onTap:
+                                                      //           () async {},
+                                                      //       child: Padding(
+                                                      //           padding:
+                                                      //               const EdgeInsets
+                                                      //                   .all(5),
+                                                      //           child: Text(
+                                                      //             "Add Comments",
+                                                      //             style: GoogleFonts
+                                                      //                 .notoSans(
+                                                      //               color: Colors
+                                                      //                   .black,
+                                                      //               fontSize:
+                                                      //                   screenWidth *
+                                                      //                       0.038,
+                                                      //               fontWeight:
+                                                      //                   FontWeight
+                                                      //                       .w600,
+                                                      //             ),
+                                                      //           )),
+                                                      //     )),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 0),
-                                      child: Divider(
-                                        thickness: 1,
-                                      ),
-                                    )
-                                  ],
-                                );
-                              },
-                            ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 0),
+                                    child: Divider(
+                                      thickness: 1,
+                                    ),
+                                  )
+                                ],
+                              );
+                            },
                           ),
-                        ],
-                      );
-                    })),
-              ));
+                        ),
+                      ),
+                    ],
+                  );
+                })));
   }
 }

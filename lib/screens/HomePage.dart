@@ -212,7 +212,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           GridView.count(
                             // childAspectRatio: 0.82,
-                            childAspectRatio: 0.82,
+                            childAspectRatio: 0.75,
                             padding: EdgeInsets.symmetric(
                                 horizontal: width * 0.094,
                                 vertical: height * 0.033),
@@ -267,13 +267,15 @@ class _HomePageState extends State<HomePage> {
                                             )),
                                       ),
                                     ),
-                                    Text(
-                                        filteredProducts[index]?.category ??
-                                            "Mugs",
-                                        style: GoogleFonts.notoSans(
-                                            color: Colors.black,
-                                            fontSize: width * 0.03,
-                                            fontWeight: FontWeight.w600)),
+                                    Expanded(
+                                      child: Text(
+                                          filteredProducts[index]?.category ??
+                                              "Mugs",
+                                          style: GoogleFonts.notoSans(
+                                              color: Colors.black,
+                                              fontSize: width * 0.03,
+                                              fontWeight: FontWeight.w600)),
+                                    ),
                                   ],
                                 );
                               },
@@ -292,7 +294,7 @@ class _HomePageState extends State<HomePage> {
                                     fontWeight: FontWeight.w700)),
                           ),
                           GridView.count(
-                            childAspectRatio: 0.82,
+                            childAspectRatio: 0.75,
                             padding: EdgeInsets.symmetric(
                                 horizontal: width * 0.094,
                                 vertical: height * 0.033),
@@ -344,8 +346,7 @@ class _HomePageState extends State<HomePage> {
                                             )),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 5),
+                                    Expanded(
                                       child: Text(
                                           products[index]?.category ?? "Mugs",
                                           style: GoogleFonts.notoSans(

@@ -225,7 +225,9 @@ class _MyAccountState extends State<MyAccount> {
                             fontSize: 16,
                             fontWeight: FontWeight.w700),
                       ),
-                      SizedBox(height: 15,),
+                      SizedBox(
+                        height: 15,
+                      ),
                       Row(
                         children: [
                           Stack(children: [
@@ -357,7 +359,8 @@ class _MyAccountState extends State<MyAccount> {
                             height: screenHeight * 0.05,
                             width: screenWidth * 0.7,
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.only(
+                                  left: 8, right: 8, top: 5),
                               child: Row(
                                 children: [
                                   Text(
@@ -377,94 +380,95 @@ class _MyAccountState extends State<MyAccount> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const Favourites()));
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: whiteColor,
-                                border:
-                                    Border.all(width: 2, color: Colors.black),
-                                borderRadius: BorderRadius.circular(5),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    blurRadius: 0.5,
-                                    spreadRadius: 0.5,
-                                    offset: Offset(2, 2),
-                                  )
-                                ]),
-                            height: screenHeight * 0.05,
-                            width: screenWidth * 0.7,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Favourites",
-                                    style: GoogleFonts.notoSans(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                  Spacer(),
-                                  Icon(
-                                    Icons.arrow_right_alt_outlined,
-                                    color: Colors.black,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const BulkOrder()));
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: whiteColor,
-                                border:
-                                    Border.all(width: 2, color: Colors.black),
-                                borderRadius: BorderRadius.circular(5),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    blurRadius: 0.5,
-                                    spreadRadius: 0.5,
-                                    offset: Offset(2, 2),
-                                  )
-                                ]),
-                            height: screenHeight * 0.05,
-                            width: screenWidth * 0.7,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Bulk Order",
-                                    style: GoogleFonts.notoSans(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                  Spacer(),
-                                  Icon(
-                                    Icons.arrow_right_alt_outlined,
-                                    color: Colors.black,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.all(20.0),
+                      //   child: InkWell(
+                      //     onTap: () {
+                      //       Navigator.of(context).push(MaterialPageRoute(
+                      //           builder: (context) => const Favourites()));
+                      //     },
+                      //     child: Container(
+                      //       decoration: BoxDecoration(
+                      //           color: whiteColor,
+                      //           border:
+                      //               Border.all(width: 2, color: Colors.black),
+                      //           borderRadius: BorderRadius.circular(5),
+                      //           boxShadow: [
+                      //             BoxShadow(
+                      //               color: Colors.grey,
+                      //               blurRadius: 0.5,
+                      //               spreadRadius: 0.5,
+                      //               offset: Offset(2, 2),
+                      //             )
+                      //           ]),
+                      //       height: screenHeight * 0.05,
+                      //       width: screenWidth * 0.7,
+                      //       child: Padding(
+                      //         padding: const EdgeInsets.all(8.0),
+                      //         child: Row(
+                      //           children: [
+                      //             Text(
+                      //               "Favourites",
+                      //               style: GoogleFonts.notoSans(
+                      //                   fontSize: 14,
+                      //                   fontWeight: FontWeight.w700),
+                      //             ),
+                      //             Spacer(),
+                      //             Icon(
+                      //               Icons.arrow_right_alt_outlined,
+                      //               color: Colors.black,
+                      //             )
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      // Padding(
+                      //   padding: const EdgeInsets.all(20.0),
+                      //   child: InkWell(
+                      //     onTap: () {
+                      //       Navigator.of(context).push(MaterialPageRoute(
+                      //           builder: (context) => const BulkOrder()));
+                      //     },
+                      //     child: Container(
+                      //       decoration: BoxDecoration(
+                      //           color: whiteColor,
+                      //           border:
+                      //               Border.all(width: 2, color: Colors.black),
+                      //           borderRadius: BorderRadius.circular(5),
+                      //           boxShadow: [
+                      //             BoxShadow(
+                      //               color: Colors.grey,
+                      //               blurRadius: 0.5,
+                      //               spreadRadius: 0.5,
+                      //               offset: Offset(2, 2),
+                      //             )
+                      //           ]),
+                      //       height: screenHeight * 0.05,
+                      //       width: screenWidth * 0.7,
+                      //       child: Padding(
+                      //         padding: const EdgeInsets.all(8.0),
+                      //         child: Row(
+                      //           children: [
+                      //             Text(
+                      //               "Bulk Order",
+                      //               style: GoogleFonts.notoSans(
+                      //                   fontSize: 14,
+                      //                   fontWeight: FontWeight.w700),
+                      //             ),
+                      //             Spacer(),
+                      //             Icon(
+                      //               Icons.arrow_right_alt_outlined,
+                      //               color: Colors.black,
+                      //             )
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+
                       Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: InkWell(
@@ -489,8 +493,10 @@ class _MyAccountState extends State<MyAccount> {
                             height: screenHeight * 0.05,
                             width: screenWidth * 0.7,
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.only(
+                                  left: 8, right: 8, top: 5),
                               child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     "Manage Address",
@@ -534,7 +540,8 @@ class _MyAccountState extends State<MyAccount> {
                             height: screenHeight * 0.05,
                             width: screenWidth * 0.7,
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.only(
+                                  left: 8, right: 8, top: 5),
                               child: Row(
                                 children: [
                                   Text(

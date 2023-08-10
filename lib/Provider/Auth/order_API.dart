@@ -11,15 +11,12 @@ import '../../models/OrderModel.dart';
 class Order {
   static const String authTokenKey = 'auth_token';
   List<Data> _ordersData = [];
-  List<Received> _allOrdersData =[];
+  List<Received> _allOrdersData = [];
 
   getOrdersData() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(authTokenKey);
-    var headers = {
-      'Authorization':
-          'Bearer $token'
-    };
+    var headers = {'Authorization': 'Bearer $token'};
     var request = http.Request(
         'GET', Uri.parse('https://divine-drapes.onrender.com/user/viewOrder'));
     request.body = '''''';
@@ -42,11 +39,9 @@ class Order {
   getSingleOrderData(String id) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(authTokenKey);
-    var headers = {
-      'Authorization':
-      'Bearer $token'    };
+    var headers = {'Authorization': 'Bearer $token'};
     var request = http.Request('GET',
-        Uri.parse('https://divine-drapes.onrender.com/user/singleOrder/'+ id));
+        Uri.parse('https://divine-drapes.onrender.com/user/singleOrder/' + id));
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     http.Response streamResponse = await http.Response.fromStream(response);
@@ -62,11 +57,13 @@ class Order {
       print(response.statusCode);
     }
   }
+
   getAllOrders() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(authTokenKey);
     var headers = {'Authorization': 'Bearer $token'};
-    var request = http.Request('GET', Uri.parse('https://divine-drapes.onrender.com/admin/allOrders'));
+    var request = http.Request(
+        'GET', Uri.parse('https://divine-drapes.onrender.com/admin/allOrders'));
 
     request.headers.addAll(headers);
 
@@ -78,15 +75,43 @@ class Order {
       print("future orders data: ");
       var data = jsonDecode(streamResponse.body);
       // print(data);
-     
+
       return data['received'];
-    }
-    else {
+    } else {
       print(response.reasonPhrase);
       print(response.statusCode);
 
       return false;
     }
+  }
 
+  getPastOrders() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(authTokenKey);
+    var headers = {'Authorization': 'Bearer $token'};
+    var request = http.Request(
+        'GET', Uri.parse('https://divine-drapes.onrender.com/admin/allOrders'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    http.Response streamResponse = await http.Response.fromStream(response);
+
+    if (response.statusCode == 200) {
+      print(response.statusCode);
+      print("future orders data: ");
+      var data = jsonDecode(streamResponse.body);
+      List<Map<String, dynamic>> completedOrders =
+          List<Map<String, dynamic>>.from(
+        data['received'].where((item) => item['paymentStatus'] == 'completed'),
+      );
+
+      return completedOrders;
+    } else {
+      print(response.reasonPhrase);
+      print(response.statusCode);
+
+      return false;
+    }
   }
 }

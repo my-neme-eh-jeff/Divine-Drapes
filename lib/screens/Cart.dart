@@ -159,7 +159,7 @@ class _CartState extends State<Cart> {
                                       ShimmerWidget.rectangular(
                                           width: screenWidth * 0.3, height: 20),
                                       SizedBox(
-                                        width: screenWidth * 0.15,
+                                        width: screenWidth * 0.1,
                                       ),
                                       ShimmerWidget.rectangular(
                                           width: screenWidth * 0.1, height: 18),
@@ -283,7 +283,7 @@ class _CartState extends State<Cart> {
                             ),
                           ),
                           Container(
-                              height: screenHeight,
+                              height: screenHeight * 0.95,
                               child: Padding(
                                   padding: const EdgeInsets.only(
                                       right: 4, bottom: 10),

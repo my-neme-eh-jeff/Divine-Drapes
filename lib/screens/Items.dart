@@ -830,7 +830,7 @@ class _ItemsState extends State<Items> {
                                                                     .black,
                                                                 fontSize:
                                                                     screenWidth *
-                                                                        0.04,
+                                                                        0.03495,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w700),
@@ -854,7 +854,7 @@ class _ItemsState extends State<Items> {
                                                                       .black,
                                                                   fontSize:
                                                                       screenWidth *
-                                                                          0.035,
+                                                                          0.0349,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w700),

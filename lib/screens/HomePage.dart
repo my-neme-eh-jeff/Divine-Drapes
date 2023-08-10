@@ -346,16 +346,13 @@ class _HomePageState extends State<HomePage> {
                                             )),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 5),
-                                      child: Expanded(
-                                        child: Text(
-                                            products[index]?.category ?? "Mugs",
-                                            style: GoogleFonts.notoSans(
-                                                color: Colors.black,
-                                                fontSize: width * 0.03,
-                                                fontWeight: FontWeight.w600)),
-                                      ),
+                                    Expanded(
+                                      child: Text(
+                                          products[index]?.category ?? "Mugs",
+                                          style: GoogleFonts.notoSans(
+                                              color: Colors.black,
+                                              fontSize: width * 0.03,
+                                              fontWeight: FontWeight.w600)),
                                     ),
                                   ],
                                 );

@@ -58,6 +58,33 @@ class Order {
     }
   }
 
+  // getAllOrders() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   final token = prefs.getString(authTokenKey);
+  //   var headers = {'Authorization': 'Bearer $token'};
+  //   var request = http.Request(
+  //       'GET', Uri.parse('https://divine-drapes.onrender.com/admin/allOrders'));
+
+  //   request.headers.addAll(headers);
+
+  //   http.StreamedResponse response = await request.send();
+  //   http.Response streamResponse = await http.Response.fromStream(response);
+
+  //   if (response.statusCode == 200) {
+  //     print(response.statusCode);
+  //     print("future orders data: ");
+  //     var data = jsonDecode(streamResponse.body);
+  //     // print(data);
+
+  //     return data['received'];
+  //   } else {
+  //     print(response.reasonPhrase);
+  //     print(response.statusCode);
+
+  //     return false;
+  //   }
+  // }
+
   getAllOrders() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(authTokenKey);
@@ -75,8 +102,10 @@ class Order {
       print("future orders data: ");
       var data = jsonDecode(streamResponse.body);
       // print(data);
+      List<Map<String, dynamic>> allOrders =
+          List<Map<String, dynamic>>.from(data['received']);
 
-      return data['received'];
+      return allOrders;
     } else {
       print(response.reasonPhrase);
       print(response.statusCode);

@@ -1,7 +1,7 @@
 .three-body {
     --uib-size: 75px;
     --uib-speed: 0.8s;
-    --uib-color: #5D3FD3;
+    --uib-color: #A01E86;
     display: inline-block;
     height: var(--uib-size);
     width: var(--uib-size);

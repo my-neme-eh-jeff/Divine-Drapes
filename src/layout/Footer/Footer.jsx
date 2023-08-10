@@ -13,8 +13,11 @@ import {
   } from '@chakra-ui/react';
   import { ChakraProvider } from '@chakra-ui/react'
   import Logodd from '../../assets/ddlogo.png'
+import { useNavigate } from 'react-router-dom';
   
-  const Logo = (props) => {
+
+const Logo = (props) => {
+    const navigate = useNavigate();
     return (
         <Image
         boxSize='150px'
@@ -22,6 +25,8 @@ import {
         borderRadius={'50%'}
         src={Logodd}
         alt='DD logo'
+        _hover={{ cursor: 'pointer' }}
+        onClick={() => navigate('/')}
       />
     );
   };
@@ -105,15 +110,14 @@ import {
                   
                 />
                 <Button backgroundColor={'#A01E86'}
-                _hover={{
-                    color:'white'
-                }}
+                 _hover={{ bgColor: '#7A146B' }}
+                 color={'#fff'}
                 width={'120px'}
                 height={'40px'}
                 fontWeight={500}
                 fontSize={'18px'}
                 >Send </Button>
-              </Stack>
+              </Stack>s
             </Stack>
           </SimpleGrid>
         </Container>

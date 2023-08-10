@@ -28,8 +28,8 @@ const Testimonials = () => {
                   borderRadius='10px'
                   transition="box-shadow 0.2s ease-in-out"
                   _hover={{
-                    boxShadow: '0px 20px 20px rgba(0, 0, 0, 0.5)',
-                    bgColor: 'gray.200'
+                    boxShadow: '0px 5px 5px rgba(0, 0, 0, 0.3)',
+                    bgColor: 'gray.50'
                   }}
                 >
                   <CardHeader>

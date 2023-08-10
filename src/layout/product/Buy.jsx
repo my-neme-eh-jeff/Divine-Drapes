@@ -237,7 +237,12 @@ function Buy() {
                     <form className="form">
                       <div className="separator">
                         <hr className="line" />
+                  <div className="modal">
+                    <form className="form">
+                      <div className="separator">
+                        <hr className="line" />
                         <p>Pay using Credit/Debit card</p>
+                        <hr className="line" />
                         <hr className="line" />
                       </div>
                       <div className="credit-card-info--form">
@@ -250,6 +255,7 @@ function Buy() {
                           </label>
                           <input
                             id="password_field"
+                            className="input_field"
                             className="input_field"
                             type="text"
                             name="input-name"
@@ -266,6 +272,7 @@ function Buy() {
                           </label>
                           <input
                             id="password_field"
+                            className="input_field"
                             className="input_field"
                             type="number"
                             name="input-name"
@@ -302,7 +309,7 @@ function Buy() {
                       </div>
                     </form>
                   </div>
-                ) : pay == "netbanking" ? (
+                ) : pay == "net banking" ? (
                   <>
                     <br />
                     <Select width={"auto"} placeholder="Select your bank">
@@ -351,6 +358,7 @@ function Buy() {
             </SimpleGrid>
           </Box>
         </Box>
+        {/* } */}
         <br />
         <Footer />
       </ChakraProvider>

@@ -22,6 +22,8 @@ import { useEffect } from "react";
 import { FormControl, TextareaAutosize } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import { useNavigate } from "react-router-dom";
+import Loader from "./Loader/Loader";
+
 export default function Myorders() {
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
@@ -236,7 +238,7 @@ export default function Myorders() {
                 })}
               </>
             ) : (
-              <></>
+              <><Loader></Loader></>
             )}
           </Grid>
         </Grid>

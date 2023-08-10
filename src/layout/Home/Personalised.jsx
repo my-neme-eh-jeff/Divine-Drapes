@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import publicAxios from "../../Axios/publicAxios";
+import publicAxios from "../../Axios/publicAxios";
 
 const responsive = {
   superLargeDesktop: {

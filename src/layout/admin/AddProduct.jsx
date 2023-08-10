@@ -1,9 +1,12 @@
-import { Center, ChakraProvider, Container, Heading, Stack, VStack, Input, Box, HStack, SimpleGrid, Button, TableContainer, Table, Tbody, Tr, Td, InputGroup, InputRightAddon } from '@chakra-ui/react'
+import { Center, ChakraProvider, Container, Heading, Stack, VStack, Input, Box, HStack, SimpleGrid, Button, TableContainer, Table, Tbody, Tr, Td, InputGroup, InputRightAddon, Textarea, GridItem, FormControl } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 
 function AddProduct() {
     const [selectedImage, setSelectedImage] = useState(null);
     const [productName, setProductName] = useState()
+    const [description, setDescription] = useState()
+    const [quantity, setQuantity] = useState()
+    const [cost, setCost] = useState()
     const [cust, setCust] = useState()
     const [imageCust, setImageCust] = useState()
     const [colorCust, setColorCust] = useState()
@@ -59,9 +62,22 @@ function AddProduct() {
                         </div>
                         <Heading fontSize={24} fontWeight={700}>Product Name</Heading>
                         <Input value={productName} onChange={e => { setProductName(e.target.value) }} placeholder='Enter your Product Name' />
+                        <Textarea placeholder='Enter description' value={description} onChange={e => { setDescription(e.target.value) }} />
+                        <SimpleGrid columns={2} columnGap={3} rowGap={2}>
+                            <GridItem colSpan={[2, null, 1]}>
+                                <FormControl>
+                                    <Input placeholder="Enter Quantity" type='number' value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
+                                </FormControl>
+                            </GridItem>
+                            <GridItem colSpan={[2, null, 1]}>
+                                <FormControl>
+                                    <Input placeholder="Enter Cost" type='number' value={cost} onChange={(e) => setCost(e.target.value)}/>
+                                </FormControl>
+                            </GridItem>
+                        </SimpleGrid>
                         <Heading fontSize={24} fontWeight={700}>Customization</Heading>
                         <Box >
-                            <div class="containerr">
+                            <div className="containerr">
                                 <form>
                                     <SimpleGrid columns={{ md: 2, base: 1 }}>
                                         <label>
@@ -80,7 +96,7 @@ function AddProduct() {
                         {
                             cust == 'yes' ? (<>
                                 <Heading fontSize={24} fontWeight={700}>Select your Customizations</Heading>
-                                <div class="containerr">
+                                <div className="containerr">
                                     <form>
                                         <SimpleGrid columns={{ md: 3, base: 1 }}>
                                             <label>
@@ -117,7 +133,7 @@ function AddProduct() {
                                             <Table variant={'simple'}>
                                                 <Tbody>
                                                     {colors.map((color, index) => (
-                                                        <Tr>
+                                                        <Tr key={index}>
                                                             <Td fontWeight={800}>{color}</Td>
                                                             <Td><Button onClick={() => handleColorEdit(index, prompt('Enter new color:'))}>Edit</Button></Td>
                                                             <Td><Button onClick={() => handleColorRemove(index)}>Remove</Button></Td>

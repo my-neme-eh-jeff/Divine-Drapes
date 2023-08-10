@@ -1,6 +1,3 @@
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,6 +11,7 @@ class OrderInfo extends StatefulWidget {
   final String? email;
   final String? paymentStatus;
   final String? paymentMode;
+  final String? date;
   var address;
   OrderInfo({
     Key? key,
@@ -24,6 +22,7 @@ class OrderInfo extends StatefulWidget {
     this.email,
     this.paymentMode,
     this.paymentStatus,
+    this.date,
     this.address,
   }) : super(key: key);
 
@@ -34,11 +33,11 @@ class OrderInfo extends StatefulWidget {
 class _OrderInfoState extends State<OrderInfo> {
   @override
   Widget build(BuildContext context) {
-    print(widget.address);
     var size = MediaQuery.of(context).size;
     double sizefont = size.width * 0.044;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
     // double screenWidth = MediaQuery.of(context).size.width;
     // double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -203,12 +202,14 @@ class _OrderInfoState extends State<OrderInfo> {
                           fontSize: 16,
                           fontWeight: FontWeight.w600),
                     ),
-                    Text(
-                      (widget.email == null) ? "--" : widget.email!,
-                      style: GoogleFonts.notoSans(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600),
+                    Flexible(
+                      child: Text(
+                        (widget.email == null) ? "--" : widget.email!,
+                        style: GoogleFonts.notoSans(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ],
                 ),
@@ -277,9 +278,10 @@ class _OrderInfoState extends State<OrderInfo> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                                (widget.address == null)
-                                    ? " "
-                                    : (widget.address[0]['addressOf'] ??
+                                (widget.address.isEmpty)
+                                    ? "NA"
+                                    : 
+                                    (widget.address[0]['addressOf'] ??
                                         "Address"),
                                 style: GoogleFonts.notoSans(
                                     color: Colors.black,
@@ -296,11 +298,11 @@ class _OrderInfoState extends State<OrderInfo> {
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600),
                             ),
-                            (widget.address == null) 
-                            ? Text("NA")
+                            (widget.address.isEmpty) 
+                            ? Text("----")
                             : Text( widget.address[0]['houseNumber'] + ' , ' + widget.address[0]['building'] + ' , ' + widget.address[0]['street'],style: TextStyle(fontSize: 20),),
-                            (widget.address == null) 
-                            ? Text( "NA")
+                            (widget.address.isEmpty) 
+                            ? Text( " ")
                             : Text( widget.address[0]['city'] + ' , ' + widget.address[0]['state'] + ' , ' + widget.address[0]['country'],style: TextStyle(fontSize: 20),),
                             SizedBox(
                               height: 15,

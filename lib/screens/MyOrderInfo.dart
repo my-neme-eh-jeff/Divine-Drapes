@@ -306,12 +306,14 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600),
                               ),
-                              Text(
-                                order['data']['user']['email'],
-                                style: GoogleFonts.notoSans(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600),
+                              Expanded(
+                                child: Text(
+                                  order['data']['user']['email'],
+                                  style: GoogleFonts.notoSans(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
                             ],
                           ),
@@ -389,8 +391,7 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                                         children: [
                                           Text(
                                               (order['data']['user']
-                                                          ['addressList'] ==
-                                                      null)
+                                                          ['addressList'].isEmpty)
                                                   ? " "
                                                   : (order['data']['user']
                                                               ['addressList'][0]
@@ -405,8 +406,7 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                                             thickness: 1,
                                           ),
                                           (order['data']['user']
-                                                      ['addressList'] ==
-                                                  null)
+                                                      ['addressList'].isEmpty)
                                               ? Text("NA")
                                               : Text(
                                                   order['data']['user']
@@ -424,8 +424,7 @@ class _MyOrderInfoState extends State<MyOrderInfo> {
                                                       TextStyle(fontSize: 20),
                                                 ),
                                           (order['data']['user']
-                                                      ['addressList'] ==
-                                                  null)
+                                                      ['addressList'].isEmpty)
                                               ? Text("NA")
                                               : Text(
                                                   order['data']['user']

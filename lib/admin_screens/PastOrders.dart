@@ -367,7 +367,9 @@ class _PastOrdersState extends State<PastOrders> {
                                                     ),
                                                     Spacer(),
                                                     Text(
-                                                      "21/05/2023",
+                                                      (filteredOrders[position]['product']== null)
+                                                ? "--"
+                                                : (filteredOrders[position]['product']['cost']['value']*filteredOrders[position]['product']['quantity']).toString() + " Rs",
                                                       style:
                                                           GoogleFonts.notoSans(
                                                               color:
@@ -522,7 +524,9 @@ class _PastOrdersState extends State<PastOrders> {
                                               ),
                                               Spacer(),
                                               Text(
-                                                "21/05/2023",
+                                               (allOrders[position]['product']== null)
+                                                ? "--"
+                                                : (allOrders[position]['product']['cost']['value']*allOrders[position]['product']['quantity']).toString() + " Rs",
                                                 style: GoogleFonts.notoSans(
                                                     color: Colors.black,
                                                     fontSize:

@@ -142,15 +142,15 @@ class _AdminOrdersState extends State<AdminOrders>
             // ),
 
             Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
           child: Column(
             children: [
               TabBar(
                 isScrollable: true,
                 controller: _controller,
                 tabs: const [
-                  Tab(text: 'New Orders'),
-                  Tab(text: 'Past Orders'),
+                  Tab(text: '       New Orders       '),
+                  Tab(text: '       Past Orders      '),
                 ],
                 labelColor: Colors.black,
                 unselectedLabelColor: Colors.black,
@@ -169,14 +169,12 @@ class _AdminOrdersState extends State<AdminOrders>
               ),
               Expanded(
                 flex: 1,
-                child: SizedBox.expand(
-                  child: TabBarView(
-                    controller: _controller,
-                    children: const <Widget>[
-                      NewOrders(),
-                      PastOrders(),
-                    ],
-                  ),
+                child: TabBarView(
+                  controller: _controller,
+                  children: const <Widget>[
+                    NewOrders(),
+                    PastOrders(),
+                  ],
                 ),
               ),
             ],

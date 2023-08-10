@@ -417,148 +417,169 @@ class _NewOrdersState extends State<NewOrders> {
                               itemBuilder: (context, position) {
                                 return Padding(
                                   padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                              builder: (context) => OrderInfo(
-                                                    name: (allOrders[position]![
-                                                                'product'] ==
-                                                            null)
-                                                        ? "---"
-                                                        : allOrders[position]![
-                                                            'product']['name'],
-                                                    image: (allOrders[
-                                                                    position]![
-                                                                'product'] ==
-                                                            null)
-                                                        ? 'assets/Vector.png'
-                                                        : (allOrders[position]![
-                                                                            'product']
-                                                                        [
-                                                                        'photo']
-                                                                    ['picture']
-                                                                .isEmpty)
-                                                            ? 'assets/Vector.png'
-                                                            : allOrders[position]![
+                                  child: Column(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder:
+                                                      (context) => OrderInfo(
+                                                            name: (allOrders[
+                                                                            position]![
+                                                                        'product'] ==
+                                                                    null)
+                                                                ? "---"
+                                                                : allOrders[position]![
                                                                         'product']
-                                                                    ['photo']
-                                                                ['picture'][0],
-                                                    userName: allOrders[
-                                                            position]!['user']
-                                                        ['fname'],
-                                                    contatct:
-                                                        allOrders[position]![
+                                                                    ['name'],
+                                                            image: (allOrders[
+                                                                            position]![
+                                                                        'product'] ==
+                                                                    null)
+                                                                ? 'assets/Vector.png'
+                                                                : (allOrders[position]!['product']['photo']
+                                                                            [
+                                                                            'picture']
+                                                                        .isEmpty)
+                                                                    ? 'assets/Vector.png'
+                                                                    : allOrders[position]!['product']
+                                                                            [
+                                                                            'photo']
+                                                                        [
+                                                                        'picture'][0],
+                                                            userName: allOrders[
+                                                                    position]![
+                                                                'user']['fname'],
+                                                            contatct: allOrders[
+                                                                            position]![
+                                                                        'user']
+                                                                    ['number']
+                                                                .toString(),
+                                                            email: allOrders[
+                                                                    position]![
+                                                                'user']['email'],
+                                                            paymentMode: allOrders[
+                                                                    position]![
+                                                                'paymentType'],
+                                                            paymentStatus: allOrders[
+                                                                    position]![
+                                                                'paymentStatus'],
+                                                            address: allOrders[
+                                                                        position]![
                                                                     'user']
-                                                                ['number']
-                                                            .toString(),
-                                                    email: allOrders[position]![
-                                                        'user']['email'],
-                                                    paymentMode:
-                                                        allOrders[position]![
-                                                            'paymentType'],
-                                                    paymentStatus:
-                                                        allOrders[position]![
-                                                            'paymentStatus'],
-                                                    address: allOrders[
-                                                            position]!['user']
-                                                        ['addressList'],
-                                                  )));
-                                    },
-                                    child: ListTile(
-                                      // leading: Container(
-                                      //   height: double.infinity,
-                                      //   child: Image.asset('assets/mug.png',fit: BoxFit.cover,),
-                                      //   //child: Image.network("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/446b1af0-e6ba-4b0f-a9de-6ae6d3ed27a3/dfjhqn3-23d30b9d-16e3-42b6-aa12-e010a3999ef6.png/v1/fill/w_736,h_736,q_80,strp/satoru_gojo_aesthetic_pfp_by_harvester0fs0uls_dfjhqn3-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzM2IiwicGF0aCI6IlwvZlwvNDQ2YjFhZjAtZTZiYS00YjBmLWE5ZGUtNmFlNmQzZWQyN2EzXC9kZmpocW4zLTIzZDMwYjlkLTE2ZTMtNDJiNi1hYTEyLWUwMTBhMzk5OWVmNi5wbmciLCJ3aWR0aCI6Ijw9NzM2In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.F7_Ce5Ih1dhahsCnvFHRZgivj_8AByd9ZYHS3Ju0aws",height: 180,),
-                                      // ),
-                                      leading: FractionallySizedBox(
-                                        widthFactor: 0.27,
-                                        //heightFactor: 1.6,// Adjust the width factor as needed
-                                        heightFactor: screenHeight * 0.0019,
-                                        child: AspectRatio(
-                                          aspectRatio: 1,
-                                          child: (allOrders[position]![
-                                                      'product'] ==
-                                                  null)
-                                              ? Image.asset(
-                                                  'assets/Vector.png',
-                                                  // height: screenHeight*0.05,
-                                                  fit: BoxFit.fill,
-                                                )
-                                              : (allOrders[position]!['product']
-                                                          ['photo']['picture']
-                                                      .isEmpty)
+                                                                ['addressList'],
+                                                          )));
+                                        },
+                                        child: ListTile(
+                                          // leading: Container(
+                                          //   height: double.infinity,
+                                          //   child: Image.asset('assets/mug.png',fit: BoxFit.cover,),
+                                          //   //child: Image.network("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/446b1af0-e6ba-4b0f-a9de-6ae6d3ed27a3/dfjhqn3-23d30b9d-16e3-42b6-aa12-e010a3999ef6.png/v1/fill/w_736,h_736,q_80,strp/satoru_gojo_aesthetic_pfp_by_harvester0fs0uls_dfjhqn3-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzM2IiwicGF0aCI6IlwvZlwvNDQ2YjFhZjAtZTZiYS00YjBmLWE5ZGUtNmFlNmQzZWQyN2EzXC9kZmpocW4zLTIzZDMwYjlkLTE2ZTMtNDJiNi1hYTEyLWUwMTBhMzk5OWVmNi5wbmciLCJ3aWR0aCI6Ijw9NzM2In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.F7_Ce5Ih1dhahsCnvFHRZgivj_8AByd9ZYHS3Ju0aws",height: 180,),
+                                          // ),
+                                          leading: FractionallySizedBox(
+                                            widthFactor: 0.27,
+                                            //heightFactor: 1.6,// Adjust the width factor as needed
+                                            heightFactor: screenHeight * 0.0019,
+                                            child: AspectRatio(
+                                              aspectRatio: 1,
+                                              child: (allOrders[position]![
+                                                          'product'] ==
+                                                      null)
                                                   ? Image.asset(
                                                       'assets/Vector.png',
                                                       // height: screenHeight*0.05,
                                                       fit: BoxFit.fill,
                                                     )
-                                                  : Image.network(
-                                                      allOrders[position]![
-                                                                  'product']
-                                                              ['photo']
-                                                          ['picture'][0],
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                        ),
-                                      ),
-                                      title: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
+                                                  : (allOrders[position]![
+                                                                      'product']
+                                                                  ['photo']
+                                                              ['picture']
+                                                          .isEmpty)
+                                                      ? Image.asset(
+                                                          'assets/Vector.png',
+                                                          // height: screenHeight*0.05,
+                                                          fit: BoxFit.fill,
+                                                        )
+                                                      : Image.network(
+                                                          allOrders[position]![
+                                                                      'product']
+                                                                  ['photo']
+                                                              ['picture'][0],
+                                                          fit: BoxFit.fill,
+                                                        ),
+                                            ),
+                                          ),
+                                          title: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                (allOrders[position]![
-                                                            'product'] ==
-                                                        null)
-                                                    ? "---"
-                                                    : allOrders[position]![
-                                                        'product']['name'],
-                                                style: GoogleFonts.notoSans(
-                                                    color: Colors.black,
-                                                    fontSize:
-                                                        screenWidth * 0.036,
-                                                    fontWeight:
-                                                        FontWeight.w700),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    (allOrders[position]![
+                                                                'product'] ==
+                                                            null)
+                                                        ? "---"
+                                                        : allOrders[position]![
+                                                            'product']['name'],
+                                                    style: GoogleFonts.notoSans(
+                                                        color: Colors.black,
+                                                        fontSize:
+                                                            screenWidth * 0.036,
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
+                                                  Spacer(),
+                                                  Text(
+                                                    "21/05/2023",
+                                                    style: GoogleFonts.notoSans(
+                                                        color: Colors.black,
+                                                        fontSize:
+                                                            screenWidth * 0.031,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                ],
                                               ),
-                                              Spacer(),
-                                              Text(
-                                                "21/05/2023",
-                                                style: GoogleFonts.notoSans(
-                                                    color: Colors.black,
-                                                    fontSize:
-                                                        screenWidth * 0.031,
-                                                    fontWeight:
-                                                        FontWeight.w500),
+                                              Text("photo attached",
+                                                  style: GoogleFonts.notoSans(
+                                                      color: Colors.black,
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w500)),
+                                              SizedBox(
+                                                height: 7,
                                               ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(6.0),
+                                                child: Text(
+                                                  "Payment : " +
+                                                      allOrders[position]![
+                                                          'paymentType'],
+                                                  style: GoogleFonts.notoSans(
+                                                      color: Colors.black,
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              )
                                             ],
                                           ),
-                                          Text("photo attached",
-                                              style: GoogleFonts.notoSans(
-                                                  color: Colors.black,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500)),
-                                          SizedBox(
-                                            height: 7,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(6.0),
-                                            child: Text(
-                                              "Payment: " +
-                                                  allOrders[position]![
-                                                      'paymentType'],
-                                              style: GoogleFonts.notoSans(
-                                                  color: Colors.black,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                          )
-                                        ],
+                                        ),
                                       ),
-                                    ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        child: Divider(
+                                          thickness: 2,
+                                          color: Colors.grey,
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 );
                                 //   Padding(

@@ -439,67 +439,67 @@ class _LoginState extends State<Login> {
                     SizedBox(
                       height: size.height * 0.02,
                     ),
-                    const Row(
-                      children: [
-                        Expanded(
-                            child: Divider(
-                          color: Colors.black,
-                          thickness: 1,
-                        )),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: Text(
-                            'OR',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Expanded(
-                            child: Divider(
-                          color: Colors.black,
-                          thickness: 1,
-                        )),
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.height * 0.02,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      height: size.height * 0.052,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 2,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Login with Google',
-                            style: GoogleFonts.notoSans(
-                              fontSize: sizefont * 0.7,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          SizedBox(width: 8),
-                          SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: Image.asset(
-                              'assets/google.png',
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: size.height * 0.03),
+                    // const Row(
+                    //   children: [
+                    //     Expanded(
+                    //         child: Divider(
+                    //       color: Colors.black,
+                    //       thickness: 1,
+                    //     )),
+                    //     Padding(
+                    //       padding: EdgeInsets.symmetric(horizontal: 20),
+                    //       child: Text(
+                    //         'OR',
+                    //         style: TextStyle(
+                    //             fontSize: 16, fontWeight: FontWeight.bold),
+                    //       ),
+                    //     ),
+                    //     Expanded(
+                    //         child: Divider(
+                    //       color: Colors.black,
+                    //       thickness: 1,
+                    //     )),
+                    //   ],
+                    // ),
+                    // SizedBox(
+                    //   height: size.height * 0.02,
+                    // ),
+                    // Container(
+                    //   width: double.infinity,
+                    //   height: size.height * 0.052,
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.white,
+                    //     borderRadius: BorderRadius.circular(10),
+                    //     border: Border.all(
+                    //       color: Colors.black,
+                    //       width: 2,
+                    //     ),
+                    //   ),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     crossAxisAlignment: CrossAxisAlignment.center,
+                    //     children: [
+                    //       Text(
+                    //         'Login with Google',
+                    //         style: GoogleFonts.notoSans(
+                    //           fontSize: sizefont * 0.7,
+                    //           color: Colors.black,
+                    //           fontWeight: FontWeight.w600,
+                    //         ),
+                    //       ),
+                    //       SizedBox(width: 8),
+                    //       SizedBox(
+                    //         width: 20,
+                    //         height: 20,
+                    //         child: Image.asset(
+                    //           'assets/google.png',
+                    //           fit: BoxFit.contain,
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // SizedBox(height: size.height * 0.03),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

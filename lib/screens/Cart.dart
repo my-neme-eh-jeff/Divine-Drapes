@@ -115,7 +115,9 @@ class _CartState extends State<Cart> {
     Widget buildShimmer() => SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 15,),
+              SizedBox(
+                height: 15,
+              ),
               ShimmerWidget.rectangular(
                   width: screenWidth * 0.9, height: screenHeight * 0.055),
               SizedBox(
@@ -125,7 +127,9 @@ class _CartState extends State<Cart> {
                   offset: Offset(-screenWidth * 0.31, 0),
                   child: ShimmerWidget.rectangular(
                       width: 100, height: screenHeight * 0.05)),
-                      SizedBox(height: 5,),
+              SizedBox(
+                height: 5,
+              ),
               Divider(
                 thickness: 2,
               ),
@@ -153,10 +157,9 @@ class _CartState extends State<Cart> {
                                   Row(
                                     children: [
                                       ShimmerWidget.rectangular(
-                                          width: screenWidth * 0.3,
-                                          height: 20),
+                                          width: screenWidth * 0.3, height: 20),
                                       SizedBox(
-                                        width: screenWidth * 0.15,
+                                        width: screenWidth * 0.1,
                                       ),
                                       ShimmerWidget.rectangular(
                                           width: screenWidth * 0.1, height: 18),
@@ -215,11 +218,11 @@ class _CartState extends State<Cart> {
               physics: NeverScrollableScrollPhysics(),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: (cartProducts.length == 0)
-                      ? [
+                child: (cartProducts.length == 0)
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
                           SizedBox(
                             height: screenHeight * 0.1,
                           ),
@@ -229,8 +232,12 @@ class _CartState extends State<Cart> {
                                 style: GoogleFonts.notoSans(
                                     fontSize: 20, fontWeight: FontWeight.w700)),
                           ),
-                        ]
-                      : [
+                        ],
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
                           Container(
                             margin: EdgeInsets.all(5),
                             width: screenWidth * 0.9,
@@ -276,7 +283,7 @@ class _CartState extends State<Cart> {
                             ),
                           ),
                           Container(
-                              height: screenHeight,
+                              height: screenHeight * 0.95,
                               child: Padding(
                                   padding: const EdgeInsets.only(
                                       right: 4, bottom: 10),
@@ -439,36 +446,38 @@ class _CartState extends State<Cart> {
                                                                             decoration:
                                                                                 BoxDecoration(color: cream, borderRadius: BorderRadius.circular(5)),
                                                                             child: GestureDetector(
-                                                                              onTap: () async {
-                                                                                print(cartProducts[index]?.id);
-                                                                                showDialog(
-                                                                                    barrierDismissible: false,
-                                                                                    context: context,
-                                                                                    builder: (context) => Center(
-                                                                                          child: CircularProgressIndicator(
-                                                                                            color: cream,
-                                                                                          ),
-                                                                                        ));
-                                                                                var success = await removeFromCart(cartProducts[index]!.id);
-                                                                                if (success) {
-                                                                                  Navigator.pop(context);
-                                                                                  Navigator.pushReplacement(
-                                                                                      context,
-                                                                                      MaterialPageRoute(
-                                                                                          builder: (BuildContext context) => Home(
-                                                                                                initial: 1,
-                                                                                              )));
-                                                                                } else {
-                                                                                  Fluttertoast.showToast(
-                                                                                    msg: "Oops! Some Error Ocuured.",
-                                                                                    toastLength: Toast.LENGTH_SHORT,
-                                                                                    gravity: ToastGravity.BOTTOM,
-                                                                                    timeInSecForIosWeb: 3,
-                                                                                    backgroundColor: Colors.green,
-                                                                                    textColor: Colors.white,
-                                                                                    fontSize: 16.0,
-                                                                                  );
-                                                                                }
+                                                                              onTap: () {
+                                                                                _showConfirmationDialog(context, index);
+
+                                                                                // print(cartProducts[index]?.id);
+                                                                                // showDialog(
+                                                                                //     barrierDismissible: false,
+                                                                                //     context: context,
+                                                                                //     builder: (context) => Center(
+                                                                                //           child: CircularProgressIndicator(
+                                                                                //             color: cream,
+                                                                                //           ),
+                                                                                //         ));
+                                                                                // var success = await removeFromCart(cartProducts[index]!.id);
+                                                                                // if (success) {
+                                                                                //   Navigator.pop(context);
+                                                                                //   Navigator.pushReplacement(
+                                                                                //       context,
+                                                                                //       MaterialPageRoute(
+                                                                                //           builder: (BuildContext context) => Home(
+                                                                                //                 initial: 1,
+                                                                                //               )));
+                                                                                // } else {
+                                                                                //   Fluttertoast.showToast(
+                                                                                //     msg: "Oops! Some Error Ocuured.",
+                                                                                //     toastLength: Toast.LENGTH_SHORT,
+                                                                                //     gravity: ToastGravity.BOTTOM,
+                                                                                //     timeInSecForIosWeb: 3,
+                                                                                //     backgroundColor: Colors.green,
+                                                                                //     textColor: Colors.white,
+                                                                                //     fontSize: 16.0,
+                                                                                //   );
+                                                                                // }
                                                                               },
                                                                               child: Padding(
                                                                                 padding: const EdgeInsets.all(8.0),
@@ -560,9 +569,98 @@ class _CartState extends State<Cart> {
                                     );
                                   }))),
                         ],
-                ),
+                      ),
               ),
             ),
+    );
+  }
+
+  void _showConfirmationDialog(BuildContext context, int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
+          child: AlertDialog(
+            // title: Text("Log Out"),
+            content: Text(
+              "Are you sure you want to remove this item from cart?",
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+            actions: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context); // Close the dialog
+                },
+                child: Container(
+                  width: 70,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: cream,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () async {
+                  showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) => Center(
+                            child: CircularProgressIndicator(
+                              color: cream,
+                            ),
+                          ));
+                  var success = await removeFromCart(cartProducts[index]!.id);
+                  if (success) {
+                    Navigator.pop(context);
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => Home(
+                                  initial: 1,
+                                )));
+                  } else {
+                    Fluttertoast.showToast(
+                      msg: "Oops! Some Error Ocuured.",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 3,
+                      backgroundColor: Colors.green,
+                      textColor: Colors.white,
+                      fontSize: 16.0,
+                    );
+                  }
+                },
+                child: Container(
+                  width: 70,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: cream,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Remove',
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

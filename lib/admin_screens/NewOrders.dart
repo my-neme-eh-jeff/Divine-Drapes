@@ -135,66 +135,65 @@ class _NewOrdersState extends State<NewOrders> {
                 child: Text(snapshot.error.toString()),
               );
             } else {
-              return SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    // SizedBox(
-                    //   height: 10,
-                    // ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 10),
-                      child: Row(
-                        children: [
-                          Spacer(),
-                          Container(
-                            width: screenWidth * 0.36,
-                            height: 30,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black, width: 2),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                hint: const Text("Select Item:"),
-                                value: value1,
-                                isExpanded: true,
-                                items: list1.map(buildMenuItem).toList(),
-                                // onChanged: (value) {
-                                //   setState(() {
-                                //     this.value1 = value;
-                                //     ItemName = value!;
-                                //   });
-                                // },
-                                onChanged: (value) {
-                                  setState(() {
-                                    this.value1 = value;
-                                    ItemName = value!;
+              return Column(
+                // mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    child: Row(
+                      children: [
+                        Spacer(),
+                        Container(
+                          width: screenWidth * 0.36,
+                          height: 30,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 2),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              hint: const Text("Select Item:"),
+                              value: value1,
+                              isExpanded: true,
+                              items: list1.map(buildMenuItem).toList(),
+                              // onChanged: (value) {
+                              //   setState(() {
+                              //     this.value1 = value;
+                              //     ItemName = value!;
+                              //   });
+                              // },
+                              onChanged: (value) {
+                                setState(() {
+                                  this.value1 = value;
+                                  ItemName = value!;
 
-                                    // Update the flag and filter the received items if a value is selected
-                                    if (ItemName.isNotEmpty) {
-                                      isFiltering = true;
-                                      filteredOrders = allOrders
-                                          .where((item) => item['product']['category'] ==
-                                              ItemName
-                                              )
-                                          .toList();
-                                    } else {
-                                      isFiltering = false;
-                                    }
-                                  });
-                                },
-                              ),
+                                  // Update the flag and filter the received items if a value is selected
+                                  if (ItemName.isNotEmpty) {
+                                    isFiltering = true;
+                                    filteredOrders = allOrders
+                                        .where((item) => item['product']['category'] ==
+                                            ItemName
+                                            )
+                                        .toList();
+                                  } else {
+                                    isFiltering = false;
+                                  }
+                                });
+                              },
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Container(
-                      height: screenHeight * 0.65,
+                  ),
+                  Expanded(
+                    child: Container(
+                      // height: screenHeight * 0.65,
                       child: isFiltering
                           ? ListView.builder(
                               shrinkWrap: true,
@@ -216,12 +215,14 @@ class _NewOrdersState extends State<NewOrders> {
                                                     builder: (context) =>
                                                         OrderInfo(
                                                           name: (filteredOrders[
-                                                                          position][
+                                                                          position]
+                                                                      [
                                                                       'product'] ==
                                                                   null)
                                                               ? "---"
                                                               : filteredOrders[
-                                                                          position][
+                                                                          position]
+                                                                      [
                                                                       'product']
                                                                   ['name'],
                                                           image: (filteredOrders[
@@ -263,7 +264,7 @@ class _NewOrdersState extends State<NewOrders> {
                                                                       position]
                                                                   ['user']
                                                               ['addressList'],
-                                                              // date: ,
+                                                          // date: ,
                                                         )));
                                           },
                                           child: ListTile(
@@ -273,9 +274,8 @@ class _NewOrdersState extends State<NewOrders> {
                                                   screenHeight * 0.0019,
                                               child: AspectRatio(
                                                 aspectRatio: 1,
-                                                child: (filteredOrders[
-                                                                position][
-                                                            'product'] ==
+                                                child: (filteredOrders[position]
+                                                            ['product'] ==
                                                         null)
                                                     ? Image.asset(
                                                         'assets/Vector.png',
@@ -293,7 +293,8 @@ class _NewOrdersState extends State<NewOrders> {
                                                             fit: BoxFit.fill,
                                                           )
                                                         : Image.network(
-                                                            filteredOrders[position][
+                                                            filteredOrders[position]
+                                                                        [
                                                                         'product']
                                                                     ['photo']
                                                                 ['picture'][0],
@@ -310,36 +311,50 @@ class _NewOrdersState extends State<NewOrders> {
                                                 Row(
                                                   children: [
                                                     Text(
-                                                      (filteredOrders[position][
-                                                                  'product'] ==
+                                                      (filteredOrders[position]
+                                                                  ['product'] ==
                                                               null)
                                                           ? "---"
                                                           : filteredOrders[
-                                                                  position][
-                                                              'product']['name'],
+                                                                      position]
+                                                                  ['product']
+                                                              ['name'],
                                                       style:
                                                           GoogleFonts.notoSans(
                                                               color:
                                                                   Colors.black,
                                                               fontSize:
                                                                   screenWidth *
-                                                                      0.036,
+                                                                      0.03495,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w700),
                                                     ),
                                                     Spacer(),
                                                     Text(
-                                                      (filteredOrders[position]['product']== null)
-                                                ? "--"
-                                                : (filteredOrders[position]['product']['cost']['value']*filteredOrders[position]['product']['quantity']).toString() + " Rs",
+                                                      (filteredOrders[position]
+                                                                  ['product'] ==
+                                                              null)
+                                                          ? "--"
+                                                          : (filteredOrders[position]['product']
+                                                                              [
+                                                                              'cost']
+                                                                          [
+                                                                          'value'] *
+                                                                      filteredOrders[position]
+                                                                              [
+                                                                              'product']
+                                                                          [
+                                                                          'quantity'])
+                                                                  .toString() +
+                                                              " Rs",
                                                       style:
                                                           GoogleFonts.notoSans(
                                                               color:
                                                                   Colors.black,
                                                               fontSize:
                                                                   screenWidth *
-                                                                      0.031,
+                                                                      0.03,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500),
@@ -360,9 +375,8 @@ class _NewOrdersState extends State<NewOrders> {
                                                       const EdgeInsets.all(6.0),
                                                   child: Text(
                                                     "Payment: " +
-                                                        filteredOrders[
-                                                                position][
-                                                            'paymentType'],
+                                                        filteredOrders[position]
+                                                            ['paymentType'],
                                                     style: GoogleFonts.notoSans(
                                                         color: Colors.black,
                                                         fontSize: 14,
@@ -389,47 +403,45 @@ class _NewOrdersState extends State<NewOrders> {
                                       Navigator.of(context)
                                           .push(MaterialPageRoute(
                                               builder: (context) => OrderInfo(
-                                                    name: (allOrders[position][
-                                                                'product'] ==
+                                                    name: (allOrders[position]
+                                                                ['product'] ==
                                                             null)
                                                         ? "---"
-                                                        : allOrders[position][
-                                                            'product']['name'],
-                                                    image: (allOrders[
-                                                                    position][
-                                                                'product'] ==
+                                                        : allOrders[position]
+                                                            ['product']['name'],
+                                                    image: (allOrders[position]
+                                                                ['product'] ==
                                                             null)
                                                         ? 'assets/Vector.png'
                                                         : (allOrders[position][
                                                                             'product']
-                                                                        [
-                                                                        'photo']
+                                                                        ['photo']
                                                                     ['picture']
                                                                 .isEmpty)
                                                             ? 'assets/Vector.png'
-                                                            : allOrders[position][
+                                                            : allOrders[position]
+                                                                        [
                                                                         'product']
                                                                     ['photo']
                                                                 ['picture'][0],
-                                                    userName: allOrders[
-                                                            position]['user']
-                                                        ['fname'],
+                                                    userName:
+                                                        allOrders[position]
+                                                            ['user']['fname'],
                                                     contatct:
-                                                        allOrders[position][
-                                                                    'user']
+                                                        allOrders[position]
+                                                                    ['user']
                                                                 ['number']
                                                             .toString(),
-                                                    email: allOrders[position][
-                                                        'user']['email'],
+                                                    email: allOrders[position]
+                                                        ['user']['email'],
                                                     paymentMode:
-                                                        allOrders[position][
-                                                            'paymentType'],
+                                                        allOrders[position]
+                                                            ['paymentType'],
                                                     paymentStatus:
-                                                        allOrders[position][
-                                                            'paymentStatus'],
-                                                    address: allOrders[
-                                                            position]['user']
-                                                        ['addressList'],
+                                                        allOrders[position]
+                                                            ['paymentStatus'],
+                                                    address: allOrders[position]
+                                                        ['user']['addressList'],
                                                   )));
                                     },
                                     child: ListTile(
@@ -444,8 +456,8 @@ class _NewOrdersState extends State<NewOrders> {
                                         heightFactor: screenHeight * 0.0019,
                                         child: AspectRatio(
                                           aspectRatio: 1,
-                                          child: (allOrders[position][
-                                                      'product'] ==
+                                          child: (allOrders[position]
+                                                      ['product'] ==
                                                   null)
                                               ? Image.asset(
                                                   'assets/Vector.png',
@@ -461,8 +473,8 @@ class _NewOrdersState extends State<NewOrders> {
                                                       fit: BoxFit.fill,
                                                     )
                                                   : Image.network(
-                                                      allOrders[position][
-                                                                  'product']
+                                                      allOrders[position]
+                                                                  ['product']
                                                               ['photo']
                                                           ['picture'][0],
                                                       fit: BoxFit.fill,
@@ -478,12 +490,12 @@ class _NewOrdersState extends State<NewOrders> {
                                           Row(
                                             children: [
                                               Text(
-                                                (allOrders[position][
-                                                            'product'] ==
+                                                (allOrders[position]
+                                                            ['product'] ==
                                                         null)
                                                     ? "---"
-                                                    : allOrders[position][
-                                                        'product']['name'],
+                                                    : allOrders[position]
+                                                        ['product']['name'],
                                                 style: GoogleFonts.notoSans(
                                                     color: Colors.black,
                                                     fontSize:
@@ -493,13 +505,24 @@ class _NewOrdersState extends State<NewOrders> {
                                               ),
                                               Spacer(),
                                               Text(
-                                                (allOrders[position]['product']== null)
-                                                ? "--"
-                                                : (allOrders[position]['product']['cost']['value']*allOrders[position]['product']['quantity']).toString() + " Rs",
+                                                (allOrders[
+                                                                position]
+                                                            ['product'] ==
+                                                        null)
+                                                    ? "--"
+                                                    : (allOrders[position]['product']
+                                                                        ['cost']
+                                                                    ['value'] *
+                                                                allOrders[position]
+                                                                        [
+                                                                        'product']
+                                                                    [
+                                                                    'quantity'])
+                                                            .toString() +
+                                                        " Rs",
                                                 style: GoogleFonts.notoSans(
                                                     color: Colors.black,
-                                                    fontSize:
-                                                        12,
+                                                    fontSize: 12,
                                                     fontWeight:
                                                         FontWeight.w500),
                                               ),
@@ -575,9 +598,9 @@ class _NewOrdersState extends State<NewOrders> {
                                 // );
                               },
                             ),
-                    )
-                  ],
-                ),
+                    ),
+                  )
+                ],
               );
             }
           }),

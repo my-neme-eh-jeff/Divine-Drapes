@@ -143,63 +143,62 @@ class _PastOrdersState extends State<PastOrders> {
                 child: Text(snapshot.error.toString()),
               );
             } else {
-              return SingleChildScrollView(
-                physics: NeverScrollableScrollPhysics(),
-                child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 10),
-                      child: Row(
-                        children: [
-                          Spacer(),
-                          Container(
-                            width: screenWidth * 0.36,
-                            height: 30,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black, width: 2),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                hint: const Text("Select Item:"),
-                                value: value1,
-                                isExpanded: true,
-                                items: list1.map(buildMenuItem).toList(),
-                                // onChanged: (value) {
-                                //   setState(() {
-                                //     this.value1 = value;
-                                //     ItemName = value!;
-                                //   });
-                                // },
-                                onChanged: (value) {
-                                  setState(() {
-                                    this.value1 = value;
-                                    ItemName = value!;
+              return Column(
+                // mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    child: Row(
+                      children: [
+                        Spacer(),
+                        Container(
+                          width: screenWidth * 0.36,
+                          height: 30,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 2),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              hint: const Text("Select Item:"),
+                              value: value1,
+                              isExpanded: true,
+                              items: list1.map(buildMenuItem).toList(),
+                              // onChanged: (value) {
+                              //   setState(() {
+                              //     this.value1 = value;
+                              //     ItemName = value!;
+                              //   });
+                              // },
+                              onChanged: (value) {
+                                setState(() {
+                                  this.value1 = value;
+                                  ItemName = value!;
 
-                                    // Update the flag and filter the received items if a value is selected
-                                    if (ItemName.isNotEmpty) {
-                                      isFiltering = true;
-                                      filteredOrders = allOrders
-                                          .where((item) =>
-                                              item['product']['category'] ==
-                                              ItemName)
-                                          .toList();
-                                    } else {
-                                      isFiltering = false;
-                                    }
-                                  });
-                                },
-                              ),
+                                  // Update the flag and filter the received items if a value is selected
+                                  if (ItemName.isNotEmpty) {
+                                    isFiltering = true;
+                                    filteredOrders = allOrders
+                                        .where((item) =>
+                                            item['product']['category'] ==
+                                            ItemName)
+                                        .toList();
+                                  } else {
+                                    isFiltering = false;
+                                  }
+                                });
+                              },
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Container(
-                      height: screenHeight * 0.65,
+                  ),
+                  Expanded(
+                    child: Container(
+                      // height: screenHeight * 0.65,
                       child: isFiltering
                           ? ListView.builder(
                               shrinkWrap: true,
@@ -324,7 +323,7 @@ class _PastOrdersState extends State<PastOrders> {
                                                                   Colors.black,
                                                               fontSize:
                                                                   screenWidth *
-                                                                      0.036,
+                                                                      0.03495,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w700),
@@ -340,7 +339,7 @@ class _PastOrdersState extends State<PastOrders> {
                                                                   Colors.black,
                                                               fontSize:
                                                                   screenWidth *
-                                                                      0.031,
+                                                                      0.03,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500),
@@ -527,9 +526,9 @@ class _PastOrdersState extends State<PastOrders> {
                                 );
                               },
                             ),
-                    )
-                  ],
-                ),
+                    ),
+                  )
+                ],
               );
             }
           }),

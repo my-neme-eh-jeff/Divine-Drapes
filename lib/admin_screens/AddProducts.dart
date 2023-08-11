@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:divine_drapes/admin_screens/AdminBottomNav.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,11 +33,9 @@ class _AddProductPageState extends State<AddProductPage> {
 
   static const String authTokenKey = 'auth_token';
 
-
-
-
   Future<void> addProduct() async {
-    final url = Uri.parse('https://divine-drapes.onrender.com/admin/addProduct');
+    final url =
+        Uri.parse('https://divine-drapes.onrender.com/admin/addProduct');
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(authTokenKey);
     print(token);
@@ -48,7 +47,8 @@ class _AddProductPageState extends State<AddProductPage> {
     // Show the circular progress indicator
     showDialog(
       context: context,
-      barrierDismissible: false, // Prevent closing the dialog by tapping outside
+      barrierDismissible:
+          false, // Prevent closing the dialog by tapping outside
       builder: (context) => Center(
         child: CircularProgressIndicator(),
       ),
@@ -60,22 +60,22 @@ class _AddProductPageState extends State<AddProductPage> {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       },
-        body: jsonEncode({
-                "name": nameController.text,
-                "description": descriptionController.text,
-                "category": categoryController.text,
-                "quantity": int.parse(quantityController.text),
-                "cost": {
-                  "currency": currencyController.text,
-                  "value": int.parse(valueController.text),
-                },
-                "photo": {"isCust": true},
-                "text": {"isCust": true},
-                "color": {
-                  "isCust": true,
-                  "color": ["red", "blue", "green"],
-                },
-              }),
+      body: jsonEncode({
+        "name": nameController.text,
+        "description": descriptionController.text,
+        "category": categoryController.text,
+        "quantity": int.parse(quantityController.text),
+        "cost": {
+          "currency": currencyController.text,
+          "value": int.parse(valueController.text),
+        },
+        "photo": {"isCust": true},
+        "text": {"isCust": true},
+        "color": {
+          "isCust": true,
+          "color": ["red", "blue", "green"],
+        },
+      }),
     );
 
     // Hide the circular progress indicator
@@ -125,7 +125,6 @@ class _AddProductPageState extends State<AddProductPage> {
       print('Response: ${response.body}');
     }
   }
-
 
   Future<void> uploadImages(String productId) async {
     final url = Uri.parse('https://divine-drapes.onrender.com/admin/addImages');
@@ -178,7 +177,6 @@ class _AddProductPageState extends State<AddProductPage> {
     }
   }
 
-
   String? value1;
   String ItemName = "";
   File? _selectedImage;
@@ -208,7 +206,7 @@ class _AddProductPageState extends State<AddProductPage> {
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       drawer: Drawer(
-        child :Padding(
+        child: Padding(
           padding: const EdgeInsets.only(top: 80.0),
           child: Column(
             children: [
@@ -258,12 +256,13 @@ class _AddProductPageState extends State<AddProductPage> {
             ],
           ),
         ),
-
       ),
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: whiteColor,
-        title: Text("Divine Drapes",style: GoogleFonts.notoSans(color: darkPurple,fontSize: 28,fontWeight: FontWeight.w700)),
+        title: Text("Divine Drapes",
+            style: GoogleFonts.notoSans(
+                color: darkPurple, fontSize: 28, fontWeight: FontWeight.w700)),
         elevation: 0.0,
       ),
       body: SingleChildScrollView(
@@ -276,14 +275,21 @@ class _AddProductPageState extends State<AddProductPage> {
               Row(
                 children: [
                   InkWell(
-                      onTap: (){
-                        // Navigator.of(context).push(MaterialPageRoute(
-                        //     builder: (context) => const Home()));
-                        Navigator.of(context).pop();
+                      onTap: () {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => const AdminBottomNav()));
+                        // Navigator.of(context).pop();
                       },
                       child: Icon(Icons.arrow_back)),
-                  SizedBox(width: 10,),
-                  Text("Add Products",style: GoogleFonts.notoSans(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w700),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Add Products",
+                    style: GoogleFonts.notoSans(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700),
                   ),
                 ],
               ),
@@ -323,15 +329,15 @@ class _AddProductPageState extends State<AddProductPage> {
                     decoration: InputDecoration(
                       suffixIcon: nameController.text.isEmpty
                           ? Container(
-                        width: 0,
-                      )
+                              width: 0,
+                            )
                           : IconButton(
-                        icon: Icon(
-                          Icons.close,
-                          size: sizefont,
-                        ),
-                        onPressed: () => nameController.clear(),
-                      ),
+                              icon: Icon(
+                                Icons.close,
+                                size: sizefont,
+                              ),
+                              onPressed: () => nameController.clear(),
+                            ),
                       contentPadding: EdgeInsets.symmetric(
                           vertical: size.width * 0.005,
                           horizontal: size.width * 0.03),
@@ -343,25 +349,23 @@ class _AddProductPageState extends State<AddProductPage> {
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            width: 1, color: Colors.red,strokeAlign: BorderSide.strokeAlignInside),
+                            width: 1,
+                            color: Colors.red,
+                            strokeAlign: BorderSide.strokeAlignInside),
                       ),
-
                     ),
                   ),
                 ),
               ),
-
               SizedBox(height: size.height * 0.01),
               Text(
                 'Product Description',
@@ -399,15 +403,15 @@ class _AddProductPageState extends State<AddProductPage> {
                     decoration: InputDecoration(
                       suffixIcon: descriptionController.text.isEmpty
                           ? Container(
-                        width: 0,
-                      )
+                              width: 0,
+                            )
                           : IconButton(
-                        icon: Icon(
-                          Icons.close,
-                          size: sizefont,
-                        ),
-                        onPressed: () => descriptionController.clear(),
-                      ),
+                              icon: Icon(
+                                Icons.close,
+                                size: sizefont,
+                              ),
+                              onPressed: () => descriptionController.clear(),
+                            ),
                       contentPadding: EdgeInsets.symmetric(
                           vertical: size.width * 0.005,
                           horizontal: size.width * 0.03),
@@ -419,20 +423,19 @@ class _AddProductPageState extends State<AddProductPage> {
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            width: 1, color: Colors.red,strokeAlign: BorderSide.strokeAlignInside),
+                            width: 1,
+                            color: Colors.red,
+                            strokeAlign: BorderSide.strokeAlignInside),
                       ),
-
                     ),
                   ),
                 ),
@@ -473,15 +476,15 @@ class _AddProductPageState extends State<AddProductPage> {
                     decoration: InputDecoration(
                       suffixIcon: categoryController.text.isEmpty
                           ? Container(
-                        width: 0,
-                      )
+                              width: 0,
+                            )
                           : IconButton(
-                        icon: Icon(
-                          Icons.close,
-                          size: sizefont,
-                        ),
-                        onPressed: () => categoryController.clear(),
-                      ),
+                              icon: Icon(
+                                Icons.close,
+                                size: sizefont,
+                              ),
+                              onPressed: () => categoryController.clear(),
+                            ),
                       contentPadding: EdgeInsets.symmetric(
                           vertical: size.width * 0.005,
                           horizontal: size.width * 0.03),
@@ -493,20 +496,19 @@ class _AddProductPageState extends State<AddProductPage> {
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            width: 1, color: Colors.red,strokeAlign: BorderSide.strokeAlignInside),
+                            width: 1,
+                            color: Colors.red,
+                            strokeAlign: BorderSide.strokeAlignInside),
                       ),
-
                     ),
                   ),
                 ),
@@ -547,15 +549,15 @@ class _AddProductPageState extends State<AddProductPage> {
                     decoration: InputDecoration(
                       suffixIcon: quantityController.text.isEmpty
                           ? Container(
-                        width: 0,
-                      )
+                              width: 0,
+                            )
                           : IconButton(
-                        icon: Icon(
-                          Icons.close,
-                          size: sizefont,
-                        ),
-                        onPressed: () => quantityController.clear(),
-                      ),
+                              icon: Icon(
+                                Icons.close,
+                                size: sizefont,
+                              ),
+                              onPressed: () => quantityController.clear(),
+                            ),
                       contentPadding: EdgeInsets.symmetric(
                           vertical: size.width * 0.005,
                           horizontal: size.width * 0.03),
@@ -567,27 +569,26 @@ class _AddProductPageState extends State<AddProductPage> {
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            width: 1, color: Colors.red,strokeAlign: BorderSide.strokeAlignInside),
+                            width: 1,
+                            color: Colors.red,
+                            strokeAlign: BorderSide.strokeAlignInside),
                       ),
-
                     ),
                   ),
                 ),
               ),
               SizedBox(height: size.height * 0.01),
               Text(
-                'Curreny',
+                'Currency',
                 style: GoogleFonts.notoSans(
                   fontSize: sizefont,
                   color: Colors.black,
@@ -621,15 +622,15 @@ class _AddProductPageState extends State<AddProductPage> {
                     decoration: InputDecoration(
                       suffixIcon: currencyController.text.isEmpty
                           ? Container(
-                        width: 0,
-                      )
+                              width: 0,
+                            )
                           : IconButton(
-                        icon: Icon(
-                          Icons.close,
-                          size: sizefont,
-                        ),
-                        onPressed: () => currencyController.clear(),
-                      ),
+                              icon: Icon(
+                                Icons.close,
+                                size: sizefont,
+                              ),
+                              onPressed: () => currencyController.clear(),
+                            ),
                       contentPadding: EdgeInsets.symmetric(
                           vertical: size.width * 0.005,
                           horizontal: size.width * 0.03),
@@ -641,20 +642,19 @@ class _AddProductPageState extends State<AddProductPage> {
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            width: 1, color: Colors.red,strokeAlign: BorderSide.strokeAlignInside),
+                            width: 1,
+                            color: Colors.red,
+                            strokeAlign: BorderSide.strokeAlignInside),
                       ),
-
                     ),
                   ),
                 ),
@@ -695,15 +695,15 @@ class _AddProductPageState extends State<AddProductPage> {
                     decoration: InputDecoration(
                       suffixIcon: valueController.text.isEmpty
                           ? Container(
-                        width: 0,
-                      )
+                              width: 0,
+                            )
                           : IconButton(
-                        icon: Icon(
-                          Icons.close,
-                          size: sizefont,
-                        ),
-                        onPressed: () => valueController.clear(),
-                      ),
+                              icon: Icon(
+                                Icons.close,
+                                size: sizefont,
+                              ),
+                              onPressed: () => valueController.clear(),
+                            ),
                       contentPadding: EdgeInsets.symmetric(
                           vertical: size.width * 0.005,
                           horizontal: size.width * 0.03),
@@ -715,20 +715,19 @@ class _AddProductPageState extends State<AddProductPage> {
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.black,
                             width: 2,
                           ),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            width: 1, color: Colors.red,strokeAlign: BorderSide.strokeAlignInside),
+                            width: 1,
+                            color: Colors.red,
+                            strokeAlign: BorderSide.strokeAlignInside),
                       ),
-
                     ),
                   ),
                 ),
@@ -748,11 +747,11 @@ class _AddProductPageState extends State<AddProductPage> {
                   _pickImage(ImageSource.gallery);
                 },
                 child: Container(
-                  height: screenHeight*0.12,
-                  width: screenWidth*0.9,
+                  height: screenHeight * 0.12,
+                  width: screenWidth * 0.9,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.black ,
+                      color: Colors.black,
                       width: 2,
                     ),
                     borderRadius: BorderRadius.circular(15.0),
@@ -760,29 +759,30 @@ class _AddProductPageState extends State<AddProductPage> {
                   padding: const EdgeInsets.all(10.0),
                   child: _selectedImage == null
                       ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.file_upload_outlined, size: 40),
-                      SizedBox(height: 10.0),
-                      Text(
-                        'Add Photo',
-                      ),
-                    ],
-                  )
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.file_upload_outlined, size: 40),
+                            SizedBox(height: 10.0),
+                            Text(
+                              'Add Photo',
+                            ),
+                          ],
+                        )
                       : Image.file(
-                    File(_selectedImage!.path),
-                    fit: BoxFit.cover,
-                    height: 300.0,
-                    width: 300.0,
-                  ),
+                          File(_selectedImage!.path),
+                          fit: BoxFit.cover,
+                          height: 300.0,
+                          width: 300.0,
+                        ),
                 ),
               ),
-
               SizedBox(height: 16),
               SizedBox(height: size.height * 0.02),
               InkWell(
-                onTap: (){
+                onTap: () {
                   addProduct();
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const AdminBottomNav()));
                 },
                 child: Container(
                   width: double.infinity,

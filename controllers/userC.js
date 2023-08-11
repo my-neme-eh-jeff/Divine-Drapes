@@ -374,29 +374,36 @@ const placeOrderWithImages = async (req, res) => {
       data: order,
     });
 
-    const Product = await ProductSchema.findById({ _id: productID }).populate(
-      "reviews"
-    );
-
-    mailTransporter.sendMail({
-      from: process.env.EMAIL,
-      to: user.email,
-      subject: "Order succesfully placed.",
-      text: `Your order for ${Product.name} with product ID ${productID} has been placed succesfully, and can be tracked on our app in the orders section.`,
-    });
-
-    const remQuantity = await ProductSchema.findByIdAndUpdate(
-      { _id: productID },
-      { $inc: { quantity: -1 } }
-    );
-
-    if (remQuantity.quantity == 0) {
+    try{
+      const Product = await ProductSchema.findById({ _id: productID }).populate(
+        "reviews"
+      );
+  
       mailTransporter.sendMail({
         from: process.env.EMAIL,
-        to: process.env.EMAIL,
-        subject: "Stock over for a product",
-        text: `Dear Admin, a product on your website ${Product.name}, with the product id ${productID} , is out of stock. Kindly refill the items, untill then it will be shown as out of stock`,
+        to: user.email,
+        subject: "Order succesfully placed.",
+        text: `Your order for ${Product.name} with product ID ${productID} has been placed succesfully, and can be tracked on our app in the orders section.`,
       });
+  
+      const remQuantity = await ProductSchema.findByIdAndUpdate(
+        { _id: productID },
+        { $inc: { quantity: -1 } }
+      );
+  
+      if (remQuantity.quantity == 0) {
+        mailTransporter.sendMail({
+          from: process.env.EMAIL,
+          to: process.env.EMAIL,
+          subject: "Stock over for a product",
+          text: `Dear Admin, a product on your website ${Product.name}, with the product id ${productID} , is out of stock. Kindly refill the items, untill then it will be shown as out of stock`,
+        });
+      }
+    }catch(err){
+      res.status(500).json({
+        success: false,
+        message: err.message,
+      })
     }
   } catch (err) {
     res.status(500).json({

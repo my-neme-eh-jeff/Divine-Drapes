@@ -37,12 +37,7 @@ router.post("/addCart/:pID", userC.addCart);
 router.delete("/removeCart/:pID", userC.removeCart);
 
 //order
-
-// place order
-router.post("/order", userC.directOrder);
-
-// add images for customization
-router.post("/orderPicture", upload.array("files"), userC.addImagesForOrder);
+router.post("/orderWithImages", upload.array("files"), userC.placeOrderWithImages);
 
 // view Order
 router.get("/viewOrder", userC.viewOrder);

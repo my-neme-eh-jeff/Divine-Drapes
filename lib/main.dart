@@ -9,25 +9,24 @@ import 'Provider/CartProvider.dart';
 import 'Provider/OrderStausProvider.dart';
 import 'admin_screens/AdminBottomNav.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key,});
 
   // This widget is the root of your application.
 
   @override
-  Widget build(BuildContext context) {
+  build(BuildContext context)  {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthProvider()),
-        ChangeNotifierProvider(
-          create: (context) => CartProvider(),
-        ),
-        ChangeNotifierProvider<OrderStatusProvider>(
-          create: (context) => OrderStatusProvider(),
+        ChangeNotifierProvider(create: (context) => CartProvider(),),
+        ChangeNotifierProvider<OrderStatusProvider>(create: (context) => OrderStatusProvider(),
         )
       ],
       child: MaterialApp(

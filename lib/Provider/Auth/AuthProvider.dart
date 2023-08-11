@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../SharedPref.dart';
 import '../../screens/Login.dart';
 import '../../screens/home.dart';
 
@@ -48,7 +46,9 @@ class AuthProvider extends ChangeNotifier {
         print(data);
         token1 = data['token'];
         print(token1);
-        SharedPreferencesFile().setToken(data['token']);
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString('token', token1!);
+        //SharedPreferencesFile().setToken(data['token']);
         // SharedPreferencesFile().setIsAdmin(false);
 
         Fluttertoast.showToast(
@@ -65,6 +65,9 @@ class AuthProvider extends ChangeNotifier {
           MaterialPageRoute(builder: (context) => Login()),
         );
       } else {
+        var json = response.body;
+        var data = jsonDecode(json);
+        print(data);
         Fluttertoast.showToast(
             msg: "Something went wrong",
             toastLength: Toast.LENGTH_SHORT,
@@ -140,6 +143,7 @@ class AuthProvider extends ChangeNotifier {
 
       return true;
     } else {
+      print(response.body);
       print(response.statusCode);
       return false;
     }

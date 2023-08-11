@@ -80,8 +80,7 @@ class _ItemsState extends State<Items> {
     });
   }
 
-  Future<bool> addToCart(
-      String productId, BuildContext context, int index) async {
+  Future<bool> addToCart(String productId, BuildContext context, int index) async {
     final url =
         Uri.parse('https://divine-drapes.onrender.com/user/addCart/$productId');
     final prefs = await SharedPreferences.getInstance();
@@ -129,13 +128,25 @@ class _ItemsState extends State<Items> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-      CartProvider cartProvider =
-          Provider.of<CartProvider>(context, listen: false);
+      CartProvider cartProvider = Provider.of<CartProvider>(context, listen: false);
       cartProvider.addToCart(productId);
       return true;
     } else {
       // Failed to add item to cart
       // Handle the error or show an error message
+      CartProvider cartProvider = Provider.of<CartProvider>(context, listen: false);
+      if(cartProvider.addedProductsIds.contains(productId))
+        {
+          Fluttertoast.showToast(
+            msg: "Item Already Exists in Cart!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        }
       Fluttertoast.showToast(
         msg: "Failed to add item to cart!",
         toastLength: Toast.LENGTH_SHORT,
@@ -741,6 +752,7 @@ class _ItemsState extends State<Items> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
+                                      print(productId);
                                       Navigator.of(context)
                                           .push(MaterialPageRoute(
                                               builder: (context) => ItemDetails(
@@ -913,50 +925,47 @@ class _ItemsState extends State<Items> {
                                                                   // });
                                                                 }
                                                               },
-                                                              child: Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .all(
-                                                                          8.0),
-                                                                  child: cartProvider
-                                                                          .addedProductsIds
-                                                                          .contains(
-                                                                              productId)
-                                                                      ? Row(
-                                                                          children: [
-                                                                            Text(
-                                                                              "In cart",
-                                                                              style: GoogleFonts.notoSans(
-                                                                                color: Colors.black,
-                                                                                fontSize: 14,
-                                                                                fontWeight: FontWeight.w600,
+                                                                    child: Padding(
+                                                                      padding: const EdgeInsets.all(8.0),
+                                                                      child: () {
+                                                                        if (cartProvider.addedProductsIds.contains(productId))
+                                                                        {
+                                                                          return Row(
+                                                                            children: [
+                                                                              Text(
+                                                                                "In cart",
+                                                                                style: GoogleFonts.notoSans(
+                                                                                  color: Colors.black,
+                                                                                  fontSize: 14,
+                                                                                  fontWeight: FontWeight.w600,
+                                                                                ),
                                                                               ),
-                                                                            ),
-                                                                            SizedBox(
-                                                                              width: 2,
-                                                                            ),
-                                                                            Container(
+
+                                                                              SizedBox(width: 2),
+                                                                              Container(
                                                                                 width: 25,
                                                                                 height: 20,
                                                                                 color: Colors.transparent,
-                                                                                child: Image.asset(
-                                                                                  'assets/tickmark.png',
-                                                                                ))
-                                                                          ],
-                                                                        )
-                                                                      : Text(
-                                                                          "Add to cart",
-                                                                          style:
-                                                                              GoogleFonts.notoSans(
-                                                                            color:
-                                                                                Colors.black,
-                                                                            fontSize:
-                                                                                14,
-                                                                            fontWeight:
-                                                                                FontWeight.w600,
-                                                                          ),
-                                                                        )),
-                                                            )),
+                                                                                child: Image.asset('assets/tickmark.png'),
+                                                                              ),
+                                                                            ],
+                                                                          );
+                                                                        } else {
+                                                                          print(productId);
+                                                                          print(cartProvider.addedProductsIds);
+                                                                          return Text(
+                                                                            "Add to cart",
+                                                                            style: GoogleFonts.notoSans(
+                                                                              color: Colors.black,
+                                                                              fontSize: 14,
+                                                                              fontWeight: FontWeight.w600,
+                                                                            ),
+                                                                          );
+                                                                        }
+                                                                      }(),
+                                                                    )
+
+                                                                )),
                                                         // InkWell(
                                                         //     onTap: () {
                                                         //       setState(() {

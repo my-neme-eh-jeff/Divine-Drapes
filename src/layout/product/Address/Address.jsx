@@ -7,7 +7,7 @@ function Address(props) {
     return (
         <ChakraProvider>
         <div>
-            <div class="containerrr">
+            <div className="containerrr">
                 <form>
                     <label>
                         <input type="radio" name="radio" />
@@ -26,7 +26,7 @@ function Address(props) {
                         <span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Inventore harum esse omnis voluptatem, eveniet, aspernatur labore obcaecati at officiis ratione nihil maiores. Obcaecati odio repellat ad dignissimos id laudantium veritatis!</span>
                     </label> */}
                     <br />
-                    <Link href='/' isExternal>
+                    <Link href='/addAddress' isExternal>
                         Want to Add a new Address... <ExternalLinkIcon mx='2px' />
                     </Link>
                 </form>

@@ -25,6 +25,7 @@ import PersistLogin from "./layout/PersistLogin";
 import CheckAuth from "./layout/CheckAuth";
 import AppliedCategory from "./layout/AppliedCategory";
 import AddProduct from "./layout/admin/AddProduct";
+import AddAddress from "./layout/product/Address/AddAddress";
 
 // * Everyone has a user role by default, But only admin has admin roles along with user role
 // * agar naya protected page bana rhe ho toh osko bas wrap kardena role ke hisab se
@@ -53,6 +54,7 @@ const router = createBrowserRouter(
           <Route path="/order" element={<Myorders />} />
           <Route path="/fav" element={<Myfav />} />
           <Route path="/categories" element={<AppliedCategory />} />
+          <Route path="/addAddress" element={<AddAddress />} />
         </Route>
 
         <Route

@@ -74,10 +74,10 @@ function Buy() {
   const placeOrder = async () => {
     const data = {
       pID: prodId,
-      isCustPhoto: body.photo.isCust,
-      isCustText: body.text.isCust,
+      isCustPhoto: body.photo?.isCust,
+      isCustText: body.text?.isCust,
       text: custText,
-      isCustColor: body.color.isCust,
+      isCustColor: body.color?.isCust,
       paymentStatus: "pending",
       paymentType: pay,
     };
@@ -181,7 +181,7 @@ function Buy() {
                   <Heading fontSize={24} fontWeight={700}>
                     Text Customization
                   </Heading>
-                  {body.text.isCust ? (
+                  {body.text?.isCust ? (
                     <Input
                       value={custText}
                       onChange={(e) => {

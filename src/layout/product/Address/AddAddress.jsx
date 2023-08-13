@@ -2,21 +2,39 @@ import { Box, ChakraProvider, Text, VStack, SimpleGrid, GridItem, FormControl, F
 import { ArrowBackIcon } from "@chakra-ui/icons"
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-
-const initialStates = {addressOf: '', houseNumber: '', building: '', street: '', city: '', state: '', country: ''};
-
-const countries = ['India', 'Sri Lanka'];
-const states = ['Maharashtra', 'Gujarat'];
-
+import { useEffect } from 'react';
+import privateAxios from "../../../Axios/privateAxios";
+import useAuth from "../../../Hooks/useAuth";
 const AddAddress = () => {
-
+    const initialStates = {addressOf: '', houseNumber: '', building: '', street: '', city: '', state: '', country: ''};
+    const countries = ['India', 'Sri Lanka'];
+    const states = ['Maharashtra', 'Gujarat'];
     const [formData, setFormData] = useState(initialStates);
-
+    const { auth, setAuth } = useAuth();
+    const isLogin = auth?.accessToken;
+    console.log(isLogin);
     const navigate = useNavigate();
 
     const handleSubmit = () => {
         console.log(formData);
     }
+    useEffect(() => {
+            let config = {
+              method: "GET",
+              url: "user/profile",
+            };
+            async function makeRequest() {
+              try {
+                const response = await privateAxios.request(config);
+                console.log(response.data.data.addresslist);
+              } catch (error) {
+                console.log(error);
+              }
+            }
+            makeRequest();
+          }, []);
+    
+    
 
   return (
     <ChakraProvider>

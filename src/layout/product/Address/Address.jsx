@@ -27,7 +27,7 @@ function Address(props) {
                     </label> */}
                     <br />
                     <Link href='/addAddress' isExternal>
-                        Want to Add a new Address... <ExternalLinkIcon mx='2px' />
+                        Want to Add/Edit a new Address... <ExternalLinkIcon mx='2px' />
                     </Link>
                 </form>
             </div>

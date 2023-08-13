@@ -1,32 +1,38 @@
 import React from 'react'
 import './Address.css'
-import { Link } from '@chakra-ui/react'
+import { ChakraProvider, Link } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 
-function Address() {
+function Address(props) {
     return (
+        <ChakraProvider>
         <div>
-            <div class="containerrr">
+            <div className="containerrr">
                 <form>
                     <label>
                         <input type="radio" name="radio" />
-                        <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod, corrupti odio assumenda dolorum amet, eligendi ex reprehenderit quibusdam expedita placeat cum facilis voluptatum sit nemo.</span>
+                        <span>{props.title} <br />
+                        {props.houseNumber} , {props.building} <br />
+                        {props.street} , {props.city} <br />
+                        {props.state} , {props.country}
+                        </span>
                     </label>
-                    <label>
+                    {/* <label>
                         <input type="radio" name="radio" />
                         <span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni nostrum repellendus eligendi.</span>
                     </label>
                     <label>
                         <input type="radio" name="radio" />
                         <span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Inventore harum esse omnis voluptatem, eveniet, aspernatur labore obcaecati at officiis ratione nihil maiores. Obcaecati odio repellat ad dignissimos id laudantium veritatis!</span>
-                    </label>
+                    </label> */}
                     <br />
-                    <Link href='/' isExternal>
-                        Want to Add a new Address... <ExternalLinkIcon mx='2px' />
+                    <Link href='/addAddress' isExternal>
+                        Want to Add/Edit a new Address... <ExternalLinkIcon mx='2px' />
                     </Link>
                 </form>
             </div>
         </div>
+        </ChakraProvider>
     )
 }
 

@@ -62,7 +62,7 @@ export default function Allorders() {
             <Grid item md={12}>
               Categories
             </Grid>
-
+            <Button sx={{mt: '5%'}} onClick={() => navigate('/admin/addpro')}>Add Product</Button>
             <Grid item md={12}>
               <FormGroup>
                 <FormControlLabel control={<Checkbox />} label="Label" />

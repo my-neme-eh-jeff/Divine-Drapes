@@ -14,6 +14,8 @@ import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
 import useAxiosPrivate from "../../Hooks/useAxiosPrivate";
 import Loader from "../Loader/Loader";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Product() {
   const [body, setBody] = useState([]);
@@ -46,7 +48,7 @@ function Product() {
       .then((response) => {
         console.log(JSON.stringify(response.data));
         console.log("I am running");
-        alert("Category hitted");
+        //alert("Category hitted");
         console.log("This is a flag " + flag);
         setFlag(true);
         console.log(response.data);
@@ -112,12 +114,14 @@ function Product() {
     privateAxios
       .request(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data));
-        alert("Added to card");
+        console.log((response.data));
+        //alert("Added to card");
+        toast.success("Added to cart", { containerId: "bottom-left" });
       })
       .catch((error) => {
         console.log(error);
-        alert("Error");
+        //alert("Error");
+        toast.error("Already in cart", { containerId: "bottom-left" });
       });
   };
 
@@ -251,7 +255,7 @@ function Product() {
         </Box>
         <Footer />
       </ChakraProvider>
-}
+}     <ToastContainer position="bottom-left" />
     </div>
   );
 }

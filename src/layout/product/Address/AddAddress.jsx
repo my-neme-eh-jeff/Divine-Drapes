@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
 import privateAxios from "../../../Axios/privateAxios";
 import useAuth from "../../../Hooks/useAuth";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const AddAddress = () => {
     const initialStates = {addressOf: '', houseNumber: '', building: '', street: '', city: '', state: '', country: ''};
     const countries = ['India', 'Sri Lanka'];
@@ -17,16 +19,51 @@ const AddAddress = () => {
 
     const handleSubmit = () => {
         console.log(formData);
+        const formDataWithoutId = { ...formData };
+        delete formDataWithoutId._id;
+        console.log("hi:",formDataWithoutId);
+            let data = {
+                addressList:[formDataWithoutId]
+            }
+            console.log(data);
+            let config = {
+            method: 'put',
+            maxBodyLength: Infinity,
+            url: 'https://divine-drapes.onrender.com/user/editUserInfo',
+            headers: { 
+                'Authorization': 'Bearer '+isLogin, 
+                'Content-Type': 'application/json'
+            },
+            data : data
+            };
+
+            async function makeRequest() {
+            try {
+                const response = await privateAxios.request(config);
+                console.log((response.data));
+                toast.success("Updated succesfully", { containerId: "bottom-left" });
+            }
+            catch (error) {
+                console.log(error);
+            }
+            }
+
+            makeRequest();
+
     }
     useEffect(() => {
             let config = {
               method: "GET",
-              url: "user/profile",
+              url: "https://divine-drapes.onrender.com/user/profile",
+              headers:{
+                Authorization:"Bearer "+isLogin
+              }
             };
             async function makeRequest() {
               try {
                 const response = await privateAxios.request(config);
-                console.log(response.data.data.addresslist);
+                console.log(response.data.data.addressList);
+                setFormData(response.data.data.addressList[0]);
               } catch (error) {
                 console.log(error);
               }
@@ -37,6 +74,7 @@ const AddAddress = () => {
     
 
   return (
+    <>
     <ChakraProvider>
         <Box pt={{base: '5%', md: '10%', lg: '6%'}} pb='4%'>
         <SimpleGrid columns={12} columnGap={3} m='1% 0 2% 10%'>
@@ -131,6 +169,8 @@ const AddAddress = () => {
         </VStack>
         </Box>
     </ChakraProvider>
+    <ToastContainer position="bottom-left" />
+    </>
   )
 }
 

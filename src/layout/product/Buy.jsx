@@ -40,20 +40,25 @@ function Buy() {
 
   const { auth, setAuth } = useAuth();
   const isLogin = auth?.accessToken;
-  console.log(isLogin);
+  // console.log(isLogin);
 
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file)
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      }
+      fileReader.onerror = (error) => {
+        reject(error);
+      }
+    })
+  }
 
-  const handleImageChange = (event) => {
+  const handleImageChange = async (event) => {
     const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setSelectedImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-    console.log(selectedImage)
-    console.log(fileInputRef)
+    const base64 = await convertBase64(file);
+    sessionStorage.setItem('base64_buy',base64);
   };
 
   const getSingleProd = async () => {
@@ -87,8 +92,12 @@ function Buy() {
   const imageUploader = (id) => {
     if (body[0]?.data.photo.isCust) {
       let data = new FormData();
-      data.append('files', fileInputRef.current.files[0]);
-      // data.append('files', selectedImage);
+
+      const bs64 = sessionStorage.getItem('base64_buy');
+      sessionStorage.removeItem('base64_buy');
+
+      data.append('files', bs64);
+
       data.append('id', id);//here the order id is passed
 
       let config = {
@@ -129,8 +138,6 @@ function Buy() {
     }
   }
 
-
-
   const placeOrder = () => {
     let data = JSON.stringify({
       "pID": prodId,
@@ -156,7 +163,7 @@ function Buy() {
     privateAxios.request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        imageUploader(body[0]?.data._id)
+        // imageUploader(body[0]?.data._id)
         alert("Placed Successfully")
       })
       .catch((error) => {

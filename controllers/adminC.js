@@ -8,9 +8,9 @@ const otpGenerator = require("otp-generator");
 const { model } = require("mongoose");
 require("dotenv").config();
 
-const imageUpload = require('../utils/imageUpload');
-const deleteImage = require("../utils/imageDelete")
-const fs = require('fs')
+const imageUpload = require("../utils/imageUpload");
+const deleteImage = require("../utils/imageDelete");
+const fs = require("fs");
 
 let mailTransporter = nodemailer.createTransport({
   service: "gmail",
@@ -28,6 +28,20 @@ const addProduct = async (req, res) => {
     const product = new ProductSchema(req.body);
     const savedProduct = await product.save();
     const email = req.user.email;
+    const files = req.files || [];
+
+    if (files.length > 0) {
+      const array = [];
+      for (let image of files) {
+        const profile = await imageUpload.imageUpload(image, "Products");
+        array.push(profile.url);
+        fs.unlinkSync(image.path);
+      }
+      product.photo.picture = array;
+    }
+
+    
+    product.save();
 
     mailTransporter.sendMail({
       from: process.env.EMAIL,
@@ -58,14 +72,14 @@ const addImagesForProduct = async (req, res) => {
     for (let image of files) {
       const profile = await imageUpload.imageUpload(image, "Products");
       array.push(profile.url);
-      fs.unlinkSync(image.path)
+      fs.unlinkSync(image.path);
     }
     product.photo.picture = array;
     product.save();
     res.status(200).json({
-      success : true,
-      data : product
-    })
+      success: true,
+      data: product,
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -138,13 +152,13 @@ const deleteProduct = async (req, res) => {
 
     const product = await ProductSchema.findById({ _id: productID });
 
-    const arrayImages = product.photo.picture
-    for(let url of arrayImages){
+    const arrayImages = product.photo.picture;
+    for (let url of arrayImages) {
       console.log(url);
-      await deleteImage(url, "Products")
+      await deleteImage(url, "Products");
     }
 
-    await product.delete()
+    await product.delete();
 
     res.status(200).json({
       success: true,
@@ -181,31 +195,33 @@ const viewUser = async (req, res) => {
   }
 };
 
-const changeOrderStatus = async(req,res) => {
-  const { orderID, status} = req.body
-  const orderUpdate = await OrderSchema.findByIdAndUpdate(orderID, {orderStatus : status}).populate("user product")
+const changeOrderStatus = async (req, res) => {
+  const { orderID, status } = req.body;
+  const orderUpdate = await OrderSchema.findByIdAndUpdate(orderID, {
+    orderStatus: status,
+  }).populate("user product");
 
-  if(!orderUpdate){
+  if (!orderUpdate) {
     return res.status(404).json({
-      success : false,
-      message : "No such order exists"
-    })
+      success: false,
+      message: "No such order exists",
+    });
   }
 
-  const email = orderUpdate.user.email
+  const email = orderUpdate.user.email;
 
   mailTransporter.sendMail({
     from: process.env.EMAIL,
     to: email,
     subject: "Change in order status",
     text: `Your order ${orderUpdate.product.name} has been updated to ${status} state by Divine Drapes`,
-  })
+  });
 
   res.status(200).json({
-    sucess :true,
-    data : orderUpdate
-  })
-}
+    sucess: true,
+    data: orderUpdate,
+  });
+};
 
 module.exports = {
   addProduct,
@@ -214,5 +230,5 @@ module.exports = {
   deleteProduct,
   viewUser,
   addImagesForProduct,
-  changeOrderStatus
+  changeOrderStatus,
 };

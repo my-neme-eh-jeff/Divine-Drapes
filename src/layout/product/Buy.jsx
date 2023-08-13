@@ -87,7 +87,8 @@ function Buy() {
       data: data,
     };
     try {
-      await privateAxios.request(config);
+      const response=await privateAxios.request(config);
+      console.log(response.data)
       alert("wow ordered");
     } catch (err) {
       console.log(err);

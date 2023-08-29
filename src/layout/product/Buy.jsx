@@ -64,7 +64,7 @@ function Buy() {
     formData.append("pID", prodId);
     formData.append("isCustPhoto", body.photo?.isCust);
     formData.append("isCustText", body.text?.isCust);
-    formData.append("text",env custText);
+    formData.append("text", custText);
     formData.append("isCustColor", body.color?.isCust);
     formData.append("paymentStatus", "pending");
     formData.append("paymentType", pay);

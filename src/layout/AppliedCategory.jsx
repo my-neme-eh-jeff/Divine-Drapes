@@ -97,7 +97,7 @@ makeRequest();
                 _hover={{ cursor: 'pointer'}}
                 mr={'2%'}
                 /> 
-                Mugs
+                {selected[0]}
             </Heading>  
             <Flex justifyContent={'space-around'} m='2% 0'>
             <SimpleGrid columns={{sm: 1, md: 4}} rowGap={10} columnGap={20}>

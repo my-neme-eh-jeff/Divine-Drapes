@@ -30,28 +30,15 @@ import { useToast } from "@chakra-ui/react";
 import useAxiosPrivate from "../../Hooks/useAxiosPrivate";
 
 function Buy() {
-  const [body, setBody] = useState([]);
+  const [body, setBody] = useState();
   const toast = useToast();
   const { productId } = useParams();
   const prodId = productId.split(":")[1];
-  const [selectedImage, setSelectedImage] = useState(null);
-  const fileInputRef = useRef(null);
   const [custText, setCustText] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [pay, setPay] = useState();
   const privateAxios = useAxiosPrivate();
-
-  const handleImageChange = (event) => {
-    console.log(file);
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setSelectedImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const [files, setFiles] = useState(null);
 
   const getSingleProd = async () => {
     let config = {
@@ -72,26 +59,40 @@ function Buy() {
   }, []);
 
   const placeOrder = async () => {
-    const data = {
-      pID: prodId,
-      isCustPhoto: body.photo?.isCust,
-      isCustText: body.text?.isCust,
-      text: custText,
-      isCustColor: body.color?.isCust,
-      paymentStatus: "pending",
-      paymentType: pay,
-    };
+    const formData = new FormData();
+
+    formData.append("pID", prodId);
+    formData.append("isCustPhoto", body.photo?.isCust);
+    formData.append("isCustText", body.text?.isCust);
+    formData.append("text",env custText);
+    formData.append("isCustColor", body.color?.isCust);
+    formData.append("paymentStatus", "pending");
+    formData.append("paymentType", pay);
+    const filee = document.getElementById("imageForOrder").files;
+    Object.keys(filee).forEach((key) => {
+      formData.append("files", files.item(key));
+    });
+    console.log(formData);
+
     const config = {
       method: "POST",
       url: "user/orderWithImages",
-      data: data,
+      data: formData,
     };
+
     try {
       await privateAxios.request(config);
-      alert("wow ordered");
+      alert("Order placed successfully");
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const handleImageChange = (e) => {
+    console.log(e.target.files);
+    setFiles(e.target.files);
+    var imageFiles = document.getElementById("imageForOrder");
+    console.log(imageFiles.files);
   };
 
   return (
@@ -120,7 +121,7 @@ function Buy() {
                   <Image
                     boxSize="280px"
                     objectFit="cover"
-                    src="https://bit.ly/dan-abramov"
+                    src={body.photo.picture[0] || ""}
                     alt="Dan Abramov"
                   />
                 </Box>
@@ -150,48 +151,41 @@ function Buy() {
                       <span className="upload-text">
                         Upload your customization
                       </span>
-                      {body?.photo?.isCust ? (
-                        <input
-                          id="upload-input"
-                          ref={fileInputRef}
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageChange}
-                        />
-                      ) : (
-                        <input
-                          id="upload-input"
-                          ref={fileInputRef}
-                          disabled="true"
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageChange}
-                        />
-                      )}
-                    </label>
-                    {selectedImage && (
-                      <img
-                        src={selectedImage}
-                        alt="Preview"
-                        className="preview-image"
+                      <input
+                        id="imageForOrder"
+                        type="file"
+                        multiple={true}
+                        accept="image/*"
+                        disabled={body.photo.isCust === false}
+                        onChange={handleImageChange}
                       />
-                    )}
+                    </label>
+                    {/* {files.length > 0 && (
+                      <div className="preview-images">
+                        {files.map((file, index) => {
+                          console.log(file);    
+                          // <img
+                          //   key={index}
+                          //   src={image}
+                          //   alt={`Preview of image ${index}`}
+                          //   className="preview-image"
+                          // />
+                        })}
+                      </div>
+                    )} */}
                   </div>
                   <br />
                   <Heading fontSize={24} fontWeight={700}>
                     Text Customization
                   </Heading>
-                  {body.text?.isCust ? (
-                    <Input
-                      value={custText}
-                      onChange={(e) => {
-                        setCustText(e.target.value);
-                      }}
-                      placeholder="Enter your Text"
-                    />
-                  ) : (
-                    <Input placeholder="Enter your Text" disabled="true" />
-                  )}
+                  <Input
+                    value={custText}
+                    disabled={body.text?.isCust === false}
+                    onChange={(e) => {
+                      setCustText(e.target.value);
+                    }}
+                    placeholder="Enter your Text"
+                  />
 
                   <br />
                   <Box

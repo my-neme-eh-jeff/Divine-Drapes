@@ -1,5 +1,5 @@
-# DivineDrapes
+## DivineDrapes
 
-test user credentials:-
+# test user credentials:-
 email - dduser@gmail.com
 pass - test

@@ -2,5 +2,5 @@
 
 
 ## test user credentials:-
-email - dduser@gmail.com
+email - dduser@gmail.com \n
 pass - test

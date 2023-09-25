@@ -1,4 +1,3 @@
-# DivineDrapes project
 
 
 ## test user credentials:-

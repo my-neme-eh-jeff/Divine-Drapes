@@ -44,6 +44,7 @@ const addProduct = async (req, res) => {
     product.save();
 
     mailTransporter.sendMail({
+      
       from: process.env.EMAIL,
       to: email,
       subject: "New product added",

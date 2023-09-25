@@ -9,8 +9,8 @@ cloudinary.config({
 
 const imageUpload = async (file, folder) => {
   try {
-    const img = await cloudinary.uploader.upload(file.path,{
-      folder
+    const img = await cloudinary.uploader.upload(file.path, {
+      folder,
     });
     return img;
   } catch (err) {

@@ -1,7 +1,6 @@
 const morgan = require("morgan");
 const express = require("express");
 const cookieParser = require("cookie-parser");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 const corsOptions = require("./config/corsOptions.js");
 const { logger } = require("./middleware/logEvents");
@@ -30,9 +29,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true }));
-
 //Cron to keep server alive
 cron.schedule("*/10 * * * *", () => {
   console.log("Cron job running every 10 minutes");
@@ -59,9 +55,10 @@ app.use(
     // store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
   })
 );
-app.use(passport.initialize());
-app.use(passport.session());
 
+//TODO: uncomment this when passport is working
+// app.use(passport.initialize());
+// app.use(passport.session());
 app.use("/auth", authRoutes);
 
 // user

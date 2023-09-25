@@ -329,35 +329,48 @@ const directOrder = async (req, res) => {
 const placeOrderWithImages = async (req, res) => {
   try {
     const user = req.user;
-    const productID = req.body.pID;
+    console.log(req.body);
+    const {
+      pID,
+      isCustPhoto,
+      isCustText,
+      text,
+      isCustColor,
+      paymentStatus,
+      paymentType,
+      filesCount,
+    } = req.body;
 
     const order = new OrderSchema({
       user: user._id,
-      product: productID,
+      product: pID,
       photo: {
-        isCust: req.body.isCustPhoto,
+        isCust: isCustPhoto,
       },
       text: {
-        isCust: req.body.isCustText,
-        text: req.body.text,
+        isCust: isCustText,
+        text: text,
       },
       color: {
-        isCust: req.body.isCustColor,
+        isCust: isCustColor,
         color: req.body.color,
       },
-      paymentStatus: req.body.paymentStatus,
-      paymentType: req.body.paymentType,
+      paymentStatus: paymentStatus,
+      paymentType: paymentType,
     });
 
-    const files = req.files || [];
-    console.log(files)
-
-    if (files.length > 0) {
+    if (filesCount > 0) {
+      const files = req.body.files || [];
+      console.log(files);
       const array = [];
-      for (let image of files) {
-        const img = await imageUpload.imageUpload(image, "Orders");
-        array.push(img.url);
-        fs.unlinkSync(image.path);
+      let i = 1;
+      while (i <= filesCount) {
+        console.log(file.path);
+        i--;
+        // const img = await imageUpload.imageUpload(file, "Orders");
+        // console.log(img);
+        // array.push(img.url);
+        // fs.unlinkSync(file.path);
       }
       order.photo.picture = array;
     }
@@ -374,36 +387,36 @@ const placeOrderWithImages = async (req, res) => {
       data: order,
     });
 
-    try{
-      const Product = await ProductSchema.findById({ _id: productID }).populate(
+    try {
+      const Product = await ProductSchema.findById({ _id: pID }).populate(
         "reviews"
       );
-  
+
       mailTransporter.sendMail({
         from: process.env.EMAIL,
         to: user.email,
-        subject: "Order succesfully placed.",
-        text: `Your order for ${Product.name} with product ID ${productID} has been placed succesfully, and can be tracked on our app in the orders section.`,
+        subject: "Order successfully placed.",
+        text: `Your order for ${Product.name} with product ID ${pID} has been placed successfully and can be tracked on our app in the orders section.`,
       });
-  
+
       const remQuantity = await ProductSchema.findByIdAndUpdate(
-        { _id: productID },
+        { _id: pID },
         { $inc: { quantity: -1 } }
       );
-  
+
       if (remQuantity.quantity == 0) {
         mailTransporter.sendMail({
           from: process.env.EMAIL,
           to: process.env.EMAIL,
           subject: "Stock over for a product",
-          text: `Dear Admin, a product on your website ${Product.name}, with the product id ${productID} , is out of stock. Kindly refill the items, untill then it will be shown as out of stock`,
+          text: `Dear Admin, a product on your website ${Product.name}, with the product id ${pID}, is out of stock. Kindly refill the items; until then, it will be shown as out of stock.`,
         });
       }
-    }catch(err){
+    } catch (err) {
       res.status(500).json({
         success: false,
         message: err.message,
-      })
+      });
     }
   } catch (err) {
     res.status(500).json({

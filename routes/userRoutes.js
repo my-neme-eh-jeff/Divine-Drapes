@@ -37,14 +37,17 @@ router.post("/addCart/:pID", userC.addCart);
 router.delete("/removeCart/:pID", userC.removeCart);
 
 //order
-router.post("/orderWithImages", upload.array("files"), userC.placeOrderWithImages);
+router.post(
+  "/orderWithImages",
+  upload.array(`file${0}`),
+  userC.placeOrderWithImages
+);
 
 // view Order
 router.get("/viewOrder", userC.viewOrder);
 
 // view single order
-router.get("/singleOrder/:orderID", userC.viewSingleOrder)
-
+router.get("/singleOrder/:orderID", userC.viewSingleOrder);
 
 /// CRUD review
 
@@ -52,10 +55,10 @@ router.get("/singleOrder/:orderID", userC.viewSingleOrder)
 router.post("/createReview", reviewC.addReview);
 
 //read my review
-router.get("/myReview", reviewC.myReview)
+router.get("/myReview", reviewC.myReview);
 
 //update review
-router.patch("/updateReview", userCheck.verifyReview, reviewC.updateReview)
+router.patch("/updateReview", userCheck.verifyReview, reviewC.updateReview);
 
 //delete review
 router.delete("/deleteReview", userCheck.verifyReview, reviewC.deleteReview);
@@ -72,12 +75,9 @@ router.get("/myTicket", ticketC.myTicket);
 router.delete("/deleteTicket", userCheck.verifyTicket, ticketC.deleteTicket);
 
 //get particular ticket
-router.get("/particularTicket", ticketC.particularTicket)
-
-
-
+router.get("/particularTicket", ticketC.particularTicket);
 
 //payment
-router.get("/payment",userC.payment)
+router.get("/payment", userC.payment);
 
 module.exports = router;

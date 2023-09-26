@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 //Cron to keep server alive
-cron.schedule("*/10 * * * *", () => {
+cron.schedule("*/5 * * * *", () => {
   console.log("Cron job running every 10 minutes");
 });
 
@@ -69,6 +69,7 @@ app.use("/user", userRoutes);
 app.use("/product", productRoutes);
 
 //admin routes
+console.log(verifyRoles(ROLES_LIST.Admin));
 app.use(verifyRoles(ROLES_LIST.Admin));
 app.use("/admin", adminRoutes);
 

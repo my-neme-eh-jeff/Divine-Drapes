@@ -12,7 +12,6 @@ const ROLES_LIST = require("./config/rolesList.js");
 const verifyJWT = require("./middleware/verifyJWT.js");
 const verifyRoles = require("./middleware/verifyRoles.js");
 const session = require("express-session");
-const cron = require("node-cron");
 
 require("./db.js");
 const app = express();
@@ -29,10 +28,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-//Cron to keep server alive
-cron.schedule("*/5 * * * *", () => {
-  console.log("Cron job running every 10 minutes");
-});
 
 // Routes
 const userRoutes = require("./routes/userRoutes");

@@ -21,12 +21,12 @@ import {
   GridItem,
   FormControl,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import publicAxios from "../../Axios/publicAxios";
+import useAxiosPrivate from "../../Hooks/useAxiosPrivate";
 
-import useAuth from "../../Hooks/useAuth";
-import privateAxios from "../../Axios/privateAxios";
 function AddProduct() {
-  const [selectedImage, setSelectedImage] = useState('blah');
   const [productName, setProductName] = useState();
   const [description, setDescription] = useState();
   const [quantity, setQuantity] = useState();
@@ -39,31 +39,12 @@ function AddProduct() {
   const [colorInp, setColorInp] = useState();
   const [colors, setColors] = useState([]);
   const [category, setCategory] = useState();
-  const { auth, setAuth } = useAuth();
-  const isLogin = auth?.accessToken;
-
-  const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file)
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      }
-      fileReader.onerror = (error) => {
-        reject(error);
-      }
-    })
-  }
-
-  const handleImageChange = async (event) => {
-    const file = event.target.files[0];
-    const base64 = await convertBase64(file);
-    sessionStorage.setItem('base64_addProduct',base64);
-  };
+  const privateAxios = useAxiosPrivate();
+  const [publicID, setPublicId] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleColorAdd = (newColor) => {
     setColors([...colors, newColor]);
-    // console.log(colors);
   };
 
   const handleColorEdit = (index, updatedColor) => {
@@ -76,92 +57,82 @@ function AddProduct() {
     const newColors = colors.filter((_, i) => i !== index);
     setColors(newColors);
   };
-  // console.log(cust)
-  const addnewprod = () => {
-    const bs64 = sessionStorage.getItem('base64_addProduct');
-    sessionStorage.removeItem('base64_addProduct');
 
-    // console.log(bs64);
-
-    let data = JSON.stringify({
-      name: productName,
-      description: description,
-      category: category,
-      quantity: quantity,
-      cost: {
-        currency: "INR",
-        value: cost,
-      },
-      photo: {
-        isCust: imageCust,
-      },
-      text: {
-        isCust: textCust,
-      },
-      color: {
-        isCust: colorCust,
-        color: colors,
-      },
-      files:{
-        bs64
-      }
-    });
-
-    let config = {
-      method: "post",
-      maxBodyLength: Infinity,
-      url: "https://divine-drapes.onrender.com/admin/addProduct",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + isLogin,
-      },
-      data: data,
-    };
-
-    async function makeRequest() {
-      try {
-        const response = await privateAxios.request(config);
-        console.log(response.data);
-        // console.log(response.data.product._id);
-
-        // addimagetonewprod(response.data.product._id);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    makeRequest();
+  const resetInputFieldsAfterUploading = () => {
+    setProductName("");
+    setDescription("");
+    setQuantity("");
+    setCost("");
+    setCategory("");
+    setImageCust(false);
+    setColorCust(false);
+    setTextCust(false);
+    setColors([]);
+    setColorInp("");
+    setPublicId([]);
   };
 
-  // const addimagetonewprod = (id) => {
-  //   console.log("adding photos");
-  //   // const FormData = require('form-data');
-  //   // const fs = require('fs');
-  //   let data = new FormData();
-  //   data.append("id", id);
-  //   data.append("files", file);
+  const addnewprod = async () => {
+    setLoading(true);
+    const imageFiles = document.getElementById("imagesOfProduct");
+    for (const file of imageFiles.files) {
+      const formImage = new FormData();
+      formImage.append("file", file);
+      formImage.append("public_id", `${productName} ${uuidv4()}`);
+      formImage.append("folder", "products");
+      formImage.append("upload_preset", import.meta.env.VITE_UPLOAD_PRESET);
 
-  //   let config = {
-  //     method: "post",
-  //     maxBodyLength: Infinity,
-  //     url: "https://divine-drapes.onrender.com/admin/addImages",
-  //     headers: {
-  //       Authorization: "Bearer " + isLogin,
-  //     },
-  //     data: data,
-  //   };
-
-  //   async function makeRequest() {
-  //     try {
-  //       const response = await privateAxios.request(config);
-  //       console.log(response.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-
-  //   makeRequest();
-  // };
+      try {
+        const url =
+          "https://api.cloudinary.com/v1_1/" +
+          import.meta.env.VITE_CLOUD_NAME +
+          "/image/upload";
+        const resp = await publicAxios.post(url, formImage);
+        console.log(resp.data);
+        console.log;
+        setPublicId((prev) => [...prev, resp.data.public_id]);
+        alert("WOW UPLAODED 😄"); 
+        resetInputFieldsAfterUploading
+      } catch (err) {
+        console.log(err);
+        alert("There was an error in uploading the iamge please try again!");
+        return;
+      }
+    }
+    try {
+      const data = {
+        name: productName,
+        description: description,
+        category: category,
+        quantity: quantity,
+        cost: {
+          currency: "INR",
+          value: cost,
+        },
+        photo: {
+          isCust: imageCust,
+          picture: publicID,
+        },
+        text: {
+          isCust: textCust,
+        },
+        color: {
+          isCust: colorCust,
+          color: colors,
+        },
+      };
+      const config = {
+        method: "post",
+        url: "admin/addProduct",
+        data: data,
+      };
+      const response = await privateAxios.request(config);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
+  };
 
   return (
     <div>
@@ -186,22 +157,15 @@ function AddProduct() {
                   Upload your Product Image here
                 </span>
                 <input
-                  id="upload-input"
+                  id="imagesOfProduct"
                   ref={fileInputRef}
                   type="file"
                   accept="image/*"
-                  onChange={e => handleImageChange(e)}
                   required
-                  name='upload-input'
+                  multiple
+                  name="files"
                 />
               </label>
-              {selectedImage && (
-                <img
-                  src={selectedImage}
-                  alt="Preview"
-                  className="preview-image"
-                />
-              )}
             </div>
             <Heading fontSize={24} fontWeight={700}>
               Product Name
@@ -398,6 +362,7 @@ function AddProduct() {
               _hover={{
                 background: "#F7BC62",
               }}
+              isLoading={loading}
               onClick={addnewprod}
             >
               Add Product

@@ -26,25 +26,13 @@ let mailTransporter = nodemailer.createTransport({
 const addProduct = async (req, res) => {
   try {
     const product = new ProductSchema(req.body);
+    console.log(req.body);
+    console.log(product);
     const savedProduct = await product.save();
     const email = req.user.email;
-    const files = req.files || [];
-
-    if (files.length > 0) {
-      const array = [];
-      for (let image of files) {
-        const profile = await imageUpload.imageUpload(image, "Products");
-        array.push(profile.url);
-        fs.unlinkSync(image.path);
-      }
-      product.photo.picture = array;
-    }
-
-    
     product.save();
 
     mailTransporter.sendMail({
-      
       from: process.env.EMAIL,
       to: email,
       subject: "New product added",

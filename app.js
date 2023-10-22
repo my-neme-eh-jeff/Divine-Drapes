@@ -64,7 +64,6 @@ app.use("/user", userRoutes);
 app.use("/product", productRoutes);
 
 //admin routes
-console.log(verifyRoles(ROLES_LIST.Admin));
 app.use(verifyRoles(ROLES_LIST.Admin));
 app.use("/admin", adminRoutes);
 

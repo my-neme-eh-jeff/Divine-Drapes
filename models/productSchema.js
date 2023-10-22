@@ -1,65 +1,69 @@
-const mongoose = require("mongoose")
-const Schema = mongoose.Schema
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const productSchema = new Schema({
-    name : {
-        type : String,
-        required : true
+const productSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
     },
-    description : {
-        type : String,
+    description: {
+      type: String,
     },
-    category : {
-        type : String,
-        required : true
+    category: {
+      type: String,
+      required: true,
     },
-    quantity : {
-        type : Number,
-        required : true
+    quantity: {
+      type: Number,
+      required: true,
     },
-    cost : {
-        currency : {
-            type : String,
-            enum : ["USD","INR","EUR","AUD"]
+    cost: {
+      currency: {
+        type: String,
+        enum: ["USD", "INR", "EUR", "AUD"],
+      },
+      value: {
+        type: Number,
+      },
+    },
+    photo: {
+      isCust: {
+        type: Boolean,
+        required: true,
+      },
+      //public IDs of images
+      picture: [String],
+    },
+    text: {
+      isCust: {
+        type: Boolean,
+        required: true,
+      },
+      text: {
+        type: String,
+      },
+    },
+    color: {
+      isCust: {
+        type: Boolean,
+        required: true,
+      },
+      color: [
+        {
+          type: String,
         },
-        value: {
-            type : Number,
-        }
+      ],
     },
-    photo : {
-        isCust : {
-            type : Boolean,
-            required : true
-        },
-        picture : [{
-            type : String
-        }]
-    },
-    text : {
-        isCust : {
-            type : Boolean,
-            required : true
-        },
-        text : {
-            type : String
-        }
-    },
-    color : {
-        isCust : {
-            type : Boolean,
-            required : true
-        },
-        color : [{
-            type : String
-        }]
-    },
-    reviews : [{
+    reviews: [
+      {
         type: mongoose.Types.ObjectId,
         ref: "review",
-      }],
-      
-},{ timestamps: true })
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
-
-const ProductSchema = mongoose.model("product", productSchema)
-module.exports = ProductSchema
+const ProductSchema = mongoose.model("product", productSchema);
+module.exports = ProductSchema;

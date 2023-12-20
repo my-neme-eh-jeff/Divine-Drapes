@@ -59,9 +59,36 @@ const categoryWise = async (req, res) => {
   }
 };
 
+const productByName = async(req,res) => {
+  try{
+    const search = req.params.name
+
+    const productName = await ProductSchema.find({
+      name: { $regex: search, $options: "i" },
+    })
+
+    const productDesc = await ProductSchema.find({
+      description: { $regex: search, $options: "i" },
+    })
+
+    res.status(200).json({
+      success : true,
+      productName : productName,
+      productDesc : productDesc
+    })
+
+  }catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+}
+
 
 module.exports = {
     allProducts,
     viewSpecificProduct,
-    categoryWise
+    categoryWise,
+    productByName
 }

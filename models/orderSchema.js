@@ -42,6 +42,7 @@ const orderSchema = new Schema({
         enum: ["pending", "completed", "cancelled", "refund"],
         required: true,
     },
+    
     paymentType: {
         type: String,
         enum: ["cod", "card", "net banking", "UPI"],

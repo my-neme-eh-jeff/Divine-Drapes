@@ -15,7 +15,14 @@ const allProducts = async (req, res) => {
   }
 };
 
+const preventColdStart = (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Server is awake",
+  });
+};
 
 module.exports = {
   allProducts,
+  preventColdStart,
 };

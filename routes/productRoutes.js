@@ -16,4 +16,7 @@ router.get("/categoryWise/:category", productC.categoryWise)
 //view specific product
 router.get("/viewProduct/:productID", productC.viewSpecificProduct)
 
+//search product by name (related)
+router.get("/productName/:name", productC.productByName)
+
 module.exports = router

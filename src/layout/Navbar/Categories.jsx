@@ -76,6 +76,7 @@ const Categories = () => {
     if(selected.size === undefined || selected.size === 0) 
       alert("Please choose some category!") 
     else{
+      console.log(Array.from(selected).join(","));
       navigate(`/categories?selected=${Array.from(selected).join(",")}`);
     }
   }

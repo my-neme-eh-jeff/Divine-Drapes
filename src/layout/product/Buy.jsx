@@ -212,6 +212,7 @@ function Buy() {
                             variant="ghost"
                             backgroundColor={"#F7BC62"}
                             _hover={{ color: "black" }}
+                            onClick={onClose}
                           >
                             Save & proceed
                           </Button>

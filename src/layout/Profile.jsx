@@ -7,7 +7,10 @@ import { Link } from "react-router-dom";
 import Footer from "./Footer/Footer";
 import { useState } from "react";
 import usePrivateAxios from "../Hooks/useAxiosPrivate";
-
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+import Navbar from "./Navbar/Navbar";
+import Loader from "./Loader/Loader";
 export default function Profile() {
   const [userdata, setUserdata] = useState();
   const privateAxios = usePrivateAxios();
@@ -30,9 +33,10 @@ export default function Profile() {
 
   return (
     <div>
+      <Navbar/>
       {userdata ? (
         <>
-          <Grid container>
+          <Grid container sx={{paddingTop:10}}>
             <Grid item md={3} xs={12} sm={12} sx={{ backgroundColor: "white" }}>
               <Grid container>
                 <Grid item md={3} xs={4} sm={4}></Grid>
@@ -45,9 +49,10 @@ export default function Profile() {
                     justifyContent: "center",
                     display: "flex",
                     alignItems: "center",
+                    marginTop: "20px",
                   }}
                 >
-                  <img src={pfp} className="image"></img>
+                  <Avatar sx={{ width: 106, height: 106 }}>{userdata.data.fName[0]}</Avatar>
                 </Grid>
                 <Grid item md={3} xs={4} sm={4}></Grid>
                 <Grid item md={3} xs={4} sm={4}></Grid>
@@ -121,12 +126,12 @@ export default function Profile() {
           </Grid>
         </>
       ) : (
-        <></>
+        <><Loader/></>
       )}
 
-      <div className="footer">
+      <div style={{paddingTop:70}}>
         <Footer></Footer>
-      </div>
+        </div>
     </div>
   );
 }

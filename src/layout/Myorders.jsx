@@ -152,7 +152,7 @@ export default function Myorders() {
             <Grid item md={12} xs={12} sx={{ marginTop: "3px" }}>
               My Orders
             </Grid>
-            {pdetails ? (
+            {pdetails.length!=0 ? (
               <>
                 {pdetails.map((order, k) => {
                   return (
@@ -241,7 +241,9 @@ export default function Myorders() {
                 })}
               </>
             ) : (
-              <><Loader></Loader></>
+              <>{
+                pdetails.length==0?<><Loader/></>:<></>
+              }</>
             )}
           </Grid>
         </Grid>

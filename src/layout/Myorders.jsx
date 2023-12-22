@@ -128,6 +128,9 @@ export default function Myorders() {
       try {
         const response = await privateAxios.request(config);
         console.log((response.data));
+        setRating(0);
+        setComment("");
+        handleClose();
       } catch (error) {
         console.log(error);
       }
@@ -176,7 +179,7 @@ export default function Myorders() {
                             component="img"
                             alt="green iguana"
                             height="200"
-                            image={mug}
+                            image={order.photo.picture}
                             sx={{
                               borderTopLeftRadius: "10px",
                               borderTopRightRadius: "10px",

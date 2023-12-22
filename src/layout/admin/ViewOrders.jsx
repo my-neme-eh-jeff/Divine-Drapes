@@ -132,6 +132,7 @@ export default function ViewOrders() {
                       p: "1% 2%",
                       "&:hover": { backgroundColor: "#A01E86", border: 2 },
                     }}
+                    onClick={() => navigate("/admin/orders")}
                   >
                     Done
                   </Button>

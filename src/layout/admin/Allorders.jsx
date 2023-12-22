@@ -64,11 +64,11 @@ export default function Allorders() {
             </Grid>
             <Button sx={{mt: '5%'}} onClick={() => navigate('/admin/addpro')}>Add Product</Button>
             <Grid item md={12}>
-              <FormGroup>
+              {/* <FormGroup>
                 <FormControlLabel control={<Checkbox />} label="Label" />
                 <FormControlLabel control={<Checkbox />} label="Required" />
                 <FormControlLabel control={<Checkbox />} label="Disabled" />
-              </FormGroup>
+              </FormGroup> */}
             </Grid>
           </Grid>
         </Grid>

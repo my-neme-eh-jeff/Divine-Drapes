@@ -107,19 +107,20 @@ const SearchDisplay = () => {
       </Heading>
       <Flex justifyContent={"space-around"} m="2% 0">
         <SimpleGrid columns={{ sm: 1, md: 4 }} rowGap={10} columnGap={20}>
-          {products.map((prod, index) => (
-            // console.log(prod),
-            <GridItem width={"250px"} key={index}>
-              {/* <Link to={/product/${prod._id}} key={index}> */}
-              <Image
-                src={prod.photo.picture[0]}
-                alt="Green double couch with wooden legs"
-                borderRadius="lg"
-                width={"240px"}
-                height={"240px"}
-                alignSelf="center"
-              />
-              {/* </Link>              */}
+        {products.map((prod,index) => {
+                console.log(prod._id)
+            return(
+                <GridItem width={'250px'} key={index}>
+                    <Link to={`/product/:${prod._id}`}>
+                    <Image
+                        src={prod.photo.picture}
+                        alt={prod.name}
+                        borderRadius='lg'
+                        width={'240px'}
+                        height={'240px'}
+                        alignSelf='center'
+                    />       
+                     </Link>  
               <Flex justifyContent={"space-between"} mb="3%">
                 <Stack mt="4" spacing="">
                   <Heading size="md">{prod.name}</Heading>
@@ -146,7 +147,8 @@ const SearchDisplay = () => {
                 </Button>
               </Flex>
             </GridItem>
-          ))}
+            )
+            })}
         </SimpleGrid>
       </Flex>
       <ToastContainer position="bottom-left" />

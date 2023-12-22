@@ -32,8 +32,8 @@ const Home = () => {
           mb="1%"
         >
           <Flex flexDirection={"column"}>
-            <Heading textAlign={'center'} color={'#fff'} size={'3xl'}>
-                Discover the Harmony of Ancient Wisdom and Modern Science
+            <Heading textAlign={'center'} color={'#fff'} size={'xl'}>
+            A wide variety of customizable gifts for your loved ones.
             </Heading>
             <SimpleGrid columns={4} columnGap={1} rowGap={2} m="2% 3% 3% 7%">
               <Link className="home-tags" color="#fff">

@@ -18,6 +18,7 @@ import SearchBar from "../Home/SearchBar";
 import useAuth from "../../Hooks/useAuth";
 import useLogout from "../../Hooks/useLogout";
 import { useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
@@ -26,7 +27,16 @@ const Navbar = () => {
   const { auth } = useAuth();
   const logout = useLogout();
   const navigate = useNavigate();
-
+  const adminRole = import.meta.env.VITE_ADMIN_ROLE
+  const decoded = auth?.accessToken ? jwt_decode(auth.accessToken) : undefined;
+  const role = decoded?.UserInfo;
+  const checkRole = role?.roles
+  let roleLen = 1
+  if(checkRole) {
+    roleLen = (checkRole?.length) - 1
+    var finalRole = checkRole[roleLen]
+  }
+  console.log(adminRole == finalRole)
   const handleLogout = async () => {
     try {
       await logout();
@@ -96,11 +106,15 @@ const Navbar = () => {
                 <SearchBar />
               )}
             </Box>
-
+            { adminRole == finalRole ?
+              <Link href="/admin/orders">
+                <Button bgColor={"#fff"}>Admin</Button>
+              </Link>
+            :
             <Link href="/">
               <Button bgColor={"#fff"}>Home</Button>
             </Link>
-
+            }
             <Link>
               <Categories />
             </Link>

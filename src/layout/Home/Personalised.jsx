@@ -67,7 +67,6 @@ const Personalised = () => {
         autoPlaySpeed={2000}
       >
         {topSelling?.map((item) => {
-          console.log(item);
           return (
             <Card maxW="sm" key={item}>
               <CardBody>

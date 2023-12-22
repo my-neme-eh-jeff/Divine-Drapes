@@ -21,7 +21,7 @@ import {
   GridItem,
   FormControl,
 } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import publicAxios from "../../Axios/publicAxios";
 import useAxiosPrivate from "../../Hooks/useAxiosPrivate";
@@ -40,7 +40,7 @@ function AddProduct() {
   const [colors, setColors] = useState([]);
   const [category, setCategory] = useState();
   const privateAxios = useAxiosPrivate();
-  const [publicID, setPublicId] = useState([]);
+  const [publicID, setPublicID] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const handleColorAdd = (newColor) => {
@@ -58,6 +58,12 @@ function AddProduct() {
     setColors(newColors);
   };
 
+  useEffect(() => {
+    // Your code that depends on the updated state
+    console.log(publicID);
+  }, [publicID]); // Dependency array ensures this effect runs after each update to publicId
+  
+
   const resetInputFieldsAfterUploading = () => {
     setProductName("");
     setDescription("");
@@ -69,12 +75,13 @@ function AddProduct() {
     setTextCust(false);
     setColors([]);
     setColorInp("");
-    setPublicId([]);
+    setPublicID([]);
   };
 
   const addnewprod = async () => {
     setLoading(true);
     const imageFiles = document.getElementById("imagesOfProduct");
+    let images =[]
     for (const file of imageFiles.files) {
       const formImage = new FormData();
       formImage.append("file", file);
@@ -88,11 +95,10 @@ function AddProduct() {
           import.meta.env.VITE_CLOUD_NAME +
           "/image/upload";
         const resp = await publicAxios.post(url, formImage);
-        console.log(resp.data);
-        console.log;
-        setPublicId((prev) => [...prev, resp.data.public_id]);
-        alert("WOW UPLAODED 😄"); 
-        resetInputFieldsAfterUploading
+        console.log(resp.data.secure_url);
+        images.push(resp.data.secure_url)
+        setPublicID((prev) => [...prev, resp.data.secure_url]);
+        // resetInputFieldsAfterUploading()
       } catch (err) {
         console.log(err);
         alert("There was an error in uploading the iamge please try again!");
@@ -100,6 +106,7 @@ function AddProduct() {
       }
     }
     try {
+      console.log(publicID)
       const data = {
         name: productName,
         description: description,
@@ -111,7 +118,7 @@ function AddProduct() {
         },
         photo: {
           isCust: imageCust,
-          picture: publicID,
+          picture: images,
         },
         text: {
           isCust: textCust,
@@ -128,6 +135,7 @@ function AddProduct() {
       };
       const response = await privateAxios.request(config);
       console.log(response.data);
+      alert("WOW UPLAODED 😄");
     } catch (error) {
       console.log(error);
     }

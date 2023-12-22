@@ -161,7 +161,7 @@ makeRequest();
                   component="img"
                   alt="green iguana"
                   height="200"
-                  image={mug}
+                  image={item.photo.picture}
                   sx={{borderTopLeftRadius:"10px",borderTopRightRadius:"10px",borderBottomRightRadius:"10px",borderBottomLeftRadius:"10px"}}
                 />
                 <CardContent sx={{}}>

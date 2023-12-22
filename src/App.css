@@ -48,7 +48,14 @@ html, body{
     text-align: center;
   }
   .content1{
-    margin-left: 178px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    align-self: center;
+    justify-content: center;
+    width: 100%;
+    /* background-color: aqua; */
+    margin-top: 30px;
   }
   
 }

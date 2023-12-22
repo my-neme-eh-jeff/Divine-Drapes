@@ -1,38 +1,46 @@
 #home-h1 {
-    font-weight: 700;
-    font-size: 38px;
-    color: #fff;
+  font-weight: 700;
+  font-size: 38px;
+  color: #fff;
+}
+
+.react-multiple-carousel__arrow::before {
+    z-index: 1 !important;
+}
+
+.react-multiple-carousel__arrow {
+    z-index: 1 !important;
 }
 
 .home-tags {
-    font-size: 28px;
-    font-weight: 500;
+  font-size: 28px;
+  font-weight: 500;
 }
 .home-headings {
-    font-weight: 700;
-    font-size: 28px;
+  font-weight: 700;
+  font-size: 28px;
 }
 
 #search-bar {
-    width: 500px;
-    margin: auto;
+  width: 500px;
+  margin: auto;
 }
 .home-content {
-    margin: 0 10%;
+  margin: 0 10%;
 }
-@media(max-width: 580px) {
-    #home-h1 {
-        font-size: 24px;
-        align-content: center;
-    }
-    .home-tags {
-        font-size: 20px;
-    }
-    .home-headings {
-        font-weight: 500;
-        font-size: 20px;
-    }
-    #search-bar {
-        width: 300px;
-    }
+@media (max-width: 580px) {
+  #home-h1 {
+    font-size: 24px;
+    align-content: center;
+  }
+  .home-tags {
+    font-size: 20px;
+  }
+  .home-headings {
+    font-weight: 500;
+    font-size: 20px;
+  }
+  #search-bar {
+    width: 300px;
+  }
 }

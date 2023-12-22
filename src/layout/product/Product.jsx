@@ -151,7 +151,8 @@ function Product() {
                     <Image
                       boxSize="280px"
                       objectFit="cover"
-                      src="https://bit.ly/dan-abramov"
+                      // src="https://bit.ly/dan-abramov"
+                      src={body[0]?.data.photo.picture}
                       alt="Dan Abramov"
                     />
                   </Box>
@@ -247,6 +248,7 @@ function Product() {
                       title={map.name}
                       price={map.cost.value}
                       desc={map.description}
+                      imagee = {map.photo.picture}
                     />
                   );
                 })}

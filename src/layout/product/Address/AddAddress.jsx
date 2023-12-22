@@ -1,23 +1,32 @@
 import { Box, ChakraProvider, Text, VStack, SimpleGrid, GridItem, FormControl, FormLabel, Input, Select, Button } from "@chakra-ui/react"
-import { ArrowBackIcon } from "@chakra-ui/icons"
+import { ArrowBackIcon, InfoIcon } from "@chakra-ui/icons"
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
 import privateAxios from "../../../Axios/privateAxios";
-import useAuth from "../../../Hooks/useAuth";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-const AddAddress = () => {
-    const initialStates = {addressOf: '', houseNumber: '', building: '', street: '', city: '', state: '', country: ''};
-    const countries = ['India', 'Sri Lanka'];
+import useAuth from "../../../Hooks/useAuth";
+    const AddAddress = () => {
+        const countries = ['India', 'Sri Lanka'];
     const states = ['Maharashtra', 'Gujarat'];
-    const [formData, setFormData] = useState(initialStates);
+    // const initialStates = {addressOf: ' ', houseNumber: ' ', building: ' ', street: ' ', city: ' ', state: states, country: countries};
+    // const [formData, setFormData] = useState(initialStates);
+
+    const [addressOf, setAddressOf] = useState('');
+    const [houseNumber, setHouseNumber] = useState('');
+    const [building, setBuilding] = useState('');
+    const [street, setStreet] = useState('');
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
+    const [country, setCountry] = useState('');
+    // console.log(initialStates);
+    const navigate = useNavigate();
     const { auth, setAuth } = useAuth();
     const isLogin = auth?.accessToken;
-    console.log(isLogin);
-    const navigate = useNavigate();
-
     const handleSubmit = () => {
+        //add all the address data to form data
+        const formData = {addressOf, houseNumber, building, street, city, state, country};
         console.log(formData);
         const formDataWithoutId = { ...formData };
         delete formDataWithoutId._id;
@@ -63,7 +72,7 @@ const AddAddress = () => {
               try {
                 const response = await privateAxios.request(config);
                 console.log(response.data.data.addressList);
-                setFormData(response.data.data.addressList[0]);
+                // setFormData(response.data.data.addressList[0]);
               } catch (error) {
                 console.log(error);
               }
@@ -76,7 +85,8 @@ const AddAddress = () => {
   return (
     <>
     <ChakraProvider>
-        <Box pt={{base: '5%', md: '10%', lg: '6%'}} pb='4%'>
+        
+         <Box pt={{base: '5%', md: '10%', lg: '6%'}} pb='4%'>
         <SimpleGrid columns={12} columnGap={3} m='1% 0 2% 10%'>
             <GridItem colSpan={[2, null, 1]}>
                 <Button bgColor='#ffffff' onClick={() => navigate('/')}>{<ArrowBackIcon fontSize='20px'/>}</Button>
@@ -99,37 +109,37 @@ const AddAddress = () => {
                         <GridItem colSpan={[2, null, 1]}>
                             <FormControl>
                                 <FormLabel>It is AddressOf</FormLabel>
-                                <Input placeholder="Home, Office..." border='2px' value={formData.addressOf} onChange={(e) => setFormData({...formData, addressOf: e.target.value})}/>
+                                <Input placeholder="Home, Office..." border='2px' value={addressOf} onChange={(e) => setAddressOf(e.target.value)}/>
                             </FormControl>
                         </GridItem>
                         <GridItem colSpan={[2, null, 1]}>
                             <FormControl>
                                 <FormLabel>Enter HouseNumber</FormLabel>
-                                <Input placeholder="Enter HouseNumber" border='2px' value={formData.houseNumber} onChange={(e) => setFormData({...formData, houseNumber: e.target.value})}/>
+                                <Input placeholder="Enter HouseNumber" border='2px' value={houseNumber} onChange={(e) => setHouseNumber(e.target.value)}/>
                             </FormControl>
                         </GridItem>
                         <GridItem colSpan={2}>
                             <FormControl>
                                 <FormLabel>Enter Building Name</FormLabel>
-                                <Input placeholder="Enter Building Name" border='2px' value={formData.building} onChange={(e) => setFormData({ ...formData, building: e.target.value })}/>
+                                <Input placeholder="Enter Building Name" border='2px' value={building} onChange={(e) => setBuilding(e.target.value )}/>
                             </FormControl>
                         </GridItem>
                         <GridItem colSpan={2}>
                             <FormControl>
                                 <FormLabel>Enter Street Name</FormLabel>
-                                <Input placeholder="Enter Street Name" border='2px' value={formData.street} onChange={(e) => setFormData({ ...formData, street: e.target.value })}/>
+                                <Input placeholder="Enter Street Name" border='2px' value={street} onChange={(e) => setStreet( e.target.value )}/>
                             </FormControl>
                         </GridItem>
                         <GridItem colSpan={2}>
                             <FormControl>
                                 <FormLabel>Enter City Name</FormLabel>
-                                <Input placeholder="Enter City Name" border='2px' value={formData.city} onChange={(e) => setFormData({ ...formData, city: e.target.value })}/>
+                                <Input placeholder="Enter City Name" border='2px' value={city} onChange={(e) => setCity(e.target.value )}/>
                             </FormControl>
                         </GridItem>
                         <GridItem colSpan={[2, null, 1]}>
                             <FormControl>
                                 <FormLabel>Select State</FormLabel>
-                                <Select placeholder='Select State' size='md' border='2px' value={formData.state} onChange={(e) => setFormData({ ...formData, state: e.target.value })}>
+                                <Select placeholder='Select State' size='md' border='2px' value={state} onChange={(e) => setState(e.target.value )}>
                                     {states.map(item => (
                                         <option key={item} value={item}>
                                             {item}
@@ -141,7 +151,7 @@ const AddAddress = () => {
                         <GridItem colSpan={[2, null, 1]}>
                             <FormControl>
                                 <FormLabel>Select Country</FormLabel>
-                                <Select placeholder='Select Country' size='md' border='2px' value={formData.country} onChange={(e) => setFormData({ ...formData, country: e.target.value })}>
+                                <Select placeholder='Select Country' size='md' border='2px' value={country} onChange={(e) => setCountry(e.target.value )}>
                                     {countries.map(item => (
                                         <option key={item} value={item}>
                                             {item}
@@ -168,6 +178,9 @@ const AddAddress = () => {
         </Box>
         </VStack>
         </Box>
+        
+       
+        
     </ChakraProvider>
     <ToastContainer position="bottom-left" />
     </>

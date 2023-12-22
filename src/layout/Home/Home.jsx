@@ -5,6 +5,7 @@ import {
   SimpleGrid,
   Link,
   Box,
+  Heading,
 } from "@chakra-ui/react";
 import "./Home.css";
 import TopSellingCarousel from "./TopSelling";
@@ -31,11 +32,9 @@ const Home = () => {
           mb="1%"
         >
           <Flex flexDirection={"column"}>
-            <h1 id="home-h1">
-              <center>
-                A wide variety of customizable gifts for your loved ones.
-              </center>
-            </h1>
+            <Heading textAlign={'center'} color={'#fff'} size={'xl'}>
+            A wide variety of customizable gifts for your loved ones.
+            </Heading>
             <SimpleGrid columns={4} columnGap={1} rowGap={2} m="2% 3% 3% 7%">
               <Link className="home-tags" color="#fff">
                 Lockets

@@ -6,12 +6,13 @@ import { useEffect } from 'react'
 import privateAxios from "../../../Axios/privateAxios";
 import useAuth from "../../../Hooks/useAuth";
 import { useState } from 'react';
+// import Loader from '../../Loader/Loader'
 function Address(props) {
-    const { auth, setAuth } = useAuth();
-    const isLogin = auth?.accessToken;
+      const { auth, setAuth } = useAuth();
+      const isLogin = auth?.accessToken;
     console.log(isLogin);
     console.log(props);
-    const [addressList, setAddressList] = useState([]);
+    const [addressList, setAddressList] = useState();
     useEffect(() => {
         let config = {
           method: "GET",
@@ -33,23 +34,31 @@ function Address(props) {
       }, []);
     return (
         <ChakraProvider>
-        <div>
+          <div>
             <div className="containerrr">
+          {addressList?<>
+            
                 <form>
                     <label>
                         <input type="radio" name="radio" />
-                        <span>{addressList.addressOf} <br />
+                        <span>
+                          {addressList.addressOf} 
+                          <br />
                         {addressList.houseNumber} , {addressList.building} <br />
                         {addressList.street} , {addressList.city} <br />
                         {addressList.state} , {addressList.country}
                         </span>
                     </label>
                     <br />
-                    <Link href='/addAddress' isExternal>
+                    
+                </form>
+            
+          
+          </>:<></>}
+          <Link href='/addAddress' isExternal>
                         Want to Add/Edit a new Address... <ExternalLinkIcon mx='2px' />
                     </Link>
-                </form>
-            </div>
+          </div>
         </div>
         </ChakraProvider>
     )

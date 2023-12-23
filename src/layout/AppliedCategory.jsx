@@ -108,7 +108,7 @@ makeRequest();
                     <Link to={`/product/:${prod._id}`}>
                     <Image
                         src={prod.photo.picture}
-                        alt='Green double couch with wooden legs'
+                        alt={prod.name}
                         borderRadius='lg'
                         width={'240px'}
                         height={'240px'}

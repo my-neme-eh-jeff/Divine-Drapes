@@ -78,7 +78,7 @@ export default function Myorders() {
             .then((response) => {
               console.log(response.data.data);
               setPdetails((prevdata) => [...prevdata, response.data.data]);
-              console.log(pdetails);
+              // console.log(pdetails);
             })
             .catch((error) => {
               console.log(error);

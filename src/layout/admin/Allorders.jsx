@@ -37,6 +37,7 @@ export default function Allorders() {
     };
     try {
       const resp = await privateAxios.request(options);
+      console.log(resp.data);
       setOrders({
         oldOrders: resp.data.received,
         newOrders: resp.data.delivered,

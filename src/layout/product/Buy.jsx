@@ -9,7 +9,9 @@ import {
   Button,
   Select,
   Input,
+  Stack
 } from "@chakra-ui/react";
+import { Radio, RadioGroup } from '@chakra-ui/react'
 import "./Upload.css";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
@@ -48,7 +50,7 @@ function Buy() {
     try {
       const resp = await privateAxios(config);
       setBody(resp.data.data);
-      console.log(body);
+      console.log(resp.data.data);
     } catch (err) {
       console.log(err);
     }
@@ -188,6 +190,27 @@ function Buy() {
                   />
 
                   <br />
+                  {body.color?.isCust === true ?<>
+                 
+                    <RadioGroup defaultValue='2'>
+                    <Stack spacing={5} direction='row'>
+                  {body.color.color.map((color) => {
+                    console.log(color);
+                    return(
+                        <>
+                        
+                          <Radio colorScheme={color} value={color}>
+                            {color}
+                          </Radio>
+                          
+                          </>
+                        
+                    )
+                  })}
+                    </Stack>
+                    </RadioGroup>
+                  </>:<></>}
+                      
                   <Box
                     display={"flex"}
                     justifyContent={"space-around"}

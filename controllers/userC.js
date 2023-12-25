@@ -332,20 +332,23 @@ const placeOrderWithImages = async (req, res) => {
     console.log(req.body);
     const {
       pID,
-      isCustPhoto,
+      files,
       isCustText,
       text,
+      isCustPhoto,
       isCustColor,
       paymentStatus,
       paymentType,
-      filesCount,
     } = req.body;
+    //files is a multiple strings separeted by , turn it into an array
+    const picture = files.split(",");
 
     const order = new OrderSchema({
       user: user._id,
       product: pID,
       photo: {
         isCust: isCustPhoto,
+        picture: picture,
       },
       text: {
         isCust: isCustText,
@@ -358,22 +361,6 @@ const placeOrderWithImages = async (req, res) => {
       paymentStatus: paymentStatus,
       paymentType: paymentType,
     });
-
-    if (filesCount > 0) {
-      const files = req.body.files || [];
-      console.log(files);
-      const array = [];
-      let i = 1;
-      while (i <= filesCount) {
-        console.log(file.path);
-        i--;
-        // const img = await imageUpload.imageUpload(file, "Orders");
-        // console.log(img);
-        // array.push(img.url);
-        // fs.unlinkSync(file.path);
-      }
-      order.photo.picture = array;
-    }
 
     await order.save();
 

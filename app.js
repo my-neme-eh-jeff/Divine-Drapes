@@ -36,7 +36,7 @@ const authRoutes = require("./routes/authRoutes.js");
 const productRoutes = require("./routes/productRoutes.js");
 const publicRoutes = require("./routes/publicRoutes.js");
 const passport = require("passport");
-require("./utils/passport.js");
+// require("./utils/passport.js");
 
 //public routes
 app.use("/public", publicRoutes);

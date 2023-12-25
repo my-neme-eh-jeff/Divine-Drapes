@@ -32,7 +32,7 @@ const productSchema = new Schema(
         type: Boolean,
         required: true,
       },
-      //public IDs of images
+      //secure_url of images
       picture: [String],
     },
     text: {

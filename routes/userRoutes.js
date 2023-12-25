@@ -39,7 +39,6 @@ router.delete("/removeCart/:pID", userC.removeCart);
 //order
 router.post(
   "/orderWithImages",
-  upload.array(`file${0}`),
   userC.placeOrderWithImages
 );
 

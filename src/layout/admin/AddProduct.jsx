@@ -98,7 +98,6 @@ function AddProduct() {
         console.log(resp.data.secure_url);
         images.push(resp.data.secure_url)
         setPublicID((prev) => [...prev, resp.data.secure_url]);
-        // resetInputFieldsAfterUploading()
       } catch (err) {
         console.log(err);
         alert("There was an error in uploading the iamge please try again!");

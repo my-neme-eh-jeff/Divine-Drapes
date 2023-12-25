@@ -9,9 +9,7 @@ import {
   Button,
   Select,
   Input,
-  Stack
 } from "@chakra-ui/react";
-import { Radio, RadioGroup } from '@chakra-ui/react'
 import "./Upload.css";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
@@ -30,9 +28,13 @@ import { useParams } from "react-router-dom";
 import { Toast } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
 import useAxiosPrivate from "../../Hooks/useAxiosPrivate";
+import publicAxios from "../../Axios/publicAxios";
+import { v4 as uuidv4 } from "uuid";
+import useAuth from "./../../Hooks/useAuth";
 
 function Buy() {
   const [body, setBody] = useState();
+  const { auth, setAuth } = useAuth();
   const toast = useToast();
   const { productId } = useParams();
   const prodId = productId.split(":")[1];
@@ -41,6 +43,8 @@ function Buy() {
   const [pay, setPay] = useState();
   const privateAxios = useAxiosPrivate();
   const [files, setFiles] = useState(null);
+  const [publicID, setPublicId] = useState([]);
+
 
   const getSingleProd = async () => {
     let config = {
@@ -50,7 +54,7 @@ function Buy() {
     try {
       const resp = await privateAxios(config);
       setBody(resp.data.data);
-      console.log(resp.data.data);
+      console.log(body);
     } catch (err) {
       console.log(err);
     }
@@ -70,11 +74,34 @@ function Buy() {
     formData.append("isCustColor", body.color?.isCust);
     formData.append("paymentStatus", "pending");
     formData.append("paymentType", pay);
-    const filee = document.getElementById("imageForOrder").files;
-    Object.keys(filee).forEach((key) => {
-      formData.append("files", files.item(key));
-    });
-    console.log(formData);
+    const imageFiles = document.getElementById("imagesOfCustomisation");
+    let images = []
+    for (const file of imageFiles.files) {
+      const formImage = new FormData();
+      formImage.append("file", file);
+      //current date in format dd-mm-yyyy
+      const date = new Date().toLocaleDateString().split("/").reverse();
+      formImage.append("public_id", `${date} ${uuidv4()}`);
+      formImage.append("folder", "orderImages");
+      formImage.append("upload_preset", import.meta.env.VITE_UPLOAD_PRESET);
+
+      try {
+        const url =
+          "https://api.cloudinary.com/v1_1/" +
+          import.meta.env.VITE_CLOUD_NAME +
+          "/image/upload";
+        const resp = await publicAxios.post(url, formImage);
+        console.log(resp.data);
+        setPublicId((prev) => [...prev, resp.data.public_id]);
+        images.push(resp.data.secure_url)
+        // alert("WOW UPLAODED 😄"); 
+      } catch (err) {
+        console.log(err);
+        alert("There was an error in uploading the iamge please try again!");
+        return;
+      }
+    }
+    formData.append("files", images);
 
     const config = {
       method: "POST",
@@ -90,12 +117,6 @@ function Buy() {
     }
   };
 
-  const handleImageChange = (e) => {
-    console.log(e.target.files);
-    setFiles(e.target.files);
-    var imageFiles = document.getElementById("imageForOrder");
-    console.log(imageFiles.files);
-  };
 
   return (
     <div>
@@ -154,12 +175,11 @@ function Buy() {
                         Upload your customization
                       </span>
                       <input
-                        id="imageForOrder"
                         type="file"
+                        id="imagesOfCustomisation"
                         multiple={true}
                         accept="image/*"
                         disabled={body.photo.isCust === false}
-                        onChange={handleImageChange}
                       />
                     </label>
                     {/* {files.length > 0 && (
@@ -190,27 +210,6 @@ function Buy() {
                   />
 
                   <br />
-                  {body.color?.isCust === true ?<>
-                 
-                    <RadioGroup defaultValue='2'>
-                    <Stack spacing={5} direction='row'>
-                  {body.color.color.map((color) => {
-                    console.log(color);
-                    return(
-                        <>
-                        
-                          <Radio colorScheme={color} value={color}>
-                            {color}
-                          </Radio>
-                          
-                          </>
-                        
-                    )
-                  })}
-                    </Stack>
-                    </RadioGroup>
-                  </>:<></>}
-                      
                   <Box
                     display={"flex"}
                     justifyContent={"space-around"}
@@ -235,7 +234,6 @@ function Buy() {
                             variant="ghost"
                             backgroundColor={"#F7BC62"}
                             _hover={{ color: "black" }}
-                            onClick={onClose}
                           >
                             Save & proceed
                           </Button>

@@ -34,6 +34,7 @@
     "react-dom": "^18.2.0",
     "react-multi-carousel": "^2.8.4",
     "react-otp-input": "^3.0.2",
+    "react-router": "^6.21.1",
     "react-router-dom": "^6.11.1",
     "react-timer-hook": "^3.0.6",
     "react-toastify": "^9.1.3",
